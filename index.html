@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <script>try { if (localStorage.getItem('pandora_tema') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) {}</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard e portal do referencial teórico da tese de doutorado sobre Síndrome de Pandora em Felinos - Universidade Federal do Ceará (UFC).">
+  <meta name="author" content="Romulo">
+  <title>Síndrome de Pandora em Felinos — Tese de Doutorado (UFC)</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;1,8..60,500;1,8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="painel.css">
+  <link rel="stylesheet" href="tema.css">
+</head>
+<body>
+
+  <!-- Barra de navegação (modelo: openclaude-guia) -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#tab-painel" class="nav-brand" data-goto="tab-painel">
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+        </div>
+        <span>Síndrome de Pandora</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#tab-painel" data-goto="tab-painel">Painel</a></li>
+        <li><a href="#tab-metas" data-goto="tab-metas">Metas</a></li>
+        <li><a href="#tab-iot" data-goto="tab-iot">Projeto IoT</a></li>
+        <li><a href="#tab-mapa" data-goto="tab-mapa">Mapa Mental</a></li>
+        <li><a href="#tab-pdfs" data-goto="tab-pdfs">PDFs</a></li>
+        <li><a href="#tab-galeria" data-goto="tab-galeria">Galeria</a></li>
+        <li><a href="#tab-estudo" data-goto="tab-estudo">Normas</a></li>
+        <li><a href="#tab-inventory" data-goto="tab-inventory">Acervo</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="Alternar tema claro/escuro">◐ <span id="themeText">Tema</span></button>
+        <a href="https://github.com/rcminitor/sindrome-de-pandora" target="_blank" rel="noopener noreferrer" class="btn-github" title="Repositório do cofre no GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>
+          <span class="gh-text">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Capa -->
+    <header class="hero">
+      <div class="badge-pill"><span class="badge-dot"></span>Tese de Doutorado • UFC</div>
+      <h1>Síndrome de Pandora em <span class="hero-gradient-text">Felinos</span></h1>
+      <p class="subtitle">
+        Referencial teórico, acompanhamento da escrita e projeto IoT: da doença urinária localizada (FLUTD/FIC) à síndrome multissistêmica, com monitoramento contínuo por sensores e IA.
+      </p>
+      <div class="hero-features-bar">
+        <span class="feat-tag"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><b id="kpiTotal">64</b> fontes catalogadas</span>
+        <span class="feat-tag"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Núcleo 1: <b id="kpiN1">22</b></span>
+        <span class="feat-tag"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Núcleo 2: <b id="kpiN2">42</b></span>
+        <span class="feat-tag"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><b id="kpiPriority">34</b> para ler primeiro</span>
+        <span class="feat-tag"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><b id="kpiFichados">3</b> fichamentos concluídos</span>
+      </div>
+      <p class="hero-note">Agrupamento por núcleos proposto, não declarado pelos autores.</p>
+      <div class="scientific-alert" role="note">
+        <div><strong>Regra do referencial:</strong> nenhum dado, resultado, página ou referência entra no texto da tese sem confirmação no documento original.</div>
+      </div>
+    </header>
+
+
+
+    <!-- Tabs Navigation -->
+    <nav class="tab-nav-wrapper" role="tablist" aria-label="Seções do projeto">
+      <button class="tab-btn" data-tab="tab-painel" role="tab" aria-selected="false">
+        Painel de KPIs
+      </button>
+      <button class="tab-btn" data-tab="tab-registro" role="tab" aria-selected="false">
+        Registro Semanal
+      </button>
+      <button class="tab-btn" data-tab="tab-metas" role="tab" aria-selected="false">
+        Metas & Qualificação
+      </button>
+      <button class="tab-btn" data-tab="tab-iot" role="tab" aria-selected="false">
+        Projeto IoT
+      </button>
+      <button class="tab-btn" data-tab="tab-mapa" role="tab" aria-selected="false">
+        Mapa Mental
+      </button>
+      <button class="tab-btn" data-tab="tab-pdfs" role="tab" aria-selected="false">
+        PDFs <span class="tab-badge" id="pdfBadge">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-galeria" role="tab" aria-selected="false">
+        Galeria <span class="tab-badge" id="galeriaCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-guia" role="tab" aria-selected="false">
+        Guia Didático
+      </button>
+      <button class="tab-btn" data-tab="tab-estudo" role="tab" aria-selected="false">
+        Estudo &amp; Normas
+      </button>
+      <button class="tab-btn active" data-tab="tab-overview" role="tab" aria-selected="true">
+        Visão Geral & Espinha Dorsal
+      </button>
+      <button class="tab-btn" data-tab="tab-inventory" role="tab" aria-selected="false">
+        Acervo e Inventário <span class="tab-badge">64</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-roadmap" role="tab" aria-selected="false">
+        Roteiro Semanal de Escrita
+      </button>
+      <button class="tab-btn" data-tab="tab-nucleos" role="tab" aria-selected="false">
+        Núcleos da Pesquisa
+      </button>
+    </nav>
+
+    <!-- TAB 1: VISÃO GERAL -->
+    <div class="tab-pane active" id="tab-overview" role="tabpanel">
+      <div class="overview-grid">
+        
+        <div class="content-card">
+          <h3 class="card-title">Espinha Dorsal do Referencial Teórico</h3>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            O encadeamento conceitual sustentado pelo acervo (proposto na varredura, não declarado por autor único):
+          </p>
+
+          <div class="pipeline-steps">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <div class="step-title">FIC como Problema Clínico e Ruptura Conceitual</div>
+                <div class="step-desc">
+                  Evolução histórica de FUS (Síndrome Urológica Felina) e CIF até a proposta formal da Síndrome de Pandora como afecção multissistêmica.
+                </div>
+                <div class="step-sources">
+                  <span class="source-tag">#51 Buffington (2014)</span>
+                  <span class="source-tag">#19 Buffington (2011)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <div class="step-title">Substrato Neuroendócrino e Eixo HHA</div>
+                <div class="step-desc">
+                  Hiper-reatividade simpática, hiporreatividade do eixo HHA com glândulas adrenais reduzidas e desregulação de cortisol sob estresse crônico.
+                </div>
+                <div class="step-sources">
+                  <span class="source-tag">#50 Westropp et al. (2003)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <div class="step-title">Ambiente e Estresse como Gatilho ("Sickness Behaviors")</div>
+                <div class="step-desc">
+                  Eventos externos incomuns desencadeando comportamentos de mal-estar (vômito, anorexia, eliminação periúria) tanto em gatos com FIC quanto em gatos saudáveis.
+                </div>
+                <div class="step-sources">
+                  <span class="source-tag">#53 Stella et al. (2011)</span>
+                  <span class="source-tag">S4 Amat (2016)</span>
+                  <span class="source-tag">S1 Foreman-Worsky (2019)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <div class="step-title">Manejo Ambiental Multimodal (MEMO) como Intervenção</div>
+                <div class="step-desc">
+                  Intervenção no ambiente doméstico (recursos essenciais, áreas de escape, controle de estímulos estressores) com redução drástica das recidivas clínicas.
+                </div>
+                <div class="step-sources">
+                  <span class="source-tag">S2 Buffington et al. (2006)</span>
+                  <span class="source-tag">#16 MacLeod et al. (2025)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <div class="step-title">Captura dos Sinais por Sensores e Inteligência Artificial</div>
+                <div class="step-desc">
+                  Monitoramento contínuo de sinais vitais, postura e etologia felina através de visão computacional, IoT e LLMs multimodais para predição e apoio diagnóstico.
+                </div>
+                <div class="step-sources">
+                  <span class="source-tag">#5 Remote Vital Sensing (2025)</span>
+                  <span class="source-tag">#6 Deep Learning Vet (2025)</span>
+                  <span class="source-tag">#14 Meow-Omni 1 (2026)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <!-- Lacuna Card -->
+          <div class="content-card lacuna-card">
+            <h3 class="card-title" style="color: var(--orange-soft);">Hipótese Central de Lacuna</h3>
+            <p class="lacuna-highlight">
+              <strong>Ainda não contrariada no acervo:</strong> Não existe na literatura atual nenhum trabalho que aplique 
+              <strong>sensores ou modelos de IA</strong> ao monitoramento contínuo de gatos especificamente acometidos por 
+              <strong class="pink-text">Síndrome de Pandora</strong>.
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 12px;">
+              Essa lacuna científica posiciona a tese como trabalho de vanguarda interdisciplinar entre a Medicina Veterinária e a Ciência da Computação.
+            </p>
+          </div>
+
+          <!-- API Card -->
+          <div class="content-card">
+            <h3 class="card-title">Sistema & API de Diagnóstico</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">
+              O projeto prático de apoio ao diagnóstico (API multiagente) é mantido em repositório dedicado fora do cofre de notas:
+            </p>
+            <div class="drawer-code-block">
+              C:\Users\rcmin\Projetos\sistema-diagnostico-pandora_01
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 8px;">
+              Garante separação entre o referencial bibliográfico da tese e o código-fonte computacional.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: INVENTÁRIO & ARTIGOS -->
+    <div class="tab-pane" id="tab-inventory" role="tabpanel">
+      
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Pesquisar por título, autor, código (#51), tema ou ano..."
+            aria-label="Campo de busca de artigos"
+          >
+        </div>
+
+        <div class="pill-filters" role="group" aria-label="Filtros rápidos">
+          <button class="filter-pill active" data-filter="all" type="button">Todos</button>
+          <button class="filter-pill" data-filter="n1" type="button">Núcleo 1 (Clínico/Fisiológico)</button>
+          <button class="filter-pill" data-filter="n2" type="button">Núcleo 2 (Ambiente & IA)</button>
+          <button class="filter-pill" data-filter="ler-primeiro" type="button">Ler Primeiro</button>
+          <button class="filter-pill" data-filter="fichados" type="button">Fichados</button>
+          <button class="filter-pill" data-filter="com-pdf" type="button">Com PDF</button>
+        </div>
+
+        <div class="results-info">
+          <span id="resultCount">Carregando artigos...</span>
+          <span>Clique em qualquer card para ver a ficha detalhada</span>
+        </div>
+      </div>
+
+      <!-- Articles Grid Container -->
+      <div class="articles-grid" id="articlesGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 3: ROTEIRO SEMANAL -->
+    <div class="tab-pane" id="tab-roadmap" role="tabpanel">
+      <div class="roadmap-container">
+
+        <!-- Semana 1 -->
+        <div class="week-block">
+          <div class="week-header">
+            <div class="week-title-group">
+              <div class="week-num-badge">1</div>
+              <h3 class="week-title">Semana 1 — O Alicerce Clínico-Fisiológico & Início da Escrita</h3>
+            </div>
+            <div class="week-meta-goal">
+              Meta: "1. Da Doença Localizada à Síndrome Sistêmica: De FUS a Pandora"
+            </div>
+          </div>
+          <div class="week-content">
+            <table class="week-table">
+              <thead>
+                <tr>
+                  <th>Cód.</th>
+                  <th>Artigo & Autores</th>
+                  <th>Status</th>
+                  <th>Tema Principal</th>
+                  <th>DOI Oficial (Web)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>#51</strong></td>
+                  <td><strong>From FUS to Pandora syndrome</strong><br><small>Buffington, Westropp & Chew (2014)</small></td>
+                  <td><span class="status-badge status-done">Fichado</span></td>
+                  <td>Virada conceitual definitiva da síndrome</td>
+                  <td><a href="https://doi.org/10.1177/1098612X14530212" target="_blank" rel="noopener noreferrer" class="doi-link">10.1177/1098612X14530212 ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>#53</strong></td>
+                  <td><strong>Sickness behaviors in response to unusual external events</strong><br><small>Stella, Lord & Buffington (2011)</small></td>
+                  <td><span class="status-badge status-done">Fichado</span></td>
+                  <td>Comportamentos de mal-estar sob estresse externo</td>
+                  <td><a href="https://doi.org/10.2460/javma.238.1.67" target="_blank" rel="noopener noreferrer" class="doi-link">10.2460/javma.238.1.67 ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>S2</strong></td>
+                  <td><strong>Clinical evaluation of multimodal environmental modification (MEMO)</strong><br><small>Buffington et al. (2006)</small></td>
+                  <td><span class="status-badge status-priority">Ler agora</span></td>
+                  <td>Avaliação clínica do manejo MEMO em domicílio</td>
+                  <td><a href="https://doi.org/10.2460/javma.228.5.722" target="_blank" rel="noopener noreferrer" class="doi-link">10.2460/javma.228.5.722 ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>#50</strong></td>
+                  <td><strong>Small adrenal glands in cats with feline interstitial cystitis</strong><br><small>Westropp, Welk & Buffington (2003)</small></td>
+                  <td><span class="status-badge status-later">Ler a seguir</span></td>
+                  <td>Tamanho adrenal e eixo neuroendócrino HHA</td>
+                  <td><a href="https://doi.org/10.1097/01.ju.0000094184.28821.1a" target="_blank" rel="noopener noreferrer" class="doi-link">10.1097/01.ju... ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Semana 2 -->
+        <div class="week-block">
+          <div class="week-header">
+            <div class="week-title-group">
+              <div class="week-num-badge">2</div>
+              <h3 class="week-title">Semana 2 — O Estado da Arte Clínico & Fatores Socioambientais</h3>
+            </div>
+            <div class="week-meta-goal">
+              Meta: "2. O Manejo Baseado em Evidências e a Vulnerabilidade Socioambiental"
+            </div>
+          </div>
+          <div class="week-content">
+            <table class="week-table">
+              <thead>
+                <tr>
+                  <th>Cód.</th>
+                  <th>Artigo & Autores</th>
+                  <th>Tipo / Enfoque</th>
+                  <th>Tema Principal</th>
+                  <th>DOI Oficial (Web)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>#16</strong></td>
+                  <td><strong>Understanding the current evidence base for management of recurrent FIC</strong><br><small>MacLeod et al. (2025)</small></td>
+                  <td>Revisão Sistemática</td>
+                  <td>Revisão recente de intervenções clínicas</td>
+                  <td><a href="https://doi.org/10.1080/00480169.2025.2477542" target="_blank" rel="noopener noreferrer" class="doi-link">10.1080/00480169... ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>#17</strong></td>
+                  <td><strong>Prevalence, Risk Factors, Pathophysiology, Potential Biomarkers and Management</strong><br><small>Naarden & Corbee (2022)</small></td>
+                  <td>Revisão Ampla</td>
+                  <td>Atualização geral de fisiopatologia e biomarcadores</td>
+                  <td><a href="https://doi.org/10.3390/ani12243453" target="_blank" rel="noopener noreferrer" class="doi-link">10.3390/ani12243453 ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>S1</strong></td>
+                  <td><strong>Social and environmental factors and indoor cat welfare</strong><br><small>Foreman-Worsky et al. (2019)</small></td>
+                  <td>Revisão Sistemática</td>
+                  <td>Confinamento em ambientes internos e bem-estar</td>
+                  <td><a href="https://doi.org/10.1016/j.applanim.2019.05.008" target="_blank" rel="noopener noreferrer" class="doi-link">10.1016/j.applanim... ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>S4</strong></td>
+                  <td><strong>Stress in owned cats: behavioural changes and welfare implications</strong><br><small>Amat et al. (2016)</small></td>
+                  <td>Estudo Comportamental</td>
+                  <td>Respostas comportamentais ao estresse doméstico</td>
+                  <td><a href="https://doi.org/10.1016/j.jveb.2015.11.002" target="_blank" rel="noopener noreferrer" class="doi-link">10.1016/j.jveb... ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Semana 3 -->
+        <div class="week-block">
+          <div class="week-header">
+            <div class="week-title-group">
+              <div class="week-num-badge">3</div>
+              <h3 class="week-title">Semana 3 — O Salto Tecnológico (Sensores, Visão Computacional e IA)</h3>
+            </div>
+            <div class="week-meta-goal">
+              Meta: "3. A Lacuna Diagnóstica e o Monitoramento Contínuo com IA"
+            </div>
+          </div>
+          <div class="week-content">
+            <table class="week-table">
+              <thead>
+                <tr>
+                  <th>Cód.</th>
+                  <th>Artigo & Autores</th>
+                  <th>Inovação Tecnológica</th>
+                  <th>Tema Principal</th>
+                  <th>DOI Oficial (Web)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>#5</strong></td>
+                  <td><strong>Remote Vital Sensing in Clinical Veterinary Medicine</strong><br><small>Review (2025)</small></td>
+                  <td>Sensores Remotos & IoT</td>
+                  <td>Monitoramento de sinais vitais contínuos sem estresse</td>
+                  <td><a href="https://doi.org/10.3390/vetsci12020161" target="_blank" rel="noopener noreferrer" class="doi-link">10.3390/vetsci12020161 ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>#6</strong></td>
+                  <td><strong>Review of applications of deep learning in veterinary diagnostics</strong><br><small>Review (2025)</small></td>
+                  <td>Redes Neurais Profundas</td>
+                  <td>Aplicações de deep learning no diagnóstico veterinário</td>
+                  <td><a href="https://doi.org/10.1016/j.compag.2024.109676" target="_blank" rel="noopener noreferrer" class="doi-link">10.1016/j.compag... ↗</a></td>
+                </tr>
+                <tr>
+                  <td><strong>#14</strong></td>
+                  <td><strong>Meow-Omni 1: A Multimodal Large Language Model for Feline Ethology</strong><br><small>(2026)</small></td>
+                  <td>Multimodal LLM</td>
+                  <td>Interpretação multimodal de comportamento e postura felina</td>
+                  <td><a href="https://doi.org/10.48550/arXiv.2602.04683" target="_blank" rel="noopener noreferrer" class="doi-link">10.48550/arXiv... ↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 4: NÚCLEOS DA PESQUISA -->
+    <div class="tab-pane" id="tab-nucleos" role="tabpanel">
+      <div class="nucleos-grid">
+        
+        <!-- Núcleo 1 -->
+        <div class="nucleo-card n1">
+          <span class="nucleo-badge">Núcleo 1 Proposto (22 Fontes)</span>
+          <h3 class="nucleo-title">Base Histórica, Clínica e Fisiológica</h3>
+          <p class="nucleo-desc">
+            Compreende a transição da afecção pontual urológica para o modelo sistêmico neuroendócrino. 
+            Mapeia as respostas fisiológicas ao estresse, a hiporreatividade adrenal do eixo HHA e o excesso de tônus simpático.
+          </p>
+          <ul class="nucleo-topics">
+            <li><span class="bullet">▸</span> Doenças do trato urinário inferior felino (FLUTD e FUS histórico)</li>
+            <li><span class="bullet">▸</span> Cistite idiopática (FIC) e intersticial</li>
+            <li><span class="bullet">▸</span> Proposta formal da Síndrome de Pandora como doença sistêmica</li>
+            <li><span class="bullet">▸</span> Eixo hipotálamo-hipófise-adrenal (HHA) e glândulas adrenais</li>
+            <li><span class="bullet">▸</span> Hiperatividade do sistema nervoso simpático e mediadores de dor</li>
+            <li><span class="bullet">▸</span> Diagnóstico diferencial de infecção bacteriana (Diretriz ISCAID)</li>
+          </ul>
+        </div>
+
+        <!-- Núcleo 2 -->
+        <div class="nucleo-card n2">
+          <span class="nucleo-badge">Núcleo 2 Proposto (42 Fontes)</span>
+          <h3 class="nucleo-title">Ambiente, Comportamento e Tecnologia</h3>
+          <p class="nucleo-desc">
+            Foca no impacto do ambiente confinado na etologia felina, nas respostas comportamentais a eventos externos, 
+            no enriquecimento ambiental e nas fronteiras computacionais com sensores e Inteligência Artificial.
+          </p>
+          <ul class="nucleo-topics">
+            <li><span class="bullet">▸</span> Comportamento e respostas ao estresse doméstico ("sickness behaviors")</li>
+            <li><span class="bullet">▸</span> Confinamento em ambientes internos e relação tutor–gato</li>
+            <li><span class="bullet">▸</span> Manejo Ambiental Multimodal (MEMO) e recursos essenciais</li>
+            <li><span class="bullet">▸</span> Sensores biométricos remotos e monitoramento fisiológico contínuo</li>
+            <li><span class="bullet">▸</span> Visão computacional e redes neurais profundas para detecção de postura</li>
+            <li><span class="bullet">▸</span> Modelos de Linguagem Multimodais aplicados à etologia felina</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- PÁGINA: PAINEL DE KPIs -->
+    <div class="tab-pane" id="tab-painel" role="tabpanel">
+      <div class="pn-toolbar">
+        <div>
+          <h3 class="card-title" style="margin:0">Painel de acompanhamento</h3>
+          <p class="pn-muted">Indicadores calculados a partir dos seus registros semanais e do inventário. Nenhum número aqui é inventado: sem registro, o indicador fica em branco.</p>
+        </div>
+        <div class="pn-actions">
+          <button class="pn-btn pn-btn-primary" data-goto="tab-registro" type="button">Registrar semana</button>
+          <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
+        </div>
+      </div>
+
+      <div class="pn-kpis" id="pnKpis"></div>
+
+      <div class="pn-grid-2">
+        <div class="content-card">
+          <div class="pn-card-head">
+            <h3 class="card-title">Evolução semanal</h3>
+            <div class="pn-seg" role="group" aria-label="Métrica do gráfico">
+              <button class="pn-seg-btn active" data-metric="leitura" type="button">Leitura</button>
+              <button class="pn-seg-btn" data-metric="escrita" type="button">Escrita</button>
+              <button class="pn-seg-btn" data-metric="horas" type="button">Horas</button>
+              <button class="pn-seg-btn" data-metric="iot" type="button">IoT</button>
+            </div>
+          </div>
+          <div id="pnChart" class="pn-chart"></div>
+          <p class="pn-muted" id="pnChartLegend"></p>
+        </div>
+        <div class="content-card">
+          <h3 class="card-title">Probabilidade de cumprir o prazo</h3>
+          <div id="pnProb"></div>
+          <button class="pn-btn" data-modal="modalProbAjuda" type="button" style="margin-top:12px">Como é calculado?</button>
+        </div>
+      </div>
+
+      <div class="pn-grid-2">
+        <div class="content-card">
+          <h3 class="card-title">Estatística do acervo</h3>
+          <div id="pnAcervo"></div>
+        </div>
+        <div class="content-card">
+          <h3 class="card-title">Uso e constância</h3>
+          <div id="pnUso"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: REGISTRO SEMANAL -->
+    <div class="tab-pane" id="tab-registro" role="tabpanel">
+      <div class="pn-grid-2">
+        <div class="content-card">
+          <h3 class="card-title">Registrar uma semana</h3>
+          <form id="pnForm" class="pn-form">
+            <label>Semana (segunda-feira)<input type="date" name="semana" required></label>
+            <label>Páginas lidas<input type="number" name="paginasLidas" min="0" step="1" value="0"></label>
+            <label>Artigos lidos<input type="number" name="artigosLidos" min="0" step="1" value="0"></label>
+            <label>Fichamentos concluídos<input type="number" name="fichamentos" min="0" step="1" value="0"></label>
+            <label>Páginas escritas — artigo<input type="number" name="pagArtigo" min="0" step="0.5" value="0"></label>
+            <label>Páginas escritas — tese<input type="number" name="pagTese" min="0" step="0.5" value="0"></label>
+            <label>Tarefas IoT concluídas<input type="number" name="tarefasIot" min="0" step="1" value="0"></label>
+            <label>Horas de estudo<input type="number" name="horas" min="0" step="0.5" value="0"></label>
+            <label class="pn-span2">Observação<input type="text" name="obs" maxlength="200" placeholder="Ex.: fichei o S2 (MEMO)"></label>
+            <div class="pn-span2 pn-actions">
+              <button class="pn-btn pn-btn-primary" type="submit">Salvar semana</button>
+              <button class="pn-btn" type="reset">Limpar</button>
+            </div>
+          </form>
+          <p class="pn-muted">Se a semana já existir, ela é substituída. Os dados ficam salvos neste navegador; use <strong>Exportar</strong> para guardar uma cópia no cofre (OneDrive).</p>
+        </div>
+        <div class="content-card">
+          <h3 class="card-title">Dados</h3>
+          <div class="pn-actions" style="flex-wrap:wrap">
+            <button class="pn-btn" id="pnExport" type="button">Exportar JSON</button>
+            <label class="pn-btn" style="cursor:pointer">Importar JSON<input type="file" id="pnImport" accept="application/json" hidden></label>
+            <button class="pn-btn pn-btn-danger" id="pnClear" type="button">Apagar registros</button>
+          </div>
+          <p class="pn-muted" style="margin-top:12px">Sugestão: salve o arquivo exportado como <code>Excel/acompanhamento_semanal.json</code>.</p>
+        </div>
+      </div>
+      <div class="content-card">
+        <h3 class="card-title">Histórico</h3>
+        <div class="pn-table-wrap"><table class="week-table" id="pnTabela"></table></div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: METAS & QUALIFICAÇÃO -->
+    <div class="tab-pane" id="tab-metas" role="tabpanel">
+      <div class="content-card">
+        <h3 class="card-title">Marcos até a defesa</h3>
+        <p class="pn-muted">Três entregas em sequência: <strong>projetos IoT, até dezembro/2026</strong> → <strong>qualificação (artigo), até maio/2027</strong> → <strong>defesa da tese, até setembro/2027</strong> (limite: maio/2028). Ajuste metas e prazos; o painel recalcula tudo.</p>
+        <div class="pn-timeline" id="pnTimeline"></div>
+      </div>
+      <div class="content-card">
+        <h3 class="card-title">Calendário científico — 01/06/2026 a 31/05/2027</h3>
+        <div class="pn-feature"><figure class="pn-thumb pn-open-img" data-grupo="cal" data-src="Imagens/Cronogramas/Calendário_Artigo.jpeg" data-cap="Calendário científico do artigo (12 meses)" tabindex="0" role="button" aria-label="Ampliar Calendário científico do artigo (12 meses)"><img src="Imagens/Cronogramas/Calend%C3%A1rio_Artigo.jpeg" alt="Calendário científico do artigo (12 meses)" loading="lazy"><figcaption><span>Clique para ampliar</span>Calendário científico do artigo (12 meses)</figcaption></figure></div>
+      </div>
+      <div class="content-card">
+        <h3 class="card-title">Configurar metas</h3>
+        <form id="pnMetasForm" class="pn-form pn-form-3"></form>
+      </div>
+    </div>
+
+    <!-- PÁGINA: GALERIA -->
+    <div class="tab-pane" id="tab-galeria" role="tabpanel">
+      <div class="filter-bar">
+        <div class="pill-filters" id="galFiltros" role="group" aria-label="Filtrar imagens"></div>
+      </div>
+      <div class="pn-gallery" id="pnGallery"></div>
+    </div>
+
+    <!-- PÁGINA: GUIA DIDÁTICO -->
+    <div class="tab-pane" id="tab-guia" role="tabpanel">
+      <div class="pn-grid-3">
+        <button class="pn-tile" data-modal="modalPandora" type="button"><img class="pn-tile-img" src="Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp" alt="Mapa mental da Síndrome de Pandora" loading="lazy"><strong>O que é a Síndrome de Pandora?</strong><small>Conceito em 1 minuto</small></button>
+        <button class="pn-tile" data-modal="modalHHA" type="button"><img class="pn-tile-img" src="Imagens/Fichamentos/FICHEIRO%20SMALL%20ADRENAL%20GLANDS%20IN%20CATS%20WITH%20FELINE%20INTERSTITIAL.png" alt="Ficheiro do estudo sobre adrenais" loading="lazy"><strong>Estresse, eixo HHA e simpático</strong><small>Base fisiológica</small></button>
+        <button class="pn-tile" data-modal="modalMEMO" type="button"><img class="pn-tile-img" src="Imagens/Fichamentos/Ficheiro_Stress%20in%20owned%20cats_behavioural%20.png" alt="Ficheiro sobre estresse em gatos domiciliados" loading="lazy"><strong>MEMO — manejo ambiental</strong><small>Intervenção</small></button>
+        <button class="pn-tile" data-modal="modalIoT" type="button"><img class="pn-tile-img" src="Imagens/Projeto-IoT/pagina-1.png" alt="Dispositivo IoT da caixa de areia" loading="lazy"><strong>Sensores, IoT e IA</strong><small>Onde está a lacuna</small></button>
+        <button class="pn-tile" data-modal="modalFluxo" type="button"><img class="pn-tile-img" src="Imagens/Mapas-Mentais/Mapa_de_Pesquisa_Tese.jpeg" alt="Mapa de pesquisa da tese" loading="lazy"><strong>Fluxo de fichamento</strong><small>Os 5 pontos</small></button>
+        <button class="pn-tile" data-modal="modalMarcas" type="button"><img class="pn-tile-img" src="Imagens/Mapas-Mentais/Mapa%20Mental%20Estudo%20da%20Tese.png" alt="Mapa mental do estudo da tese" loading="lazy"><strong>Marcadores de procedência</strong><small>Confirmada · parcial · a conferir · sem procedência</small></button>
+      </div>
+      <div class="content-card" style="margin-top:24px">
+        <h3 class="card-title">Ferramentas de apoio à pesquisa</h3>
+        <div class="pn-grid-2">
+          <figure class="pn-thumb pn-open-img" data-grupo="fer" data-src="Imagens/Ferramentas-e-Metodo/Ferramentas de Apoio.jpeg" data-cap="6 ferramentas de apoio para sua pesquisa" tabindex="0" role="button" aria-label="Ampliar 6 ferramentas de apoio para sua pesquisa"><img src="Imagens/Ferramentas-e-Metodo/Ferramentas%20de%20Apoio.jpeg" alt="6 ferramentas de apoio para sua pesquisa" loading="lazy"><figcaption><span>Clique para ampliar</span>6 ferramentas de apoio para sua pesquisa</figcaption></figure>
+          <figure class="pn-thumb pn-open-img" data-grupo="fer" data-src="Imagens/Ferramentas-e-Metodo/Ferramentas.jpeg" data-cap="Ferramentas para melhorar seu trabalho científico" tabindex="0" role="button" aria-label="Ampliar Ferramentas para melhorar seu trabalho científico"><img src="Imagens/Ferramentas-e-Metodo/Ferramentas.jpeg" alt="Ferramentas para melhorar seu trabalho científico" loading="lazy"><figcaption><span>Clique para ampliar</span>Ferramentas para melhorar seu trabalho científico</figcaption></figure>
+          <figure class="pn-thumb pn-open-img" data-grupo="fer" data-src="Imagens/Ferramentas-e-Metodo/FerramentasIA.jpeg" data-cap="6 ferramentas essenciais para seu doutorado (IA)" tabindex="0" role="button" aria-label="Ampliar 6 ferramentas essenciais para seu doutorado (IA)"><img src="Imagens/Ferramentas-e-Metodo/FerramentasIA.jpeg" alt="6 ferramentas essenciais para seu doutorado (IA)" loading="lazy"><figcaption><span>Clique para ampliar</span>6 ferramentas essenciais para seu doutorado (IA)</figcaption></figure>
+          <figure class="pn-thumb pn-open-img" data-grupo="fer" data-src="Imagens/Ferramentas-e-Metodo/Mendeley.jpeg" data-cap="Mendeley — seu aliado na pesquisa científica" tabindex="0" role="button" aria-label="Ampliar Mendeley — seu aliado na pesquisa científica"><img src="Imagens/Ferramentas-e-Metodo/Mendeley.jpeg" alt="Mendeley — seu aliado na pesquisa científica" loading="lazy"><figcaption><span>Clique para ampliar</span>Mendeley — seu aliado na pesquisa científica</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: MAPA MENTAL -->
+    <div class="tab-pane" id="tab-mapa" role="tabpanel">
+      <div class="content-card">
+        <div class="pn-card-head">
+          <h3 class="card-title">Mapa mental — Síndrome de Pandora</h3>
+          <span class="pn-actions"><a class="pn-btn" href="Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.pdf" target="_blank" rel="noopener">PDF do mapa (3 páginas)</a><a class="pn-btn" href="Imagens/Mapas-Mentais/Mapa_Mental_Semanal_com_Links.pdf" target="_blank" rel="noopener">Mapa semanal com links</a></span>
+        </div>
+        <div class="pn-feature">
+          <figure class="pn-thumb pn-open-img" data-grupo="mapa" data-src="Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp" data-cap="Mapa mental — Síndrome de Pandora" tabindex="0" role="button" aria-label="Ampliar o mapa mental">
+            <img src="Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp" alt="Mapa mental da Síndrome de Pandora com sete ramos: origem histórica, ambiente desde cedo, base neuroendócrina, virada conceitual, evidência comportamental, critérios provisórios e ponte para a tese" loading="lazy">
+            <figcaption><span>Clique para ampliar</span>Mapa mental com as páginas conferidas nas fontes #51, #50, #53 e S3</figcaption>
+          </figure>
+        </div>
+        <p class="pn-muted">O detalhamento de cada ramo, com as citações conferidas, está em <code>Notas/Mapa mental — Pandora 10 pontos e citacoes.md</code>. O agrupamento por núcleo é proposto, não declarado pelos autores.</p>
+      </div>
+
+      <div class="content-card">
+        <h3 class="card-title">Espinha dorsal do referencial — os 5 domínios</h3>
+        <p class="pn-muted">Conteúdo da página 1 do PDF.</p>
+        <div class="pn-grid-2" style="margin-top:16px">
+          <div class="pn-dom" style="--c:var(--blue-light)"><img class="pn-dom-img" src="Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp" alt="" loading="lazy"><small>1. Domínio histórico &amp; nosologia</small><h4>Ruptura de paradigma: bexiga como vítima</h4><ul>
+            <li><strong>FUS (1970 — Osbaldiston &amp; Taussig):</strong> reconhecimento pioneiro de que a condição talvez não fosse uma entidade nosológica única.</li>
+            <li><strong>FLUTD (1984) &amp; FIC (1999):</strong> tentativas anatômicas e etiológicas de enquadramento.</li>
+            <li><strong>Síndrome de Pandora (#51 — Buffington 2014):</strong> a bexiga não é a perpetradora isolada, mas a vítima de uma desregulação do sistema central de resposta ao estresse.</li></ul></div>
+          <div class="pn-dom" style="--c:#ef4444"><img class="pn-dom-img" src="Imagens/Fichamentos/FICHEIRO%20SMALL%20ADRENAL%20GLANDS%20IN%20CATS%20WITH%20FELINE%20INTERSTITIAL.png" alt="" loading="lazy"><small>2. Domínio neuroendócrino</small><h4>Substrato fisiopatológico (#50)</h4><ul>
+            <li><strong>Hiperatividade simpática:</strong> níveis elevados de noradrenalina e tirosina hidroxilase no <em>locus coeruleus</em>.</li>
+            <li><strong>Desacoplamento do eixo HHA:</strong> aumento de ACTH sem o aumento correspondente de cortisol após estímulo de CRF/ACTH sintético.</li>
+            <li><strong>Morfologia adrenal:</strong> glândulas adrenais significativamente menores nos gatos com FIC, com redução confinada ao córtex (hipofunção primária leve).</li></ul>
+            <p class="pn-warn">Pela nota do cofre, os dados de noradrenalina e tirosina hidroxilase estão no S3 (p. 998), como citação secundária, e não no #50.</p></div>
+          <div class="pn-dom" style="--c:#22c55e"><img class="pn-dom-img" src="Imagens/Fichamentos/Ficheiro_Stress%20in%20owned%20cats_behavioural%20.png" alt="" loading="lazy"><small>3. Domínio socioambiental</small><h4>Gato sensível em ambiente provocativo</h4><ul>
+            <li><strong>Contínuo histórico (S3 — Kirk 1925 / Buffington 2002):</strong> confinamento estrito e vulnerabilidade individual em contínuo indivisível.</li>
+            <li><strong>Relação quadrática (#51, p. 392):</strong> ambientes empobrecidos ou caóticos elevam o risco de crises.</li>
+            <li><strong>Evidência em vivário (#53 — Stella et al. 2011):</strong> eventos estressores incomuns (UEE) geram 3,2× mais comportamentos de doença (vômito, anorexia, periúria), afetando igualmente gatos saudáveis e com FIC.</li></ul></div>
+          <div class="pn-dom" style="--c:var(--orange-primary)"><img class="pn-dom-img" src="Imagens/Mapas-Mentais/Complemento_tese.jpeg" alt="" loading="lazy"><small>4. Domínio clínico-terapêutico</small><h4>Intervenção multimodal (MEMO)</h4><ul>
+            <li><strong>MEMO (S2 — Buffington et al. 2006):</strong> modificação ambiental multimodal em gatos domiciliados.</li>
+            <li><strong>Eficácia:</strong> resolução de sinais urinários e manifestações sistêmicas (GI, pele, apetite) em 75% a 80% dos casos sem drogas.</li>
+            <li><strong>Confirmação de hipótese:</strong> o manejo do ambiente neutraliza o gatilho da síndrome central sensibilizada.</li></ul>
+            <p class="pn-warn">NÃO CONFIRMADO: o S2 ainda não foi fichado. Não cite o percentual de 75–80% antes de conferir no PDF do S2.</p></div>
+        </div>
+        <div class="pn-dom" style="--c:var(--pink-primary);margin-top:18px"><img class="pn-dom-img" src="Imagens/Ferramentas-e-Metodo/Sensores_IOT.png" alt="" loading="lazy"><small>5. O núcleo inovador da tese (ponte tecnológica)</small><h4>A lacuna da literatura e o monitoramento inteligente (IoT + IA)</h4><ul>
+          <li><strong>A lacuna:</strong> nenhuma das fontes fundacionais aborda monitoramento em tempo real. O diagnóstico atual é retrospectivo e pontual e não capta as flutuações do estresse ao longo do tempo. <em>(Hipótese de lacuna, ainda não contrariada.)</em></li>
+          <li><strong>Sensores vitais e IoT (#5 — 2025):</strong> sensoriamento remoto não invasivo de frequência cardíaca, padrões de sono e movimentação.</li>
+          <li><strong>Deep learning e modelos multimodais (#6, #14 — 2025/2026):</strong> detecção precoce de <em>sickness behaviors</em> e etologia felina contínua.</li></ul>
+          <p class="pn-warn">#5, #6 e #14 ainda não foram fichados. As descrições acima vêm da triagem, não da leitura dos artigos.</p></div>
+      </div>
+
+      <div class="content-card">
+        <h3 class="card-title">Os 10 pontos fundamentais</h3>
+        <p class="pn-muted">Conteúdo da página 2 do PDF. Clique em um ponto para abrir ou fechar.</p>
+        <div class="pn-points">
+          <details><summary><b>1</b> Heterogeneidade desde a origem (1970)</summary><p>Ao cunhar FUS, Osbaldiston &amp; Taussig já observavam que a condição talvez não fosse uma doença única (#51, p. 387).</p><p class="pn-fund">Fundamento: mostra que a ideia de síndrome é antiga.</p><p class="pn-warn">Fonte primária fora do acervo: citar via Buffington (2014).</p></details>
+          <details><summary><b>2</b> Evolução terminológica contínua</summary><p>FUS (1970) → FLUTD (1984) → FIC (1999) → Síndrome de Pandora (2011/2014), documentada por Buffington (#51, pp. 386–389).</p><p class="pn-fund">Fundamento: espinha dorsal histórica do primeiro capítulo.</p></details>
+          <details><summary><b>3</b> Ambiente como risco primitivo</summary><p>Kirk (1925) sugeriu que o confinamento excessivo dentro de casa e a raça persa poderiam aumentar o risco de sinais urinários (S3, p. 994).</p><p class="pn-fund">Fundamento: dá profundidade histórica ao Núcleo 2.</p><p class="pn-warn">Fonte primária (Kirk, 1925) fora do acervo.</p></details>
+          <details><summary><b>4</b> Hiperatividade do sistema simpático</summary><p>Gatos com FIC exibem noradrenalina plasmática e tirosina hidroxilase elevadas (S3, p. 998).</p><p class="pn-fund">Fundamento: muda a leitura de dor vesical para estresse crônico.</p></details>
+          <details><summary><b>5</b> Desacoplamento do eixo HHA</summary><p>O sistema simpático está ativado, mas a resposta de cortisol ao ACTH é reduzida (#50, p. 2494; #51, p. 388).</p><p class="pn-fund">Fundamento: o coração neuroendócrino da fisiopatologia.</p></details>
+          <details><summary><b>6</b> Redução restrita ao córtex adrenal</summary><p>As adrenais são menores, com redução limitada ao córtex (#50, p. 2496).</p><p class="pn-fund">Fundamento: evidência morfológica além da bexiga.</p><p class="pn-warn">O PDF diz "restrita à zona fasciculada e reticular"; a citação conferida (C12) fala apenas em "córtex". Use "córtex" até conferir. Não cite 58 mg nem 158 mg: o resumo e os resultados do #50 divergem.</p></details>
+          <details><summary><b>7</b> A bexiga como vítima sistêmica</summary><p>A bexiga deixa de ser a origem e passa a ser órgão-alvo de um sistema central sensibilizado (#51, p. 385).</p><p class="pn-fund">Fundamento: justifica o foco na síndrome, e não só na cistite.</p></details>
+          <details><summary><b>8</b> Gato sensível em ambiente provocativo</summary><p>Relação quadrática entre ambiente e saúde (Figura 4, #51, p. 392); sinais surgem ao colocar um gato "sensível" em um ambiente "provocativo" (#51, p. 393).</p><p class="pn-fund">Fundamento: explica a variação individual.</p></details>
+          <details><summary><b>9</b> O evento pesa mais que o status de doença</summary><p>Em semanas com eventos incomuns, o risco de comportamentos de doença foi 3,2 vezes maior (IC 95% 2,8–3,6; #53, Tabela 1, p. 71), sem diferença entre gatos saudáveis e com FIC (#53, p. 70).</p><p class="pn-fund">Fundamento: justifica monitorar ambiente e comportamento.</p></details>
+          <details><summary><b>10</b> Os 4 critérios diagnósticos provisórios</summary><p>1) sinais em outros sistemas; 2) experiência adversa precoce; 3) flutuação dos sinais com eventos estressores; 4) resolução com modificação ambiental multimodal (#51, p. 390).</p><p class="pn-fund">Fundamento: definição clínica operacional da tese.</p></details>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <h3 class="card-title">Roteiro de leitura em 3 fases</h3>
+        <div class="pn-timeline">
+          <div class="pn-tl-item"><div class="pn-tl-dot">1</div><div class="pn-tl-body"><strong>Núcleo clínico-fisiológico (prioridade imediata)</strong><p class="pn-muted">S2 (Buffington 2006, MEMO) → #50 (Westropp 2003, adrenais) → #16 (2025, revisão sobre manejo) → #17 (2022, biomarcadores FIC) → buscar #19 (Buffington 2011, JVIM, onde nasce o termo).</p></div></div>
+          <div class="pn-tl-item"><div class="pn-tl-dot">2</div><div class="pn-tl-body"><strong>Ambiente, comportamento e domicílio</strong><p class="pn-muted">S1 (2019, fatores socioambientais) → S4 (2016, estresse em gatos domiciliados) → #49 (2025, fatores comportamentais e recorrência).</p></div></div>
+          <div class="pn-tl-item"><div class="pn-tl-dot">3</div><div class="pn-tl-body"><strong>Núcleo tecnológico: sensores, IoT e IA</strong><p class="pn-muted">#5 (2025, Remote Vital Sensing) → #6 (2025, deep learning em diagnóstico veterinário) → #14 (2026, Meow-Omni 1, LLM multimodal para etologia felina).</p></div></div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <h3 class="card-title">Quadro de citações-chave conferidas</h3>
+        <p class="pn-muted">Conteúdo da página 3 do PDF. Tradução livre; na tese, use o original ou a sua tradução.</p>
+        <div class="pn-table-wrap"><table class="week-table pn-cit">
+          <thead><tr><th>#</th><th>Fonte</th><th>Trecho original</th><th>Tradução e uso</th></tr></thead>
+          <tbody>
+            <tr><td>C1</td><td>#51, p. 385</td><td><em>"Recent research is challenging the conventional view that the bladder is always the perpetrator of LUTS, and suggests that the bladder can also be one victim of a systemic process associated with a sensitized central stress response system."</em></td><td>A pesquisa desafia a visão de que a bexiga é sempre a perpetradora dos LUTS e sugere que ela pode ser uma vítima de um processo sistêmico ligado a um sistema de estresse sensibilizado.<br><small>→ Introdução / virada de paradigma</small></td></tr>
+            <tr><td>C3</td><td>#51, p. 388</td><td><em>"it appeared that the sympathoneural system was activated in these cats, but the adrenocortical component of the HPA axis was not."</em></td><td>O sistema simpatoneural parecia ativado nesses gatos, mas o componente adrenocortical do eixo HHA não.<br><small>→ Substrato neuroendócrino</small></td></tr>
+            <tr><td>C4</td><td>#51, p. 389</td><td><em>"The term 'Pandora syndrome' is proposed to describe cats with chronic recurrent LUTS in the presence of comorbid disorders [...] until a more biologically appropriate term is identified."</em></td><td>O termo Síndrome de Pandora é proposto para gatos com LUTS crônico recorrente na presença de comorbidades, até que um termo biologicamente mais apropriado seja identificado.<br><small>→ Definição do conceito</small></td></tr>
+            <tr><td>C7</td><td>#51, p. 390</td><td><em>"restricting the description of these patients to their LUTS does not capture all of the currently recognized features of the syndrome."</em></td><td>Restringir a descrição desses pacientes aos sinais urinários não capta todas as características hoje reconhecidas da síndrome.<br><small>→ Caráter multissistêmico</small></td></tr>
+            <tr><td>C9</td><td>#51, p. 393</td><td><em>"An overarching principle is that LUTS and a variety of other signs can occur as a consequence of placing a 'sensitive' cat into a 'provocative' environment."</em></td><td>Sinais urinários e vários outros sinais podem surgir ao se colocar um gato sensível em um ambiente provocativo.<br><small>→ Modelo explicativo central</small></td></tr>
+            <tr><td>C10</td><td>#50, p. 2494</td><td><em>"We documented the uncoupling of sympathetic nervous system activity from the hypothalamic-pituitary-adrenal axis in cats with feline interstitial cystitis (FIC)."</em></td><td>Documentamos o desacoplamento entre a atividade simpática e o eixo HHA em gatos com FIC.<br><small>→ Base neuroendócrina</small></td></tr>
+            <tr><td>C12</td><td>#50, p. 2496</td><td><em>"Histological evaluation of the cat adrenal glands revealed that the decrease in size was limited to the adrenal cortex."</em></td><td>A avaliação histológica mostrou que a redução de tamanho se limitava ao córtex adrenal.<br><small>→ Evidência morfométrica</small></td></tr>
+            <tr><td>C13</td><td>#53, p. 67</td><td><em>"Because healthy cats and cats with FIC were comparably affected by UEE, clinicians should consider the possibility of exposure to UEE in cats evaluated for these signs."</em></td><td>Como gatos saudáveis e com FIC foram afetados de forma comparável por eventos incomuns, os clínicos devem considerar essa exposição ao avaliar os sinais.<br><small>→ Ambiente e conduta clínica</small></td></tr>
+            <tr><td>C14</td><td>#53, p. 71</td><td><em>"suggesting that SB were more closely associated with UEE than with disease status."</em></td><td>Os comportamentos de doença estavam mais associados aos eventos incomuns do que ao status de doença.<br><small>→ Monitorar o ambiente</small></td></tr>
+            <tr><td>C15</td><td>#53, p. 72</td><td><em>"monitoring SB may be an additional useful way of assessing welfare in both caged and client-owned cats."</em></td><td>Monitorar os comportamentos de doença pode ser uma forma útil adicional de avaliar o bem-estar em gatos confinados e domiciliados.<br><small>→ Ponte para sensores contínuos e IA</small></td></tr>
+          </tbody></table></div>
+        <div class="scientific-alert" style="margin-top:18px"><div><strong>Orientações para o texto definitivo:</strong> 1) cite sempre a página impressa indicada; 2) não use 58 mg nem 158 mg (peso adrenal do #50) até checar errata do <em>Journal of Urology</em>; 3) Osbaldiston (1970) e Kirk (1925) devem ser indicados como citados via Buffington enquanto as fontes primárias não estiverem em mãos.</div></div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: PROJETO IoT -->
+    <div class="tab-pane" id="tab-iot" role="tabpanel">
+      <div class="content-card">
+        <div class="pn-card-head">
+          <h3 class="card-title">Projeto IoT — caixa de areia e fonte de água monitoradas</h3>
+          <a class="pn-btn" href="Imagens/Projeto-IoT/Projeto_IoT_Sindrome_de_Pandora.pdf" target="_blank" rel="noopener">Abrir o PDF do projeto</a>
+        </div>
+        <p class="pn-muted">Dois dispositivos com a mesma placa de controle (ESP32-S3-CAM): um na <strong>caixa de areia</strong> e outro na <strong>fonte de água</strong>. Cada um mede presença e massa (célula de carga), som (microfone), temperatura e umidade do local, com registro de data e hora. Marco 1 do cronograma, com prazo em <strong>dezembro de 2026</strong>.</p>
+        <div class="pn-grid-2" style="margin-top:16px">
+          <figure class="pn-thumb pn-open-img" data-grupo="iot" data-src="Imagens/Projeto-IoT/pagina-1.png" data-cap="Dispositivo 1 — caixa de areia" tabindex="0" role="button" aria-label="Ampliar dispositivo da caixa de areia"><img src="Imagens/Projeto-IoT/pagina-1.png" alt="Diagrama do dispositivo da caixa de areia: ESP32-S3-CAM, INMP441, AHT10, HX711, RTC DS3231 e célula de carga de 20 kg" loading="lazy"><figcaption><span>Página 1 · clique para ampliar</span>Dispositivo 1 — caixa de areia</figcaption></figure>
+          <figure class="pn-thumb pn-open-img" data-grupo="iot" data-src="Imagens/Projeto-IoT/pagina-2.png" data-cap="Dispositivo 2 — fonte de água" tabindex="0" role="button" aria-label="Ampliar dispositivo da fonte de água"><img src="Imagens/Projeto-IoT/pagina-2.png" alt="Diagrama do dispositivo da fonte de água: ESP32-S3-CAM, INMP441, AHT10, HX711, RTC DS3231 e célula de carga de 5 kg" loading="lazy"><figcaption><span>Página 2 · clique para ampliar</span>Dispositivo 2 — fonte de água</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="pn-grid-2">
+        <div class="pn-dom" style="--c:var(--orange-primary)"><img class="pn-dom-img" src="Imagens/Projeto-IoT/pagina-1.png" alt="" loading="lazy"><small>Dispositivo 1</small><h4>Caixa de areia</h4><ul>
+          <li><strong>ESP32-S3-CAM:</strong> processamento dos dados dos sensores e transmissão de vídeo em tempo real.</li>
+          <li><strong>Célula de carga 20 kg + HX711:</strong> detecção de presença do animal e medição da massa dos dejetos.</li>
+          <li><strong>INMP441 (microfone):</strong> captura de áudio digital para identificar anomalias acústicas durante o uso da caixa.</li>
+          <li><strong>AHT10:</strong> detecção de fatores ambientais estressantes no local da caixa de areia.</li>
+          <li><strong>RTC DS3231 (opcional):</strong> funcionamento contínuo e registro preciso de data e hora mesmo sem internet.</li></ul></div>
+        <div class="pn-dom" style="--c:var(--blue-light)"><img class="pn-dom-img" src="Imagens/Projeto-IoT/pagina-2.png" alt="" loading="lazy"><small>Dispositivo 2</small><h4>Fonte de água</h4><ul>
+          <li><strong>ESP32-S3-CAM:</strong> processamento dos dados dos sensores e transmissão de vídeo em tempo real.</li>
+          <li><strong>Célula de carga 5 kg + HX711:</strong> frequência de uso e volume/massa de água consumida.</li>
+          <li><strong>INMP441 (microfone):</strong> identificação de anomalias acústicas durante a hidratação.</li>
+          <li><strong>AHT10:</strong> detecção de fatores ambientais estressantes no local da fonte d'água.</li>
+          <li><strong>RTC DS3231 (opcional):</strong> funcionamento contínuo e registro preciso de data e hora mesmo sem internet.</li></ul></div>
+      </div>
+
+      <div class="content-card">
+        <h3 class="card-title">Lista de componentes e orçamento</h3>
+        <p class="pn-muted">Página 3 do PDF. Valores em reais, como constam no documento.</p>
+        <div class="pn-table-wrap"><table class="week-table">
+          <thead><tr><th>Componente</th><th>Descrição</th><th>Onde</th><th>Qtd.</th><th>Unitário (R$)</th><th>Total (R$)</th><th>Observações</th></tr></thead>
+          <tbody>
+            <tr><td><strong>INMP441</strong></td><td>Microfone MEMS digital I2S</td><td>Caixa &amp; fonte</td><td>2</td><td>28,90</td><td>57,80</td><td>—</td></tr>
+            <tr><td><strong>HX711</strong></td><td>Módulo conversor para célula de carga</td><td>Caixa &amp; fonte</td><td>2</td><td>5,90</td><td>11,80</td><td>—</td></tr>
+            <tr><td><strong>Célula de carga</strong></td><td>20 kg</td><td>Caixa de areia</td><td>1</td><td>21,90</td><td>21,90</td><td>—</td></tr>
+            <tr><td><strong>Célula de carga</strong></td><td>5 kg</td><td>Fonte de água</td><td>1</td><td>22,90</td><td>22,90</td><td>—</td></tr>
+            <tr><td><strong>AHT10</strong></td><td>Sensor de temperatura e umidade de alta precisão</td><td>Caixa &amp; fonte</td><td>2</td><td>11,90</td><td>23,80</td><td>—</td></tr>
+            <tr><td><strong>DS3231</strong></td><td>Módulo RTC (relógio de tempo real)</td><td>Caixa &amp; fonte</td><td>2</td><td>23,99</td><td>47,98</td><td>Opcional</td></tr>
+            <tr><td><strong>ESP32-S3-CAM</strong></td><td>—</td><td>Caixa &amp; fonte</td><td>2</td><td>60,00</td><td>120,00</td><td>Existem opções nacionais, mas pelo preço compensa comprar internacional.</td></tr>
+            <tr><td colspan="5"><strong>Total</strong></td><td><strong>306,18</strong></td><td>Sem os DS3231 opcionais: 258,20</td></tr>
+          </tbody></table></div>
+        <div id="pnIotChart" style="margin-top:18px"></div>
+      </div>
+
+      <div class="content-card">
+        <h3 class="card-title">Ligação com o referencial</h3>
+        <ul class="pn-list">
+          <li><strong>Critérios 3 e 4 do #51 (p. 390)</strong> — flutuação com estressores e resposta à modificação ambiental dependem de observar o mesmo gato ao longo do tempo.</li>
+          <li><strong>#53, p. 72</strong> — os autores sugerem monitorar comportamentos de doença como forma adicional de avaliar o bem-estar.</li>
+          <li><strong>#53, p. 70–71</strong> — eventos externos pesam mais que o status de doença, o que justifica medir também o ambiente (AHT10, áudio).</li>
+        </ul>
+        <div class="pn-note" style="margin-top:12px">Interpretação minha — não está nos artigos: caixa de areia e fonte de água captam micção, defecação e ingestão hídrica, sinais que o referencial associa ao quadro urinário. Qual variável corresponde a qual sinal clínico ainda precisa ser definido e validado.</div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: BIBLIOTECA DE PDFs -->
+    <div class="tab-pane" id="tab-pdfs" role="tabpanel">
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+          <input type="text" class="search-input" id="pdfBusca" placeholder="Buscar PDF pelo nome ou pasta..." aria-label="Buscar PDF">
+        </div>
+        <div class="pill-filters" id="pdfFiltros" role="group" aria-label="Filtrar por pasta"></div>
+        <div class="results-info"><span id="pdfContagem"></span><span>Clique em "Ler aqui" para abrir numa janela, ou "Nova aba".</span></div>
+      </div>
+      <div id="pdfLista"></div>
+    </div>
+
+    <!-- PÁGINA: ESTUDO & NORMAS -->
+    <div class="tab-pane" id="tab-estudo" role="tabpanel">
+      <div class="pn-toolbar">
+        <div>
+          <h3 class="card-title" style="margin:0">Estudo, produtividade e normas</h3>
+          <p class="pn-muted">Orientações gerais para organizar o doutorado. Normas de revistas e da UFC mudam: antes de submeter ou depositar, confira sempre a versão oficial nos links indicados.</p>
+        </div>
+      </div>
+
+      <div class="pn-grid-2">
+        <div class="content-card pn-sec" style="--c:#4338ca">
+          <h3 class="card-title">Como estudar melhor</h3>
+          <details open><summary>Prática de recuperação</summary><p>Depois de ler um artigo, feche o PDF e escreva de memória: problema, método, resultado principal e limitação. Só então confira. Recuperar a informação fixa mais do que reler.</p></details>
+          <details><summary>Revisão espaçada</summary><p>Revise o fichamento no dia seguinte, depois de uma semana e depois de um mês. Use a data do fichamento no Obsidian para programar as revisões.</p></details>
+          <details><summary>Intercalação</summary><p>Alterne blocos do Núcleo 1 (fisiologia) e do Núcleo 2 (ambiente e tecnologia) na mesma semana. Comparar temas ajuda a enxergar as conexões que a tese precisa fazer.</p></details>
+          <details><summary>Elaboração: pergunte "por quê?"</summary><p>Para cada achado, escreva uma frase ligando-o à pergunta da tese. Se não conseguir, o achado talvez não entre no referencial.</p></details>
+          <details><summary>Notas atômicas no cofre</summary><p>Uma ideia por nota, com link para a fonte. Notas pequenas e ligadas entre si viram parágrafos com muito menos esforço na hora de escrever.</p></details>
+        </div>
+
+        <div class="content-card pn-sec" style="--c:#b45309">
+          <h3 class="card-title">Evitar a procrastinação</h3>
+          <details open><summary>Meta mínima diária</summary><p>Defina um mínimo que você cumpre até num dia ruim: 1 página lida com anotação ou 150 palavras escritas. O mínimo mantém a constância; o resto é bônus.</p></details>
+          <details><summary>Blocos de foco (Pomodoro)</summary><p>25 minutos de trabalho em uma única tarefa, 5 de pausa; a cada 4 blocos, pausa longa. Use o cronômetro abaixo.</p></details>
+          <details><summary>Tarefa do tamanho certo</summary><p>"Escrever o capítulo 2" paralisa. "Escrever o parágrafo sobre o eixo HHA com #50" começa. Quebre até a próxima ação caber em um bloco.</p></details>
+          <details><summary>Plano "se… então…"</summary><p>Ex.: "Se for 8h, então abro o fichamento do dia antes do e-mail." Decidir antes o quando e o onde reduz a negociação consigo mesmo.</p></details>
+          <details><summary>Escreva feio primeiro</summary><p>Rascunho e revisão são etapas separadas. Primeiro o texto existe, depois fica bom.</p></details>
+          <details><summary>Ambiente e prestação de contas</summary><p>Celular fora do alcance, abas fechadas, um único documento aberto. Registre a semana no painel e compartilhe o avanço com o orientador em intervalos fixos.</p></details>
+        </div>
+      </div>
+
+      <div class="content-card pn-sec" style="--c:#be185d">
+        <div class="pn-card-head"><h3 class="card-title">Cronômetro de foco</h3><span class="pn-muted" id="pomoCiclos">0 blocos concluídos hoje</span></div>
+        <div class="pn-pomo">
+          <div class="pn-pomo-time" id="pomoTempo">25:00</div>
+          <div class="pn-actions" style="justify-content:center;flex-wrap:wrap">
+            <button class="pn-btn pn-btn-primary" id="pomoIniciar" type="button">Iniciar</button>
+            <button class="pn-btn" id="pomoPausa" type="button">Pausa curta (5 min)</button>
+            <button class="pn-btn" id="pomoZerar" type="button">Zerar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card pn-sec" style="--c:#047857">
+        <h3 class="card-title">Normas ABNT para a tese</h3>
+        <div class="pn-table-wrap"><table class="week-table">
+          <thead><tr><th>Norma</th><th>Trata de</th></tr></thead>
+          <tbody>
+            <tr><td><strong>NBR 14724:2024</strong></td><td>Trabalhos acadêmicos: estrutura (pré-textuais, textuais, pós-textuais) e apresentação</td></tr>
+            <tr><td><strong>NBR 6023:2018</strong></td><td>Referências</td></tr>
+            <tr><td><strong>NBR 10520:2023</strong></td><td>Citações em documentos</td></tr>
+            <tr><td><strong>NBR 6024:2012</strong></td><td>Numeração progressiva das seções</td></tr>
+            <tr><td><strong>NBR 6027:2012</strong></td><td>Sumário</td></tr>
+            <tr><td><strong>NBR 6028:2021</strong></td><td>Resumo, resenha e recensão</td></tr>
+            <tr><td><strong>NBR 6034:2004</strong></td><td>Índice</td></tr>
+            <tr><td><strong>NBR 12225</strong></td><td>Lombada</td></tr>
+          </tbody></table></div>
+        <details><summary>Apresentação usual (confira no guia da UFC)</summary><ul class="pn-list">
+          <li>Papel A4; margens de 3 cm (superior e esquerda) e 2 cm (inferior e direita) no anverso.</li>
+          <li>Fonte tamanho 12 no texto; menor (ex.: 10) em citações longas, notas, legendas e fontes de ilustrações.</li>
+          <li>Espaçamento 1,5 no texto; simples em citações longas, notas, referências, legendas e natureza do trabalho.</li>
+          <li>Citação direta com mais de três linhas: recuo de 4 cm da margem esquerda, sem aspas.</li>
+          <li>Ilustrações e tabelas com título em cima e fonte embaixo.</li>
+        </ul></details>
+        <details><summary>Citações (NBR 10520:2023) — lembretes</summary><ul class="pn-list">
+          <li>Sistema autor-data: (BUFFINGTON; WESTROPP; CHEW, 2014, p. 390). Na versão de 2023 o sobrenome pode vir em caixa alta e baixa; siga o padrão definido pela UFC e seja consistente.</li>
+          <li>Citação direta exige página; na indireta a página é opcional.</li>
+          <li>Citação de citação: "apud" — e a obra original precisa ser buscada sempre que possível (regra do cofre).</li>
+        </ul></details>
+        <p class="pn-muted">No cofre, a skill de revisão ABNT e o <code>export_limpo.bib</code> ajudam a manter as referências no padrão.</p>
+      </div>
+
+      <div class="content-card pn-sec" style="--c:#0e7490">
+        <h3 class="card-title">Regras para produzir a tese na UFC</h3>
+        <ul class="pn-list">
+          <li><strong>Guia de normalização da Biblioteca Universitária (BU/UFC):</strong> é a referência para a formatação de teses e dissertações na UFC; tem modelos e exemplos baseados na ABNT.</li>
+          <li><strong>Ficha catalográfica:</strong> gerada pelo sistema da BU/UFC a partir dos dados do trabalho; vai no verso da folha de rosto.</li>
+          <li><strong>Regimento do Programa de Pós-Graduação:</strong> define prazos, qualificação, composição da banca, créditos e exigência de artigo publicado ou submetido. Leia o regimento e as resoluções vigentes do seu programa.</li>
+          <li><strong>Depósito final:</strong> versão corrigida após a defesa, termo de autorização e envio ao Repositório Institucional da UFC, conforme orientação da secretaria do programa.</li>
+          <li><strong>Pesquisa com animais:</strong> projetos com uso de animais precisam de aprovação da CEUA antes da coleta; o número do protocolo entra na metodologia.</li>
+          <li><strong>Pesquisa com tutores (questionários):</strong> envolve seres humanos; verifique a necessidade de submissão ao CEP (Plataforma Brasil) e o TCLE.</li>
+        </ul>
+        <div class="pn-actions" style="flex-wrap:wrap;margin-top:12px">
+          <a class="pn-btn" href="https://biblioteca.ufc.br/" target="_blank" rel="noopener">Biblioteca Universitária UFC ↗</a>
+          <a class="pn-btn" href="https://repositorio.ufc.br/" target="_blank" rel="noopener">Repositório Institucional UFC ↗</a>
+          <a class="pn-btn" href="https://prppg.ufc.br/" target="_blank" rel="noopener">Pró-Reitoria de Pesquisa e Pós-Graduação ↗</a>
+        </div>
+      </div>
+
+      <div class="content-card pn-sec" style="--c:#7c3aed">
+        <h3 class="card-title">Revistas-alvo e diretrizes de relato</h3>
+        <p class="pn-muted">Cada revista tem "Instructions for authors" próprias (limite de palavras, estilo de referência, figuras). As diretrizes de relato abaixo são aceitas pela maioria das revistas da área e devem ser seguidas desde o planejamento.</p>
+        <div class="pn-table-wrap"><table class="week-table">
+          <thead><tr><th>Área</th><th>Revistas do calendário</th><th>Estilo de referência mais comum</th></tr></thead>
+          <tbody>
+            <tr><td>Medicina felina e veterinária</td><td>Journal of Feline Medicine and Surgery · Frontiers in Veterinary Science · Animals (MDPI) · Veterinary Sciences</td><td>Numérico (Vancouver ou variante da editora)</td></tr>
+            <tr><td>Biomedicina e dados</td><td>PLOS ONE · Computers in Biology and Medicine</td><td>Numérico (Vancouver / estilo Elsevier)</td></tr>
+            <tr><td>IA e sistemas</td><td>Artificial Intelligence in Medicine · Expert Systems with Applications · Knowledge-Based Systems · IEEE JBHI</td><td>Numérico (Elsevier / IEEE)</td></tr>
+          </tbody></table></div>
+        <div class="pn-grid-3" style="margin-top:14px">
+          <div class="pn-guide"><strong>PRISMA 2020</strong><span>Revisões sistemáticas (Artigo 1)</span></div>
+          <div class="pn-guide"><strong>ARRIVE 2.0</strong><span>Pesquisa com animais</span></div>
+          <div class="pn-guide"><strong>STROBE-Vet</strong><span>Estudos observacionais veterinários (Artigo 2)</span></div>
+          <div class="pn-guide"><strong>CHERRIES</strong><span>Questionários on-line</span></div>
+          <div class="pn-guide"><strong>TRIPOD+AI</strong><span>Modelos de predição com IA (Artigo 3)</span></div>
+          <div class="pn-guide"><strong>CONSORT / STARD</strong><span>Ensaios clínicos / acurácia diagnóstica</span></div>
+        </div>
+        <p class="pn-muted" style="margin-top:12px">Diretrizes completas e listas de verificação: <a href="https://www.equator-network.org/" target="_blank" rel="noopener">EQUATOR Network ↗</a></p>
+      </div>
+
+      <div class="content-card pn-sec" style="--c:#b91c1c">
+        <h3 class="card-title">Uso de IA na pesquisa: regras de integridade</h3>
+        <ul class="pn-list">
+          <li><strong>IA não é autora.</strong> Diretrizes do ICMJE e do COPE: ferramentas de IA não cumprem os critérios de autoria.</li>
+          <li><strong>Declare o uso.</strong> A maioria das editoras pede declaração de qual ferramenta foi usada, para quê e em que seção (métodos ou agradecimentos). Confira a política de cada revista.</li>
+          <li><strong>Nunca use IA como fonte.</strong> Toda referência, número e página deve ser conferido no documento original — é a regra principal deste cofre.</li>
+          <li><strong>Dados sensíveis:</strong> não envie dados identificáveis de tutores para serviços externos sem previsão no protocolo aprovado.</li>
+          <li><strong>Modelos da tese (Artigo 3):</strong> descreva dados, divisão treino/teste, métricas e explicabilidade (SHAP, LIME) seguindo o TRIPOD+AI; disponibilize o código quando possível.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- Detail Drawer / Modal -->
+  <div class="drawer-overlay" id="drawerOverlay" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <div class="drawer-container">
+      <div class="drawer-header">
+        <div>
+          <span class="article-code" id="drawerCode">#00</span>
+          <span style="font-size: 0.8rem; color: var(--text-dim); margin-left: 8px;" id="drawerTheme">Tema</span>
+        </div>
+        <button class="drawer-close-btn" id="drawerCloseBtn" type="button" aria-label="Fechar gaveta"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+
+      <div class="drawer-body">
+        <h2 style="font-size: 1.25rem; font-weight: 800; line-height: 1.4;" id="drawerTitle">Título do Artigo</h2>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Núcleo Proposto</div>
+          <div class="drawer-text" id="drawerNucleo">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Tipo de Estudo</div>
+          <div class="drawer-text" id="drawerStudyType">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Por que ler (Relevância)</div>
+          <div class="drawer-text" id="drawerWhy">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Como usar na tese</div>
+          <div class="drawer-text" id="drawerHowToUse">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Cautelas e Limitações</div>
+          <div class="drawer-text" id="drawerCaution">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Referência ABNT</div>
+          <div class="drawer-code-block" id="drawerRef">-</div>
+          <button class="copy-btn" id="drawerCopyRefBtn" type="button">Copiar Referência ABNT</button>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Arquivo Local no Acervo</div>
+          <div class="drawer-code-block" id="drawerFile">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong>Síndrome de Pandora em Felinos</strong> — Tese de Doutorado</p>
+      <p>Universidade Federal do Ceará (UFC) • Pesquisador: Romulo</p>
+      <p style="font-size: 0.78rem; margin-top: 10px; color: var(--text-dim);">
+        Cofre Obsidian: <code>c:\Users\rcmin\OneDrive\Documents\Pos-Graduacao\Doutorado UFC\Síndrome de Pandora</code>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts: Verified Inventory Data and App Logic -->
+
+  <!-- JANELAS (MODAIS) -->
+  <div class="pn-modal" id="modalKpiAjuda" role="dialog" aria-modal="true" aria-labelledby="t1" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t1">Como ler os KPIs</h2>
+      <ul>
+        <li><strong>Leitura (pág./semana)</strong> — média das últimas 4 semanas registradas.</li>
+        <li><strong>Escrita (pág./semana)</strong> — páginas do artigo + da tese, média das últimas 4 semanas.</li>
+        <li><strong>Constância</strong> — semanas com algum registro ÷ semanas desde o primeiro registro.</li>
+        <li><strong>Fichamentos</strong> — os do inventário com <em>status = fichamento concluido</em> mais os registrados aqui.</li>
+        <li><strong>Dias até o prazo</strong> — até a data da defesa configurada em <em>Metas</em>.</li>
+      </ul>
+      <p>As setas ▲▼ comparam a última semana com a média das anteriores.</p>
+    </div>
+  </div>
+  <div class="pn-modal" id="modalProbAjuda" role="dialog" aria-modal="true" aria-labelledby="t2" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t2">Como a probabilidade é calculada</h2>
+      <p>Para cada marco, compara-se <strong>o que falta</strong> com <strong>o ritmo observado</strong> nas suas semanas registradas.</p>
+      <ol>
+        <li>Ritmo semanal: média (μ) e desvio-padrão (σ) das semanas registradas.</li>
+        <li>Semanas restantes até o prazo do marco: <em>n</em>.</li>
+        <li>Produção esperada ~ Normal(n·μ, √n·σ). A probabilidade é P(produção ≥ o que falta).</li>
+        <li>A qualificação completa é o produto das três probabilidades (hipótese simplificadora de independência).</li>
+      </ol>
+      <p><strong>É uma estimativa de ritmo, não uma previsão.</strong> Com menos de 2 semanas registradas ela não é exibida.</p>
+    </div>
+  </div>
+  <div class="pn-modal" id="modalPandora" role="dialog" aria-modal="true" aria-labelledby="t3" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t3">O que é a Síndrome de Pandora?</h2>
+      <p>Nome usado para descrever gatos cujos sinais do trato urinário inferior (antes tratados como FUS e depois como cistite idiopática felina) fazem parte de um quadro mais amplo, com alterações em outros sistemas e forte relação com estresse e ambiente.</p>
+      <p>No acervo: a proposta do termo é atribuída a <strong>#19 Buffington (2011)</strong> — ainda não obtido — e retomada em <strong>#51 Buffington, Westropp e Chew (2014)</strong>, já fichado.</p>
+      <p class="pn-note">Resumo didático do painel. Para citar, use o fichamento do #51 e vá à fonte primária (#19).</p>
+      <button class="pn-btn" data-goto="tab-inventory" type="button">Ver no acervo →</button>
+    </div>
+  </div>
+  <div class="pn-modal" id="modalHHA" role="dialog" aria-modal="true" aria-labelledby="t4" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t4">Estresse, eixo HHA e sistema simpático</h2>
+      <p>O eixo hipotálamo–hipófise–adrenal (HHA) e o sistema nervoso simpático coordenam a resposta ao estresse. A linha do referencial examina se, nesses gatos, essa resposta está desregulada.</p>
+      <p>Fonte central no acervo: <strong>#50 Westropp, Welk e Buffington (2003)</strong>. <span class="pn-warn">Referência com status "A CONFERIR" e DOI divergente entre o inventário e o roteiro semanal — conferir no PDF.</span></p>
+    </div>
+  </div>
+  <div class="pn-modal" id="modalMEMO" role="dialog" aria-modal="true" aria-labelledby="t5" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t5">MEMO — modificação ambiental multimodal</h2>
+      <p>Intervenção no ambiente doméstico (recursos, locais de refúgio, controle de estressores). No acervo: <strong>S2 Buffington et al. (2006)</strong>, próxima leitura recomendada, e <strong>#16 MacLeod et al. (2025)</strong>.</p>
+      <p class="pn-note">Resultados do MEMO só entram no texto depois do fichamento do S2.</p>
+    </div>
+  </div>
+  <div class="pn-modal" id="modalIoT" role="dialog" aria-modal="true" aria-labelledby="t6" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t6">Sensores, IoT e IA</h2>
+      <p><strong>Hipótese de lacuna (ainda não contrariada):</strong> não há no acervo trabalho que aplique sensores ou IA ao monitoramento contínuo de gatos com Síndrome de Pandora. Segue como hipótese até a leitura do bloco tecnológico (#5, #6, #14, S6).</p>
+      <img src="Imagens/Ferramentas-e-Metodo/Sensores_IOT.png" alt="Sensores IoT" loading="lazy">
+    </div>
+  </div>
+  <div class="pn-modal" id="modalFluxo" role="dialog" aria-modal="true" aria-labelledby="t7" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t7">Fluxo de fichamento — 5 pontos</h2>
+      <ol>
+        <li>Ler o PDF inteiro (inclusive referências); anotar a correspondência de páginas.</li>
+        <li>Escrever o fichamento em <code>Fichamentos/</code> pelo modelo.</li>
+        <li>Atualizar a nota da fonte em <code>Fontes/</code>.</li>
+        <li>Atualizar o MOC do núcleo e a Fila de leitura.</li>
+        <li>Atualizar o <code>00 Índice do cofre</code>.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="pn-modal" id="modalMarcas" role="dialog" aria-modal="true" aria-labelledby="t8" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="t8">Marcadores de procedência</h2>
+      <table class="week-table"><tbody>
+        <tr><td><span class="pn-mark ok">Confirmada</span></td><td>Confirmada na fonte (conferida no PDF)</td></tr>
+        <tr><td><span class="pn-mark parcial">Parcial</span></td><td>Parcialmente confirmada</td></tr>
+        <tr><td><span class="pn-mark conferir">A conferir</span></td><td>A CONFERIR no artigo (gerada do .bib ou da triagem)</td></tr>
+        <tr><td><span class="pn-mark sem">Sem procedência</span></td><td>Sem procedência</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="pn-modal pn-lightbox" id="modalImg" role="dialog" aria-modal="true" aria-label="Imagem ampliada" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="pn-lb-nav pn-lb-prev" type="button" aria-label="Anterior">‹</button>
+      <div class="pn-lb-stage"><img id="lbImg" alt="" title="Clique para ampliar ou reduzir"></div>
+      <button class="pn-lb-nav pn-lb-next" type="button" aria-label="Próxima">›</button>
+      <p id="lbCap"></p>
+    </div>
+  </div>
+
+  <div class="pn-modal pn-pdfview" id="modalPdf" role="dialog" aria-modal="true" aria-labelledby="pdfTitulo" hidden>
+    <div class="pn-modal-box"><button class="pn-modal-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h2 id="pdfTitulo"></h2>
+      <iframe id="pdfFrame" title="Leitor de PDF"></iframe>
+      <p><a id="pdfNovaAba" class="pn-btn" target="_blank" rel="noopener">Abrir em nova aba ↗</a></p>
+    </div>
+  </div>
+  <script src="dados_pdfs.js"></script>
+  <script src="dados_inventario.js"></script>
+  <script src="app.js"></script>
+  <script src="painel.js"></script>
+</body>
+</html>
