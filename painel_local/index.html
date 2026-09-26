@@ -90,6 +90,10 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 .pesos { margin: 0; padding-left: 18px; font-size: .86rem; } .pesos li { margin: 3px 0; } .pesos span { color: var(--muted); }
 .nuc { display: grid; gap: 2px; margin-bottom: 8px; font-size: .86rem; }
 .nuc .rev-barra { width: 100%; }
+.rast { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: .86rem; }
+.rast h3 { font: 600 .95rem var(--serif); margin: 0 0 6px; }
+.rast li { margin: 4px 0; } .rast ul ul { color: var(--ink2); }
+.rast .ok { color: var(--ok); }
 [hidden] { display: none !important; }
 body.embed header h1 { display: none; }
 body.embed main { padding: 12px 4px; }
@@ -172,11 +176,13 @@ body.embed main { padding: 12px 4px; }
       <div class="acoes" style="margin-top:0">
         <strong id="tSecao">Escolha ou crie uma seção</strong>
         <span class="status" id="stSalvo"></span>
-        <button class="btn pri" id="salvar" type="button" style="margin-left:auto">Salvar (Ctrl+S)</button>
+        <button class="btn" id="conferir" type="button" style="margin-left:auto" title="Confere, parágrafo a parágrafo, as fontes citadas (sem IA)">🔎 Conferir fontes</button>
+        <button class="btn pri" id="salvar" type="button">Salvar (Ctrl+S)</button>
       </div>
       <textarea id="editor" placeholder="Escreva aqui a sua parte da tese…" disabled></textarea>
       <p class="status" id="contagem"></p>
       <p class="status" id="stSemana"></p>
+      <div id="rastreio"></div>
     </div>
     <div class="card">
       <h2>Orientador</h2>
@@ -353,7 +359,7 @@ async function abrirSecao(nome) {
   secao = d.nome; historico = []; sujo = false;
   $('#tSecao').textContent = secao;
   $('#editor').disabled = false; $('#editor').value = d.texto;
-  $('#chat').innerHTML = ''; $('#stSalvo').textContent = '';
+  $('#chat').innerHTML = ''; $('#stSalvo').textContent = ''; $('#rastreio').innerHTML = '';
   contar(); listarSecoes(); semanaTese();
 }
 async function semanaTese() {
@@ -371,6 +377,23 @@ async function salvar() {
   await api('/api/secao', { nome: secao, texto: $('#editor').value });
   sujo = false; $('#stSalvo').textContent = 'Salvo às ' + new Date().toLocaleTimeString('pt-BR').slice(0, 5);
   semanaTese();
+  if ($('#rastreio').innerHTML) conferir();          // mantém a conferência em dia depois de salvar
+}
+async function conferir() {
+  if (!secao) return;
+  if (sujo) await salvar();
+  try {
+    const d = await api('/api/rastreio?secao=' + encodeURIComponent(secao));
+    if (!d.ativo) { $('#rastreio').innerHTML = '<div class="rast">Cofre não encontrado — a conferência usa as notas de Fontes.</div>'; return; }
+    const com = d.paragrafos.filter((p) => p.alertas.length);
+    $('#rastreio').innerHTML = `<div class="rast">
+      <h3>Rastreabilidade desta seção</h3>
+      <p class="status">${d.paragrafos.length} parágrafo(s) · ${d.com_fonte} com fonte identificada · ${d.alertas} alerta(s). Casa citações ABNT (primeiro sobrenome + ano), #código e [[nota]] com o cofre — sem IA, pode errar em sobrenomes compostos.</p>
+      ${com.length ? '<ul>' + com.map((p) => `<li>§${p.n} “${esc(p.inicio)}”<ul>${p.alertas.map((a) => `<li>${esc(a)}</li>`).join('')}</ul></li>`).join('') + '</ul>'
+        : '<p class="ok">✔ Nenhum alerta. Todas as citações casam com fontes lidas e conferidas.</p>'}
+      <p class="status">O relatório de todas as seções e a Matriz de síntese ficam em <code>Notas</code> no Obsidian.</p>
+    </div>`;
+  } catch (e) { $('#rastreio').innerHTML = `<div class="rast">Erro: ${esc(e.message)}</div>`; }
 }
 function contar() {
   const t = $('#editor').value.trim();
@@ -471,6 +494,7 @@ $('#novaSecao').onclick = async () => {
 };
 $('#editor').oninput = () => { sujo = true; $('#stSalvo').textContent = 'não salvo'; contar(); };
 $('#salvar').onclick = salvar;
+$('#conferir').onclick = conferir;
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 's' && aba === 'tese') { e.preventDefault(); salvar(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && document.activeElement === $('#entrada')) $('#enviar').click();
