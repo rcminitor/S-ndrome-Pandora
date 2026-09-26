@@ -22,6 +22,18 @@ O status de cada artigo é o que está na nota de `Fontes\` do cofre. O painel m
 
 O painel só mexe nesses pontos e nos trechos entre `<!-- painel:… -->`. Antes da primeira alteração do dia em cada nota, guarda uma cópia em `Leitura\_copias_antes_do_painel\<data>\`. O site recebe o status do cofre (em `dados_inventario.js` e `dados_leituras.js`), mas não as suas notas. Artigos fora do inventário (ex.: citados baixados) ficam registrados só no painel e aparecem contados no Índice.
 
+### Os agentes conhecem o cofre
+
+`agentes_crewai/contexto_cofre.py` entrega aos agentes, de forma compacta, o que já está organizado no cofre:
+
+| Agente | O que passa a usar do cofre |
+|---|---|
+| **Orientador** | regras do `CLAUDE.md` (NÃO CONFIRMADO, fonte primária, interpretação separada), os 2 fichamentos mais ligados ao trecho que você escreveu, o catálogo das fontes com status, e a "Próxima atividade recomendada" do Índice. Afirma conteúdo só do que foi fichado; usa o catálogo para dizer o que você deveria ler ou fichar. |
+| **Leitor** | marca cada referência citada que **já é fonte sua** (📚 #código · status, por DOI ou título) e não baixa de novo; o relatório ganha a seção "Citações × seu acervo"; a triagem usa os dois núcleos do cofre. |
+| **Equipe de estudo** | status tirado das notas do cofre e os fichamentos das fontes escolhidas. |
+
+O cofre é relido sozinho quando alguma nota muda. Limites em `.env`: `CATALOGO_MAX_CHARS`, `FICHAMENTO_MAX_CHARS`, `FICHAMENTOS_POR_PEDIDO`. Fichamentos que existem só em PDF (em `PDF\Primeiras Leituras`) ainda não entram.
+
 Pastas criadas no cofre: `Leitura\1_Para_ler`, `Leitura\2_Lido` e `Notas\Tese`.
 
 ### Qual IA usar

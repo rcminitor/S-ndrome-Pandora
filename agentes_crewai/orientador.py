@@ -30,6 +30,7 @@ from pathlib import Path
 
 from dotenv import dotenv_values
 
+import contexto_cofre
 import ia
 
 AQUI = Path(__file__).resolve().parent
@@ -54,9 +55,16 @@ Seu papel é fazê-lo pensar, não escrever por ele:
 - Faça perguntas diretas e curtas. No máximo 3 por mensagem.
 - Discorde quando houver motivo e explique por quê. Não elogie por elogiar.
 - Peça a fonte de toda afirmação científica sem referência.
-- Só cite estudos que aparecem em LEITURAS DISPONÍVEIS, pelo nome do arquivo. Nunca invente autor, ano, página ou resultado.
-- Se usar conhecimento geral sem fonte nas leituras, marque: "(conhecimento geral — precisa de fonte)".
-- Diferencie o que o texto dele afirma, o que as leituras dizem e o que é interpretação sua.
+- Siga as REGRAS DO COFRE abaixo; são as regras da tese.
+- Base de evidência, nesta ordem: FICHAMENTOS DO COFRE (lidos no PDF, com página) e LEITURAS DO PAINEL.
+  Só afirme o que um estudo diz se estiver nesses blocos, e cite pelo código (ex.: "#51, p. 387").
+- O CATÁLOGO mostra o que ele tem no acervo e o status de cada fonte. Use-o para apontar qual fonte
+  ele deveria ler ou fichar para sustentar um trecho — mas sem afirmar o conteúdo de fonte não fichada.
+- Nunca invente autor, ano, página ou resultado. Conhecimento geral sem fonte no cofre vai marcado:
+  "(conhecimento geral — precisa de fonte)".
+- Quando o artigo citado não for a fonte primária do achado, diga qual é a primária e cobre a leitura dela.
+- Use as PENDÊNCIAS DO COFRE para lembrar o que ainda falta ler ou conferir.
+- Diferencie o que o texto dele afirma, o que as fontes dizem e o que é interpretação sua.
 - Responda em português, em até 250 palavras."""
 
 MODOS = {
@@ -94,13 +102,27 @@ def resumo_leituras(biblioteca: Path | None = None) -> str:
     return "\n".join(partes) or "(nenhuma leitura processada ainda)"
 
 
+def contexto_do_cofre(texto: str) -> str:
+    """Regras, catálogo, fichamentos ligados ao texto e pendências do cofre (vazio se não houver cofre)."""
+    if not contexto_cofre.raiz():
+        return ""
+    partes = [("REGRAS DO COFRE", contexto_cofre.regras()),
+              ("FICHAMENTOS DO COFRE (os mais ligados a este texto)", contexto_cofre.fichamentos(texto)),
+              ("CATÁLOGO DO ACERVO (#código, ano, título, status, núcleo)", contexto_cofre.catalogo()),
+              ("PENDÊNCIAS DO COFRE", contexto_cofre.pendencias())]
+    return "".join(f"{t}:\n{c}\n\n" for t, c in partes if c)
+
+
 def responder(texto_secao: str, historico: list[dict], modo: str = "debater",
               leituras: str | None = None) -> tuple[str, int]:
     """historico = [{"role": "user"|"assistant", "content": "..."}]; devolve (resposta, tokens)."""
     texto = texto_secao.strip()[: int(CFG["TESE_MAX_CHARS"])] or "(seção vazia)"
+    base_busca = texto + " " + " ".join(m["content"] for m in historico[-2:])
+    cofre = contexto_do_cofre(base_busca)
     contexto = (f"{SISTEMA}\n\nMODO: {MODOS.get(modo, MODOS['debater'])}\n\n"
                 f"TEXTO DA SEÇÃO (escrito pelo Romulo):\n\"\"\"\n{texto}\n\"\"\"\n\n"
-                f"LEITURAS DISPONÍVEIS:\n{leituras if leituras is not None else resumo_leituras()}")
+                f"{cofre}"
+                f"LEITURAS DO PAINEL (processadas pelo leitor):\n{leituras if leituras is not None else resumo_leituras()}")
     janela = historico[-2 * int(CFG["HISTORICO_TROCAS"]):]
     if not janela or janela[-1]["role"] != "user":
         janela = janela + [{"role": "user", "content": {"questionar": "Me questione sobre esse texto.",
