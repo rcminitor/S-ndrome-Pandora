@@ -84,6 +84,9 @@
       <button class="tab-btn" data-tab="tab-painel" role="tab" aria-selected="false">
         Painel de KPIs
       </button>
+      <button class="tab-btn" data-tab="tab-agentes" role="tab" aria-selected="false">
+        Estudo com agentes
+      </button>
       <button class="tab-btn" data-tab="tab-estatisticas" role="tab" aria-selected="false">
         Estatísticas
       </button>
@@ -536,6 +539,15 @@
           <div id="pnUso"></div>
         </div>
       </div>
+    </div>
+
+    <!-- PÁGINA: ESTUDO COM AGENTES (painel que roda no PC) -->
+    <div class="tab-pane" id="tab-agentes" role="tabpanel">
+      <div class="pn-toolbar"><div>
+        <h3 class="card-title" style="margin:0">Estudo com agentes</h3>
+        <p class="pn-muted">Para ler · Lidos · Acervo · Minha tese com orientador — roda no seu computador, com os seus PDFs.</p>
+      </div></div>
+      <div id="agConteudo"><p class="pn-muted">Clique na aba para conectar.</p></div>
     </div>
 
     <!-- PÁGINA: ESTATÍSTICAS (gerada por analise/estatisticas.py) -->
@@ -1090,5 +1102,6 @@
   <script src="estatisticas.js"></script>
   <script src="dados_flashcards.js"></script>
   <script src="flashcards.js"></script>
+  <script src="estudo_agentes.js"></script>
 </body>
 </html>

@@ -10,7 +10,8 @@ Os PDFs de artigos de terceiros não estão neste repositório; ficam apenas no 
 
 | O quê | Como abrir |
 |---|---|
-| **Painel de Estudo**: Para ler · Lidos · Acervo do cofre · Minha tese + orientador | dois cliques em `Iniciar painel.bat` |
+| **Estudo com agentes** (aba do site): Para ler · Lidos · Acervo do cofre · Minha tese + orientador | uma vez: dois cliques em `Ligar painel automaticamente.bat`; depois é só abrir a aba no site |
+| O mesmo painel, sem o site | `Iniciar painel.bat` ou http://127.0.0.1:8765 |
 | Ler um PDF solto | arrastar o PDF para `Ler com o agente.bat` |
 | Estatísticas do acervo (aba do site) | `python analise\estatisticas.py` |
 | Configurar a IA (OmniRoute gratuito ou chave) | `python agentes_crewai\configurar.py` |
