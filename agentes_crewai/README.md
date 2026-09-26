@@ -39,3 +39,40 @@ Saídas: `saidas/<data>_<tema>.md`, `saidas/uso_tokens.csv` e `../dados_flashcar
 8. **Gateway opcional**: `LLM_BASE_URL` aponta para um gateway compatível com OpenAI (ex.: seu OmniRoute) para usar modelos gratuitos.
 
 > Regra da tese: o texto gerado é material de estudo. Nada vai para a tese sem conferência no PDF.
+
+---
+
+# Leitor de artigos (`leitor_artigos.py`)
+
+Lê um PDF, traduz **na íntegra** os trechos relevantes à tese, mostra **quem o autor citou em cada trecho** e segue essas citações: localiza cada artigo citado e **baixa o PDF quando existe versão legal de acesso aberto**. Depois repete o processo nos artigos baixados (árvore de citações).
+
+```
+python leitor_artigos.py "C:\caminho\artigo.pdf" --simular        # vê trechos, citações e custo, sem gastar nada
+python leitor_artigos.py "C:\caminho\artigo.pdf"                  # traduz + segue as citações (profundidade 1)
+python leitor_artigos.py artigo.pdf --profundidade 2               # + quem os citados citaram
+python leitor_artigos.py artigo.pdf --sem-traducao                 # só citações e downloads (0 token)
+python leitor_artigos.py artigo.pdf --baixar todos                 # todas as referências, não só as dos trechos relevantes
+```
+
+**O relatório** (`saidas/leitura_<artigo>.md`) traz:
+1. Os trechos relevantes: página, texto original e tradução integral, com a lista "O autor cita aqui".
+2. A árvore de citações, com o estado de cada item: 📄 baixado · 🔓 aberto · 🔒 sem acesso aberto (Portal CAPES / biblioteca) · ❓ DOI não localizado.
+3. Os trechos não traduzidos, **mantidos no original**. Nada é retirado.
+
+**Onde entra a IA (e onde não entra):**
+
+| Etapa | Quem faz | Custo |
+|---|---|---|
+| Extrair texto, páginas e citações | Python (PyMuPDF) | 0 token |
+| Pré-filtro por termos da tese | Python | 0 token |
+| Triagem fina dos trechos | agente Triador (modelo barato, só devolve os números dos trechos) | baixo |
+| Tradução integral | agente Tradutor, em lotes, com cache | principal |
+| Achar DOI e acesso aberto, baixar | Python (Crossref, OpenAlex, Unpaywall) | 0 token |
+
+**Salvaguardas:**
+- A tradução é conferida: se sair muito mais curta que o original ou perder um marcador de citação, o trecho é marcado com ⚠️.
+- DOI achado por busca aparece como "conferir".
+- PDF sem camada de texto não é traduzido: faça OCR antes.
+- Só baixa acesso aberto legal. Artigo pago aparece como 🔒, com a indicação do Portal CAPES.
+
+Os PDFs baixados (`biblioteca/`) e as traduções (`saidas/leitura_*`) **não vão para o GitHub** (direitos autorais); ficam só no seu PC.
