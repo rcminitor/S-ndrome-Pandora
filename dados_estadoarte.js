@@ -255,6 +255,49 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
+   "codigo": "50",
+   "titulo": "Westropp, Welk e Buffington (2003) — Small adrenal glands",
+   "marcas": {
+    "C1": {
+     "m": "✅",
+     "txt": "20 gatos com FIC, cistoscopia (p. 2494)"
+    },
+    "C2": {
+     "m": "✅",
+     "txt": "caso-controle com dados próprios (p. 2494)"
+    },
+    "C3": {
+     "m": "✗",
+     "txt": "teste pontual 2–4 dias após a chegada (p. 2494)"
+    },
+    "C4": {
+     "m": "◐",
+     "txt": "estresse só como condição do teste, não como variável (p. 2494)"
+    },
+    "C5": {
+     "m": "✅",
+     "txt": "cortisol sérico e peso/volume da adrenal (p. 2495)"
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "✅",
+     "txt": "ANOVA de medidas repetidas, t de Student (p. 2495)"
+    },
+    "C8": {
+     "m": "◐",
+     "txt": "sem grupos de outras doenças (p. 2496)"
+    },
+    "C9": {
+     "m": "✗",
+     "txt": "gatos doados, em gaiolas (p. 2494)"
+    }
+   },
+   "atualizado": "2026-09-26T16:06"
+  },
+  {
    "codigo": "51",
    "titulo": "Buffington, Westropp e Chew (2014) — From FUS to Pandora",
    "marcas": {
@@ -470,5 +513,5 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   }
  ],
- "atualizado": "2026-09-26T15:53"
+ "atualizado": "2026-09-26T16:06"
 };

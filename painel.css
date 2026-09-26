@@ -168,3 +168,12 @@
 .ea-tabela td:first-child { min-width: 11rem; }
 .ea-m { font-weight: 700; padding: 0 .25rem; border-radius: 4px; }
 .ea-ok { color: #1a7f37; } .ea-meio { color: #9a6700; } .ea-nao { color: #cf222e; } .ea-nc { color: #6e7781; }
+
+/* Fichamentos */
+.fi-card { text-align: left; }
+.fi-texto { line-height: 1.6; margin-top: 16px; overflow-x: auto; }
+.fi-texto table { border-collapse: collapse; margin: .8rem 0; font-size: .9rem; }
+.fi-texto th, .fi-texto td { border: 1px solid var(--border, #ddd); padding: .35rem .5rem; vertical-align: top; }
+.fi-texto blockquote { border-left: 4px solid #9a6700; margin: .8rem 0; padding: .4rem .9rem; background: rgba(154,103,0,.06); }
+.fi-callout-tit { display: block; font-weight: 700; }
+.fi-note { color: #0969da; } .fi-warning { color: #9a6700; } .fi-quote { color: #6e7781; } .fi-important { color: #8250df; } .fi-info { color: #0969da; }
