@@ -36,6 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cofre import Cofre  # noqa: E402
 from registro import COFRE_ST, SITE, Registro  # noqa: E402
 from revisao import Revisao  # noqa: E402
+from progresso import Progresso  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -57,6 +58,12 @@ COFRE_OBJ = Cofre(BASE, BIBLIOTECA)          # notas de Fontes\\: o registro de 
 REG = Registro(BIBLIOTECA, RAIZ, publicar=(CFG.get("PUBLICAR_NO_SITE", "sim").lower() != "nao"), cofre=COFRE_OBJ)
 REV = Revisao(BIBLIOTECA, COFRE_OBJ, RAIZ)
 REG.extras.append(("dados_revisao.js", REV.escrever_site))
+PROG = Progresso(BIBLIOTECA, TESE, COFRE_OBJ if COFRE_OBJ.ativo else None, REG, REV, RAIZ, CFG)
+REG.extras.append(("dados_progresso.js", PROG.escrever_site))
+try:
+    PROG.fotografar()                       # conta também o que foi escrito direto no Obsidian
+except Exception:
+    pass
 
 app = Flask(__name__, static_folder=None)
 JOBS: dict[str, dict] = {}
@@ -283,6 +290,13 @@ def gerar_cartoes():
     return jsonify({"novos": novos, "tokens": tokens})
 
 
+@app.get("/api/progresso")
+def progresso():
+    sem = PROG.semanas()
+    atual = PROG.fotografar()
+    return jsonify({"semana": sem[-1] if sem else None, "palavras": sum(atual.values()), "ppp": PROG.ppp})
+
+
 @app.get("/api/revisao")
 def revisao():
     artigo = request.args.get("artigo")
@@ -327,6 +341,11 @@ def salvar_secao():
     d = request.get_json()
     p = secao_path(d["nome"])
     p.write_text(d["texto"], encoding="utf-8")
+    try:
+        PROG.fotografar()
+        REG.publicar_depois("escrita da tese")
+    except Exception:
+        pass
     return jsonify({"ok": True, "nome": p.stem})
 
 
