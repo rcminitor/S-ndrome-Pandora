@@ -29,7 +29,12 @@ def main() -> None:
     atual = ler(ENV)
     print("Configuração dos agentes — Enter mantém o valor entre colchetes.\n")
 
-    chave = getpass(f"Chave de API do provedor {'[já preenchida]' if atual.get('LLM_API_KEY') else '[vazia]'}: ").strip()
+    usar_omni = input("Usar o gateway OmniRoute do seu PC (combo 'gratuitos', sem custo)? [S/n]: ").strip().lower() != "n"
+    if usar_omni:
+        print("  O OmniRoute precisa estar ligado (comando: omni status).")
+        chave = getpass("Chave do OmniRoute, se ele pedir (Enter = 'omniroute'): ").strip() or atual.get("LLM_API_KEY") or "omniroute"
+    else:
+        chave = getpass(f"Chave de API do provedor (ex.: Anthropic, paga) {'[já preenchida]' if atual.get('LLM_API_KEY') else '[vazia]'}: ").strip()
     email = input(f"Seu e-mail (para Crossref/OpenAlex) [{atual.get('EMAIL_CONTATO', '')}]: ").strip()
     padrao_pasta = atual.get("PASTA_ESTUDO") or (str(COFRE_PDF) if COFRE_PDF.exists() else "")
     mostra = padrao_pasta or str(AQUI / "biblioteca")
@@ -40,17 +45,27 @@ def main() -> None:
         "EMAIL_CONTATO": email or atual.get("EMAIL_CONTATO", ""),
         "PASTA_ESTUDO": pasta or padrao_pasta,
     }
+    if usar_omni:
+        novos.update({"LLM_BASE_URL": "http://localhost:20128/v1", "MODELO_TUTOR": "openai/gratuitos",
+                      "MODELO_BARATO": "openai/gratuitos", "MODELO_TRADUTOR": "openai/gratuitos"})
+    else:
+        novos["LLM_BASE_URL"] = ""
     if novos["PASTA_ESTUDO"] and not Path(novos["PASTA_ESTUDO"]).exists():
         print(f"Aviso: a pasta {novos['PASTA_ESTUDO']} ainda não existe; ela será criada no primeiro download.")
 
-    saida = []
+    saida, feitos = [], set()
     for l in MODELO.read_text(encoding="utf-8").splitlines():
         crua = l.lstrip("# ").strip()
         k = crua.split("=", 1)[0].strip() if "=" in crua and not crua.startswith(("Copie", "Formato")) else None
         if k and k.isupper() and k.replace("_", "").isalnum():
-            valor = novos.get(k) or atual.get(k)
+            if k in feitos:                                  # exemplo comentado de chave já gravada
+                saida.append(l if l.startswith("#") else "# " + l); continue
+            valor = novos[k] if k in novos else atual.get(k)
+            if k in novos and not valor and l.startswith("#"):
+                saida.append(l); continue
             if valor is not None and (valor or not l.startswith("#")):
                 saida.append(f"{k}={valor}")            # ativa a linha com o valor escolhido
+                feitos.add(k)
                 continue
         saida.append(l)
     ENV.write_text("\n".join(saida) + "\n", encoding="utf-8")
