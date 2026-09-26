@@ -270,3 +270,11 @@ body { font-family: var(--font-sans); background: var(--bg-body); color: var(--t
 .pn-pomo-time { font: 600 4rem var(--font-mono); letter-spacing: .04em; color: var(--c); margin-bottom: 12px; font-variant-numeric: tabular-nums; }
 .pn-guide { border: 1px solid var(--border-glass); border-left: 4px solid var(--c); border-radius: 10px; padding: 10px 14px; display: grid; gap: 2px; background: var(--bg-surface); }
 .pn-guide span { font-size: .8rem; color: var(--text-muted); }
+
+/* Orientador e área na capa */
+.hero-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; margin: 1.5rem auto 0; max-width: 760px; background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: 14px; box-shadow: var(--shadow-md); overflow: hidden; }
+.hero-meta div { flex: 1 1 200px; padding: .8rem 1.1rem; border-right: 1px solid var(--border-glass); text-align: center; }
+.hero-meta div:last-child { border-right: 0; }
+.hero-meta dt { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); }
+.hero-meta dd { margin: 2px 0 0; font-family: var(--font-serif); font-weight: 600; font-size: 1rem; color: var(--text-main); }
+@media (max-width: 600px) { .hero-meta div { border-right: 0; border-bottom: 1px solid var(--border-glass); } .hero-meta div:last-child { border-bottom: 0; } }
