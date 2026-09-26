@@ -50,6 +50,7 @@ from fila import Fila  # noqa: E402
 from rastreio import Rastreio  # noqa: E402
 from backup_cofre import Backup  # noqa: E402
 from resumo_semanal import Resumo  # noqa: E402
+from estadoarte import EstadoArte  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -73,6 +74,8 @@ REV = Revisao(BIBLIOTECA, COFRE_OBJ, RAIZ)
 REG.extras.append(("dados_revisao.js", REV.escrever_site))
 PROG = Progresso(BIBLIOTECA, TESE, COFRE_OBJ if COFRE_OBJ.ativo else None, REG, REV, RAIZ, CFG)
 REG.extras.append(("dados_progresso.js", PROG.escrever_site))
+EA = EstadoArte(RAIZ, COFRE_OBJ)                # Estado da arte por critérios (site + cofre)
+REG.extras.append(("dados_estadoarte.js", EA.escrever_site))
 FILA = Fila(COFRE_OBJ, REG, TESE, {"ler": PARA_LER, "lido": LIDO, "acervo": ACERVO}, casar=contexto_cofre.no_acervo)
 
 
@@ -352,6 +355,28 @@ def historico():
 def publicar_agora():
     REG.publicar("envio manual")
     return jsonify({"ok": True})
+
+
+# ------------------------------------------------------------------ estado da arte
+@app.get("/api/estadoarte")
+def estadoarte_ler():
+    return jsonify(EA.ler())
+
+
+@app.post("/api/estadoarte")
+def estadoarte_salvar():
+    """Inclui ou atualiza uma fonte na Tabela 3 (site e cofre) e publica no GitHub."""
+    d = request.get_json(force=True) or {}
+    if d.get("remover"):
+        ok = EA.remover(str(d["remover"]))
+        if ok:
+            REG.publicar("estado da arte: fonte removida")
+        return jsonify({"ok": ok})
+    erros = EA.salvar(d)
+    if erros:
+        return jsonify({"ok": False, "erros": erros}), 400
+    REG.publicar(f"estado da arte: fonte {d.get('codigo')}")
+    return jsonify({"ok": True, "dados": EA.ler()})
 
 
 # ------------------------------------------------------------------ revisão espaçada
