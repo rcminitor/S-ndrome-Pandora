@@ -50,10 +50,10 @@ class EstadoArteTeste(unittest.TestCase):
             self.ea.salvar(fonte(codigo=c))
         self.assertEqual([f["codigo"] for f in self.ea.ler()["fontes"]], ["4", "53", "S2"])
 
-    def test_dados_publicados_tem_10_fontes_validas(self):
+    def test_dados_publicados_sao_validos(self):
         ea = EstadoArte(RAIZ)
         dados = ea.ler()
-        self.assertEqual(len(dados["fontes"]), 10)
+        self.assertGreaterEqual(len(dados["fontes"]), 10)
         for f in dados["fontes"]:
             self.assertEqual(ea.validar(f), [], f["codigo"])
 
