@@ -47,6 +47,8 @@ from pathlib import Path
 from dotenv import dotenv_values
 from pydantic import BaseModel, Field
 
+import ia
+
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parent
 CACHE = AQUI / ".cache"
@@ -60,6 +62,7 @@ CFG = {
     "MODELO_BARATO": "anthropic/claude-haiku-4-5-20251001",
     "LLM_BASE_URL": "",
     "LLM_API_KEY": "",
+    "RESERVA_API_KEY": "",
     "CONTEXTO_MAX_CHARS": "6000",
     "MAX_TOKENS_TUTOR": "900",
     "MAX_TOKENS_BARATO": "600",
@@ -162,21 +165,15 @@ def registrar_uso(tema: str, uso: dict, do_cache: bool) -> None:
 
 
 # ------------------------------------------------------------ equipe
-def criar_llm(modelo: str, max_tokens: int):
-    from crewai import LLM
-    extra = {}
-    if CFG["LLM_BASE_URL"]:
-        extra["base_url"] = CFG["LLM_BASE_URL"]  # ex.: gateway local compatível com OpenAI
-    if CFG["LLM_API_KEY"]:
-        extra["api_key"] = CFG["LLM_API_KEY"]
-    return LLM(model=modelo, temperature=0.2, max_tokens=max_tokens, **extra)
+def criar_llm(papel: str, max_tokens: int):
+    return ia.criar_llm(CFG, papel, max_tokens)
 
 
 def rodar(tema: str, contexto: str) -> dict:
     from crewai import Agent, Crew, Process, Task
 
-    forte = criar_llm(CFG["MODELO_TUTOR"], int(CFG["MAX_TOKENS_TUTOR"]))
-    barato = criar_llm(CFG["MODELO_BARATO"], int(CFG["MAX_TOKENS_BARATO"]))
+    forte = criar_llm("forte", int(CFG["MAX_TOKENS_TUTOR"]))
+    barato = criar_llm("barato", int(CFG["MAX_TOKENS_BARATO"]))
     comum = dict(allow_delegation=False, max_iter=2, memory=False, verbose=False, respect_context_window=True)
 
     tutor = Agent(role="Tutor", goal="Ensinar o tema com precisão e clareza",
@@ -248,7 +245,7 @@ def main() -> None:
         res["uso"] = {}
         print("(resposta do cache — 0 tokens)")
     else:
-        res = rodar(a.tema, contexto)
+        res = ia.com_reserva(CFG, lambda: rodar(a.tema, contexto), "equipe de estudo")
         CACHE.mkdir(exist_ok=True)
         arq_cache.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
 

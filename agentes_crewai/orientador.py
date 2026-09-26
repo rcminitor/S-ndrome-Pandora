@@ -30,12 +30,15 @@ from pathlib import Path
 
 from dotenv import dotenv_values
 
+import ia
+
 AQUI = Path(__file__).resolve().parent
 CFG = {
     "MODELO_ORIENTADOR": "",
     "MODELO_TUTOR": "anthropic/claude-sonnet-5",
     "LLM_BASE_URL": "",
     "LLM_API_KEY": "",
+    "RESERVA_API_KEY": "",
     "BIBLIOTECA": "",
     "TESE_MAX_CHARS": "6000",
     "LEITURAS_MAX_CHARS": "4000",
@@ -64,10 +67,7 @@ MODOS = {
 
 
 def _llm():
-    from crewai import LLM
-    extra = {k: CFG[v] for k, v in (("base_url", "LLM_BASE_URL"), ("api_key", "LLM_API_KEY")) if CFG[v]}
-    modelo = CFG["MODELO_ORIENTADOR"] or CFG["MODELO_TUTOR"]
-    return LLM(model=modelo, temperature=0.4, max_tokens=int(CFG["MAX_TOKENS_ORIENTADOR"]), **extra)
+    return ia.criar_llm(CFG, "orientador", int(CFG["MAX_TOKENS_ORIENTADOR"]), temperature=0.4)
 
 
 def resumo_leituras(biblioteca: Path | None = None) -> str:
@@ -105,8 +105,11 @@ def responder(texto_secao: str, historico: list[dict], modo: str = "debater",
     if not janela or janela[-1]["role"] != "user":
         janela = janela + [{"role": "user", "content": {"questionar": "Me questione sobre esse texto.",
                                                         "revisar": "Revise esse texto."}.get(modo, "Vamos debater.")}]
-    llm = _llm()
-    resposta = str(llm.call([{"role": "system", "content": contexto}, *janela]))
+    def chamar():
+        llm = _llm()
+        return llm, str(llm.call([{"role": "system", "content": contexto}, *janela]))
+
+    llm, resposta = ia.com_reserva(CFG, chamar, "orientador")
     try:
         tokens = int(llm.get_token_usage_summary().total_tokens)
     except Exception:
