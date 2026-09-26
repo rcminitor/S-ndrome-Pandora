@@ -77,8 +77,10 @@ def main() -> None:
         m = f"openai/{modelo_omni}"
         novos.update({"LLM_BASE_URL": "http://localhost:20128/v1", "MODELO_TUTOR": m,
                       "MODELO_BARATO": m, "MODELO_TRADUTOR": m})
-    else:
-        novos["LLM_BASE_URL"] = ""
+    else:                                              # chave paga da Anthropic: volta aos modelos Claude
+        novos.update({"LLM_BASE_URL": "", "MODELO_TUTOR": "anthropic/claude-sonnet-5",
+                      "MODELO_BARATO": "anthropic/claude-haiku-4-5-20251001",
+                      "MODELO_TRADUTOR": "anthropic/claude-haiku-4-5-20251001"})
     if novos["PASTA_ESTUDO"] and not Path(novos["PASTA_ESTUDO"]).exists():
         print(f"Aviso: a pasta {novos['PASTA_ESTUDO']} ainda não existe; ela será criada no primeiro download.")
 
