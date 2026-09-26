@@ -86,7 +86,7 @@ class Cofre:
 
         pdf = re.search(r"\*\*PDF:\*\*\s*\[\[([^\]|#]+\.pdf)", texto, re.I)
         return {"nota": arq, "stem": arq.stem, "codigo": campo("codigo"), "titulo": campo("titulo"),
-                "status": campo("status"), "nucleo": campo("nucleo"), "fase": campo("fase"),
+                "status": campo("status"), "nucleo": campo("nucleo"), "fase": campo("fase"), "ano": campo("ano"),
                 "pdf": Path(pdf.group(1)).name if pdf else ""}
 
     def todas(self) -> list[dict]:

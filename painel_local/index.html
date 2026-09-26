@@ -81,6 +81,15 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 .btn.nao { border-color: var(--bad); color: var(--bad); font-weight: 600; }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 #aviso .btn { padding: 2px 8px; font-size: .78rem; margin-left: 6px; }
+.fila-item { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 4px; margin-bottom: 8px; }
+.fila-item .topo { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.fila-item .pos { font: 600 1.1rem var(--serif); color: var(--accent); min-width: 1.6em; }
+.fila-item .pts { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; }
+.fila-item ul { margin: 2px 0 0; padding-left: 20px; font-size: .84rem; color: var(--ink2); }
+.fila-item .acoes { margin: 4px 0 0; }
+.pesos { margin: 0; padding-left: 18px; font-size: .86rem; } .pesos li { margin: 3px 0; } .pesos span { color: var(--muted); }
+.nuc { display: grid; gap: 2px; margin-bottom: 8px; font-size: .86rem; }
+.nuc .rev-barra { width: 100%; }
 [hidden] { display: none !important; }
 body.embed header h1 { display: none; }
 body.embed main { padding: 12px 4px; }
@@ -90,6 +99,7 @@ body.embed main { padding: 12px 4px; }
 <header>
   <h1>Painel de Estudo — Síndrome de Pandora</h1>
   <nav>
+    <button data-aba="fila">Próxima leitura</button>
     <button data-aba="ler" class="on">Para ler<b id="nLer"></b></button>
     <button data-aba="lido">Lidos<b id="nLido"></b></button>
     <button data-aba="acervo">Acervo do cofre<b id="nAcervo"></b></button>
@@ -109,6 +119,33 @@ body.embed main { padding: 12px 4px; }
       <div class="lista" id="lista"></div>
     </div>
     <div class="card" id="detalhe"><div class="vazio">Clique num arquivo da lista.</div></div>
+  </section>
+
+  <!-- FILA DE LEITURA INTELIGENTE -->
+  <section id="vFila" class="duas" hidden>
+    <div class="card">
+      <h2>Como a ordem é feita</h2>
+      <p class="dica">Só entram fontes do cofre que você ainda não leu. Os pontos somam sinais que já existem no cofre e nas leituras do agente — cada item mostra os seus motivos.</p>
+      <ul class="pesos">
+        <li><b>+40</b> fase “Ler primeiro” <span>(+15 outra fase)</span></li>
+        <li><b>+35</b> já aparece no texto da tese sem ter sido lida</li>
+        <li><b>+20</b> leitura já começada</li>
+        <li><b>+12</b> por artigo que a cita em trecho relevante <span>(+5 só na lista; até 48)</span></li>
+        <li><b>+6</b> por nota do cofre que a menciona <span>(até 30)</span></li>
+        <li><b>até +15</b> núcleo menos coberto</li>
+        <li><b>+8</b> a IA já leu</li>
+      </ul>
+      <h2 style="margin-top:14px">Cobertura por núcleo</h2>
+      <div id="filaNucleos"></div>
+      <p class="dica" style="margin-top:12px">As 10 primeiras também ficam no topo de <code>Notas\Fila de leitura</code> no Obsidian.</p>
+    </div>
+    <div class="card">
+      <h2>Leia a seguir</h2>
+      <div id="filaLista"><div class="vazio">Calculando…</div></div>
+      <h2 style="margin-top:18px">Buscar o PDF primeiro</h2>
+      <p class="dica">Fontes importantes sem arquivo no acervo — Portal CAPES, biblioteca ou autor.</p>
+      <div id="filaBuscar"></div>
+    </div>
   </section>
 
   <!-- TESE -->
@@ -361,8 +398,8 @@ async function orientar(modo, mensagem) {
 // ------------------------------------------------------------- eventos
 function marcarAba() {
   document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.aba === aba));
-  $('#vLeitura').hidden = aba === 'tese' || aba === 'revisao'; $('#vTese').hidden = aba !== 'tese';
-  $('#vRevisao').hidden = aba !== 'revisao';
+  $('#vLeitura').hidden = ['tese', 'revisao', 'fila'].includes(aba); $('#vTese').hidden = aba !== 'tese';
+  $('#vRevisao').hidden = aba !== 'revisao'; $('#vFila').hidden = aba !== 'fila';
 }
 
 // ------------------------------------------------------------- revisão espaçada
@@ -420,6 +457,7 @@ document.querySelector('nav').onclick = (e) => {
   const b = e.target.closest('button'); if (!b) return;
   aba = b.dataset.aba; atual = null; marcarAba();
   if (aba === 'revisao') return carregarRevisao();
+  if (aba === 'fila') return carregarFila();
   if (aba !== 'tese') $('#detalhe').innerHTML = '<div class="vazio">Clique num arquivo da lista.</div>';
   carregar();
 };
@@ -440,6 +478,32 @@ document.addEventListener('keydown', (e) => {
 document.querySelectorAll('[data-modo]').forEach((b) => (b.onclick = () => orientar(b.dataset.modo)));
 $('#enviar').onclick = () => { const t = $('#entrada').value.trim(); if (!t) return; $('#entrada').value = ''; orientar('debater', t); };
 window.addEventListener('beforeunload', (e) => { if (sujo) e.preventDefault(); });
+
+// ------------------------------------------------------------- fila de leitura inteligente
+function itemFila(i, pos) {
+  const onde = i.onde ? `<span class="selo">${esc(i.onde)}</span>` : '';
+  return `<div class="fila-item">
+    <div class="topo">${pos ? `<span class="pos">${pos}</span>` : ''}<span><b>#${esc(i.codigo)}</b> ${esc(i.titulo)}${i.ano ? ' (' + esc(i.ano) + ')' : ''}</span><span class="pts">${i.pontos} pts</span></div>
+    <small class="status"><span class="selo cofre">${esc(i.status || 'sem status')}</span>${onde}${esc(i.nucleo)}${i.fase ? ' · ' + esc(i.fase) : ''}</small>
+    <ul>${(i.motivos.length ? i.motivos : ['sem sinais além do status']).map((m) => `<li>${esc(m)}</li>`).join('')}</ul>
+    ${i.id ? `<div class="acoes"><button class="btn pri" data-fila="${esc(i.id)}" type="button">Abrir</button></div>` : ''}
+  </div>`;
+}
+async function carregarFila() {
+  try {
+    const d = await api('/api/fila');
+    if (!d.ativo) { $('#filaLista').innerHTML = '<div class="vazio">Cofre não encontrado — a fila usa as notas de Fontes do Obsidian.</div>'; return; }
+    $('#filaLista').innerHTML = d.sugeridas.slice(0, 10).map((i, k) => itemFila(i, k + 1)).join('') || '<div class="vazio">Nenhuma fonte com PDF pendente. 🎉</div>';
+    $('#filaBuscar').innerHTML = d.sem_pdf.slice(0, 8).map((i) => itemFila(i)).join('') || '<p class="status">Nada — todas as pendentes têm PDF.</p>';
+    $('#filaNucleos').innerHTML = d.nucleos.map((n) => `<div class="nuc"><span>${esc(n.nucleo)} — ${n.lidas}/${n.total} lidas</span><span class="rev-barra"><i style="width:${n.total ? 100 * n.lidas / n.total : 0}%"></i></span></div>`).join('');
+  } catch (e) { $('#filaLista').innerHTML = `<div class="vazio">Erro: ${esc(e.message)}</div>`; }
+}
+$('#vFila').onclick = async (e) => {
+  const b = e.target.closest('[data-fila]'); if (!b) return;
+  const id = b.dataset.fila;
+  aba = id.startsWith('ler:') ? 'ler' : 'acervo'; marcarAba();
+  await carregar(); abrir(id);
+};
 
 async function carregarRevisaoContagem() { try { const d = await api('/api/revisao'); $('#nRev').textContent = d.resumo.hoje || ''; } catch (e) {} }
 carregar(); carregarRevisaoContagem();

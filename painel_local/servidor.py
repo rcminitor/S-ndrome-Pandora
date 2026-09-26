@@ -4,6 +4,9 @@ Painel local de estudo — Síndrome de Pandora
 
 Abre no navegador (http://localhost:8765) e roda os agentes no seu PC:
 
+  • Próxima leitura — a fila inteligente (painel_local/fila.py): o que ler a seguir,
+                com os motivos (fase, citações cruzadas, menções no cofre, texto da tese,
+                núcleo menos coberto). As 10 primeiras vão para Notas\\Fila de leitura.
   • Para ler  — clique num PDF: o agente lê, traz só o relevante (traduzido na
                 íntegra), mostra as citações e baixa os artigos citados de acesso
                 aberto para "1_Para_ler\\<artigo> - citados".
@@ -37,6 +40,7 @@ from cofre import Cofre  # noqa: E402
 from registro import COFRE_ST, SITE, Registro  # noqa: E402
 from revisao import Revisao  # noqa: E402
 from progresso import Progresso  # noqa: E402
+from fila import Fila  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -60,6 +64,20 @@ REV = Revisao(BIBLIOTECA, COFRE_OBJ, RAIZ)
 REG.extras.append(("dados_revisao.js", REV.escrever_site))
 PROG = Progresso(BIBLIOTECA, TESE, COFRE_OBJ if COFRE_OBJ.ativo else None, REG, REV, RAIZ, CFG)
 REG.extras.append(("dados_progresso.js", PROG.escrever_site))
+FILA = Fila(COFRE_OBJ, REG, TESE, {"ler": PARA_LER, "lido": LIDO, "acervo": ACERVO}, casar=contexto_cofre.no_acervo)
+
+
+def atualizar_fila() -> None:
+    """Recalcula a fila e grava o bloco da Fila de leitura no cofre (em segundo plano)."""
+    def rodar():
+        try:
+            FILA.escrever_obsidian()
+        except Exception:
+            pass
+    threading.Thread(target=rodar, daemon=True).start()
+
+
+atualizar_fila()
 try:
     PROG.fotografar()                       # conta também o que foi escrito direto no Obsidian
 except Exception:
@@ -210,6 +228,7 @@ def analisar():
         ok = proc.wait() == 0
         job["versao"] = REG.ia_fim(pdf, ok, job["log"])       # guarda tudo no histórico
         job["status"] = "ok" if ok else "erro"
+        atualizar_fila()                                      # novas citações cruzadas mudam a ordem
 
     threading.Thread(target=rodar, daemon=True).start()
     return jsonify(job)
@@ -241,6 +260,7 @@ def eu_li():
     d = request.get_json()
     pdf = resolver_id(d["id"])
     REG.humano_li(pdf, d.get("nota", ""))
+    atualizar_fila()
     if d["id"].startswith("ler:"):
         alvo_dir = LIDO / pdf.parent.relative_to(PARA_LER)
         alvo_dir.mkdir(parents=True, exist_ok=True)
@@ -288,6 +308,13 @@ def gerar_cartoes():
     REV.escrever_obsidian()
     REG.publicar_depois("novos cartões de revisão")
     return jsonify({"novos": novos, "tokens": tokens})
+
+
+@app.get("/api/fila")
+def fila():
+    d = FILA.calcular()
+    return jsonify({**d, "sugeridas": d["sugeridas"][:25], "sem_pdf": d["sem_pdf"][:15],
+                    "total_pendentes": len(d["sugeridas"]) + len(d["sem_pdf"])})
 
 
 @app.get("/api/progresso")
@@ -343,6 +370,7 @@ def salvar_secao():
     p.write_text(d["texto"], encoding="utf-8")
     try:
         PROG.fotografar()
+        atualizar_fila()                         # fonte citada no texto e ainda não lida sobe na fila
         REG.publicar_depois("escrita da tese")
     except Exception:
         pass
