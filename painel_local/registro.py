@@ -30,6 +30,8 @@ COFRE_ST = {"ok": None, "quando": "", "erro": ""}
 class Registro:
     def __init__(self, biblioteca: Path, raiz_site: Path, publicar: bool = True, cofre=None):
         self.cofre = cofre if cofre is not None and cofre.ativo else None
+        self.extras: list[tuple[str, callable]] = []     # outros arquivos do site (ex.: dados_revisao.js)
+        self._timer: threading.Timer | None = None
         self.biblioteca = biblioteca
         self.arq = biblioteca / "registro_leituras.json"
         self.hist = biblioteca / "Historico_IA"
@@ -195,11 +197,24 @@ class Registro:
         return mudou
 
     def escrever_site(self) -> None:
+        for _, escrever in self.extras:
+            try:
+                escrever()
+            except Exception:
+                pass
         self.sincronizar_inventario_site()
         self.site_js.write_text(
             "// Gerado pelo Painel de Estudo (painel_local/registro.py). Só títulos, datas e contagens.\n"
             "window.DADOS_LEITURAS = " + json.dumps(self.dados_publicos(), ensure_ascii=False, indent=1) + ";\n",
             encoding="utf-8")
+
+    def publicar_depois(self, motivo: str, segundos: int = 120) -> None:
+        """Junta vários eventos seguidos (ex.: uma sessão de revisão) num envio só."""
+        if self._timer and self._timer.is_alive():
+            return
+        self._timer = threading.Timer(segundos, self.publicar, args=(motivo,))
+        self._timer.daemon = True
+        self._timer.start()
 
     def publicar(self, motivo: str) -> None:
         if self.publicar_ativo:
@@ -220,7 +235,8 @@ class Registro:
                 if p.returncode != 0:
                     raise RuntimeError("git pull: " + (p.stderr or p.stdout).strip()[:200])
                 self.escrever_site()
-                arqs = ["dados_leituras.js", "dados_inventario.js"]
+                arqs = ["dados_leituras.js", "dados_inventario.js"] + [n for n, _ in self.extras
+                                                                      if (self.raiz_site / n).exists()]
                 self._git("add", *arqs)
                 if self._git("diff", "--cached", "--quiet", "--", *arqs).returncode == 0:
                     SITE.update(ok=True, quando=self.agora(), erro="")

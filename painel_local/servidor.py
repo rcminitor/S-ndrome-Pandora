@@ -35,6 +35,9 @@ import orientador  # noqa: E402  (lê o mesmo .env de agentes_crewai)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cofre import Cofre  # noqa: E402
 from registro import COFRE_ST, SITE, Registro  # noqa: E402
+from revisao import Revisao  # noqa: E402
+import ia  # noqa: E402
+import contexto_cofre  # noqa: E402
 
 CFG = orientador.CFG
 COFRE = Path(r"C:\Users\rcmin\OneDrive\Documents\Pos-Graduacao\Doutorado UFC\Síndrome de Pandora")
@@ -52,6 +55,8 @@ for p in (PARA_LER, LIDO, TESE):
 orientador.CFG["BIBLIOTECA"] = str(BIBLIOTECA)
 COFRE_OBJ = Cofre(BASE, BIBLIOTECA)          # notas de Fontes\\: o registro de verdade
 REG = Registro(BIBLIOTECA, RAIZ, publicar=(CFG.get("PUBLICAR_NO_SITE", "sim").lower() != "nao"), cofre=COFRE_OBJ)
+REV = Revisao(BIBLIOTECA, COFRE_OBJ, RAIZ)
+REG.extras.append(("dados_revisao.js", REV.escrever_site))
 
 app = Flask(__name__, static_folder=None)
 JOBS: dict[str, dict] = {}
@@ -101,6 +106,8 @@ def listar_pdfs(raiz: Path, rotulo: str) -> list[dict]:
     if not raiz.exists():
         return []
     itens = []
+    from collections import Counter
+    cont = Counter(c["artigo"] for c in REV.carregar())
     for pdf in sorted(raiz.rglob("*.pdf"), key=lambda p: str(p).lower()):
         rel = pdf.relative_to(raiz)
         itens.append({
@@ -111,6 +118,7 @@ def listar_pdfs(raiz: Path, rotulo: str) -> list[dict]:
             "leitura": pdf.with_name(pdf.stem + ".leitura.md").exists(),
             "citado": " - citados" in str(rel.parent),
             "reg": REG.resumo(pdf.stem),
+            "cartoes": cont.get(pdf.stem, 0),
             "fonte": fonte_publica(pdf.name),
         })
     return itens
@@ -245,6 +253,50 @@ def historico():
 def publicar_agora():
     REG.publicar("envio manual")
     return jsonify({"ok": True})
+
+
+# ------------------------------------------------------------------ revisão espaçada
+@app.post("/api/cartoes/gerar")
+def gerar_cartoes():
+    """Cria cartões de revisão a partir da leitura da IA ou do seu fichamento no cofre."""
+    d = request.get_json()
+    pdf = resolver_id(d["id"])
+    fonte = COFRE_OBJ.fonte_do_pdf(pdf.name) if COFRE_OBJ.ativo else None
+    codigo = fonte["codigo"] if fonte else ""
+    if d.get("origem") == "fichamento":
+        texto = contexto_cofre.fichamentos("", codigos=[codigo]) if codigo else ""
+        origem = f"fichamento #{codigo} do cofre (conferido no PDF)"
+    else:
+        js = pdf.with_name(pdf.stem + ".leitura.json")
+        if not js.exists():
+            return jsonify({"erro": "Leia o artigo com o agente primeiro."}), 400
+        texto = REV.texto_da_leitura(js)
+        origem = "leitura da IA (tradução automática — conferir no PDF)"
+    if not texto:
+        return jsonify({"erro": "Não encontrei texto para gerar cartões."}), 400
+    try:
+        novos, tokens = REV.gerar(CFG, ia, pdf.stem, codigo, texto, origem)
+    except Exception as e:
+        return jsonify({"erro": f"{type(e).__name__}: {str(e)[:300]}"}), 502
+    REV.escrever_obsidian()
+    REG.publicar_depois("novos cartões de revisão")
+    return jsonify({"novos": novos, "tokens": tokens})
+
+
+@app.get("/api/revisao")
+def revisao():
+    artigo = request.args.get("artigo")
+    fila = REV.fila_hoje(artigo)
+    return jsonify({"fila": fila[:50], "resumo": REV.resumo()})
+
+
+@app.post("/api/revisao/responder")
+def responder_cartao():
+    d = request.get_json()
+    c = REV.responder(d["id"], bool(d["lembrou"]))
+    REV.escrever_obsidian()
+    REG.publicar_depois("sessão de revisão")
+    return jsonify({"cartao": c})
 
 
 @app.post("/api/copiar_para_ler")

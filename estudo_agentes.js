@@ -54,16 +54,35 @@
   }
 
   // ---- registro público de leituras (vem de dados_leituras.js, enviado pelo painel do PC)
+  function blocoRevisao() {
+    const R = window.DADOS_REVISAO;
+    if (!R || !R.total) return '';
+    const pct = (a) => a.total ? Math.round(100 * a.firmes / a.total) : 0;
+    return `
+      <div class="content-card" style="margin-bottom:18px">
+        <div class="pn-card-head"><h3 class="card-title">Revisão espaçada</h3>
+          <span class="pn-muted">atualizado em ${R.atualizado.slice(8, 10)}/${R.atualizado.slice(5, 7)} ${R.atualizado.slice(11, 16)}</span></div>
+        <div class="est-tiles">
+          <div class="est-tile"><b>${R.firmes}</b><span>cartões firmes</span><small>de ${R.total} no total</small></div>
+          <div class="est-tile"><b>${R.aprendendo}</b><span>aprendendo</span><small>${R.novos} ainda não revistos</small></div>
+          <div class="est-tile"><b>${R.acerto_7d == null ? '—' : R.acerto_7d + '%'}</b><span>acerto em 7 dias</span><small>${R.revisoes_7d} respostas</small></div>
+          <div class="est-tile"><b>${R.hoje}</b><span>para revisar hoje</span><small>no painel do PC</small></div>
+        </div>
+        <div class="pn-hbars">${R.por_artigo.slice(0, 8).map((a) => `<div class="pn-hbar"><span>${a.codigo ? '#' + a.codigo + ' ' : ''}${String(a.titulo).slice(0, 28)}</span><div><i style="width:${pct(a)}%;background:#16a34a"></i></div><b>${a.firmes}/${a.total}</b></div>`).join('')}</div>
+        <p class="pn-muted">Barras: cartões firmes por artigo. Perguntas e respostas ficam no seu PC.</p>
+      </div>`;
+  }
+
   function registro() {
     const alvo = document.getElementById('agRegistro');
     const L = window.DADOS_LEITURAS || [];
     if (!alvo) return;
-    if (!L.length) { alvo.innerHTML = ''; return; }
+    if (!L.length) { alvo.innerHTML = blocoRevisao(); return; }
     const d = (iso) => iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) + '/' + iso.slice(0, 4) : '';
     const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const ia = L.filter((x) => x.ia_status === 'ok').length, eu = L.filter((x) => x.eu_li).length;
     const lendo = L.filter((x) => x.ia_status === 'lendo').length;
-    alvo.innerHTML = `
+    alvo.innerHTML = blocoRevisao() + `
       <div class="content-card" style="margin-bottom:18px">
         <div class="pn-card-head"><h3 class="card-title">Registro de leituras</h3>
           <span class="pn-muted">${ia} lido(s) pela IA · ${eu} lido(s) por você${lendo ? ` · ${lendo} em leitura agora` : ''}</span></div>

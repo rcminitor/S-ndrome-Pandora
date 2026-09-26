@@ -69,6 +69,17 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 .euli { border: 1px solid var(--ok); border-radius: 10px; padding: 12px; margin: 8px 0; display: grid; gap: 8px; font-size: .88rem; }
 .euli textarea { width: 100%; min-height: 60px; border: 1px solid var(--line); border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); font: inherit; }
 .site-ok { color: var(--ok); }
+.rev-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
+.rev-kpis div { border: 1px solid var(--line); border-radius: 10px; padding: 8px; text-align: center; display: grid; }
+.rev-kpis b { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.rev-kpis span { font-size: .75rem; color: var(--muted); }
+.rev-barra { display: inline-block; width: 70px; height: 6px; background: var(--line); border-radius: 99px; vertical-align: middle; overflow: hidden; }
+.rev-barra i { display: block; height: 100%; background: var(--ok); }
+.rev-card { border: 1px solid var(--line); border-radius: 12px; padding: 22px; background: var(--bg); min-height: 180px; display: grid; gap: 16px; align-content: center; }
+.rev-q { font: 600 1.15rem/1.5 var(--serif); }
+.rev-a { border-top: 1px dashed var(--line); padding-top: 14px; font-size: 1rem; }
+.btn.nao { border-color: var(--bad); color: var(--bad); font-weight: 600; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
 #aviso .btn { padding: 2px 8px; font-size: .78rem; margin-left: 6px; }
 [hidden] { display: none !important; }
 body.embed header h1 { display: none; }
@@ -82,6 +93,7 @@ body.embed main { padding: 12px 4px; }
     <button data-aba="ler" class="on">Para ler<b id="nLer"></b></button>
     <button data-aba="lido">Lidos<b id="nLido"></b></button>
     <button data-aba="acervo">Acervo do cofre<b id="nAcervo"></b></button>
+    <button data-aba="revisao">Revisão<b id="nRev"></b></button>
     <button data-aba="tese">Minha tese</button>
   </nav>
   <span id="aviso"></span>
@@ -100,6 +112,18 @@ body.embed main { padding: 12px 4px; }
   </section>
 
   <!-- TESE -->
+  <!-- REVISÃO ESPAÇADA -->
+  <section id="vRevisao" class="duas" hidden>
+    <div class="card">
+      <h2>Seu progresso</h2>
+      <div id="revResumo"></div>
+      <p class="dica">Acertou → o cartão volta em 1, 3, 7, 21 e 60 dias. Errou → volta amanhã. <b>Firme</b> = acertou no degrau de 7 dias ou acima.</p>
+      <h2 style="margin-top:14px">Por artigo</h2>
+      <div id="revArtigos"></div>
+    </div>
+    <div class="card" id="revCartao"></div>
+  </section>
+
   <section id="vTese" class="tres" hidden>
     <div class="card">
       <h2>Seções</h2>
@@ -223,6 +247,12 @@ async function abrir(id) {
       <textarea id="euLiNota" placeholder="Ex.: li inteiro; a Tabela 2 é o que importa para a tese."></textarea>
       <div class="acoes"><button class="btn pri" id="euLiOk" type="button">Confirmar: eu li</button><button class="btn" id="euLiCancela" type="button">Cancelar</button></div>
     </div>
+    <div class="acoes" id="cartBox">
+      <button class="btn" id="bCartLeit" type="button" ${atual.leitura ? '' : 'disabled title="Leia com o agente primeiro"'}>🃏 Gerar cartões da leitura</button>
+      ${atual.fonte ? '<button class="btn" id="bCartFich" type="button">🃏 Gerar cartões do meu fichamento</button>' : ''}
+      ${atual.cartoes ? `<button class="btn" id="bRevArt" type="button">Revisar este artigo (${atual.cartoes} cartões)</button>` : ''}
+      <span class="status" id="stCart"></span>
+    </div>
     <div class="acoes" id="histBox" hidden><span class="status">Leituras da IA guardadas:</span><select class="btn" id="oVersao" aria-label="Versão da leitura"></select></div>
     <div id="job" hidden><p class="status" id="jobSt"></p><div class="log" id="jobLog"></div></div>
     <div class="leitura" id="leitura">${atual.leitura ? '<p class="status">Carregando leitura…</p>' : '<p class="vazio">Ainda não lido pelo agente.</p>'}</div>`;
@@ -235,6 +265,17 @@ async function abrir(id) {
     atual = null; $('#detalhe').innerHTML = `<div class="vazio">✓ Leitura registrada. O artigo está em <b>Lidos</b>.<br>${f ? `No cofre: nota da fonte #${esc(f.codigo)}, MOC, Fila de leitura e Índice atualizados.` : 'Este artigo não está no inventário do cofre: o registro ficou no painel.'}<br>O site recebe o registro em seguida.</div>`; carregar();
   };
   if ($('#bMover')) $('#bMover').onclick = async () => { await api('/api/mover', { id: atual.id, para: 'para_ler' }); atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar(); };
+  const gerarCart = async (origem) => {
+    $('#stCart').textContent = 'Gerando cartões…';
+    try {
+      const r = await api('/api/cartoes/gerar', { id: atual.id, origem });
+      $('#stCart').textContent = `✓ ${r.novos} cartão(ões) novo(s). Estão na aba Revisão.`;
+      carregar(); carregarRevisaoContagem();
+    } catch (e) { $('#stCart').textContent = 'Erro: ' + e.message + (origem === 'fichamento' ? ' (esta fonte tem fichamento em Fichamentos\\?)' : ''); }
+  };
+  if ($('#bCartLeit')) $('#bCartLeit').onclick = () => gerarCart('leitura');
+  if ($('#bCartFich')) $('#bCartFich').onclick = () => gerarCart('fichamento');
+  if ($('#bRevArt')) $('#bRevArt').onclick = () => { rev.filtro = atual.nome; aba = 'revisao'; marcarAba(); carregarRevisao(); };
   if ($('#bCopiar')) $('#bCopiar').onclick = async () => { await api('/api/copiar_para_ler', { id: atual.id }); $('#bCopiar').textContent = 'Copiado ✓'; carregar(); };
   if (atual.leitura) $('#leitura').innerHTML = await api('/api/leitura?id=' + encodeURIComponent(atual.id));
   const h = await api('/api/historico?id=' + encodeURIComponent(atual.id));
@@ -308,15 +349,70 @@ async function orientar(modo, mensagem) {
 // ------------------------------------------------------------- eventos
 function marcarAba() {
   document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.aba === aba));
-  $('#vLeitura').hidden = aba === 'tese'; $('#vTese').hidden = aba !== 'tese';
+  $('#vLeitura').hidden = aba === 'tese' || aba === 'revisao'; $('#vTese').hidden = aba !== 'tese';
+  $('#vRevisao').hidden = aba !== 'revisao';
+}
+
+// ------------------------------------------------------------- revisão espaçada
+let rev = { fila: [], i: 0, virado: false, filtro: null };
+async function carregarRevisao() {
+  const d = await api('/api/revisao' + (rev.filtro ? '?artigo=' + encodeURIComponent(rev.filtro) : ''));
+  rev.fila = d.fila; rev.i = 0; rev.virado = false;
+  desenharResumo(d.resumo);
+  mostrarCartao();
+}
+function desenharResumo(r) {
+  $('#nRev').textContent = r.hoje || '';
+  $('#revResumo').innerHTML = r.total ? `
+    <div class="rev-kpis">
+      <div><b>${r.hoje}</b><span>para hoje</span></div>
+      <div><b>${r.firmes}</b><span>firmes</span></div>
+      <div><b>${r.aprendendo}</b><span>aprendendo</span></div>
+      <div><b>${r.novos}</b><span>novos</span></div>
+    </div>
+    <p class="status">Acerto nos últimos 7 dias: <b>${r.acerto_7d == null ? '—' : r.acerto_7d + '%'}</b> (${r.revisoes_7d} respostas) · ${r.total} cartões no total</p>`
+    : '<p class="vazio">Nenhum cartão ainda. Abra um artigo lido pelo agente e clique em <b>🃏 Gerar cartões</b>.</p>';
+  $('#revArtigos').innerHTML = r.por_artigo.map((a) => `
+    <button class="item ${rev.filtro === a.artigo ? 'on' : ''}" data-rev="${esc(a.artigo)}" type="button">
+      <span>${a.codigo ? '#' + esc(a.codigo) + ' · ' : ''}${esc(a.artigo)}</span>
+      <small><span class="rev-barra"><i style="width:${a.total ? 100 * a.firmes / a.total : 0}%"></i></span> ${a.firmes}/${a.total} firmes${a.hoje ? ` · ${a.hoje} para hoje` : ''}</small>
+    </button>`).join('') + (rev.filtro ? '<button class="btn" id="revTodos" type="button">Revisar todos os artigos</button>' : '');
+  if ($('#revTodos')) $('#revTodos').onclick = () => { rev.filtro = null; carregarRevisao(); };
+}
+function mostrarCartao() {
+  const c = rev.fila[rev.i];
+  if (!c) { $('#revCartao').innerHTML = `<div class="vazio">🎉 Nada para revisar ${rev.filtro ? 'neste artigo ' : ''}hoje.<br>Volte amanhã — a agenda cuida do resto.</div>`; return; }
+  const estado = !c.historico.length ? 'novo' : c.degrau >= 3 ? 'firme' : 'aprendendo';
+  $('#revCartao').innerHTML = `
+    <p class="status">Cartão ${rev.i + 1} de ${rev.fila.length} · ${esc(estado)} · ${c.codigo ? '#' + esc(c.codigo) + ' · ' : ''}${esc(c.artigo)}</p>
+    <div class="rev-card">
+      <div class="rev-q">${esc(c.pergunta)}</div>
+      ${rev.virado ? `<div class="rev-a">${esc(c.resposta)}</div>
+        <p class="status">Fonte: ${esc(c.artigo)}${c.pagina ? ', p. ' + esc(c.pagina) : ''} · ${esc(c.origem)}</p>` : ''}
+    </div>
+    <div class="acoes">${rev.virado
+      ? '<button class="btn ok" id="revSim" type="button">✓ Lembrei</button><button class="btn nao" id="revNao" type="button">✗ Não lembrei</button>'
+      : '<button class="btn pri" id="revVirar" type="button">Mostrar resposta</button><span class="status">Tente responder de cabeça antes.</span>'}</div>`;
+  if ($('#revVirar')) $('#revVirar').onclick = () => { rev.virado = true; mostrarCartao(); };
+  const resp = async (lembrou) => {
+    await api('/api/revisao/responder', { id: c.id, lembrou });
+    rev.i += 1; rev.virado = false;
+    if (rev.i >= rev.fila.length) return carregarRevisao();
+    mostrarCartao();
+    api('/api/revisao').then((d) => desenharResumo(d.resumo)).catch(() => {});   // progresso ao vivo
+  };
+  if ($('#revSim')) $('#revSim').onclick = () => resp(true);
+  if ($('#revNao')) $('#revNao').onclick = () => resp(false);
 }
 document.querySelector('nav').onclick = (e) => {
   const b = e.target.closest('button'); if (!b) return;
   aba = b.dataset.aba; atual = null; marcarAba();
+  if (aba === 'revisao') return carregarRevisao();
   if (aba !== 'tese') $('#detalhe').innerHTML = '<div class="vazio">Clique num arquivo da lista.</div>';
   carregar();
 };
 $('#lista').onclick = (e) => { const b = e.target.closest('[data-id]'); if (b) abrir(b.dataset.id); };
+$('#revArtigos').onclick = (e) => { const b = e.target.closest('[data-rev]'); if (b) { rev.filtro = b.dataset.rev; carregarRevisao(); } };
 $('#busca').oninput = listar;
 $('#secoes').onclick = (e) => { const b = e.target.closest('[data-sec]'); if (b) abrirSecao(b.dataset.sec); };
 $('#novaSecao').onclick = async () => {
@@ -333,7 +429,8 @@ document.querySelectorAll('[data-modo]').forEach((b) => (b.onclick = () => orien
 $('#enviar').onclick = () => { const t = $('#entrada').value.trim(); if (!t) return; $('#entrada').value = ''; orientar('debater', t); };
 window.addEventListener('beforeunload', (e) => { if (sujo) e.preventDefault(); });
 
-carregar();
+async function carregarRevisaoContagem() { try { const d = await api('/api/revisao'); $('#nRev').textContent = d.resumo.hoje || ''; } catch (e) {} }
+carregar(); carregarRevisaoContagem();
 </script>
 </body>
 </html>
