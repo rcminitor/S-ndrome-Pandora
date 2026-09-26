@@ -126,6 +126,178 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
+   "codigo": "6",
+   "titulo": "Xiao et al. (2025) — Deep learning in veterinary diagnostics",
+   "marcas": {
+    "C1": {
+     "m": "✗",
+     "txt": "nenhum estudo de FIC (pp. 5–8)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão sistemática (p. 2)"
+    },
+    "C3": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C4": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C5": {
+     "m": "◐",
+     "txt": "sensores só em suínos e bovinos (p. 12)"
+    },
+    "C6": {
+     "m": "✅",
+     "txt": "39 estudos de deep learning (p. 2)"
+    },
+    "C7": {
+     "m": "◐",
+     "txt": "métricas de outros estudos (pp. 5–8)"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": "falta validação externa e clínica (p. 13)"
+    },
+    "C9": {
+     "m": "✗",
+     "txt": ""
+    }
+   },
+   "atualizado": "2026-09-26T16:25"
+  },
+  {
+   "codigo": "14",
+   "titulo": "Hu et al. (2026) — Meow-Omni 1 (preprint)",
+   "marcas": {
+    "C1": {
+     "m": "✗",
+     "txt": "gatos em geral, sem doença (p. 2)"
+    },
+    "C2": {
+     "m": "✅",
+     "txt": "modelo e dados próprios (p. 6)"
+    },
+    "C3": {
+     "m": "◐",
+     "txt": "janelas de 5 a 15 s (p. 16)"
+    },
+    "C4": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C5": {
+     "m": "✅",
+     "txt": "acelerômetro, vídeo e áudio (pp. 6, 16)"
+    },
+    "C6": {
+     "m": "✅",
+     "txt": "modelo de linguagem multimodal (p. 1)"
+    },
+    "C7": {
+     "m": "◐",
+     "txt": "acurácia 71,16% em teste montado (pp. 7–8)"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": "sem validação clínica; dados sintéticos (p. 20)"
+    },
+    "C9": {
+     "m": "✗",
+     "txt": "bases públicas, contexto não informado (pp. 16–17)"
+    }
+   },
+   "atualizado": "2026-09-26T16:25"
+  },
+  {
+   "codigo": "16",
+   "titulo": "Macleod et al. (2025) — Evidence for FIC management",
+   "marcas": {
+    "C1": {
+     "m": "◐",
+     "txt": "revisão de 22 estudos com FIC (p. 235)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão sistemática (p. 234)"
+    },
+    "C3": {
+     "m": "◐",
+     "txt": "seguimentos de outros estudos (pp. 236–238)"
+    },
+    "C4": {
+     "m": "◐",
+     "txt": "MEMO e feromônio, só 2 estudos (p. 236)"
+    },
+    "C5": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "◐",
+     "txt": "RR recalculados pelos autores (p. 235)"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": "nenhum estudo nível 1 (p. 235)"
+    },
+    "C9": {
+     "m": "✗",
+     "txt": ""
+    }
+   },
+   "atualizado": "2026-09-26T16:25"
+  },
+  {
+   "codigo": "17",
+   "titulo": "He et al. (2022) — FIC update review",
+   "marcas": {
+    "C1": {
+     "m": "◐",
+     "txt": "revisão sobre FIC (p. 1)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão narrativa (p. 1)"
+    },
+    "C3": {
+     "m": "◐",
+     "txt": "recidiva e mortalidade de outros estudos (p. 11)"
+    },
+    "C4": {
+     "m": "✅",
+     "txt": "estressores como fatores de risco (p. 2)"
+    },
+    "C5": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "✗",
+     "txt": "não se aplica"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C9": {
+     "m": "✗",
+     "txt": ""
+    }
+   },
+   "atualizado": "2026-09-26T16:25"
+  },
+  {
    "codigo": "25",
    "titulo": "Jhilta et al. (2026) — Smart boluses (sem PDF)",
    "marcas": {
@@ -210,6 +382,49 @@ window.ESTADO_ARTE = {
     }
    },
    "atualizado": "2026-09-26T15:53"
+  },
+  {
+   "codigo": "40",
+   "titulo": "Forrester e Towell (2015) — FIC (VCNA)",
+   "marcas": {
+    "C1": {
+     "m": "◐",
+     "txt": "revisão sobre FIC (p. 783)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão narrativa (p. 783)"
+    },
+    "C3": {
+     "m": "◐",
+     "txt": "remissão e recidiva de outros estudos (p. 791)"
+    },
+    "C4": {
+     "m": "✅",
+     "txt": "estresse e ambiente na fisiopatologia (pp. 786–789)"
+    },
+    "C5": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "✗",
+     "txt": "não se aplica"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C9": {
+     "m": "✗",
+     "txt": ""
+    }
+   },
+   "atualizado": "2026-09-26T16:25"
   },
   {
    "codigo": "43",
@@ -427,6 +642,49 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
+   "codigo": "S1",
+   "titulo": "Foreman-Worsley e Farnworth (2019) — Indoor cat welfare",
+   "marcas": {
+    "C1": {
+     "m": "✗",
+     "txt": "bem-estar em geral, sem FIC (p. 1)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão sistemática (p. 2)"
+    },
+    "C3": {
+     "m": "✗",
+     "txt": "só estudos de curto prazo, 3–5 dias (p. 7)"
+    },
+    "C4": {
+     "m": "✅",
+     "txt": "ambiente físico e social (p. 2)"
+    },
+    "C5": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "✗",
+     "txt": "revisão descritiva, sem metanálise (p. 6)"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C9": {
+     "m": "◐",
+     "txt": "só 18 a 21 dos 61 estudos em casa (pp. 1, 3)"
+    }
+   },
+   "atualizado": "2026-09-26T16:25"
+  },
+  {
    "codigo": "S2",
    "titulo": "Buffington et al. (2006) — MEMO",
    "marcas": {
@@ -599,5 +857,5 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   }
  ],
- "atualizado": "2026-09-26T16:14"
+ "atualizado": "2026-09-26T16:25"
 };
