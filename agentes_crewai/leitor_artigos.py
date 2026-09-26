@@ -43,6 +43,7 @@ import pymupdf
 from dotenv import dotenv_values
 from pydantic import BaseModel
 
+import contexto_cofre
 import ia
 
 AQUI = Path(__file__).resolve().parent
@@ -142,6 +143,7 @@ class Referencia:
     arquivo: str = ""
     citada_em: list[int] = field(default_factory=list)
     filhos: list["Referencia"] = field(default_factory=list)
+    acervo: str = ""            # "#51 · fichamento concluido" se já é uma fonte do cofre
 
 
 RE_DOI = re.compile(r"10\.\d{4,9}/[^\s\"<>]+", re.I)
@@ -284,6 +286,9 @@ def _cache(chave: str, gerar):
 
 TRIADOR = ("Você é pesquisador da Síndrome de Pandora em felinos: cistite idiopática, estresse, eixo HHA, "
            "adrenais, ambiente, comportamento, enriquecimento, sensores/IoT e IA.")
+_nucleos = re.search(r"Os dois núcleos:(.*)", contexto_cofre.regras(), re.S)
+if _nucleos:                                   # os dois núcleos do cofre orientam a triagem
+    TRIADOR += "\nA tese se organiza em dois núcleos:" + _nucleos.group(1)[:900]
 TRADUTOR = ("Você é tradutor técnico de Medicina Veterinária. Traduz para o português do Brasil de forma INTEGRAL "
             "e fiel: não resume, não explica, não corta frases, mantém números, unidades, valores de p, siglas na "
             "primeira ocorrência e marcadores de citação como [5,6] ou (Casey et al., 2009) exatamente onde estão.")
@@ -407,6 +412,9 @@ class Rede:
 def resolver(refs: list[Referencia], rede: Rede, pasta: Path, prof_restante: int, somente_citadas: bool) -> None:
     alvo = [r for r in refs if r.citada_em or not somente_citadas]
     for i, r in enumerate(alvo, 1):
+        if r.acervo:                                      # já é uma fonte sua: não baixa de novo
+            print(f"  ref {i}/{len(alvo)} {r.rotulo}: já no seu acervo ({r.acervo})")
+            continue
         rede.achar_doi(r)
         rede.detalhar(r)
         rede.baixar(r, pasta)
@@ -414,16 +422,25 @@ def resolver(refs: list[Referencia], rede: Rede, pasta: Path, prof_restante: int
         if r.arquivo and prof_restante > 0:                # desce na árvore: quem esse artigo citou
             _, bruto = extrair(Path(r.arquivo))
             r.filhos = separar_referencias(bruto)
+            marcar_acervo(r.filhos)
             resolver(r.filhos, rede, pasta / "citados_de_citados", prof_restante - 1, somente_citadas=False)
 
 
 # ============================================================ 5. relatório
+def marcar_acervo(refs: list[Referencia]) -> None:
+    """Marca as referências que já são fontes do cofre (por DOI ou título)."""
+    for r in refs:
+        f = contexto_cofre.no_acervo(r.texto, r.doi)
+        if f:
+            r.acervo = f"#{f['codigo']} · {f['status']}"
+
+
 def md_arvore(refs: list[Referencia], nivel: int = 0) -> str:
     out = []
     for r in refs:
-        if nivel and not (r.arquivo or r.acesso_aberto):
+        if nivel and not (r.arquivo or r.acesso_aberto or r.acervo):
             continue                                           # nos níveis de baixo, só o que tem acesso
-        estado = ("📄 baixado" if r.arquivo else "🔓 aberto (não baixado)" if r.acesso_aberto
+        estado = (f"📚 já no seu acervo ({r.acervo})" if r.acervo else "📄 baixado" if r.arquivo else "🔓 aberto (não baixado)" if r.acesso_aberto
                   else "🔒 sem acesso aberto — Portal CAPES / biblioteca" if r.doi else "❓ DOI não localizado")
         doi = f" · DOI {r.doi}" + (f" ({r.doi_origem})" if r.doi_origem != "no PDF" else "") if r.doi else ""
         out.append(f"{'  ' * nivel}- **[{r.rotulo}]** {r.texto[:220]}{doi} · {estado}")
@@ -454,8 +471,16 @@ def relatorio(pdf: Path, trechos: list[Trecho], sel_ids: set[int], refs: list[Re
             L.append("**O autor cita aqui:**")
             for c in t.citacoes:
                 r = achar_ref(c, refs)
-                L.append(f"- [{c}] " + (f"{r.texto[:200]}" + (" · 📄 baixado" if r.arquivo else "") if r else "referência não localizada na lista — conferir"))
+                L.append(f"- [{c}] " + (f"{r.texto[:200]}" + (f" · 📚 **já no seu acervo: {r.acervo}**" if r.acervo else " · 📄 baixado" if r.arquivo else " · ⭕ não está no seu acervo") if r else "referência não localizada na lista — conferir"))
             L.append("")
+    citadas = [r for r in refs if any(i in sel_ids for i in r.citada_em)]
+    no_acv = [r for r in citadas if r.acervo]
+    if citadas:
+        L += ["## Citações × seu acervo", "",
+              f"Das **{len(citadas)}** referências citadas nos trechos relevantes, **{len(no_acv)}** já estão no seu acervo "
+              f"e **{len(citadas) - len(no_acv)}** não estão.", ""]
+        L += [f"- 📚 [{r.rotulo}] {r.acervo} — {r.texto[:120]}" for r in no_acv]
+        L.append("")
     L += ["## Árvore de citações", "",
           f"Nível 0 = referências do artigo; abaixo, quem cada artigo baixado citou (profundidade {prof}).", "",
           md_arvore(refs) or "_Nenhuma referência extraída._", "",
@@ -493,6 +518,7 @@ def main() -> None:
         sys.exit("O PDF não tem camada de texto (é imagem). Faça OCR antes — não vou traduzir por suposição.")
     refs = separar_referencias(bruto)
     ligar_citacoes(trechos, refs)
+    marcar_acervo(refs)
     pontuar(trechos)
     cands = [t for t in trechos if t.pontos > 0]
     print(f"{pdf.name}: {len(trechos)} parágrafos, {len(cands)} com termos da tese, {len(refs)} referências, "

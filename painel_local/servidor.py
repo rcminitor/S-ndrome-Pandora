@@ -45,6 +45,8 @@ PARA_LER = BIBLIOTECA / "1_Para_ler"
 LIDO = BIBLIOTECA / "2_Lido"
 ACERVO = Path(CFG.get("ACERVO") or BASE / "PDF")
 TESE = Path(CFG.get("TESE_DIR") or BASE / "Notas" / "Tese")
+import os  # noqa: E402
+os.environ["COFRE_DIR"] = str(BASE)            # agentes (orientador e leitor) leem o mesmo cofre do painel
 for p in (PARA_LER, LIDO, TESE):
     p.mkdir(parents=True, exist_ok=True)
 orientador.CFG["BIBLIOTECA"] = str(BIBLIOTECA)

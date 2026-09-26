@@ -47,6 +47,7 @@ from pathlib import Path
 from dotenv import dotenv_values
 from pydantic import BaseModel, Field
 
+import contexto_cofre
 import ia
 
 AQUI = Path(__file__).resolve().parent
@@ -114,6 +115,9 @@ def cartao(a: dict) -> str:
 def montar_contexto(tema: str, codigos: list[str], fichamento: str | None) -> tuple[str, list[str]]:
     teto = int(CFG["CONTEXTO_MAX_CHARS"])
     fontes = escolher_fontes(carregar_inventario(), tema, codigos, int(CFG["MAX_CARTOES"]))
+    status_cofre = {f["codigo"]: f["status"] for f in contexto_cofre.fontes()}
+    for a in fontes:                                   # o status que vale é o da nota no cofre
+        a["status"] = status_cofre.get(a["codigo"], a["status"])
     partes = [cartao(a) for a in fontes]
     if fichamento:
         texto = Path(fichamento).read_text(encoding="utf-8")
@@ -122,6 +126,9 @@ def montar_contexto(tema: str, codigos: list[str], fichamento: str | None) -> tu
     ctx = "\n\n".join(partes)
     if len(ctx) > teto:
         ctx = ctx[:teto] + "\n[contexto cortado no teto de caracteres]"
+    fich = contexto_cofre.fichamentos(tema, codigos=[a["codigo"] for a in fontes])
+    if fich:                                           # fichamentos do cofre: lidos no PDF, com página
+        ctx += "\n\nFICHAMENTOS DO COFRE (conferidos no PDF — prefira-os aos cartões):\n" + fich
     return ctx, [a["codigo"] for a in fontes]
 
 
