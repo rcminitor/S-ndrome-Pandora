@@ -63,6 +63,10 @@ def main() -> None:
             chave = getpass("  Chave do OmniRoute: ").strip() or atual.get("LLM_API_KEY", "")
     else:
         chave = getpass(f"Chave de API do provedor (ex.: Anthropic, paga) {'[já preenchida]' if atual.get('LLM_API_KEY') else '[vazia]'}: ").strip()
+    reserva = ""
+    if usar_omni:
+        tem = "[já preenchida — Enter mantém]" if atual.get("RESERVA_API_KEY") else "[Enter = sem reserva]"
+        reserva = getpass(f"Chave PAGA de reserva, usada só quando o gratuito falhar (ex.: sk-ant-...) {tem}: ").strip()
     email = input(f"Seu e-mail (para Crossref/OpenAlex) [{atual.get('EMAIL_CONTATO', '')}]: ").strip()
     padrao_pasta = atual.get("PASTA_ESTUDO") or (str(COFRE_PDF) if COFRE_PDF.exists() else "")
     mostra = padrao_pasta or str(AQUI / "biblioteca")
@@ -71,6 +75,7 @@ def main() -> None:
     novos = {
         "LLM_API_KEY": chave or atual.get("LLM_API_KEY", ""),
         "EMAIL_CONTATO": email or atual.get("EMAIL_CONTATO", ""),
+        "RESERVA_API_KEY": (reserva or atual.get("RESERVA_API_KEY", "")) if usar_omni else "",
         "PASTA_ESTUDO": pasta or padrao_pasta,
     }
     if usar_omni:
@@ -103,6 +108,8 @@ def main() -> None:
 
     print(f"\n.env gravado em {ENV}")
     print("Chave:", "preenchida" if novos["LLM_API_KEY"] else "VAZIA — os agentes não vão funcionar sem ela")
+    if usar_omni:
+        print("Reserva paga:", "preenchida (entra sozinha quando o gratuito falhar)" if novos["RESERVA_API_KEY"] else "nenhuma")
     print("E-mail:", novos["EMAIL_CONTATO"] or "vazio (as buscas funcionam, mas mais devagar)")
     print("PDFs baixados em:", novos["PASTA_ESTUDO"] or AQUI / "biblioteca")
 

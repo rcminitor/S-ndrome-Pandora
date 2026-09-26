@@ -43,6 +43,8 @@ import pymupdf
 from dotenv import dotenv_values
 from pydantic import BaseModel
 
+import ia
+
 AQUI = Path(__file__).resolve().parent
 CACHE = AQUI / ".cache"
 SAIDAS = AQUI / "saidas"
@@ -52,6 +54,7 @@ CFG = {
     "MODELO_BARATO": "anthropic/claude-haiku-4-5-20251001",
     "LLM_BASE_URL": "",
     "LLM_API_KEY": "",
+    "RESERVA_API_KEY": "",
     "EMAIL_CONTATO": "",           # pedido educado das APIs Crossref/OpenAlex/Unpaywall
     "PASTA_ESTUDO": "",             # onde salvar os PDFs baixados (padrão: agentes_crewai/biblioteca)
     "MAX_DOWNLOADS": "15",
@@ -265,10 +268,8 @@ class Lote(BaseModel):
     itens: list[ItemTraduzido]
 
 
-def _llm(modelo: str, max_tokens: int):
-    from crewai import LLM
-    extra = {k: CFG[v] for k, v in (("base_url", "LLM_BASE_URL"), ("api_key", "LLM_API_KEY")) if CFG[v]}
-    return LLM(model=modelo, temperature=0, max_tokens=max_tokens, **extra)
+def _llm(papel: str, max_tokens: int):
+    return ia.criar_llm(CFG, papel, max_tokens, temperature=0)
 
 
 def _cache(chave: str, gerar):
@@ -289,7 +290,7 @@ def triagem_ia(cands: list[Trecho]) -> tuple[set[int], int]:
         ag = Agent(role="Triador", goal="Selecionar trechos úteis à tese",
                    backstory="Pesquisador de Síndrome de Pandora em felinos: cistite idiopática, estresse, eixo HHA, "
                              "adrenais, ambiente, comportamento, enriquecimento, sensores/IoT e IA.",
-                   llm=_llm(CFG["MODELO_BARATO"], 300), allow_delegation=False, max_iter=1, memory=False)
+                   llm=_llm("barato", 300), allow_delegation=False, max_iter=1, memory=False)
         tk = Task(description=f"Trechos (id: início do texto):\n{lista}\n\nDevolva os ids dos trechos com conteúdo "
                               "científico útil à tese (resultados, métodos, conceitos, discussão). Exclua "
                               "agradecimentos, financiamento, conflito de interesse e cabeçalhos.",
@@ -298,19 +299,20 @@ def triagem_ia(cands: list[Trecho]) -> tuple[set[int], int]:
         c.kickoff()
         return tk.output.pydantic.ids, c.usage_metrics.total_tokens
 
-    ids, tokens = _cache("triagem|" + CFG["MODELO_BARATO"] + lista, gerar)
+    ids, tokens = _cache("triagem|" + CFG["MODELO_BARATO"] + lista, lambda: ia.com_reserva(CFG, gerar, "triagem"))
     return set(ids), tokens
 
 
 def traduzir(sel: list[Trecho]) -> int:
     from crewai import Agent, Crew, Task
-    tradutor = Agent(
-        role="Tradutor científico", goal="Traduzir para o português do Brasil sem omitir nada",
-        backstory="Tradutor técnico de Medicina Veterinária. Traduz de forma INTEGRAL e fiel: não resume, não "
-                  "explica, não corta frases, mantém números, unidades, valores de p, siglas na primeira ocorrência "
-                  "e marcadores de citação como [5,6] ou (Casey et al., 2009) exatamente onde estão.",
-        llm=_llm(CFG["MODELO_TRADUTOR"], int(CFG["MAX_TOKENS_TRADUTOR"])),
-        allow_delegation=False, max_iter=1, memory=False)
+    def novo_tradutor():                                  # recriado a cada lote: pode ter trocado para a reserva
+        return Agent(
+            role="Tradutor científico", goal="Traduzir para o português do Brasil sem omitir nada",
+            backstory="Tradutor técnico de Medicina Veterinária. Traduz de forma INTEGRAL e fiel: não resume, não "
+                      "explica, não corta frases, mantém números, unidades, valores de p, siglas na primeira ocorrência "
+                      "e marcadores de citação como [5,6] ou (Casey et al., 2009) exatamente onde estão.",
+            llm=_llm("tradutor", int(CFG["MAX_TOKENS_TRADUTOR"])),
+            allow_delegation=False, max_iter=1, memory=False)
     teto, lotes, atual = int(CFG["LOTE_CHARS"]), [], []
     for t in sel:
         if atual and sum(len(x.texto) for x in atual) + len(t.texto) > teto:
@@ -324,6 +326,7 @@ def traduzir(sel: list[Trecho]) -> int:
         corpo = "\n\n".join(f"<t id={t.id}>\n{t.texto}\n</t>" for t in lote)
 
         def gerar():
+            tradutor = novo_tradutor()
             tk = Task(description=f"Traduza cada trecho abaixo, inteiro, para o português do Brasil.\n\n{corpo}",
                       expected_output="JSON {itens: [{id, traducao}]} com um item por trecho",
                       agent=tradutor, output_pydantic=Lote)
@@ -331,7 +334,7 @@ def traduzir(sel: list[Trecho]) -> int:
             c.kickoff()
             return {str(x.id): x.traducao for x in tk.output.pydantic.itens}, c.usage_metrics.total_tokens
 
-        mapa, tok = _cache("trad|" + CFG["MODELO_TRADUTOR"] + corpo, gerar)
+        mapa, tok = _cache("trad|" + CFG["MODELO_TRADUTOR"] + corpo, lambda: ia.com_reserva(CFG, gerar, f"tradução, lote {i}"))
         total += tok
         for t in lote:
             t.traducao = mapa.get(str(t.id), "")
@@ -534,7 +537,7 @@ def main() -> None:
 
     saida = relatorio(pdf, trechos, sel_ids, refs, tokens, a.profundidade,
                       Path(a.relatorio_dir) if a.relatorio_dir else None)
-    print(f"Relatório: {saida} · tokens usados: {tokens}")
+    print(f"Relatório: {saida} · tokens usados: {tokens}" + (" · ⚠ parte feita com a RESERVA PAGA" if ia.usando_reserva() else ""))
 
 
 if __name__ == "__main__":
