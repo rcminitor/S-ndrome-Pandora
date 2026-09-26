@@ -139,6 +139,7 @@ body.embed main { padding: 12px 4px; }
       </div>
       <textarea id="editor" placeholder="Escreva aqui a sua parte da tese…" disabled></textarea>
       <p class="status" id="contagem"></p>
+      <p class="status" id="stSemana"></p>
     </div>
     <div class="card">
       <h2>Orientador</h2>
@@ -316,12 +317,23 @@ async function abrirSecao(nome) {
   $('#tSecao').textContent = secao;
   $('#editor').disabled = false; $('#editor').value = d.texto;
   $('#chat').innerHTML = ''; $('#stSalvo').textContent = '';
-  contar(); listarSecoes();
+  contar(); listarSecoes(); semanaTese();
+}
+async function semanaTese() {
+  try {
+    const d = await api('/api/progresso');
+    const seg = new Date(); seg.setDate(seg.getDate() - ((seg.getDay() + 6) % 7));
+    const s = d.semana && d.semana.semana === seg.toISOString().slice(0, 10) ? d.semana : null;
+    $('#stSemana').innerHTML = s
+      ? `📈 Esta semana: <b>${s.pagTese}</b> pág. da tese · <b>${s.pagArtigo}</b> pág. do artigo · ${s.conversas} conversa(s) com o orientador — vai para o Registro Semanal do site sozinho.`
+      : '📈 Esta semana ainda sem páginas novas. Seções cujo nome começa com "Artigo" contam para a qualificação.';
+  } catch (e) {}
 }
 async function salvar() {
   if (!secao) return;
   await api('/api/secao', { nome: secao, texto: $('#editor').value });
   sujo = false; $('#stSalvo').textContent = 'Salvo às ' + new Date().toLocaleTimeString('pt-BR').slice(0, 5);
+  semanaTese();
 }
 function contar() {
   const t = $('#editor').value.trim();

@@ -49,9 +49,29 @@
   }
   function gravar(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { /* modo privado */ } }
 
-  let registros = ler(STORE_KEY, []);
+  // Semanas: as automáticas (dados_progresso.js, enviadas pelo Painel de Estudo do PC) + as digitadas aqui.
+  // Um valor digitado (> 0) vale sobre o automático; horas e tarefas IoT são só manuais.
+  const CAMPOS = ['paginasLidas', 'artigosLidos', 'fichamentos', 'pagArtigo', 'pagTese', 'tarefasIot', 'horas'];
+  const AUTO = (window.DADOS_PROGRESSO && window.DADOS_PROGRESSO.semanas) || [];
+  let manuais = ler(STORE_KEY, []);
+  let registros = [];
+  function mesclar() {
+    const mapa = {};
+    AUTO.forEach((a) => {
+      mapa[a.semana] = { semana: a.semana, obs: '', auto: a };
+      CAMPOS.forEach((k) => { mapa[a.semana][k] = +a[k] || 0; });
+    });
+    manuais.forEach((m) => {
+      const r = mapa[m.semana] || (mapa[m.semana] = { semana: m.semana, obs: '' });
+      CAMPOS.forEach((k) => { if (+m[k] > 0) r[k] = +m[k]; else if (r[k] == null) r[k] = 0; });
+      if (m.obs) r.obs = m.obs;
+      r.manual = true;
+    });
+    registros = Object.values(mapa).sort((a, b) => a.semana.localeCompare(b.semana));
+  }
+  mesclar();
   let metas = Object.assign({}, METAS_PADRAO, ler(METAS_KEY, {}));
-  const salvarRegistros = () => { registros.sort((a, b) => a.semana.localeCompare(b.semana)); gravar(STORE_KEY, registros); renderTudo(); };
+  const salvarRegistros = () => { manuais.sort((a, b) => a.semana.localeCompare(b.semana)); gravar(STORE_KEY, manuais); mesclar(); renderTudo(); };
 
   const escrita = (r) => (+r.pagArtigo || 0) + (+r.pagTese || 0);
   const METRICAS = {
@@ -189,7 +209,8 @@
   function renderKpis() {
     const u4 = registros.slice(-4);
     const fichInv = INVENTARIO.filter((a) => /fichamento concluido/i.test(a.status || '')).length;
-    const fichReg = registros.reduce((s, r) => s + (+r.fichamentos || 0), 0);
+    // os fichamentos automáticos vêm do cofre, que já conta no inventário: somar só os digitados aqui
+    const fichReg = manuais.reduce((s, r) => s + (+r.fichamentos || 0), 0);
     const prazo = metas.tese.prazo;
     const dias = Math.round((parseData(prazo) - hoje()) / 864e5);
     let constancia = null;
@@ -295,8 +316,9 @@
   function renderTabela() {
     const t = $('#pnTabela');
     if (!registros.length) { t.innerHTML = '<tbody><tr><td>Nenhuma semana registrada.</td></tr></tbody>'; return; }
-    t.innerHTML = `<thead><tr><th>Semana</th><th>Pág. lidas</th><th>Artigos</th><th>Fichamentos</th><th>Artigo (pág.)</th><th>Tese (pág.)</th><th>IoT</th><th>Horas</th><th>Obs.</th><th></th></tr></thead><tbody>` +
-      registros.slice().reverse().map((r) => `<tr><td>${dataBR(r.semana)}</td><td>${fmt(r.paginasLidas)}</td><td>${fmt(r.artigosLidos)}</td><td>${fmt(r.fichamentos)}</td><td>${fmt(r.pagArtigo)}</td><td>${fmt(r.pagTese)}</td><td>${fmt(r.tarefasIot)}</td><td>${fmt(r.horas)}</td><td>${esc(r.obs || '')}</td><td><button class="pn-btn pn-btn-sm" data-edit="${r.semana}" type="button">Editar</button> <button class="pn-btn pn-btn-sm pn-btn-danger" data-del="${r.semana}" type="button">Excluir</button></td></tr>`).join('') + '</tbody>';
+    t.innerHTML = `<thead><tr><th>Semana</th><th>Origem</th><th>Pág. lidas</th><th>Artigos</th><th>Fichamentos</th><th>Artigo (pág.)</th><th>Tese (pág.)</th><th>IoT</th><th>Horas</th><th>Obs.</th><th></th></tr></thead><tbody>` +
+      registros.slice().reverse().map((r) => `<tr><td>${dataBR(r.semana)}</td><td title="${r.auto ? `Painel: ${r.auto.leiturasIA} leitura(s) da IA · ${r.auto.revisoes} revisão(ões)${r.auto.acerto != null ? ` (${r.auto.acerto}% de acerto)` : ''} · ${r.auto.conversas} conversa(s) com o orientador` : ''}">${r.auto ? '🤖' : ''}${r.manual ? '✍️' : ''}</td><td>${fmt(r.paginasLidas)}</td><td>${fmt(r.artigosLidos)}</td><td>${fmt(r.fichamentos)}</td><td>${fmt(r.pagArtigo)}</td><td>${fmt(r.pagTese)}</td><td>${fmt(r.tarefasIot)}</td><td>${fmt(r.horas)}</td><td>${esc(r.obs || '')}</td><td><button class="pn-btn pn-btn-sm" data-edit="${r.semana}" type="button">${r.manual ? 'Editar' : 'Completar'}</button>${r.manual ? ` <button class="pn-btn pn-btn-sm pn-btn-danger" data-del="${r.semana}" type="button">Excluir manual</button>` : ''}</td></tr>`).join('') + '</tbody>' +
+      `<caption class="pn-muted" style="caption-side:bottom;text-align:left;padding-top:8px">🤖 = vindo sozinho do Painel de Estudo (leituras, fichamentos do cofre, páginas escritas) · ✍️ = digitado aqui. Um valor digitado vale sobre o automático; horas e IoT são só manuais.${window.DADOS_PROGRESSO ? ` Atualizado em ${dataBR(window.DADOS_PROGRESSO.atualizado.slice(0, 10))}.` : ''}</caption>`;
   }
   function segundaDe(d) { const x = new Date(d); const dia = (x.getDay() + 6) % 7; x.setDate(x.getDate() - dia); return x.toISOString().slice(0, 10); }
   function initRegistro() {
@@ -307,18 +329,18 @@
       const r = Object.fromEntries(new FormData(f));
       r.semana = segundaDe(parseData(r.semana));
       ['paginasLidas', 'artigosLidos', 'fichamentos', 'pagArtigo', 'pagTese', 'tarefasIot', 'horas'].forEach((k) => { r[k] = Math.max(0, +r[k] || 0); });
-      registros = registros.filter((x) => x.semana !== r.semana).concat(r);
+      manuais = manuais.filter((x) => x.semana !== r.semana).concat(r);
       salvarRegistros();
       toast(`Semana de ${dataBR(r.semana)} salva.`);
     });
     f.addEventListener('reset', () => setTimeout(() => { f.semana.value = segundaDe(hoje()); }));
     $('#pnTabela').addEventListener('click', (e) => {
       const d = e.target.closest('[data-del]'), ed = e.target.closest('[data-edit]');
-      if (d && confirm(`Apagar a semana de ${dataBR(d.dataset.del)}?`)) { registros = registros.filter((x) => x.semana !== d.dataset.del); salvarRegistros(); }
-      if (ed) { const r = registros.find((x) => x.semana === ed.dataset.edit); Object.keys(r).forEach((k) => { if (f[k]) f[k].value = r[k]; }); f.scrollIntoView({ behavior: 'smooth' }); }
+      if (d && confirm(`Apagar a semana de ${dataBR(d.dataset.del)}?`)) { manuais = manuais.filter((x) => x.semana !== d.dataset.del); salvarRegistros(); }
+      if (ed) { const r = manuais.find((x) => x.semana === ed.dataset.edit) || { semana: ed.dataset.edit }; f.reset(); setTimeout(() => { Object.keys(r).forEach((k) => { if (f[k]) f[k].value = r[k]; }); f.semana.value = ed.dataset.edit; }); f.scrollIntoView({ behavior: 'smooth' }); }
     });
     $('#pnExport').addEventListener('click', () => {
-      const blob = new Blob([JSON.stringify({ exportado: new Date().toISOString(), metas, registros }, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify({ exportado: new Date().toISOString(), metas, registros: manuais }, null, 2)], { type: 'application/json' });
       const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'acompanhamento_semanal.json' });
       a.click(); URL.revokeObjectURL(a.href);
     });
@@ -327,12 +349,12 @@
       try {
         const j = JSON.parse(await file.text());
         if (!Array.isArray(j.registros)) throw new Error('formato');
-        registros = j.registros; if (j.metas) { metas = Object.assign({}, METAS_PADRAO, j.metas); gravar(METAS_KEY, metas); renderMetasForm(); }
-        salvarRegistros(); toast(`${registros.length} semana(s) importada(s).`);
+        manuais = j.registros; if (j.metas) { metas = Object.assign({}, METAS_PADRAO, j.metas); gravar(METAS_KEY, metas); renderMetasForm(); }
+        salvarRegistros(); toast(`${manuais.length} semana(s) importada(s).`);
       } catch (err) { toast('Arquivo inválido.'); }
       e.target.value = '';
     });
-    $('#pnClear').addEventListener('click', () => { if (confirm('Apagar todos os registros semanais deste navegador? Exporte antes se quiser guardar.')) { registros = []; salvarRegistros(); } });
+    $('#pnClear').addEventListener('click', () => { if (confirm('Apagar todos os registros semanais deste navegador? Exporte antes se quiser guardar.')) { manuais = []; salvarRegistros(); } });
   }
 
   // -------------------------------------------------------------- metas

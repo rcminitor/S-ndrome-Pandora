@@ -42,6 +42,19 @@ Na aba **Revisão**, um cartão por vez: tente responder, clique em *Mostrar res
 
 Onde fica: `Leitura\revisao_cartoes.json` (cofre, privado). A nota **`Notas\Revisão de cartões.md`** mostra o resumo no Obsidian, com os cartões errados na última vez ("voltar ao texto"). O site mostra só os números (`dados_revisao.js`), enviados 2 minutos depois da última resposta, num envio só.
 
+### Progresso automático (Registro Semanal do site)
+
+O painel calcula sozinho, por semana (segunda a domingo), e envia ao site (`dados_progresso.js`, só números):
+
+| Campo | De onde vem |
+|---|---|
+| Artigos lidos · páginas lidas | seus "Eu li" (páginas = tamanho do PDF) |
+| Fichamentos | `Fichamentos\` do cofre, pelo campo `data_do_fichamento` |
+| Páginas escritas — tese / artigo | palavras das seções de `Notas\Tese` (seção que começa com **"Artigo"** conta para a qualificação); 1 página = `PALAVRAS_POR_PAGINA` (300). Conta também o que for escrito direto no Obsidian (foto ao ligar o painel e a cada salvamento). |
+| Extras (passe o mouse no 🤖) | leituras da IA, revisões e % de acerto, conversas com o orientador |
+
+No site, cada semana mostra 🤖 (automático) e/ou ✍️ (digitado). Um valor digitado (> 0) vale sobre o automático; **horas e tarefas IoT continuam manuais** — use "Completar". Gráficos, KPIs e probabilidade de cumprir os prazos passam a usar esses números.
+
 Pastas criadas no cofre: `Leitura\1_Para_ler`, `Leitura\2_Lido` e `Notas\Tese`.
 
 ### Qual IA usar

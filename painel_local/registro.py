@@ -126,10 +126,24 @@ class Registro:
         with TRAVA:
             reg = self.carregar()
             e = self._entrada(reg, pdf)
-            e["humano"] = {"data": self.agora(), "nota": nota.strip()}
+            e["humano"] = {"data": self.agora(), "nota": nota.strip(), "paginas": self._paginas(pdf)}
             self._salvar(reg)
         self._no_cofre(pdf)
         self.publicar(f"Romulo leu {pdf.stem}")
+
+    @staticmethod
+    def _paginas(pdf: Path) -> int:
+        """Tamanho do PDF (para o 'páginas lidas' do acompanhamento)."""
+        try:
+            import pymupdf
+            with pymupdf.open(pdf) as d:
+                return d.page_count
+        except Exception:
+            js = pdf.with_name(pdf.stem + ".leitura.json")
+            try:
+                return max(t["pagina"] for t in json.loads(js.read_text(encoding="utf-8"))["trechos"])
+            except Exception:
+                return 0
 
     def _no_cofre(self, pdf: Path) -> None:
         """Leva o evento para as notas do cofre (fonte, MOC, Fila, Índice). Falha aqui não
