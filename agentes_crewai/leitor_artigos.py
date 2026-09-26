@@ -105,6 +105,7 @@ def extrair(pdf: Path) -> tuple[list[Trecho], str]:
             for linha in bloco["lines"]:
                 for s in linha["spans"]:
                     t = unicodedata.normalize("NFKC", s["text"])        # ﬀ → ff, ﬁ → fi
+                    t = re.sub(r"[\ue000-\uf8ff]", "⟨?⟩", t)             # símbolo de fonte privada (≤, ±…): ilegível
                     sobrescrito = s["flags"] & 1 and re.fullmatch(r"\s*\d+(?:[,–\-]\s?\d+)*\s*", t)
                     partes.append(f"[{t.strip()}]" if sobrescrito else t)
                 partes.append("\n")
@@ -436,13 +437,17 @@ def md_arvore(refs: list[Referencia], nivel: int = 0) -> str:
     return "\n".join(x for x in out if x)
 
 
-def relatorio(pdf: Path, trechos: list[Trecho], sel_ids: set[int], refs: list[Referencia], tokens: int, prof: int) -> Path:
-    SAIDAS.mkdir(exist_ok=True)
+def relatorio(pdf: Path, trechos: list[Trecho], sel_ids: set[int], refs: list[Referencia], tokens: int, prof: int,
+              pasta_saida: Path | None = None) -> Path:
+    destino = pasta_saida or SAIDAS
+    destino.mkdir(parents=True, exist_ok=True)
     slug = re.sub(r"[^a-z0-9]+", "-", sem_acento(pdf.stem))[:60].strip("-")
     L = [f"# Leitura — {pdf.name}", "",
-         f"Gerado em {datetime.now():%d/%m/%Y %H:%M} · {len(trechos)} parágrafos · {len(sel_ids)} relevantes traduzidos · "
+         f"Gerado em {datetime.now():%d/%m/%Y %H:%M} · {len(trechos)} parágrafos · {len(sel_ids)} relevantes · "
+         f"{sum(1 for t in trechos if t.traducao)} traduzidos · "
          f"{len(refs)} referências · tokens: {tokens}", "",
-         "> Tradução automática para estudo. Página = página do PDF. Antes de citar na tese, confira no original.", "",
+         "> Tradução automática para estudo. Página = página do PDF. Antes de citar na tese, confira no original.",
+         "> ⟨?⟩ = símbolo que o PDF não deixa ler (em geral <, ≤, ± ou µ): confira no PDF.", "",
          "## Trechos relevantes (original + tradução integral)", ""]
     for t in trechos:
         if t.id not in sel_ids:
@@ -463,9 +468,10 @@ def relatorio(pdf: Path, trechos: list[Trecho], sel_ids: set[int], refs: list[Re
     for t in trechos:
         if t.id not in sel_ids:
             L += [f"<details><summary>Trecho {t.id} — p. {t.pagina}</summary>", "", t.texto, "", "</details>", ""]
-    saida = SAIDAS / f"leitura_{slug}.md"
+    base = f"{pdf.stem}.leitura" if pasta_saida else f"leitura_{slug}"
+    saida = destino / f"{base}.md"
     saida.write_text("\n".join(L), encoding="utf-8")
-    (SAIDAS / f"leitura_{slug}.json").write_text(json.dumps(
+    (destino / f"{base}.json").write_text(json.dumps(
         {"trechos": [asdict(t) for t in trechos], "relevantes": sorted(sel_ids), "referencias": [asdict(r) for r in refs]},
         ensure_ascii=False, indent=1), encoding="utf-8")
     return saida
@@ -480,6 +486,8 @@ def main() -> None:
     ap.add_argument("--sem-traducao", action="store_true")
     ap.add_argument("--sem-triagem-ia", action="store_true", help="usa só palavras-chave (0 token)")
     ap.add_argument("--simular", action="store_true")
+    ap.add_argument("--destino", help="pasta onde salvar os artigos citados baixados (substitui PASTA_ESTUDO)")
+    ap.add_argument("--relatorio-dir", help="pasta do relatório; grava <nome do pdf>.leitura.md ao lado dele")
     a = ap.parse_args()
 
     pdf = Path(a.pdf)
@@ -513,16 +521,20 @@ def main() -> None:
     if not a.sem_traducao:
         tokens += traduzir([t for t in trechos if t.id in sel_ids])
 
-    if a.baixar != "nenhum":
-        pasta = Path(CFG["PASTA_ESTUDO"]) if CFG["PASTA_ESTUDO"] else AQUI / "biblioteca"
-        pasta = pasta / re.sub(r"[^a-z0-9]+", "-", sem_acento(pdf.stem))[:50].strip("-")
+    if a.baixar != "nenhum" and a.profundidade > 0:
+        if a.destino:
+            pasta = Path(a.destino)
+        else:
+            pasta = Path(CFG["PASTA_ESTUDO"]) if CFG["PASTA_ESTUDO"] else AQUI / "biblioteca"
+            pasta = pasta / re.sub(r"[^a-z0-9]+", "-", sem_acento(pdf.stem))[:50].strip("-")
         for r in refs:                                          # considera só citações nos trechos escolhidos
             r.citada_em = [i for i in r.citada_em if i in sel_ids]
         resolver(refs, Rede(), pasta, a.profundidade - 1, somente_citadas=a.baixar == "relevantes")
         print(f"PDFs de acesso aberto em: {pasta}")
 
-    saida = relatorio(pdf, trechos, sel_ids, refs, tokens, a.profundidade)
-    print(f"Relatório: {saida.relative_to(AQUI)} · tokens usados: {tokens}")
+    saida = relatorio(pdf, trechos, sel_ids, refs, tokens, a.profundidade,
+                      Path(a.relatorio_dir) if a.relatorio_dir else None)
+    print(f"Relatório: {saida} · tokens usados: {tokens}")
 
 
 if __name__ == "__main__":

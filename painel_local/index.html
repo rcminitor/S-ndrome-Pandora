@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Estudo</title>
+<style>
+:root {
+  --bg: #f7f6f2; --card: #ffffff; --line: #e4e1d8; --ink: #1c1b18; --ink2: #5d5a52; --muted: #8b877c;
+  --accent: #4338ca; --accent-soft: #eceafd; --ok: #15803d; --warn: #b45309; --bad: #b91c1c;
+  --radius: 12px; --font: system-ui, -apple-system, "Segoe UI", sans-serif; --serif: Georgia, "Source Serif 4", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14151a; --card: #1c1d24; --line: #2c2e38; --ink: #ecebe6; --ink2: #b3b0a6; --muted: #858175;
+    --accent: #a5b4fc; --accent-soft: #262a4a; --ok: #4ade80; --warn: #fbbf24; --bad: #f87171;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font); }
+header { display: flex; align-items: center; gap: 18px; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--card); position: sticky; top: 0; z-index: 5; flex-wrap: wrap; }
+header h1 { font: 600 1.1rem var(--serif); margin: 0; }
+nav { display: flex; gap: 4px; flex-wrap: wrap; }
+nav button { border: 0; background: none; color: var(--ink2); padding: 7px 12px; border-radius: 8px; font: inherit; cursor: pointer; }
+nav button.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+nav b { font-weight: 500; color: var(--muted); margin-left: 4px; font-size: .85em; }
+#aviso { margin-left: auto; font-size: .82rem; color: var(--warn); }
+main { padding: 18px 20px; }
+.duas { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 18px; align-items: start; }
+.tres { display: grid; grid-template-columns: 220px 1fr 380px; gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .duas, .tres { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.card h2 { font: 600 1rem var(--serif); margin: 0 0 10px; }
+.dica { color: var(--muted); font-size: .84rem; margin: 0 0 10px; }
+.busca { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font: inherit; margin-bottom: 8px; }
+.lista { display: grid; gap: 4px; max-height: calc(100vh - 230px); overflow: auto; }
+.item { text-align: left; border: 1px solid transparent; background: none; color: var(--ink); padding: 8px 10px; border-radius: 8px; cursor: pointer; font: inherit; display: grid; gap: 2px; }
+.item:hover { background: var(--bg); }
+.item.on { border-color: var(--accent); background: var(--accent-soft); }
+.item small { color: var(--muted); font-size: .76rem; }
+.selo { display: inline-block; font-size: .7rem; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink2); margin-right: 4px; }
+.selo.ok { border-color: var(--ok); color: var(--ok); }
+.acoes { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 7px 12px; border-radius: 8px; font: inherit; font-size: .88rem; cursor: pointer; text-decoration: none; }
+.btn:hover { border-color: var(--accent); }
+.btn.pri { background: var(--accent); border-color: var(--accent); color: var(--card); font-weight: 600; }
+.btn:disabled { opacity: .5; cursor: wait; }
+select.btn { padding: 6px 8px; }
+.log { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px; font: 12px/1.45 ui-monospace, Consolas, monospace; max-height: 220px; overflow: auto; white-space: pre-wrap; }
+.leitura { font-size: .93rem; }
+.leitura h1 { font: 600 1.2rem var(--serif); } .leitura h2 { font: 600 1.05rem var(--serif); border-top: 1px solid var(--line); padding-top: 12px; margin-top: 22px; }
+.leitura h3 { font-size: .95rem; margin: 18px 0 6px; color: var(--accent); }
+.leitura blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid var(--line); color: var(--ink2); background: var(--bg); border-radius: 0 8px 8px 0; font-size: .88rem; }
+.leitura ul { padding-left: 20px; } .leitura li { margin: 3px 0; }
+.leitura details { margin: 4px 0; color: var(--ink2); font-size: .86rem; } .leitura summary { cursor: pointer; }
+.vazio { color: var(--muted); padding: 30px 10px; text-align: center; }
+textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--card); color: var(--ink); font: 16px/1.7 var(--serif); }
+.chat { display: grid; gap: 10px; max-height: calc(100vh - 330px); overflow: auto; margin-bottom: 10px; }
+.msg { padding: 10px 12px; border-radius: 10px; font-size: .9rem; white-space: pre-wrap; }
+.msg.eu { background: var(--accent-soft); margin-left: 30px; }
+.msg.ori { background: var(--bg); border: 1px solid var(--line); margin-right: 10px; }
+.msg small { display: block; color: var(--muted); font-size: .72rem; margin-top: 4px; }
+#entrada { width: 100%; min-height: 70px; border: 1px solid var(--line); border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); font: inherit; resize: vertical; }
+.status { font-size: .8rem; color: var(--muted); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Painel de Estudo — Síndrome de Pandora</h1>
+  <nav>
+    <button data-aba="ler" class="on">Para ler<b id="nLer"></b></button>
+    <button data-aba="lido">Lidos<b id="nLido"></b></button>
+    <button data-aba="acervo">Acervo do cofre<b id="nAcervo"></b></button>
+    <button data-aba="tese">Minha tese</button>
+  </nav>
+  <span id="aviso"></span>
+</header>
+
+<main>
+  <!-- LEITURA (Para ler / Lidos / Acervo usam o mesmo layout) -->
+  <section id="vLeitura" class="duas">
+    <div class="card">
+      <h2 id="tLista">Para ler</h2>
+      <p class="dica" id="dLista"></p>
+      <input class="busca" id="busca" placeholder="Buscar pelo nome…" aria-label="Buscar arquivo">
+      <div class="lista" id="lista"></div>
+    </div>
+    <div class="card" id="detalhe"><div class="vazio">Clique num arquivo da lista.</div></div>
+  </section>
+
+  <!-- TESE -->
+  <section id="vTese" class="tres" hidden>
+    <div class="card">
+      <h2>Seções</h2>
+      <div class="lista" id="secoes"></div>
+      <div class="acoes"><button class="btn" id="novaSecao" type="button">+ Nova seção</button></div>
+      <p class="dica">Arquivos .md em <code>Notas\Tese</code> do cofre — abrem também no Obsidian.</p>
+    </div>
+    <div class="card">
+      <div class="acoes" style="margin-top:0">
+        <strong id="tSecao">Escolha ou crie uma seção</strong>
+        <span class="status" id="stSalvo"></span>
+        <button class="btn pri" id="salvar" type="button" style="margin-left:auto">Salvar (Ctrl+S)</button>
+      </div>
+      <textarea id="editor" placeholder="Escreva aqui a sua parte da tese…" disabled></textarea>
+      <p class="status" id="contagem"></p>
+    </div>
+    <div class="card">
+      <h2>Orientador</h2>
+      <p class="dica">Ele lê a seção e as leituras já processadas. Questiona, pede fonte e debate — não escreve por você.</p>
+      <div class="acoes">
+        <button class="btn" data-modo="questionar" type="button">Me questione</button>
+        <button class="btn" data-modo="revisar" type="button">Revise o texto</button>
+      </div>
+      <div class="chat" id="chat"></div>
+      <textarea id="entrada" placeholder="Responda ou defenda seu argumento… (Ctrl+Enter envia)"></textarea>
+      <div class="acoes"><button class="btn pri" id="enviar" type="button">Debater</button><span class="status" id="stChat"></span></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const api = async (url, corpo) => {
+  const r = await fetch(url, corpo ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) } : {});
+  const ct = r.headers.get('content-type') || '';
+  const d = ct.includes('json') ? await r.json() : await r.text();
+  if (!r.ok) throw new Error((d && d.erro) || r.statusText);
+  return d;
+};
+
+let estado = {}, aba = 'ler', atual = null, secao = null, historico = [], sujo = false;
+const TEXTOS = {
+  ler: ['Para ler', 'Clique num PDF e em “Ler com o agente”: ele traz só o relevante, as citações e baixa os artigos citados para a pasta “— citados”.'],
+  lido: ['Lidos', 'Material já estudado. As leituras do agente ficam junto de cada PDF.'],
+  acervo: ['Acervo do cofre', 'PDFs das pastas do cofre. Não são movidos: o agente trabalha numa cópia em Para ler, para não quebrar os links do Obsidian.'],
+};
+
+async function carregar() {
+  estado = await api('/api/estado');
+  $('#nLer').textContent = estado.para_ler.length;
+  $('#nLido').textContent = estado.lido.length;
+  $('#nAcervo').textContent = estado.acervo.length;
+  $('#aviso').textContent = estado.ia ? '' : '⚠ IA não configurada: rode python agentes_crewai\\configurar.py';
+  if (aba === 'tese') listarSecoes(); else listar();
+}
+
+function listar() {
+  const itens = { ler: estado.para_ler, lido: estado.lido, acervo: estado.acervo }[aba] || [];
+  const q = $('#busca').value.toLowerCase();
+  const vis = itens.filter((i) => (i.nome + ' ' + i.pasta).toLowerCase().includes(q));
+  $('#tLista').textContent = TEXTOS[aba][0];
+  $('#dLista').textContent = TEXTOS[aba][1];
+  $('#lista').innerHTML = vis.length ? vis.map((i) => `
+    <button class="item ${atual && atual.id === i.id ? 'on' : ''}" data-id="${esc(i.id)}" type="button">
+      <span>${esc(i.nome)}</span>
+      <small>${i.leitura ? '<span class="selo ok">lido pelo agente</span>' : ''}${i.citado ? '<span class="selo">citado</span>' : ''}${esc(i.pasta)} · ${i.kb} KB</small>
+    </button>`).join('') : '<div class="vazio">Nada aqui ainda.</div>';
+}
+
+async function abrir(id) {
+  const lista = { ler: estado.para_ler, lido: estado.lido, acervo: estado.acervo }[aba];
+  atual = lista.find((i) => i.id === id);
+  listar();
+  const mover = aba === 'ler' ? '<button class="btn" id="bMover" type="button">✓ Marcar como lido</button>'
+    : aba === 'lido' ? '<button class="btn" id="bMover" type="button">↩ Voltar para Para ler</button>'
+    : '<button class="btn" id="bCopiar" type="button">Copiar para Para ler</button>';
+  $('#detalhe').innerHTML = `
+    <h2>${esc(atual.nome)}</h2>
+    <div class="acoes">
+      <button class="btn pri" id="bLer" type="button">${atual.leitura ? 'Ler de novo' : 'Ler com o agente'}</button>
+      <select class="btn" id="oProf" aria-label="Profundidade das citações">
+        <option value="1">Citações: nível 1</option><option value="2">Citações: nível 2</option><option value="0">Sem seguir citações</option>
+      </select>
+      <label class="status"><input type="checkbox" id="oSemTrad"> sem tradução (0 token)</label>
+      <a class="btn" href="/pdf?id=${encodeURIComponent(atual.id)}" target="_blank" rel="noopener">Abrir PDF ↗</a>
+      ${mover}
+    </div>
+    <div id="job" hidden><p class="status" id="jobSt"></p><div class="log" id="jobLog"></div></div>
+    <div class="leitura" id="leitura">${atual.leitura ? '<p class="status">Carregando leitura…</p>' : '<p class="vazio">Ainda não lido pelo agente.</p>'}</div>`;
+  $('#bLer').onclick = ler;
+  if ($('#bMover')) $('#bMover').onclick = async () => { await api('/api/mover', { id: atual.id, para: aba === 'ler' ? 'lido' : 'para_ler' }); atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar(); };
+  if ($('#bCopiar')) $('#bCopiar').onclick = async () => { await api('/api/copiar_para_ler', { id: atual.id }); $('#bCopiar').textContent = 'Copiado ✓'; carregar(); };
+  if (atual.leitura) $('#leitura').innerHTML = await api('/api/leitura?id=' + encodeURIComponent(atual.id));
+}
+
+async function ler() {
+  $('#bLer').disabled = true;
+  $('#job').hidden = false;
+  const job = await api('/api/analisar', { id: atual.id, profundidade: +$('#oProf').value, sem_traducao: $('#oSemTrad').checked });
+  const nome = job.arquivo;
+  const tick = async () => {
+    const j = await api('/api/job/' + job.id);
+    $('#jobSt').textContent = j.status === 'rodando' ? 'O agente está lendo… (pode levar alguns minutos)' : j.status === 'ok' ? 'Concluído.' : 'Terminou com erro — veja o registro abaixo.';
+    $('#jobLog').textContent = j.log.join('\n');
+    $('#jobLog').scrollTop = 1e9;
+    if (j.status === 'rodando') return setTimeout(tick, 1500);
+    $('#bLer').disabled = false;
+    await carregar();
+    if (j.status === 'ok') { aba = 'ler'; marcarAba(); const novo = estado.para_ler.find((i) => i.nome + '.pdf' === nome); if (novo) abrir(novo.id); }
+  };
+  tick();
+}
+
+// ------------------------------------------------------------- tese
+function listarSecoes() {
+  $('#secoes').innerHTML = estado.secoes.length ? estado.secoes.map((s) => `<button class="item ${s === secao ? 'on' : ''}" data-sec="${esc(s)}" type="button">${esc(s)}</button>`).join('') : '<div class="vazio">Nenhuma seção ainda.</div>';
+}
+async function abrirSecao(nome) {
+  if (sujo && !confirm('Há alterações não salvas. Sair mesmo assim?')) return;
+  const d = await api('/api/secao?nome=' + encodeURIComponent(nome));
+  secao = d.nome; historico = []; sujo = false;
+  $('#tSecao').textContent = secao;
+  $('#editor').disabled = false; $('#editor').value = d.texto;
+  $('#chat').innerHTML = ''; $('#stSalvo').textContent = '';
+  contar(); listarSecoes();
+}
+async function salvar() {
+  if (!secao) return;
+  await api('/api/secao', { nome: secao, texto: $('#editor').value });
+  sujo = false; $('#stSalvo').textContent = 'Salvo às ' + new Date().toLocaleTimeString('pt-BR').slice(0, 5);
+}
+function contar() {
+  const t = $('#editor').value.trim();
+  $('#contagem').textContent = t ? `${t.split(/\s+/).length} palavras · ~${Math.max(1, Math.round(t.length / 2400))} página(s)` : '';
+}
+function balao(quem, texto, extra = '') {
+  $('#chat').insertAdjacentHTML('beforeend', `<div class="msg ${quem}">${esc(texto)}${extra ? `<small>${esc(extra)}</small>` : ''}</div>`);
+  $('#chat').scrollTop = 1e9;
+}
+async function orientar(modo, mensagem) {
+  if (!secao) return alert('Escolha ou crie uma seção primeiro.');
+  if (sujo) await salvar();
+  if (mensagem) { historico.push({ role: 'user', content: mensagem }); balao('eu', mensagem); }
+  $('#stChat').textContent = 'O orientador está pensando…';
+  document.querySelectorAll('[data-modo], #enviar').forEach((b) => (b.disabled = true));
+  try {
+    const d = await api('/api/orientador', { secao, modo, historico, texto: $('#editor').value });
+    historico.push({ role: 'assistant', content: d.resposta });
+    balao('ori', d.resposta, `${modo} · ${d.tokens} tokens`);
+    $('#stChat').textContent = 'Conversa salva em Notas\\Tese\\Debates.';
+  } catch (e) { $('#stChat').textContent = 'Erro: ' + e.message; if (mensagem) historico.pop(); }
+  document.querySelectorAll('[data-modo], #enviar').forEach((b) => (b.disabled = false));
+}
+
+// ------------------------------------------------------------- eventos
+function marcarAba() {
+  document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('on', b.dataset.aba === aba));
+  $('#vLeitura').hidden = aba === 'tese'; $('#vTese').hidden = aba !== 'tese';
+}
+document.querySelector('nav').onclick = (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  aba = b.dataset.aba; atual = null; marcarAba();
+  if (aba !== 'tese') $('#detalhe').innerHTML = '<div class="vazio">Clique num arquivo da lista.</div>';
+  carregar();
+};
+$('#lista').onclick = (e) => { const b = e.target.closest('[data-id]'); if (b) abrir(b.dataset.id); };
+$('#busca').oninput = listar;
+$('#secoes').onclick = (e) => { const b = e.target.closest('[data-sec]'); if (b) abrirSecao(b.dataset.sec); };
+$('#novaSecao').onclick = async () => {
+  const nome = prompt('Nome da seção (ex.: 01 Introdução, 02 Histórico da FIC):'); if (!nome) return;
+  const d = await api('/api/secao', { nome, texto: '' }); await carregar(); abrirSecao(d.nome);
+};
+$('#editor').oninput = () => { sujo = true; $('#stSalvo').textContent = 'não salvo'; contar(); };
+$('#salvar').onclick = salvar;
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's' && aba === 'tese') { e.preventDefault(); salvar(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && document.activeElement === $('#entrada')) $('#enviar').click();
+});
+document.querySelectorAll('[data-modo]').forEach((b) => (b.onclick = () => orientar(b.dataset.modo)));
+$('#enviar').onclick = () => { const t = $('#entrada').value.trim(); if (!t) return; $('#entrada').value = ''; orientar('debater', t); };
+window.addEventListener('beforeunload', (e) => { if (sujo) e.preventDefault(); });
+
+carregar();
+</script>
+</body>
+</html>

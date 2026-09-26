@@ -5,3 +5,4 @@ agentes_crewai/.cache/
 __pycache__/
 agentes_crewai/biblioteca/
 agentes_crewai/saidas/leitura_*
+estudo_local/
