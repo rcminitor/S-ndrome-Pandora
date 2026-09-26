@@ -62,6 +62,13 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 .msg small { display: block; color: var(--muted); font-size: .72rem; margin-top: 4px; }
 #entrada { width: 100%; min-height: 70px; border: 1px solid var(--line); border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); font: inherit; resize: vertical; }
 .status { font-size: .8rem; color: var(--muted); }
+.st-bloco { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); font-size: .86rem; margin-bottom: 4px; }
+.st-eu.ok { color: var(--ok); }
+.btn.ok { border-color: var(--ok); color: var(--ok); font-weight: 600; }
+.euli { border: 1px solid var(--ok); border-radius: 10px; padding: 12px; margin: 8px 0; display: grid; gap: 8px; font-size: .88rem; }
+.euli textarea { width: 100%; min-height: 60px; border: 1px solid var(--line); border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); font: inherit; }
+.site-ok { color: var(--ok); }
+#aviso .btn { padding: 2px 8px; font-size: .78rem; margin-left: 6px; }
 [hidden] { display: none !important; }
 body.embed header h1 { display: none; }
 body.embed main { padding: 12px 4px; }
@@ -146,7 +153,12 @@ async function carregar() {
   $('#nLer').textContent = estado.para_ler.length;
   $('#nLido').textContent = estado.lido.length;
   $('#nAcervo').textContent = estado.acervo.length;
-  $('#aviso').textContent = estado.ia ? '' : '⚠ IA não configurada: rode python agentes_crewai\\configurar.py';
+  const st = estado.site || {};
+  $('#aviso').innerHTML = !estado.ia ? '⚠ IA não configurada: rode python agentes_crewai\\configurar.py'
+    : st.enviando ? '↑ enviando registro ao site…'
+    : st.ok === false ? `⚠ registro não subiu para o site: ${esc(st.erro)} <button class="btn" id="bRepub" type="button">Tentar de novo</button>`
+    : st.ok ? `<span class="site-ok">✓ site atualizado às ${dataBR(st.quando).slice(-5)}</span>` : '';
+  if ($('#bRepub')) $('#bRepub').onclick = async () => { await api('/api/publicar', {}); setTimeout(carregar, 4000); };
   if (aba === 'tese') listarSecoes(); else listar();
 }
 
@@ -163,15 +175,34 @@ function listar() {
     </button>`).join('') : '<div class="vazio">Nada aqui ainda.</div>';
 }
 
+const dataBR = (iso) => iso ? new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+
+function blocoStatus(reg) {
+  const ult = reg && reg.ia_ultima;
+  let ia = '<span class="st-ia">🤖 <b>IA:</b> ainda não leu</span>';
+  if (ult) {
+    const n = (k, r) => ult[k] != null ? `${ult[k]} ${r}` : null;
+    const partes = [n('relevantes', 'trechos relevantes'), n('traduzidos', 'traduzidos'), n('citadas', 'citações seguidas'), n('baixadas', 'artigos baixados')].filter(Boolean).join(' · ');
+    const st = ult.status === 'lendo' ? 'lendo agora…' : ult.status === 'erro' ? `terminou com erro em ${dataBR(ult.fim)}` : `leu em ${dataBR(ult.fim)}`;
+    ia = `<span class="st-ia">🤖 <b>IA:</b> ${st}${reg.ia_vezes > 1 ? ` (${reg.ia_vezes}ª leitura)` : ''}${partes ? ` — ${partes}` : ''}${ult.reserva_paga ? ' · <b>usou a reserva paga</b>' : ''}</span>`;
+  }
+  const h = reg && reg.humano;
+  const eu = h ? `<span class="st-eu ok">👤 <b>Você:</b> leu em ${dataBR(h.data)}${h.nota ? ` — “${esc(h.nota)}”` : ''}</span>`
+               : '<span class="st-eu">👤 <b>Você:</b> ainda não registrou a sua leitura</span>';
+  return `<div class="st-bloco">${ia}${eu}</div>`;
+}
+
 async function abrir(id) {
   const lista = { ler: estado.para_ler, lido: estado.lido, acervo: estado.acervo }[aba];
   atual = lista.find((i) => i.id === id);
   listar();
-  const mover = aba === 'ler' ? '<button class="btn" id="bMover" type="button">✓ Marcar como lido</button>'
-    : aba === 'lido' ? '<button class="btn" id="bMover" type="button">↩ Voltar para Para ler</button>'
+  const jaLi = atual.reg && atual.reg.humano;
+  const mover = aba === 'ler' ? '<button class="btn ok" id="bEuLi" type="button">✓ Eu li este artigo</button>'
+    : aba === 'lido' ? `${jaLi ? '' : '<button class="btn ok" id="bEuLi" type="button">✓ Eu li este artigo</button>'}<button class="btn" id="bMover" type="button">↩ Voltar para Para ler</button>`
     : '<button class="btn" id="bCopiar" type="button">Copiar para Para ler</button>';
   $('#detalhe').innerHTML = `
     <h2>${esc(atual.nome)}</h2>
+    ${blocoStatus(atual.reg)}
     <div class="acoes">
       <button class="btn pri" id="bLer" type="button">${atual.leitura ? 'Ler de novo' : 'Ler com o agente'}</button>
       <select class="btn" id="oProf" aria-label="Profundidade das citações">
@@ -181,12 +212,30 @@ async function abrir(id) {
       <a class="btn" href="/pdf?id=${encodeURIComponent(atual.id)}" target="_blank" rel="noopener">Abrir PDF ↗</a>
       ${mover}
     </div>
+    <div id="euLiBox" class="euli" hidden>
+      <label for="euLiNota"><b>Registrar a sua leitura</b> — uma nota curta (opcional; fica só no seu PC, não vai para o site):</label>
+      <textarea id="euLiNota" placeholder="Ex.: li inteiro; a Tabela 2 é o que importa para a tese."></textarea>
+      <div class="acoes"><button class="btn pri" id="euLiOk" type="button">Confirmar: eu li</button><button class="btn" id="euLiCancela" type="button">Cancelar</button></div>
+    </div>
+    <div class="acoes" id="histBox" hidden><span class="status">Leituras da IA guardadas:</span><select class="btn" id="oVersao" aria-label="Versão da leitura"></select></div>
     <div id="job" hidden><p class="status" id="jobSt"></p><div class="log" id="jobLog"></div></div>
     <div class="leitura" id="leitura">${atual.leitura ? '<p class="status">Carregando leitura…</p>' : '<p class="vazio">Ainda não lido pelo agente.</p>'}</div>`;
   $('#bLer').onclick = ler;
-  if ($('#bMover')) $('#bMover').onclick = async () => { await api('/api/mover', { id: atual.id, para: aba === 'ler' ? 'lido' : 'para_ler' }); atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar(); };
+  if ($('#bEuLi')) $('#bEuLi').onclick = () => { $('#euLiBox').hidden = false; $('#euLiNota').focus(); };
+  if ($('#euLiCancela')) $('#euLiCancela').onclick = () => { $('#euLiBox').hidden = true; };
+  if ($('#euLiOk')) $('#euLiOk').onclick = async () => {
+    await api('/api/eu_li', { id: atual.id, nota: $('#euLiNota').value });
+    atual = null; $('#detalhe').innerHTML = '<div class="vazio">✓ Leitura registrada. O artigo está em <b>Lidos</b> e o registro vai para o site.</div>'; carregar();
+  };
+  if ($('#bMover')) $('#bMover').onclick = async () => { await api('/api/mover', { id: atual.id, para: 'para_ler' }); atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar(); };
   if ($('#bCopiar')) $('#bCopiar').onclick = async () => { await api('/api/copiar_para_ler', { id: atual.id }); $('#bCopiar').textContent = 'Copiado ✓'; carregar(); };
   if (atual.leitura) $('#leitura').innerHTML = await api('/api/leitura?id=' + encodeURIComponent(atual.id));
+  const h = await api('/api/historico?id=' + encodeURIComponent(atual.id));
+  if (h.versoes.length) {
+    $('#histBox').hidden = false;
+    $('#oVersao').innerHTML = h.versoes.map((v, i) => `<option value="${v}">${i === 0 ? 'Mais recente — ' : ''}${v.slice(8, 10)}/${v.slice(5, 7)}/${v.slice(0, 4)} ${v.slice(11, 13)}:${v.slice(13, 15)}</option>`).join('');
+    $('#oVersao').onchange = async (e) => { $('#leitura').innerHTML = await api(`/api/leitura?id=${encodeURIComponent(atual.id)}&versao=${e.target.value}`); };
+  }
 }
 
 async function ler() {
@@ -200,6 +249,7 @@ async function ler() {
     $('#jobLog').textContent = j.log.join('\n');
     $('#jobLog').scrollTop = 1e9;
     if (j.status === 'rodando') return setTimeout(tick, 1500);
+    if (j.versao) $('#jobSt').textContent += ' Tudo guardado no histórico.';
     $('#bLer').disabled = false;
     await carregar();
     if (j.status === 'ok') { aba = 'ler'; marcarAba(); const novo = estado.para_ler.find((i) => i.nome + '.pdf' === nome); if (novo) abrir(novo.id); }

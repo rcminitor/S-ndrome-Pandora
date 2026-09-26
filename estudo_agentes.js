@@ -53,6 +53,33 @@
     ligado ? mostrar() : desligado();
   }
 
+  // ---- registro público de leituras (vem de dados_leituras.js, enviado pelo painel do PC)
+  function registro() {
+    const alvo = document.getElementById('agRegistro');
+    const L = window.DADOS_LEITURAS || [];
+    if (!alvo) return;
+    if (!L.length) { alvo.innerHTML = ''; return; }
+    const d = (iso) => iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) + '/' + iso.slice(0, 4) : '';
+    const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const ia = L.filter((x) => x.ia_status === 'ok').length, eu = L.filter((x) => x.eu_li).length;
+    const lendo = L.filter((x) => x.ia_status === 'lendo').length;
+    alvo.innerHTML = `
+      <div class="content-card" style="margin-bottom:18px">
+        <div class="pn-card-head"><h3 class="card-title">Registro de leituras</h3>
+          <span class="pn-muted">${ia} lido(s) pela IA · ${eu} lido(s) por você${lendo ? ` · ${lendo} em leitura agora` : ''}</span></div>
+        <div class="pn-table-wrap"><table class="week-table">
+          <thead><tr><th>Artigo</th><th>IA</th><th>Trechos relevantes</th><th>Citações seguidas</th><th>Baixados</th><th>Você</th></tr></thead>
+          <tbody>${L.map((x) => `<tr>
+            <td>${esc(x.titulo)}</td>
+            <td>${x.ia_status === 'lendo' ? '⏳ lendo desde ' + d(x.ia_inicio) : x.ia_status === 'ok' ? '✓ ' + d(x.ia_fim) + (x.ia_vezes > 1 ? ` (${x.ia_vezes}×)` : '') : x.ia_status === 'erro' ? '⚠ erro ' + d(x.ia_fim) : '—'}</td>
+            <td>${x.relevantes ?? '—'}</td><td>${x.citadas ?? '—'}</td><td>${x.baixadas ?? '—'}</td>
+            <td>${x.eu_li ? '✓ ' + d(x.eu_li) : '—'}</td></tr>`).join('')}</tbody>
+        </table></div>
+        <p class="pn-muted">Atualizado sozinho pelo painel do computador. Só títulos, datas e contagens — traduções, PDFs e notas ficam no PC.</p>
+      </div>`;
+  }
+  registro();
+
   btn.addEventListener('click', () => { if (!ligado) conectar(); });
   if (location.hash === '#agentes') { btn.click(); }
 })();
