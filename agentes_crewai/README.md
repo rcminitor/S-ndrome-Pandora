@@ -13,7 +13,7 @@ Três agentes que ensinam um tema da tese usando **só o seu acervo** (inventár
 ```
 cd agentes_crewai
 pip install -r requirements.txt
-copy .env.exemplo .env
+python configurar.py
 ```
 Preencha `LLM_API_KEY` no `.env` **desta pasta** (ele não vai para o GitHub).
 
