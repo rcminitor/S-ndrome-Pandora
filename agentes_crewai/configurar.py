@@ -78,9 +78,10 @@ def main() -> None:
     print("  1) OmniRoute do seu PC (combo 'gratuitos')")
     print("  2) Gemini direto, com a sua chave do Google AI Studio")
     print("  3) Anthropic (Claude), chave paga")
-    padrao = {"omniroute": "1", "gemini": "2", "anthropic": "3"}.get(anterior, "1")
+    print("  4) OpenAI (ChatGPT/GPT), chave paga")
+    padrao = {"omniroute": "1", "gemini": "2", "anthropic": "3", "openai": "4"}.get(anterior, "1")
     escolha = input(f"Opção [{padrao}]: ").strip() or padrao
-    provedor = {"1": "omniroute", "2": "gemini", "3": "anthropic"}.get(escolha, "omniroute")
+    provedor = {"1": "omniroute", "2": "gemini", "3": "anthropic", "4": "openai"}.get(escolha, "omniroute")
     mesma = provedor == anterior and atual.get("LLM_API_KEY")
     manter = " [já preenchida — Enter mantém]" if mesma else ""
 
@@ -97,14 +98,17 @@ def main() -> None:
     elif provedor == "gemini":
         print("  A chave fica em aistudio.google.com → Get API key (começa com AIza…).")
         chave = ler_chave("  Chave do Gemini:", "AIza", atual.get("LLM_API_KEY", "") if mesma else "")
+    elif provedor == "openai":
+        print("  A chave fica em platform.openai.com → API keys (começa com sk-…).")
+        chave = ler_chave("  Chave da OpenAI:", "sk-", atual.get("LLM_API_KEY", "") if mesma else "")
     else:
         print("  A chave fica em console.anthropic.com → API Keys (começa com sk-ant-…).")
         chave = ler_chave("  Chave da Anthropic:", "sk-ant-", atual.get("LLM_API_KEY", "") if mesma else "")
-    usar_omni = provedor != "anthropic"          # nos dois gratuitos cabe uma reserva paga
+    usar_omni = provedor in ("omniroute", "gemini")   # nos gratuitos cabe uma reserva paga
     reserva = ""
     if usar_omni:
         tem = "[já preenchida — Enter mantém]" if atual.get("RESERVA_API_KEY") else "[Enter = sem reserva]"
-        reserva = ler_chave(f"Chave PAGA de reserva (Anthropic), usada só quando o principal falhar {tem}:", "sk-ant-", "")
+        reserva = ler_chave(f"Chave PAGA de reserva (Anthropic sk-ant-… ou OpenAI sk-…), usada só quando o principal falhar {tem}:", "sk-", "")
     email = input(f"Seu e-mail (para Crossref/OpenAlex) [{atual.get('EMAIL_CONTATO', '')}]: ").strip()
     padrao_pasta = atual.get("PASTA_ESTUDO") or (str(COFRE_PDF) if COFRE_PDF.exists() else "")
     mostra = padrao_pasta or str(AQUI / "biblioteca")
@@ -124,6 +128,9 @@ def main() -> None:
     elif provedor == "gemini":                         # os mesmos modelos do seu combo no OmniRoute
         novos.update({"LLM_BASE_URL": GEMINI_URL, "MODELO_TUTOR": "openai/gemini-3.8-flash",
                       "MODELO_TRADUTOR": "openai/gemini-3.8-flash", "MODELO_BARATO": "openai/gemini-3.5-flash-lite"})
+    elif provedor == "openai":                         # troque os nomes no .env se preferir outros modelos
+        novos.update({"LLM_BASE_URL": "", "MODELO_TUTOR": "openai/gpt-5-mini",
+                      "MODELO_TRADUTOR": "openai/gpt-5-mini", "MODELO_BARATO": "openai/gpt-5-nano"})
     else:                                              # chave paga da Anthropic: volta aos modelos Claude
         novos.update({"LLM_BASE_URL": "", "MODELO_TUTOR": "anthropic/claude-sonnet-5",
                       "MODELO_BARATO": "anthropic/claude-haiku-4-5-20251001",
@@ -149,7 +156,8 @@ def main() -> None:
     ENV.write_text("\n".join(saida) + "\n", encoding="utf-8")
 
     print(f"\n.env gravado em {ENV}")
-    print("IA principal:", {"omniroute": "OmniRoute", "gemini": "Gemini direto", "anthropic": "Anthropic"}[provedor])
+    print("IA principal:", {"omniroute": "OmniRoute", "gemini": "Gemini direto", "anthropic": "Anthropic",
+                            "openai": "OpenAI"}[provedor])
     print("Chave:", "preenchida" if novos["LLM_API_KEY"] else "VAZIA — os agentes não vão funcionar sem ela")
     if usar_omni:
         print("Reserva paga:", "preenchida (entra sozinha quando o principal falhar)" if novos["RESERVA_API_KEY"] else "nenhuma")

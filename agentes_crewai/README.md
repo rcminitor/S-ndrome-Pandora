@@ -13,9 +13,13 @@ Dois cliques em **`Iniciar painel.bat`** (na raiz do projeto). O painel abre no 
 
 Pastas criadas no cofre: `Leitura\1_Para_ler`, `Leitura\2_Lido` e `Notas\Tese`.
 
+### Qual IA usar
+
+`python configurar.py` oferece: **1** OmniRoute (gratuito, no PC) · **2** Gemini direto (chave do Google AI Studio) · **3** Anthropic (paga) · **4** OpenAI (paga). Para testar a escolha: `python testar_ia.py`.
+
 ### Gratuito primeiro, pago quando o gratuito acabar
 
-Com o OmniRoute como principal e uma **chave paga de reserva** (o `configurar.py` pergunta), todos os agentes tentam primeiro o gratuito. Se ele falhar (limite estourado, fora do ar, chave recusada), a mesma tarefa é refeita com a chave paga, sozinha. A reserva vale por 30 minutos (`RESERVA_MINUTOS`) e depois o gratuito é tentado de novo. O registro avisa sempre que a reserva paga entra.
+Com o OmniRoute ou o Gemini como principal e uma **chave paga de reserva** (Anthropic `sk-ant-…` ou OpenAI `sk-…`) (o `configurar.py` pergunta), todos os agentes tentam primeiro o gratuito. Se ele falhar (limite estourado, fora do ar, chave recusada), a mesma tarefa é refeita com a chave paga, sozinha. A reserva vale por 30 minutos (`RESERVA_MINUTOS`) e depois o gratuito é tentado de novo. O registro avisa sempre que a reserva paga entra.
 
 O orientador usa **só** o seu texto e as leituras já feitas pelo agente. Ele não inventa referência: o que vier de conhecimento geral aparece marcado como "precisa de fonte".
 
