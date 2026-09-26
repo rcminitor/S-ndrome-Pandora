@@ -470,6 +470,49 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
+   "codigo": "S4",
+   "titulo": "Amat, Camps e Manteca (2016) — Stress in owned cats",
+   "marcas": {
+    "C1": {
+     "m": "◐",
+     "txt": "discute FIC, sem gatos estudados (p. 579)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão narrativa (p. 577)"
+    },
+    "C3": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C4": {
+     "m": "✅",
+     "txt": "causas de estresse no domicílio (p. 578)"
+    },
+    "C5": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "✗",
+     "txt": "não se aplica"
+    },
+    "C8": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C9": {
+     "m": "◐",
+     "txt": "trata de gatos domiciliados, sem dados próprios (pp. 577–578)"
+    }
+   },
+   "atualizado": "2026-09-26T16:11"
+  },
+  {
    "codigo": "S6",
    "titulo": "Evangelista et al. (2019) — Feline Grimace Scale",
    "marcas": {
@@ -513,5 +556,5 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   }
  ],
- "atualizado": "2026-09-26T16:06"
+ "atualizado": "2026-09-26T16:11"
 };
