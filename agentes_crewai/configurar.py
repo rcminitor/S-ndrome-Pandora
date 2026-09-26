@@ -114,7 +114,20 @@ def main() -> None:
     mostra = padrao_pasta or str(AQUI / "biblioteca")
     pasta = input(f"Pasta onde salvar os PDFs baixados [{mostra}]: ").strip().strip('"')
 
+    print("\nResumo semanal por e-mail (Enter em branco = só grava a nota no cofre).")
+    para = input(f"  Enviar para [{atual.get('RESUMO_PARA', '')}]: ").strip() or atual.get("RESUMO_PARA", "")
+    smtp_user = smtp_senha = ""
+    if para:
+        smtp_user = input(f"  Conta que envia (Gmail/Workspace) [{atual.get('SMTP_USUARIO') or para}]: ").strip() \
+            or atual.get("SMTP_USUARIO") or para
+        tem = "[já preenchida — Enter mantém]" if atual.get("SMTP_SENHA") else ""
+        print("  Senha de APP (myaccount.google.com → Segurança → Senhas de app), não a senha normal", tem)
+        smtp_senha = getpass("  > ").strip().replace(" ", "") or atual.get("SMTP_SENHA", "")
+
     novos = {
+        "RESUMO_PARA": para,
+        "SMTP_USUARIO": smtp_user,
+        "SMTP_SENHA": smtp_senha,
         "LLM_API_KEY": chave,
         "PROVEDOR": provedor,
         "EMAIL_CONTATO": email or atual.get("EMAIL_CONTATO", ""),
@@ -163,6 +176,8 @@ def main() -> None:
         print("Reserva paga:", "preenchida (entra sozinha quando o principal falhar)" if novos["RESERVA_API_KEY"] else "nenhuma")
     print("E-mail:", novos["EMAIL_CONTATO"] or "vazio (as buscas funcionam, mas mais devagar)")
     print("PDFs baixados em:", novos["PASTA_ESTUDO"] or AQUI / "biblioteca")
+    print("Resumo semanal:", f"por e-mail para {novos['RESUMO_PARA']}" if novos["RESUMO_PARA"] and novos["SMTP_SENHA"]
+          else "só a nota no cofre (e-mail não configurado)")
 
 
 if __name__ == "__main__":
