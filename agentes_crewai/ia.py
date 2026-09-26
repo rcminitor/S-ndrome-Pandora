@@ -79,3 +79,26 @@ def com_reserva(cfg: dict, tarefa, descricao: str = "tarefa"):
         print(f"  → usando a RESERVA PAGA pelos próximos {ESTADO['minutos']:.0f} minutos")
         ESTADO.update(reserva=True, desde=time.time())
         return tarefa()
+
+
+def pedir_json(cfg: dict, papel: str, max_tokens: int, sistema: str, pedido: str, Modelo):
+    """Pedido simples (sem 'resposta estruturada' do provedor): o modelo devolve texto com
+    um JSON dentro e nós validamos. Funciona igual no OmniRoute e na Anthropic.
+    Devolve (objeto validado, tokens)."""
+    import json
+    import re
+    llm = criar_llm(cfg, papel, max_tokens, temperature=0)
+    texto = str(llm.call([{"role": "system", "content": sistema},
+                          {"role": "user", "content": pedido + "\n\nResponda SOMENTE com o JSON, sem comentários."}]))
+    bloco = re.search(r"\{.*\}", re.sub(r"```(?:json)?", "", texto), re.S)
+    if not bloco:
+        raise ValueError(f"o modelo não devolveu JSON (resposta: {texto[:150]!r})")
+    try:
+        obj = Modelo.model_validate(json.loads(bloco.group(0)))
+    except Exception as e:
+        raise ValueError(f"JSON incompleto ou inválido — resposta cortada? ({type(e).__name__})") from e
+    try:
+        tokens = int(llm.get_token_usage_summary().total_tokens)
+    except Exception:
+        tokens = (len(sistema) + len(pedido) + len(texto)) // 4
+    return obj, tokens

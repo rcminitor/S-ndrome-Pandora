@@ -282,37 +282,28 @@ def _cache(chave: str, gerar):
     return valor, tokens
 
 
+TRIADOR = ("Você é pesquisador da Síndrome de Pandora em felinos: cistite idiopática, estresse, eixo HHA, "
+           "adrenais, ambiente, comportamento, enriquecimento, sensores/IoT e IA.")
+TRADUTOR = ("Você é tradutor técnico de Medicina Veterinária. Traduz para o português do Brasil de forma INTEGRAL "
+            "e fiel: não resume, não explica, não corta frases, mantém números, unidades, valores de p, siglas na "
+            "primeira ocorrência e marcadores de citação como [5,6] ou (Casey et al., 2009) exatamente onde estão.")
+
+
 def triagem_ia(cands: list[Trecho]) -> tuple[set[int], int]:
-    from crewai import Agent, Crew, Task
     lista = "\n".join(f"{t.id}: {t.texto[:350]}" for t in cands)
+    pedido = (f"Trechos (id: início do texto):\n{lista}\n\nQuais ids têm conteúdo científico útil à tese "
+              "(resultados, métodos, conceitos, discussão)? Exclua agradecimentos, financiamento, conflito de "
+              'interesse e cabeçalhos. Formato: {"ids": [1, 2, 3]}')
 
     def gerar():
-        ag = Agent(role="Triador", goal="Selecionar trechos úteis à tese",
-                   backstory="Pesquisador de Síndrome de Pandora em felinos: cistite idiopática, estresse, eixo HHA, "
-                             "adrenais, ambiente, comportamento, enriquecimento, sensores/IoT e IA.",
-                   llm=_llm("barato", 1200), allow_delegation=False, max_iter=1, memory=False)
-        tk = Task(description=f"Trechos (id: início do texto):\n{lista}\n\nDevolva os ids dos trechos com conteúdo "
-                              "científico útil à tese (resultados, métodos, conceitos, discussão). Exclua "
-                              "agradecimentos, financiamento, conflito de interesse e cabeçalhos.",
-                  expected_output="JSON {ids: [...]}", agent=ag, output_pydantic=Selecao)
-        c = Crew(agents=[ag], tasks=[tk], memory=False)
-        c.kickoff()
-        return tk.output.pydantic.ids, c.usage_metrics.total_tokens
+        obj, tok = ia.pedir_json(CFG, "barato", 1200, TRIADOR, pedido, Selecao)
+        return obj.ids, tok
 
     ids, tokens = _cache("triagem|" + CFG["MODELO_BARATO"] + lista, lambda: ia.com_reserva(CFG, gerar, "triagem"))
     return set(ids), tokens
 
 
 def traduzir(sel: list[Trecho]) -> int:
-    from crewai import Agent, Crew, Task
-    def novo_tradutor():                                  # recriado a cada lote: pode ter trocado para a reserva
-        return Agent(
-            role="Tradutor científico", goal="Traduzir para o português do Brasil sem omitir nada",
-            backstory="Tradutor técnico de Medicina Veterinária. Traduz de forma INTEGRAL e fiel: não resume, não "
-                      "explica, não corta frases, mantém números, unidades, valores de p, siglas na primeira ocorrência "
-                      "e marcadores de citação como [5,6] ou (Casey et al., 2009) exatamente onde estão.",
-            llm=_llm("tradutor", int(CFG["MAX_TOKENS_TRADUTOR"])),
-            allow_delegation=False, max_iter=1, memory=False)
     teto, lotes, atual = int(CFG["LOTE_CHARS"]), [], []
     for t in sel:
         if atual and sum(len(x.texto) for x in atual) + len(t.texto) > teto:
@@ -324,20 +315,17 @@ def traduzir(sel: list[Trecho]) -> int:
     total = 0
     for i, lote in enumerate(lotes, 1):
         corpo = "\n\n".join(f"<t id={t.id}>\n{t.texto}\n</t>" for t in lote)
+        pedido = (f"Traduza cada trecho abaixo, inteiro, para o português do Brasil.\n\n{corpo}\n\n"
+                  'Formato: {"itens": [{"id": 1, "traducao": "..."}]} com um item por trecho.')
 
         def gerar():
-            tradutor = novo_tradutor()
-            tk = Task(description=f"Traduza cada trecho abaixo, inteiro, para o português do Brasil.\n\n{corpo}",
-                      expected_output="JSON {itens: [{id, traducao}]} com um item por trecho",
-                      agent=tradutor, output_pydantic=Lote)
-            c = Crew(agents=[tradutor], tasks=[tk], memory=False)
-            c.kickoff()
-            return {str(x.id): x.traducao for x in tk.output.pydantic.itens}, c.usage_metrics.total_tokens
+            obj, tok = ia.pedir_json(CFG, "tradutor", int(CFG["MAX_TOKENS_TRADUTOR"]), TRADUTOR, pedido, Lote)
+            return {str(x.id): x.traducao for x in obj.itens}, tok
 
         try:
             mapa, tok = _cache("trad|" + CFG["MODELO_TRADUTOR"] + corpo, lambda: ia.com_reserva(CFG, gerar, f"tradução, lote {i}"))
         except Exception as e:
-            print(f"  ⚠ lote {i}/{len(lotes)} não traduzido ({type(e).__name__}: {str(e)[:120]})")
+            print(f"  ⚠ lote {i}/{len(lotes)} não traduzido ({type(e).__name__}: {str(e)[:160]})")
             mapa, tok = {}, 0
         total += tok
         for t in lote:
@@ -348,7 +336,7 @@ def traduzir(sel: list[Trecho]) -> int:
                 t.alerta = "tradução bem mais curta que o original: possível omissão, conferir"
             elif t.citacoes and not all(c.split()[0] in t.traducao for c in t.citacoes if c[:1].isalpha()):
                 t.alerta = "algum marcador de citação sumiu na tradução, conferir"
-        print(f"  lote {i}/{len(lotes)} traduzido")
+        print(f"  lote {i}/{len(lotes)} {'traduzido' if mapa else 'sem tradução'}")
     return total
 
 
