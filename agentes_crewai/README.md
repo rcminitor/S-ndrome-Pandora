@@ -11,6 +11,17 @@ Dois cliques em **`Iniciar painel.bat`** (na raiz do projeto). O painel abre no 
 | **Acervo do cofre** | Os PDFs das pastas `PDF\` do cofre. Não são movidos: o agente trabalha numa cópia em Para ler, para não quebrar os links do Obsidian. |
 | **Minha tese** | Editor das seções (arquivos `.md` em `Notas\Tese`, que abrem também no Obsidian) + **orientador**: *Me questione*, *Revise o texto* ou debata respondendo a ele. As conversas ficam em `Notas\Tese\Debates`. |
 
+### O cofre é o registro de verdade
+
+O status de cada artigo é o que está na nota de `Fontes\` do cofre. O painel mostra esse status (#código · status) e, quando algo acontece, escreve no cofre:
+
+| Evento | O que muda no cofre |
+|---|---|
+| A IA terminou de ler | nota da fonte ganha a linha 🤖 com link para o relatório guardado em `Leitura\Historico_IA` |
+| Você apertou **Eu li** | nota da fonte: `status: "leitura concluida"` e etiqueta `status/leitura-concluida` (nunca rebaixa um fichamento), linha 👤 com a sua nota; MOC do núcleo: `📖lido`; Fila de leitura: `[x] · 📖 lido em …`; `00 Índice do cofre`: bloco "Leituras registradas pelo painel" |
+
+O painel só mexe nesses pontos e nos trechos entre `<!-- painel:… -->`. Antes da primeira alteração do dia em cada nota, guarda uma cópia em `Leitura\_copias_antes_do_painel\<data>\`. O site recebe o status do cofre (em `dados_inventario.js` e `dados_leituras.js`), mas não as suas notas. Artigos fora do inventário (ex.: citados baixados) ficam registrados só no painel e aparecem contados no Índice.
+
 Pastas criadas no cofre: `Leitura\1_Para_ler`, `Leitura\2_Lido` e `Notas\Tese`.
 
 ### Qual IA usar

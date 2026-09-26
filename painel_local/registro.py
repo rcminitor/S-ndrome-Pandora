@@ -24,10 +24,13 @@ from pathlib import Path
 TRAVA = threading.Lock()
 TRAVA_SITE = threading.Lock()
 SITE = {"ok": None, "quando": "", "erro": "", "enviando": False}
+COFRE_ST = {"ok": None, "quando": "", "erro": ""}
 
 
 class Registro:
-    def __init__(self, biblioteca: Path, raiz_site: Path, publicar: bool = True):
+    def __init__(self, biblioteca: Path, raiz_site: Path, publicar: bool = True, cofre=None):
+        self.cofre = cofre if cofre is not None and cofre.ativo else None
+        self.biblioteca = biblioteca
         self.arq = biblioteca / "registro_leituras.json"
         self.hist = biblioteca / "Historico_IA"
         self.site_js = raiz_site / "dados_leituras.js"
@@ -97,6 +100,7 @@ class Registro:
             if ok and js.exists():
                 ex.update(self._contagens(js))
             self._salvar(reg)
+        self._no_cofre(pdf)
         self.publicar(f"IA terminou de ler {pdf.stem}")
         return str(pasta)
 
@@ -122,7 +126,24 @@ class Registro:
             e = self._entrada(reg, pdf)
             e["humano"] = {"data": self.agora(), "nota": nota.strip()}
             self._salvar(reg)
+        self._no_cofre(pdf)
         self.publicar(f"Romulo leu {pdf.stem}")
+
+    def _no_cofre(self, pdf: Path) -> None:
+        """Leva o evento para as notas do cofre (fonte, MOC, Fila, Índice). Falha aqui não
+        derruba o painel: fica registrada e aparece na tela."""
+        if not self.cofre:
+            return
+        try:
+            reg = self.carregar()
+            fonte = self.cofre.fonte_do_pdf(pdf.name)
+            if fonte:
+                rel_hist = self.hist.relative_to(self.cofre.raiz).as_posix() if self.hist.is_relative_to(self.cofre.raiz) else "Historico_IA"
+                self.cofre.atualizar_fonte(fonte, reg[pdf.stem], rel_hist)
+            self.cofre.atualizar_indice(reg)
+            COFRE_ST.update(ok=True, quando=self.agora(), erro="")
+        except Exception as e:
+            COFRE_ST.update(ok=False, quando=self.agora(), erro=f"{type(e).__name__}: {e}")
 
     def versoes(self, stem: str) -> list[str]:
         p = self.hist / stem[:80]
@@ -137,10 +158,14 @@ class Registro:
     # ------------------------------------------------------------ site
     def dados_publicos(self) -> list[dict]:
         saida = []
+        por_stem = {k.rsplit(".", 1)[0]: v for k, v in self.cofre.fontes_por_pdf().items()} if self.cofre else {}
         for e in self.carregar().values():
             ult = e["ia"][-1] if e["ia"] else {}
+            f = por_stem.get(e["titulo"].lower()) or {}
             saida.append({
-                "titulo": e["titulo"],
+                "titulo": f.get("titulo") or e["titulo"],
+                "codigo": f.get("codigo", ""),
+                "status_cofre": f.get("status", ""),
                 "ia_vezes": len(e["ia"]),
                 "ia_inicio": ult.get("inicio", ""),
                 "ia_fim": ult.get("fim", ""),
@@ -150,7 +175,27 @@ class Registro:
             })
         return sorted(saida, key=lambda x: x["eu_li"] or x["ia_inicio"], reverse=True)
 
+    def sincronizar_inventario_site(self) -> bool:
+        """dados_inventario.js do site passa a mostrar o status das notas do cofre."""
+        inv = self.raiz_site / "dados_inventario.js"
+        if not self.cofre or not inv.exists():
+            return False
+        bruto = inv.read_text(encoding="utf-8-sig")
+        itens = json.loads(bruto[bruto.index("["): bruto.rindex("]") + 1])
+        status = self.cofre.status_por_codigo()
+        mudou = False
+        for it in itens:
+            novo = status.get(str(it.get("codigo")))
+            if novo and it.get("status") != novo:
+                it["status"] = novo
+                mudou = True
+        if mudou:
+            inv.write_text("window.DADOS_INVENTARIO = " + json.dumps(itens, ensure_ascii=False, indent=4) + ";\n",
+                           encoding="utf-8")
+        return mudou
+
     def escrever_site(self) -> None:
+        self.sincronizar_inventario_site()
         self.site_js.write_text(
             "// Gerado pelo Painel de Estudo (painel_local/registro.py). Só títulos, datas e contagens.\n"
             "window.DADOS_LEITURAS = " + json.dumps(self.dados_publicos(), ensure_ascii=False, indent=1) + ";\n",
@@ -175,11 +220,12 @@ class Registro:
                 if p.returncode != 0:
                     raise RuntimeError("git pull: " + (p.stderr or p.stdout).strip()[:200])
                 self.escrever_site()
-                self._git("add", "dados_leituras.js")
-                if self._git("diff", "--cached", "--quiet", "--", "dados_leituras.js").returncode == 0:
+                arqs = ["dados_leituras.js", "dados_inventario.js"]
+                self._git("add", *arqs)
+                if self._git("diff", "--cached", "--quiet", "--", *arqs).returncode == 0:
                     SITE.update(ok=True, quando=self.agora(), erro="")
                     return
-                c = self._git("commit", "-q", "-m", f"Registro de leituras: {motivo}", "--", "dados_leituras.js")
+                c = self._git("commit", "-q", "-m", f"Registro de leituras: {motivo}", "--", *arqs)
                 if c.returncode != 0:
                     raise RuntimeError("git commit: " + (c.stderr or c.stdout).strip()[:200])
                 s = self._git("push", "-q")

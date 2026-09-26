@@ -33,7 +33,8 @@ AGENTES = RAIZ / "agentes_crewai"
 sys.path.insert(0, str(AGENTES))
 import orientador  # noqa: E402  (lê o mesmo .env de agentes_crewai)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from registro import SITE, Registro  # noqa: E402
+from cofre import Cofre  # noqa: E402
+from registro import COFRE_ST, SITE, Registro  # noqa: E402
 
 CFG = orientador.CFG
 COFRE = Path(r"C:\Users\rcmin\OneDrive\Documents\Pos-Graduacao\Doutorado UFC\Síndrome de Pandora")
@@ -47,7 +48,8 @@ TESE = Path(CFG.get("TESE_DIR") or BASE / "Notas" / "Tese")
 for p in (PARA_LER, LIDO, TESE):
     p.mkdir(parents=True, exist_ok=True)
 orientador.CFG["BIBLIOTECA"] = str(BIBLIOTECA)
-REG = Registro(BIBLIOTECA, RAIZ, publicar=(CFG.get("PUBLICAR_NO_SITE", "sim").lower() != "nao"))
+COFRE_OBJ = Cofre(BASE, BIBLIOTECA)          # notas de Fontes\\: o registro de verdade
+REG = Registro(BIBLIOTECA, RAIZ, publicar=(CFG.get("PUBLICAR_NO_SITE", "sim").lower() != "nao"), cofre=COFRE_OBJ)
 
 app = Flask(__name__, static_folder=None)
 JOBS: dict[str, dict] = {}
@@ -107,8 +109,14 @@ def listar_pdfs(raiz: Path, rotulo: str) -> list[dict]:
             "leitura": pdf.with_name(pdf.stem + ".leitura.md").exists(),
             "citado": " - citados" in str(rel.parent),
             "reg": REG.resumo(pdf.stem),
+            "fonte": fonte_publica(pdf.name),
         })
     return itens
+
+
+def fonte_publica(nome_pdf: str) -> dict | None:
+    f = COFRE_OBJ.fonte_do_pdf(nome_pdf) if COFRE_OBJ.ativo else None
+    return {k: f[k] for k in ("codigo", "status", "nucleo", "fase", "stem")} if f else None
 
 
 def resolver_id(ident: str) -> Path:
@@ -135,6 +143,7 @@ def estado():
         "pastas": {"para_ler": str(PARA_LER), "lido": str(LIDO), "acervo": str(ACERVO), "tese": str(TESE)},
         "ia": bool(CFG.get("LLM_API_KEY")),
         "site": SITE,
+        "cofre": {**COFRE_ST, "ativo": COFRE_OBJ.ativo},
     })
 
 
