@@ -51,6 +51,7 @@ from rastreio import Rastreio  # noqa: E402
 from backup_cofre import Backup  # noqa: E402
 from resumo_semanal import Resumo  # noqa: E402
 from estadoarte import EstadoArte  # noqa: E402
+from fichamentos import Fichamentos  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -76,6 +77,8 @@ PROG = Progresso(BIBLIOTECA, TESE, COFRE_OBJ if COFRE_OBJ.ativo else None, REG, 
 REG.extras.append(("dados_progresso.js", PROG.escrever_site))
 EA = EstadoArte(RAIZ, COFRE_OBJ)                # Estado da arte por critérios (site + cofre)
 REG.extras.append(("dados_estadoarte.js", EA.escrever_site))
+FICH = Fichamentos(RAIZ, BASE if COFRE.exists() else None)   # fichamentos do cofre → site
+REG.extras.append(("dados_fichamentos.js", FICH.escrever_site))
 FILA = Fila(COFRE_OBJ, REG, TESE, {"ler": PARA_LER, "lido": LIDO, "acervo": ACERVO}, casar=contexto_cofre.no_acervo)
 
 

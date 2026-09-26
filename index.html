@@ -32,6 +32,7 @@
       </a>
       <ul class="nav-links">
         <li><a href="#tab-painel" data-goto="tab-painel">Painel</a></li>
+        <li><a href="#tab-fichamentos" data-goto="tab-fichamentos">Fichamentos</a></li>
         <li><a href="#tab-estadoarte" data-goto="tab-estadoarte">Estado da arte</a></li>
         <li><a href="#tab-metas" data-goto="tab-metas">Metas</a></li>
         <li><a href="#tab-iot" data-goto="tab-iot">Projeto IoT</a></li>
@@ -107,6 +108,9 @@
       </button>
       <button class="tab-btn" data-tab="tab-galeria" role="tab" aria-selected="false">
         Galeria <span class="tab-badge" id="galeriaCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-fichamentos" role="tab" aria-selected="false">
+        Fichamentos <span class="tab-badge" id="fiCount">0</span>
       </button>
       <button class="tab-btn" data-tab="tab-estadoarte" role="tab" aria-selected="false">
         Estado da Arte
@@ -797,6 +801,11 @@
       <div id="pdfLista"></div>
     </div>
 
+    <!-- PÁGINA: FICHAMENTOS — dados em dados_fichamentos.js (painel_local/fichamentos.py) -->
+    <div class="tab-pane" id="tab-fichamentos" role="tabpanel">
+      <div id="fiConteudo"></div>
+    </div>
+
     <!-- PÁGINA: ESTADO DA ARTE — dados em dados_estadoarte.js, edição pelo painel local (estadoarte.js) -->
     <div class="tab-pane" id="tab-estadoarte" role="tabpanel">
       <div class="card">
@@ -1108,6 +1117,9 @@
   <script src="dados_leituras.js"></script>
   <script src="dados_revisao.js"></script>
   <script src="estudo_agentes.js"></script>
+  <script src="vendor/marked.min.js"></script>
+  <script src="dados_fichamentos.js"></script>
+  <script src="fichamentos.js"></script>
   <script src="dados_estadoarte.js"></script>
   <script src="estadoarte.js"></script>
 </body>
