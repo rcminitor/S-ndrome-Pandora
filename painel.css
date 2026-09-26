@@ -162,3 +162,9 @@
 #lbCap { color: #cbd5e1; margin: 8px 0 0; }
 .pn-lightbox .pn-modal-close, .pn-lb-nav { z-index: 2; background: rgba(255,255,255,.12); color: #fff; }
 @media (max-width: 600px) { .pn-lightbox .pn-modal-box { padding: 52px 8px 8px; } .pn-lightbox.zoom .pn-lb-stage img { width: 400%; } }
+
+/* Estado da arte — marcas por critério */
+.ea-tabela td, .ea-tabela th { font-size: .82rem; vertical-align: top; min-width: 7.5rem; }
+.ea-tabela td:first-child { min-width: 11rem; }
+.ea-m { font-weight: 700; padding: 0 .25rem; border-radius: 4px; }
+.ea-ok { color: #1a7f37; } .ea-meio { color: #9a6700; } .ea-nao { color: #cf222e; } .ea-nc { color: #6e7781; }
