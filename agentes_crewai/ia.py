@@ -12,7 +12,7 @@ não ficar batendo no gratuito que já acabou — e então o gratuito é tentado
 novo. Cada troca é avisada no registro, para você saber quando está gastando.
 
 Configuração no .env desta pasta:
-  RESERVA_API_KEY=sk-ant-...                     (vazio = sem reserva)
+  RESERVA_API_KEY=sk-ant-... (Anthropic) ou sk-... (OpenAI)   (vazio = sem reserva)
   RESERVA_MODELO_FORTE=anthropic/claude-sonnet-5
   RESERVA_MODELO_BARATO=anthropic/claude-haiku-4-5-20251001
   RESERVA_MINUTOS=30
@@ -47,15 +47,39 @@ def usando_reserva() -> bool:
     return ESTADO["reserva"]
 
 
+PADRAO_RESERVA_OPENAI = {
+    "RESERVA_MODELO_FORTE": "openai/gpt-5-mini",
+    "RESERVA_MODELO_BARATO": "openai/gpt-5-nano",
+}
+
+
+def _limites(modelo: str, max_tokens: int, temperature: float) -> dict:
+    """GPT-5 em diante e a série o (OpenAI) raciocinam: exigem max_completion_tokens e não aceitam
+    temperatura. Os demais usam max_tokens + temperatura."""
+    import re
+    nome = modelo.rsplit("/", 1)[-1].lower()
+    g = re.match(r"^gpt-(\d+)", nome)
+    if re.match(r"^o\d", nome) or (g and int(g.group(1)) >= 5):
+        return {"max_completion_tokens": max_tokens, "reasoning_effort": "low"}
+    return {"max_tokens": max_tokens, "temperature": temperature}
+
+
 def criar_llm(cfg: dict, papel: str, max_tokens: int, temperature: float = 0.2):
     from crewai import LLM
     chave_modelo, chave_reserva = PAPEIS[papel]
     if usando_reserva():
-        modelo = cfg.get(chave_reserva) or PADRAO_RESERVA[chave_reserva]
-        return LLM(model=modelo, temperature=temperature, max_tokens=max_tokens, api_key=cfg["RESERVA_API_KEY"])
+        chave = cfg["RESERVA_API_KEY"]
+        anthropic = chave.startswith("sk-ant-")          # sk-ant-… = Anthropic; outro sk-… = OpenAI
+        padroes = PADRAO_RESERVA if anthropic else PADRAO_RESERVA_OPENAI
+        modelo = cfg.get(chave_reserva) or ""
+        if modelo.startswith("anthropic/") != anthropic:  # modelo do .env é de outra empresa
+            modelo = padroes[chave_reserva]
+        if not anthropic:
+            max_tokens += int(cfg.get("FOLGA_RACIOCINIO") or 6000)
+        return LLM(model=modelo, api_key=chave, **_limites(modelo, max_tokens, temperature))
     modelo = cfg.get(chave_modelo) or cfg.get("MODELO_TUTOR" if papel == "orientador" else "MODELO_BARATO")
     if not modelo.startswith("anthropic/"):
-        # modelos que "pensam" antes de responder (ex.: Gemini no OmniRoute) gastam parte do limite
+        # modelos que "pensam" antes de responder (Gemini, GPT-5…) gastam parte do limite
         # raciocinando; sem essa folga a resposta sai cortada (LengthFinishReasonError)
         max_tokens += int(cfg.get("FOLGA_RACIOCINIO") or 6000)
     extra = {}
@@ -63,7 +87,7 @@ def criar_llm(cfg: dict, papel: str, max_tokens: int, temperature: float = 0.2):
         extra["base_url"] = cfg["LLM_BASE_URL"]
     if cfg.get("LLM_API_KEY"):
         extra["api_key"] = cfg["LLM_API_KEY"]
-    return LLM(model=modelo, temperature=temperature, max_tokens=max_tokens, **extra)
+    return LLM(model=modelo, **_limites(modelo, max_tokens, temperature), **extra)
 
 
 def com_reserva(cfg: dict, tarefa, descricao: str = "tarefa"):
