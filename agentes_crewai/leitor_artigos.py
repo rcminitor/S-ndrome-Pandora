@@ -108,7 +108,7 @@ def extrair(pdf: Path) -> tuple[list[Trecho], str]:
             for linha in bloco["lines"]:
                 for s in linha["spans"]:
                     t = unicodedata.normalize("NFKC", s["text"])        # ﬀ → ff, ﬁ → fi
-                    t = re.sub(r"[\ue000-\uf8ff]", "⟨?⟩", t)             # símbolo de fonte privada (≤, ±…): ilegível
+                    t = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ue000-\uf8ff]", "⟨?⟩", t)   # símbolo ilegível (≤, ±, µ…)
                     sobrescrito = s["flags"] & 1 and re.fullmatch(r"\s*\d+(?:[,–\-]\s?\d+)*\s*", t)
                     partes.append(f"[{t.strip()}]" if sobrescrito else t)
                 partes.append("\n")

@@ -32,6 +32,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 AGENTES = RAIZ / "agentes_crewai"
 sys.path.insert(0, str(AGENTES))
 import orientador  # noqa: E402  (lê o mesmo .env de agentes_crewai)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from registro import SITE, Registro  # noqa: E402
 
 CFG = orientador.CFG
 COFRE = Path(r"C:\Users\rcmin\OneDrive\Documents\Pos-Graduacao\Doutorado UFC\Síndrome de Pandora")
@@ -45,6 +47,7 @@ TESE = Path(CFG.get("TESE_DIR") or BASE / "Notas" / "Tese")
 for p in (PARA_LER, LIDO, TESE):
     p.mkdir(parents=True, exist_ok=True)
 orientador.CFG["BIBLIOTECA"] = str(BIBLIOTECA)
+REG = Registro(BIBLIOTECA, RAIZ, publicar=(CFG.get("PUBLICAR_NO_SITE", "sim").lower() != "nao"))
 
 app = Flask(__name__, static_folder=None)
 JOBS: dict[str, dict] = {}
@@ -103,6 +106,7 @@ def listar_pdfs(raiz: Path, rotulo: str) -> list[dict]:
             "kb": round(pdf.stat().st_size / 1024),
             "leitura": pdf.with_name(pdf.stem + ".leitura.md").exists(),
             "citado": " - citados" in str(rel.parent),
+            "reg": REG.resumo(pdf.stem),
         })
     return itens
 
@@ -130,6 +134,7 @@ def estado():
         "secoes": [p.stem for p in sorted(TESE.glob("*.md"))],
         "pastas": {"para_ler": str(PARA_LER), "lido": str(LIDO), "acervo": str(ACERVO), "tese": str(TESE)},
         "ia": bool(CFG.get("LLM_API_KEY")),
+        "site": SITE,
     })
 
 
@@ -142,8 +147,9 @@ def abrir_pdf():
 def ver_leitura():
     import markdown
     pdf = resolver_id(request.args["id"])
-    md = pdf.with_name(pdf.stem + ".leitura.md")
-    if not md.exists():
+    versao = request.args.get("versao")
+    md = REG.arquivo_versao(pdf.stem, versao) if versao else pdf.with_name(pdf.stem + ".leitura.md")
+    if not md or not md.exists():
         abort(404)
     return markdown.markdown(md.read_text(encoding="utf-8"), extensions=["extra", "sane_lists"])
 
@@ -167,6 +173,7 @@ def analisar():
         cmd.append("--sem-traducao")
     job = {"id": uuid.uuid4().hex[:8], "arquivo": pdf.name, "status": "rodando", "log": []}
     JOBS[job["id"]] = job
+    REG.ia_inicio(pdf, {"profundidade": int(d.get("profundidade", 1)), "sem_traducao": bool(d.get("sem_traducao"))})
 
     def rodar():
         proc = subprocess.Popen(cmd, cwd=AGENTES, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -174,7 +181,9 @@ def analisar():
                                 env={**__import__("os").environ, "PYTHONIOENCODING": "utf-8"})
         for linha in proc.stdout:
             job["log"].append(linha.rstrip())
-        job["status"] = "ok" if proc.wait() == 0 else "erro"
+        ok = proc.wait() == 0
+        job["versao"] = REG.ia_fim(pdf, ok, job["log"])       # guarda tudo no histórico
+        job["status"] = "ok" if ok else "erro"
 
     threading.Thread(target=rodar, daemon=True).start()
     return jsonify(job)
@@ -197,6 +206,33 @@ def mover():
     for arq in [pdf, pdf.with_name(pdf.stem + ".leitura.md"), pdf.with_name(pdf.stem + ".leitura.json")]:
         if arq.exists():
             shutil.move(str(arq), str(alvo_dir / arq.name))
+    return jsonify({"ok": True})
+
+
+@app.post("/api/eu_li")
+def eu_li():
+    """Você confirma que leu: registra data + nota (a nota fica só no seu PC) e move para Lidos."""
+    d = request.get_json()
+    pdf = resolver_id(d["id"])
+    REG.humano_li(pdf, d.get("nota", ""))
+    if d["id"].startswith("ler:"):
+        alvo_dir = LIDO / pdf.parent.relative_to(PARA_LER)
+        alvo_dir.mkdir(parents=True, exist_ok=True)
+        for arq in [pdf, pdf.with_name(pdf.stem + ".leitura.md"), pdf.with_name(pdf.stem + ".leitura.json")]:
+            if arq.exists():
+                shutil.move(str(arq), str(alvo_dir / arq.name))
+    return jsonify({"ok": True})
+
+
+@app.get("/api/historico")
+def historico():
+    pdf = resolver_id(request.args["id"])
+    return jsonify({"versoes": REG.versoes(pdf.stem), "resumo": REG.resumo(pdf.stem)})
+
+
+@app.post("/api/publicar")
+def publicar_agora():
+    REG.publicar("envio manual")
     return jsonify({"ok": True})
 
 
