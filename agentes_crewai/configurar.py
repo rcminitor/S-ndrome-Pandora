@@ -3,8 +3,9 @@ Configurador do .env — rode uma vez:  python configurar.py
 
 Pergunta a chave, o e-mail e a pasta de estudo e grava o .env desta pasta
 (UTF-8, sem precisar editar nada à mão). Enter mantém o valor atual.
-A chave é digitada sem aparecer na tela e fica só neste computador.
+A chave fica só neste computador (arquivo .env, que não vai para o GitHub).
 """
+import sys
 from getpass import getpass
 from pathlib import Path
 
@@ -46,6 +47,27 @@ def achar_omniroute() -> tuple[str, str, Path | None]:
     return "", "combo/gratuitos", None
 
 
+def ler_chave(rotulo: str, prefixo: str = "", manter: str = "") -> str:
+    """Campo visível (o de senha do Windows às vezes não aceita colar). Confere o formato
+    e mostra só o começo e o fim da chave."""
+    print(f"{rotulo}")
+    print("  Cole com Ctrl+V ou com o botão direito do mouse e aperte Enter"
+          + (" (Enter vazio mantém a atual)." if manter else "."))
+    for _ in range(3):
+        chave = input("  > ").strip().strip('"').strip("'").replace(" ", "")
+        if not chave:
+            return manter
+        if prefixo and not chave.startswith(prefixo):
+            print(f"  Essa chave não parece certa: deveria começar com {prefixo}. Tente de novo (ou Enter para pular).")
+            continue
+        print(f"  ✓ chave recebida: {chave[:6]}…{chave[-4:]} ({len(chave)} caracteres)")
+        if sys.stdout.isatty():                      # apaga a chave da tela depois de conferida
+            print("\033[3A\033[J", end="")
+            print(f"  ✓ chave recebida: {chave[:6]}…{chave[-4:]} ({len(chave)} caracteres)")
+        return chave
+    return manter
+
+
 def main() -> None:
     atual = ler(ENV)
     print("Configuração dos agentes — Enter mantém o valor entre colchetes.\n")
@@ -71,18 +93,18 @@ def main() -> None:
             chave = achada
         else:
             print("  Não achei a chave nos seus projetos. Copie-a do painel http://localhost:20128 (API Keys).")
-            chave = getpass("  Chave do OmniRoute: ").strip() or (atual.get("LLM_API_KEY", "") if mesma else "")
+            chave = ler_chave("  Chave do OmniRoute:", "", atual.get("LLM_API_KEY", "") if mesma else "")
     elif provedor == "gemini":
         print("  A chave fica em aistudio.google.com → Get API key (começa com AIza…).")
-        chave = getpass(f"  Chave do Gemini{manter}: ").strip() or (atual.get("LLM_API_KEY", "") if mesma else "")
+        chave = ler_chave("  Chave do Gemini:", "AIza", atual.get("LLM_API_KEY", "") if mesma else "")
     else:
         print("  A chave fica em console.anthropic.com → API Keys (começa com sk-ant-…).")
-        chave = getpass(f"  Chave da Anthropic{manter}: ").strip() or (atual.get("LLM_API_KEY", "") if mesma else "")
+        chave = ler_chave("  Chave da Anthropic:", "sk-ant-", atual.get("LLM_API_KEY", "") if mesma else "")
     usar_omni = provedor != "anthropic"          # nos dois gratuitos cabe uma reserva paga
     reserva = ""
     if usar_omni:
         tem = "[já preenchida — Enter mantém]" if atual.get("RESERVA_API_KEY") else "[Enter = sem reserva]"
-        reserva = getpass(f"Chave PAGA de reserva (Anthropic), usada só quando o principal falhar {tem}: ").strip()
+        reserva = ler_chave(f"Chave PAGA de reserva (Anthropic), usada só quando o principal falhar {tem}:", "sk-ant-", "")
     email = input(f"Seu e-mail (para Crossref/OpenAlex) [{atual.get('EMAIL_CONTATO', '')}]: ").strip()
     padrao_pasta = atual.get("PASTA_ESTUDO") or (str(COFRE_PDF) if COFRE_PDF.exists() else "")
     mostra = padrao_pasta or str(AQUI / "biblioteca")
