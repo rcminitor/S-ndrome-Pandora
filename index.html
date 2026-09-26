@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="painel.css">
   <link rel="stylesheet" href="tema.css">
+  <link rel="stylesheet" href="estatisticas.css">
 </head>
 <body>
 
@@ -82,6 +83,9 @@
     <nav class="tab-nav-wrapper" role="tablist" aria-label="Seções do projeto">
       <button class="tab-btn" data-tab="tab-painel" role="tab" aria-selected="false">
         Painel de KPIs
+      </button>
+      <button class="tab-btn" data-tab="tab-estatisticas" role="tab" aria-selected="false">
+        Estatísticas
       </button>
       <button class="tab-btn" data-tab="tab-registro" role="tab" aria-selected="false">
         Registro Semanal
@@ -534,6 +538,15 @@
       </div>
     </div>
 
+    <!-- PÁGINA: ESTATÍSTICAS (gerada por analise/estatisticas.py) -->
+    <div class="tab-pane" id="tab-estatisticas" role="tabpanel">
+      <div class="pn-toolbar"><div>
+        <h3 class="card-title" style="margin:0">Estatísticas do acervo</h3>
+        <p class="pn-muted">Calculadas em Python (pandas + SciPy) a partir do inventário. Para atualizar: <code>python analise/estatisticas.py</code>.</p>
+      </div></div>
+      <div id="estConteudo"></div>
+    </div>
+
     <!-- PÁGINA: REGISTRO SEMANAL -->
     <div class="tab-pane" id="tab-registro" role="tabpanel">
       <div class="pn-grid-2">
@@ -790,6 +803,8 @@
           <p class="pn-muted">Orientações gerais para organizar o doutorado. Normas de revistas e da UFC mudam: antes de submeter ou depositar, confira sempre a versão oficial nos links indicados.</p>
         </div>
       </div>
+
+      <div class="content-card" id="fcBox" style="margin-bottom:24px"></div>
 
       <div class="pn-grid-2">
         <div class="content-card pn-sec" style="--c:#4338ca">
@@ -1071,5 +1086,9 @@
   <script src="dados_inventario.js"></script>
   <script src="app.js"></script>
   <script src="painel.js"></script>
+  <script src="dados_estatisticas.js"></script>
+  <script src="estatisticas.js"></script>
+  <script src="dados_flashcards.js"></script>
+  <script src="flashcards.js"></script>
 </body>
 </html>

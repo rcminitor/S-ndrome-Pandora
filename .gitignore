@@ -1,0 +1,5 @@
+
+# agentes CrewAI
+agentes_crewai/.env
+agentes_crewai/.cache/
+__pycache__/
