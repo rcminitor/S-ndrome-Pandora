@@ -25,14 +25,42 @@ def ler(arq: Path) -> dict:
     return vals
 
 
+def achar_omniroute() -> tuple[str, str, Path | None]:
+    """Procura a chave do OmniRoute nos .claude/settings.local.json dos seus projetos
+    (é a mesma que o Claude Code usa). Devolve (chave, modelo, onde)."""
+    import json
+    candidatos = [AQUI.parent / ".claude" / "settings.local.json"]
+    projetos = Path.home() / "Projetos"
+    if projetos.exists():
+        candidatos += sorted(projetos.glob("*/.claude/settings.local.json"))
+    for arq in candidatos:
+        try:
+            env = json.loads(arq.read_text(encoding="utf-8-sig")).get("env", {})
+        except Exception:
+            continue
+        if "20128" in env.get("ANTHROPIC_BASE_URL", ""):
+            chave = env.get("ANTHROPIC_AUTH_TOKEN") or env.get("ANTHROPIC_API_KEY") or ""
+            if chave:
+                modelo = env.get("ANTHROPIC_MODEL", "")
+                return chave, (modelo if modelo and modelo != "auto" else "combo/gratuitos"), arq.parent.parent
+    return "", "combo/gratuitos", None
+
+
 def main() -> None:
     atual = ler(ENV)
     print("Configuração dos agentes — Enter mantém o valor entre colchetes.\n")
 
     usar_omni = input("Usar o gateway OmniRoute do seu PC (combo 'gratuitos', sem custo)? [S/n]: ").strip().lower() != "n"
+    modelo_omni = "combo/gratuitos"
     if usar_omni:
         print("  O OmniRoute precisa estar ligado (comando: omni status).")
-        chave = getpass("Chave do OmniRoute, se ele pedir (Enter = 'omniroute'): ").strip() or atual.get("LLM_API_KEY") or "omniroute"
+        achada, modelo_omni, onde = achar_omniroute()
+        if achada:
+            print(f"  Chave do OmniRoute encontrada em {onde} (não será mostrada).")
+            chave = achada
+        else:
+            print("  Não achei a chave nos seus projetos. Copie-a do painel http://localhost:20128 (API Keys).")
+            chave = getpass("  Chave do OmniRoute: ").strip() or atual.get("LLM_API_KEY", "")
     else:
         chave = getpass(f"Chave de API do provedor (ex.: Anthropic, paga) {'[já preenchida]' if atual.get('LLM_API_KEY') else '[vazia]'}: ").strip()
     email = input(f"Seu e-mail (para Crossref/OpenAlex) [{atual.get('EMAIL_CONTATO', '')}]: ").strip()
@@ -46,8 +74,9 @@ def main() -> None:
         "PASTA_ESTUDO": pasta or padrao_pasta,
     }
     if usar_omni:
-        novos.update({"LLM_BASE_URL": "http://localhost:20128/v1", "MODELO_TUTOR": "openai/gratuitos",
-                      "MODELO_BARATO": "openai/gratuitos", "MODELO_TRADUTOR": "openai/gratuitos"})
+        m = f"openai/{modelo_omni}"
+        novos.update({"LLM_BASE_URL": "http://localhost:20128/v1", "MODELO_TUTOR": m,
+                      "MODELO_BARATO": m, "MODELO_TRADUTOR": m})
     else:
         novos["LLM_BASE_URL"] = ""
     if novos["PASTA_ESTUDO"] and not Path(novos["PASTA_ESTUDO"]).exists():
