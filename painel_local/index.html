@@ -64,6 +64,7 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 .status { font-size: .8rem; color: var(--muted); }
 .st-bloco { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); font-size: .86rem; margin-bottom: 4px; }
 .st-eu.ok { color: var(--ok); }
+.selo.cofre { border-color: var(--accent); color: var(--accent); }
 .btn.ok { border-color: var(--ok); color: var(--ok); font-weight: 600; }
 .euli { border: 1px solid var(--ok); border-radius: 10px; padding: 12px; margin: 8px 0; display: grid; gap: 8px; font-size: .88rem; }
 .euli textarea { width: 100%; min-height: 60px; border: 1px solid var(--line); border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); font: inherit; }
@@ -154,7 +155,9 @@ async function carregar() {
   $('#nLido').textContent = estado.lido.length;
   $('#nAcervo').textContent = estado.acervo.length;
   const st = estado.site || {};
-  $('#aviso').innerHTML = !estado.ia ? '⚠ IA não configurada: rode python agentes_crewai\\configurar.py'
+  const co = estado.cofre || {};
+  $('#aviso').innerHTML = co.ok === false ? `⚠ não consegui atualizar o cofre: ${esc(co.erro)}`
+    : !estado.ia ? '⚠ IA não configurada: rode python agentes_crewai\\configurar.py'
     : st.enviando ? '↑ enviando registro ao site…'
     : st.ok === false ? `⚠ registro não subiu para o site: ${esc(st.erro)} <button class="btn" id="bRepub" type="button">Tentar de novo</button>`
     : st.ok ? `<span class="site-ok">✓ site atualizado às ${dataBR(st.quando).slice(-5)}</span>` : '';
@@ -171,13 +174,16 @@ function listar() {
   $('#lista').innerHTML = vis.length ? vis.map((i) => `
     <button class="item ${atual && atual.id === i.id ? 'on' : ''}" data-id="${esc(i.id)}" type="button">
       <span>${esc(i.nome)}</span>
-      <small>${i.leitura ? '<span class="selo ok">lido pelo agente</span>' : ''}${i.citado ? '<span class="selo">citado</span>' : ''}${esc(i.pasta)} · ${i.kb} KB</small>
+      <small>${i.fonte ? `<span class="selo cofre">#${esc(i.fonte.codigo)} · ${esc(i.fonte.status)}</span>` : ''}${i.leitura ? '<span class="selo ok">lido pelo agente</span>' : ''}${i.reg && i.reg.humano ? '<span class="selo ok">lido por você</span>' : ''}${i.citado ? '<span class="selo">citado</span>' : ''}${esc(i.pasta)} · ${i.kb} KB</small>
     </button>`).join('') : '<div class="vazio">Nada aqui ainda.</div>';
 }
 
 const dataBR = (iso) => iso ? new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
 
-function blocoStatus(reg) {
+function blocoStatus(reg, fonte) {
+  const cofre = fonte
+    ? `<span class="st-cofre">📚 <b>No cofre:</b> #${esc(fonte.codigo)} · status <b>${esc(fonte.status)}</b> · ${esc(fonte.nucleo)} · ${esc(fonte.fase)}</span>`
+    : '<span class="st-cofre">📚 <b>No cofre:</b> fora do inventário (sem nota em Fontes) — o registro fica só no painel</span>';
   const ult = reg && reg.ia_ultima;
   let ia = '<span class="st-ia">🤖 <b>IA:</b> ainda não leu</span>';
   if (ult) {
@@ -189,7 +195,7 @@ function blocoStatus(reg) {
   const h = reg && reg.humano;
   const eu = h ? `<span class="st-eu ok">👤 <b>Você:</b> leu em ${dataBR(h.data)}${h.nota ? ` — “${esc(h.nota)}”` : ''}</span>`
                : '<span class="st-eu">👤 <b>Você:</b> ainda não registrou a sua leitura</span>';
-  return `<div class="st-bloco">${ia}${eu}</div>`;
+  return `<div class="st-bloco">${cofre}${ia}${eu}</div>`;
 }
 
 async function abrir(id) {
@@ -202,7 +208,7 @@ async function abrir(id) {
     : '<button class="btn" id="bCopiar" type="button">Copiar para Para ler</button>';
   $('#detalhe').innerHTML = `
     <h2>${esc(atual.nome)}</h2>
-    ${blocoStatus(atual.reg)}
+    ${blocoStatus(atual.reg, atual.fonte)}
     <div class="acoes">
       <button class="btn pri" id="bLer" type="button">${atual.leitura ? 'Ler de novo' : 'Ler com o agente'}</button>
       <select class="btn" id="oProf" aria-label="Profundidade das citações">
@@ -213,7 +219,7 @@ async function abrir(id) {
       ${mover}
     </div>
     <div id="euLiBox" class="euli" hidden>
-      <label for="euLiNota"><b>Registrar a sua leitura</b> — uma nota curta (opcional; fica só no seu PC, não vai para o site):</label>
+      <label for="euLiNota"><b>Registrar a sua leitura</b> — uma nota curta (opcional; vai para a nota da fonte no cofre, não para o site):</label>
       <textarea id="euLiNota" placeholder="Ex.: li inteiro; a Tabela 2 é o que importa para a tese."></textarea>
       <div class="acoes"><button class="btn pri" id="euLiOk" type="button">Confirmar: eu li</button><button class="btn" id="euLiCancela" type="button">Cancelar</button></div>
     </div>
@@ -225,7 +231,8 @@ async function abrir(id) {
   if ($('#euLiCancela')) $('#euLiCancela').onclick = () => { $('#euLiBox').hidden = true; };
   if ($('#euLiOk')) $('#euLiOk').onclick = async () => {
     await api('/api/eu_li', { id: atual.id, nota: $('#euLiNota').value });
-    atual = null; $('#detalhe').innerHTML = '<div class="vazio">✓ Leitura registrada. O artigo está em <b>Lidos</b> e o registro vai para o site.</div>'; carregar();
+    const f = atual.fonte;
+    atual = null; $('#detalhe').innerHTML = `<div class="vazio">✓ Leitura registrada. O artigo está em <b>Lidos</b>.<br>${f ? `No cofre: nota da fonte #${esc(f.codigo)}, MOC, Fila de leitura e Índice atualizados.` : 'Este artigo não está no inventário do cofre: o registro ficou no painel.'}<br>O site recebe o registro em seguida.</div>`; carregar();
   };
   if ($('#bMover')) $('#bMover').onclick = async () => { await api('/api/mover', { id: atual.id, para: 'para_ler' }); atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar(); };
   if ($('#bCopiar')) $('#bCopiar').onclick = async () => { await api('/api/copiar_para_ler', { id: atual.id }); $('#bCopiar').textContent = 'Copiado ✓'; carregar(); };
