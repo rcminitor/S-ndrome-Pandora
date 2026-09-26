@@ -224,11 +224,14 @@ async function carregar() {
   $('#nAcervo').textContent = estado.acervo.length;
   const st = estado.site || {};
   const co = estado.cofre || {};
+  const bk = estado.backup || {};
   $('#aviso').innerHTML = co.ok === false ? `⚠ não consegui atualizar o cofre: ${esc(co.erro)}`
+    : bk.ok === false ? `⚠ backup do cofre: ${esc(bk.erro)} <button class="btn" id="bBackup" type="button">Tentar de novo</button>`
     : !estado.ia ? '⚠ IA não configurada: rode python agentes_crewai\\configurar.py'
     : st.enviando ? '↑ enviando registro ao site…'
     : st.ok === false ? `⚠ registro não subiu para o site: ${esc(st.erro)} <button class="btn" id="bRepub" type="button">Tentar de novo</button>`
     : st.ok ? `<span class="site-ok">✓ site atualizado às ${dataBR(st.quando).slice(-5)}</span>` : '';
+  if ($('#bBackup')) $('#bBackup').onclick = async () => { $('#bBackup').disabled = true; await api('/api/backup', {}); carregar(); };
   if ($('#bRepub')) $('#bRepub').onclick = async () => { await api('/api/publicar', {}); setTimeout(carregar, 4000); };
   if (aba === 'tese') listarSecoes(); else listar();
 }

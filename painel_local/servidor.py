@@ -10,6 +10,9 @@ Abre no navegador (http://localhost:8765) e roda os agentes no seu PC:
   • Minha tese → "Conferir fontes": rastreabilidade parágrafo a parágrafo
                 (painel_local/rastreio.py), que também mantém Notas\\Matriz de síntese
                 e Notas\\Rastreabilidade da escrita no cofre.
+  • Rotinas    — enquanto o painel está ligado: backup do cofre no GitHub privado
+                1×/dia (backup_cofre.py) e resumo da semana toda segunda, por e-mail
+                e em Notas\\Resumos semanais (resumo_semanal.py).
   • Para ler  — clique num PDF: o agente lê, traz só o relevante (traduzido na
                 íntegra), mostra as citações e baixa os artigos citados de acesso
                 aberto para "1_Para_ler\\<artigo> - citados".
@@ -45,6 +48,8 @@ from revisao import Revisao  # noqa: E402
 from progresso import Progresso  # noqa: E402
 from fila import Fila  # noqa: E402
 from rastreio import Rastreio  # noqa: E402
+from backup_cofre import Backup  # noqa: E402
+from resumo_semanal import Resumo  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -88,6 +93,31 @@ def atualizar_fila() -> None:
 
 
 atualizar_fila()
+BACKUP = Backup(BASE, BIBLIOTECA)
+RESUMO = Resumo(CFG, COFRE_OBJ, PROG, REV, FILA, RAST, BACKUP, BIBLIOTECA)
+
+
+def rotinas() -> None:
+    """Enquanto o painel está ligado: backup do cofre 1×/dia e resumo semanal 1×/semana."""
+    import time
+    time.sleep(90)                                  # deixa o painel e o OneDrive assentarem
+    while True:
+        if COFRE_OBJ.ativo:
+            try:
+                if BACKUP.precisa(24):
+                    BACKUP.fazer("diário")
+            except Exception:
+                pass
+            try:
+                if RESUMO.precisa():
+                    RESUMO.rodar()
+            except Exception:
+                pass
+        time.sleep(3600)
+
+
+if __name__ == "__main__":
+    threading.Thread(target=rotinas, daemon=True).start()
 try:
     PROG.fotografar()                       # conta também o que foi escrito direto no Obsidian
 except Exception:
@@ -189,6 +219,8 @@ def estado():
         "ia": bool(CFG.get("LLM_API_KEY")),
         "site": SITE,
         "cofre": {**COFRE_ST, "ativo": COFRE_OBJ.ativo},
+        "backup": BACKUP.status(),
+        "resumo": {"email": RESUMO.email_configurado, **{k: v for k, v in RESUMO._status().items() if k != "nota"}},
     })
 
 
@@ -331,6 +363,20 @@ def fila():
 def rastreio():
     """Confere as fontes de uma seção da tese, parágrafo a parágrafo (sem IA)."""
     return jsonify(RAST.conferir_secao(secao_path(request.args["secao"]).stem))
+
+
+@app.post("/api/backup")
+def backup_agora():
+    return jsonify(BACKUP.fazer("pelo painel"))
+
+
+@app.post("/api/resumo")
+def resumo_agora():
+    """Gera (e envia, se configurado) o resumo da semana passada agora."""
+    try:
+        return jsonify(RESUMO.rodar(forcar=True))
+    except Exception as e:
+        return jsonify({"erro": f"{type(e).__name__}: {e}"}), 500
 
 
 @app.get("/api/progresso")
