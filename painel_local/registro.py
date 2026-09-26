@@ -251,13 +251,17 @@ class Registro:
                 self.escrever_site()
                 arqs = ["dados_leituras.js", "dados_inventario.js"] + [n for n, _ in self.extras
                                                                       if (self.raiz_site / n).exists()]
-                self._git("add", *arqs)
-                if self._git("diff", "--cached", "--quiet", "--", *arqs).returncode == 0:
-                    SITE.update(ok=True, quando=self.agora(), erro="")
-                    return
-                c = self._git("commit", "-q", "-m", f"Registro de leituras: {motivo}", "--", *arqs)
-                if c.returncode != 0:
-                    raise RuntimeError("git commit: " + (c.stderr or c.stdout).strip()[:200])
+                a = self._git("add", *arqs)
+                if a.returncode != 0:
+                    raise RuntimeError("git add: " + (a.stderr or a.stdout).strip()[:200])
+                diff = self._git("diff", "--cached", "--quiet", "--", *arqs)
+                if diff.returncode not in (0, 1):
+                    raise RuntimeError("git diff: " + (diff.stderr or diff.stdout).strip()[:200])
+                if diff.returncode == 1:
+                    c = self._git("commit", "-q", "-m", f"Registro de leituras: {motivo}", "--", *arqs)
+                    if c.returncode != 0:
+                        raise RuntimeError("git commit: " + (c.stderr or c.stdout).strip()[:200])
+                # Um envio anterior pode ter falhado depois do commit.
                 s = self._git("push", "-q")
                 if s.returncode != 0:
                     raise RuntimeError("git push: " + (s.stderr or s.stdout).strip()[:200])

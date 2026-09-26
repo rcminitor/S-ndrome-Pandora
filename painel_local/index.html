@@ -307,11 +307,16 @@ async function abrir(id) {
   if ($('#bEuLi')) $('#bEuLi').onclick = () => { $('#euLiBox').hidden = false; $('#euLiNota').focus(); };
   if ($('#euLiCancela')) $('#euLiCancela').onclick = () => { $('#euLiBox').hidden = true; };
   if ($('#euLiOk')) $('#euLiOk').onclick = async () => {
-    await api('/api/eu_li', { id: atual.id, nota: $('#euLiNota').value });
+    try { await api('/api/eu_li', { id: atual.id, nota: $('#euLiNota').value }); }
+    catch (e) { alert(e.message); return; }
     const f = atual.fonte;
     atual = null; $('#detalhe').innerHTML = `<div class="vazio">✓ Leitura registrada. O artigo está em <b>Lidos</b>.<br>${f ? `No cofre: nota da fonte #${esc(f.codigo)}, MOC, Fila de leitura e Índice atualizados.` : 'Este artigo não está no inventário do cofre: o registro ficou no painel.'}<br>O site recebe o registro em seguida.</div>`; carregar();
   };
-  if ($('#bMover')) $('#bMover').onclick = async () => { await api('/api/mover', { id: atual.id, para: 'para_ler' }); atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar(); };
+  if ($('#bMover')) $('#bMover').onclick = async () => {
+    try { await api('/api/mover', { id: atual.id, para: 'para_ler' }); }
+    catch (e) { alert(e.message); return; }
+    atual = null; $('#detalhe').innerHTML = '<div class="vazio">Movido.</div>'; carregar();
+  };
   const gerarCart = async (origem) => {
     $('#stCart').textContent = 'Gerando cartões…';
     try {
@@ -493,7 +498,9 @@ $('#busca').oninput = listar;
 $('#secoes').onclick = (e) => { const b = e.target.closest('[data-sec]'); if (b) abrirSecao(b.dataset.sec); };
 $('#novaSecao').onclick = async () => {
   const nome = prompt('Nome da seção (ex.: 01 Introdução, 02 Histórico da FIC):'); if (!nome) return;
-  const d = await api('/api/secao', { nome, texto: '' }); await carregar(); abrirSecao(d.nome);
+  try {
+    const d = await api('/api/secao', { nome, texto: '', criar: true }); await carregar(); abrirSecao(d.nome);
+  } catch (e) { alert(e.message); }
 };
 $('#editor').oninput = () => { sujo = true; $('#stSalvo').textContent = 'não salvo'; contar(); };
 $('#salvar').onclick = salvar;

@@ -282,17 +282,48 @@ def ver_job(jid):
     return jsonify({**j, "log": j["log"][-200:]})
 
 
+TRAVA_MOVIMENTO = threading.Lock()
+
+
+def mover_leitura(pdf: Path, origem: Path, destino: Path) -> Path:
+    """Copia o conjunto sem sobrescrever; só remove originais após copiar tudo."""
+    alvo_dir = destino / pdf.parent.relative_to(origem)
+    if alvo_dir.resolve() == pdf.parent.resolve():
+        return pdf
+    with TRAVA_MOVIMENTO:
+        arquivos = [p for p in (pdf, pdf.with_suffix(".leitura.md"),
+                                pdf.with_suffix(".leitura.json")) if p.exists()]
+        if any((alvo_dir / p.name).exists() for p in arquivos):
+            raise FileExistsError("Já existe um PDF ou relatório com esse nome no destino. Nenhum arquivo foi movido.")
+        alvo_dir.mkdir(parents=True, exist_ok=True)
+        criados = []
+        try:
+            for arq in arquivos:
+                alvo = alvo_dir / arq.name
+                with alvo.open("xb") as saida:
+                    criados.append(alvo)
+                    with arq.open("rb") as entrada:
+                        shutil.copyfileobj(entrada, saida)
+                shutil.copystat(arq, alvo)
+        except Exception:
+            for alvo in criados:
+                alvo.unlink()
+            raise
+        for arq in arquivos:
+            arq.unlink()
+    return alvo_dir / pdf.name
+
+
 @app.post("/api/mover")
 def mover():
     d = request.get_json()
     pdf = resolver_id(d["id"])
     destino = LIDO if d["para"] == "lido" else PARA_LER
     origem_raiz = PARA_LER if d["id"].startswith("ler:") else LIDO
-    alvo_dir = destino / pdf.parent.relative_to(origem_raiz)
-    alvo_dir.mkdir(parents=True, exist_ok=True)
-    for arq in [pdf, pdf.with_name(pdf.stem + ".leitura.md"), pdf.with_name(pdf.stem + ".leitura.json")]:
-        if arq.exists():
-            shutil.move(str(arq), str(alvo_dir / arq.name))
+    try:
+        mover_leitura(pdf, origem_raiz, destino)
+    except FileExistsError as e:
+        return jsonify({"erro": str(e)}), 409
     return jsonify({"ok": True})
 
 
@@ -301,14 +332,13 @@ def eu_li():
     """Você confirma que leu: registra data + nota (a nota fica só no seu PC) e move para Lidos."""
     d = request.get_json()
     pdf = resolver_id(d["id"])
+    if d["id"].startswith("ler:"):
+        try:
+            pdf = mover_leitura(pdf, PARA_LER, LIDO)
+        except FileExistsError as e:
+            return jsonify({"erro": str(e)}), 409
     REG.humano_li(pdf, d.get("nota", ""))
     atualizar_fila()
-    if d["id"].startswith("ler:"):
-        alvo_dir = LIDO / pdf.parent.relative_to(PARA_LER)
-        alvo_dir.mkdir(parents=True, exist_ok=True)
-        for arq in [pdf, pdf.with_name(pdf.stem + ".leitura.md"), pdf.with_name(pdf.stem + ".leitura.json")]:
-            if arq.exists():
-                shutil.move(str(arq), str(alvo_dir / arq.name))
     return jsonify({"ok": True})
 
 
@@ -429,7 +459,11 @@ def ler_secao():
 def salvar_secao():
     d = request.get_json()
     p = secao_path(d["nome"])
-    p.write_text(d["texto"], encoding="utf-8")
+    try:
+        with p.open("x" if d.get("criar") else "w", encoding="utf-8") as arquivo:
+            arquivo.write(d["texto"])
+    except FileExistsError:
+        return jsonify({"erro": "Já existe uma seção com esse nome. Abra a seção existente ou escolha outro nome."}), 409
     try:
         PROG.fotografar()
         atualizar_fila()                         # fonte citada no texto e ainda não lida sobe na fila
