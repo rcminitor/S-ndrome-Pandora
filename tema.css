@@ -272,7 +272,7 @@ body { font-family: var(--font-sans); background: var(--bg-body); color: var(--t
 .pn-guide span { font-size: .8rem; color: var(--text-muted); }
 
 /* Orientador e área na capa */
-.hero-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; margin: 1.5rem auto 0; max-width: 760px; background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: 14px; box-shadow: var(--shadow-md); overflow: hidden; }
+.hero-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; margin: 1.5rem auto 0; max-width: 560px; background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: 14px; box-shadow: var(--shadow-md); overflow: hidden; }
 .hero-meta div { flex: 1 1 200px; padding: .8rem 1.1rem; border-right: 1px solid var(--border-glass); text-align: center; }
 .hero-meta div:last-child { border-right: 0; }
 .hero-meta dt { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); }
