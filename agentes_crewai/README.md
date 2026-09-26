@@ -2,7 +2,7 @@
 
 ## Painel de Estudo (o jeito mais fácil)
 
-Dois cliques em **`Iniciar painel.bat`** (na raiz do projeto). O painel abre no navegador, em `http://localhost:8765`, e só funciona no seu PC.
+Dois cliques em **`Iniciar painel.bat`** (na raiz do projeto). O painel abre no navegador, em `http://127.0.0.1:8765`, e só funciona no seu PC.
 
 | Aba | O que faz |
 |---|---|

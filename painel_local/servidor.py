@@ -48,6 +48,36 @@ orientador.CFG["BIBLIOTECA"] = str(BIBLIOTECA)
 
 app = Flask(__name__, static_folder=None)
 JOBS: dict[str, dict] = {}
+PORTA = 8765
+# O site publicado pode conversar com este painel (só ele e o próprio PC).
+ORIGENS = {"https://rcminitor.github.io", f"http://localhost:{PORTA}", f"http://127.0.0.1:{PORTA}"}
+
+
+@app.after_request
+def permitir_site(resp):
+    origem = request.headers.get("Origin", "")
+    if origem in ORIGENS:
+        resp.headers["Access-Control-Allow-Origin"] = origem
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        resp.headers["Access-Control-Allow-Private-Network"] = "true"   # Chrome: site público → localhost
+        resp.headers["Vary"] = "Origin"
+    # deixa o site mostrar o painel dentro dele (iframe) e nenhum outro
+    resp.headers["Content-Security-Policy"] = "frame-ancestors 'self' " + " ".join(sorted(ORIGENS))
+    return resp
+
+
+@app.get("/api/ping")
+def ping():
+    return jsonify({"ok": True, "painel": "Pandora"})
+
+
+@app.post("/api/desligar")
+def desligar():
+    if request.remote_addr not in ("127.0.0.1", "::1"):
+        abort(403)
+    threading.Timer(0.5, lambda: __import__("os")._exit(0)).start()
+    return jsonify({"ok": True})
 
 
 # ------------------------------------------------------------------ util
@@ -216,10 +246,22 @@ def conversar():
     return jsonify({"resposta": resp, "tokens": tok})
 
 
+def ja_rodando() -> bool:
+    import socket
+    with socket.socket() as sk:
+        sk.settimeout(0.5)
+        return sk.connect_ex(("127.0.0.1", PORTA)) == 0
+
+
 if __name__ == "__main__":
-    porta = 8765
-    print(f"Painel em http://localhost:{porta}  (feche esta janela para desligar)")
+    porta = PORTA
+    if ja_rodando():                                   # nunca duas cópias
+        print("O painel já está ligado.")
+        if "--sem-navegador" not in sys.argv:
+            webbrowser.open(f"http://127.0.0.1:{porta}")
+        sys.exit(0)
+    print(f"Painel em http://127.0.0.1:{porta}  (feche esta janela para desligar)")
     print(f"  Para ler: {PARA_LER}\n  Lidos:    {LIDO}\n  Acervo:   {ACERVO}\n  Tese:     {TESE}")
     if "--sem-navegador" not in sys.argv:
-        threading.Timer(1.2, lambda: webbrowser.open(f"http://localhost:{porta}")).start()
+        threading.Timer(1.2, lambda: webbrowser.open(f"http://127.0.0.1:{porta}")).start()
     app.run(host="127.0.0.1", port=porta, debug=False)

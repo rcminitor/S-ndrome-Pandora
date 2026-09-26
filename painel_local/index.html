@@ -63,6 +63,8 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 #entrada { width: 100%; min-height: 70px; border: 1px solid var(--line); border-radius: 8px; padding: 8px; background: var(--bg); color: var(--ink); font: inherit; resize: vertical; }
 .status { font-size: .8rem; color: var(--muted); }
 [hidden] { display: none !important; }
+body.embed header h1 { display: none; }
+body.embed main { padding: 12px 4px; }
 </style>
 </head>
 <body>
@@ -122,6 +124,7 @@ textarea#editor { width: 100%; min-height: calc(100vh - 250px); resize: vertical
 
 <script>
 const $ = (s) => document.querySelector(s);
+if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const api = async (url, corpo) => {
   const r = await fetch(url, corpo ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) } : {});
@@ -133,7 +136,7 @@ const api = async (url, corpo) => {
 
 let estado = {}, aba = 'ler', atual = null, secao = null, historico = [], sujo = false;
 const TEXTOS = {
-  ler: ['Para ler', 'Clique num PDF e em “Ler com o agente”: ele traz só o relevante, as citações e baixa os artigos citados para a pasta “— citados”.'],
+  ler: ['Para ler', 'Clique num PDF e em “Ler com o agente”: ele traz só o relevante, as citações e baixa os artigos citados para a pasta “- citados”.'],
   lido: ['Lidos', 'Material já estudado. As leituras do agente ficam junto de cada PDF.'],
   acervo: ['Acervo do cofre', 'PDFs das pastas do cofre. Não são movidos: o agente trabalha numa cópia em Para ler, para não quebrar os links do Obsidian.'],
 };
