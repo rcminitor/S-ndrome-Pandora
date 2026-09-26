@@ -7,6 +7,9 @@ Abre no navegador (http://localhost:8765) e roda os agentes no seu PC:
   • Próxima leitura — a fila inteligente (painel_local/fila.py): o que ler a seguir,
                 com os motivos (fase, citações cruzadas, menções no cofre, texto da tese,
                 núcleo menos coberto). As 10 primeiras vão para Notas\\Fila de leitura.
+  • Minha tese → "Conferir fontes": rastreabilidade parágrafo a parágrafo
+                (painel_local/rastreio.py), que também mantém Notas\\Matriz de síntese
+                e Notas\\Rastreabilidade da escrita no cofre.
   • Para ler  — clique num PDF: o agente lê, traz só o relevante (traduzido na
                 íntegra), mostra as citações e baixa os artigos citados de acesso
                 aberto para "1_Para_ler\\<artigo> - citados".
@@ -41,6 +44,7 @@ from registro import COFRE_ST, SITE, Registro  # noqa: E402
 from revisao import Revisao  # noqa: E402
 from progresso import Progresso  # noqa: E402
 from fila import Fila  # noqa: E402
+from rastreio import Rastreio  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -67,13 +71,19 @@ REG.extras.append(("dados_progresso.js", PROG.escrever_site))
 FILA = Fila(COFRE_OBJ, REG, TESE, {"ler": PARA_LER, "lido": LIDO, "acervo": ACERVO}, casar=contexto_cofre.no_acervo)
 
 
+RAST = Rastreio(COFRE_OBJ, TESE, BIBLIOTECA)
+FILA.uso_no_texto = lambda: RAST._uso_no_texto(RAST._fontes())[0]     # citação ABNT no texto também conta
+
+
 def atualizar_fila() -> None:
-    """Recalcula a fila e grava o bloco da Fila de leitura no cofre (em segundo plano)."""
+    """Recalcula (em segundo plano) o que é derivado do cofre: a Fila de leitura, a Matriz de
+    síntese e a Rastreabilidade da escrita."""
     def rodar():
-        try:
-            FILA.escrever_obsidian()
-        except Exception:
-            pass
+        for tarefa in (FILA.escrever_obsidian, RAST.escrever_obsidian):
+            try:
+                tarefa()
+            except Exception:
+                pass
     threading.Thread(target=rodar, daemon=True).start()
 
 
@@ -317,6 +327,12 @@ def fila():
                     "total_pendentes": len(d["sugeridas"]) + len(d["sem_pdf"])})
 
 
+@app.get("/api/rastreio")
+def rastreio():
+    """Confere as fontes de uma seção da tese, parágrafo a parágrafo (sem IA)."""
+    return jsonify(RAST.conferir_secao(secao_path(request.args["secao"]).stem))
+
+
 @app.get("/api/progresso")
 def progresso():
     sem = PROG.semanas()
@@ -384,7 +400,14 @@ def conversar():
         return jsonify({"erro": "Configure a IA primeiro: python agentes_crewai/configurar.py"}), 400
     texto = secao_path(d["secao"]).read_text(encoding="utf-8") if secao_path(d["secao"]).exists() else d.get("texto", "")
     try:
-        resp, tok = orientador.responder(d.get("texto") or texto, d.get("historico", []), d.get("modo", "debater"))
+        alertas = ""
+        if d.get("modo") in ("revisar", "questionar"):
+            try:
+                alertas = RAST.alertas_em_texto(RAST.conferir_secao(secao_path(d["secao"]).stem))
+            except Exception:
+                pass
+        resp, tok = orientador.responder(d.get("texto") or texto, d.get("historico", []), d.get("modo", "debater"),
+                                         alertas=alertas)
     except Exception as e:                                   # mostra o erro na página em vez de travar
         return jsonify({"erro": f"{type(e).__name__}: {e}"}), 502
     ultima = next((m["content"] for m in reversed(d.get("historico", [])) if m["role"] == "user"), f"({d.get('modo')})")

@@ -114,7 +114,7 @@ def contexto_do_cofre(texto: str) -> str:
 
 
 def responder(texto_secao: str, historico: list[dict], modo: str = "debater",
-              leituras: str | None = None) -> tuple[str, int]:
+              leituras: str | None = None, alertas: str = "") -> tuple[str, int]:
     """historico = [{"role": "user"|"assistant", "content": "..."}]; devolve (resposta, tokens)."""
     texto = texto_secao.strip()[: int(CFG["TESE_MAX_CHARS"])] or "(seção vazia)"
     base_busca = texto + " " + " ".join(m["content"] for m in historico[-2:])
@@ -122,7 +122,9 @@ def responder(texto_secao: str, historico: list[dict], modo: str = "debater",
     contexto = (f"{SISTEMA}\n\nMODO: {MODOS.get(modo, MODOS['debater'])}\n\n"
                 f"TEXTO DA SEÇÃO (escrito pelo Romulo):\n\"\"\"\n{texto}\n\"\"\"\n\n"
                 f"{cofre}"
-                f"LEITURAS DO PAINEL (processadas pelo leitor):\n{leituras if leituras is not None else resumo_leituras()}")
+                + (f"CONFERÊNCIA AUTOMÁTICA DE FONTES (feita pelo painel, sem IA; casa sobrenome+ano, pode errar — "
+                   f"use como ponto de partida e pergunte ao Romulo antes de afirmar):\n{alertas}\n\n" if alertas else "")
+                + f"LEITURAS DO PAINEL (processadas pelo leitor):\n{leituras if leituras is not None else resumo_leituras()}")
     janela = historico[-2 * int(CFG["HISTORICO_TROCAS"]):]
     if not janela or janela[-1]["role"] != "user":
         janela = janela + [{"role": "user", "content": {"questionar": "Me questione sobre esse texto.",

@@ -123,7 +123,14 @@ class Fila:
                     men[f["codigo"]].add(arq.stem)
         return men
 
+    uso_no_texto = None          # opcional: função → {código: [seções]} (rastreio.py, que entende citação ABNT)
+
     def _na_tese(self, fontes: list[dict]) -> dict[str, list[str]]:
+        if self.uso_no_texto:
+            try:
+                return self.uso_no_texto()
+            except Exception:
+                pass
         saida: dict[str, list[str]] = defaultdict(list)
         if not self.tese or not self.tese.is_dir():
             return saida
