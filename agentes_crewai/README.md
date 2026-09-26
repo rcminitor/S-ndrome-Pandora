@@ -34,6 +34,14 @@ O painel só mexe nesses pontos e nos trechos entre `<!-- painel:… -->`. Antes
 
 O cofre é relido sozinho quando alguma nota muda. Limites em `.env`: `CATALOGO_MAX_CHARS`, `FICHAMENTO_MAX_CHARS`, `FICHAMENTOS_POR_PEDIDO`. Fichamentos que existem só em PDF (em `PDF\Primeiras Leituras`) ainda não entram.
 
+### Revisão espaçada (aba **Revisão**)
+
+Em cada artigo: **🃏 Gerar cartões da leitura** (trechos relevantes, com página) ou **🃏 Gerar cartões do meu fichamento** (conferido no PDF). A IA só usa o texto recebido; cada cartão traz a fonte e a página.
+
+Na aba **Revisão**, um cartão por vez: tente responder, clique em *Mostrar resposta* e marque **✓ Lembrei** ou **✗ Não lembrei**. Acertou → o cartão volta em 1, 3, 7, 21 e 60 dias; errou → volta amanhã. **Firme** = acertou no degrau de 7 dias ou acima. O painel mostra o que está firme por artigo e o acerto dos últimos 7 dias.
+
+Onde fica: `Leitura\revisao_cartoes.json` (cofre, privado). A nota **`Notas\Revisão de cartões.md`** mostra o resumo no Obsidian, com os cartões errados na última vez ("voltar ao texto"). O site mostra só os números (`dados_revisao.js`), enviados 2 minutos depois da última resposta, num envio só.
+
 Pastas criadas no cofre: `Leitura\1_Para_ler`, `Leitura\2_Lido` e `Notas\Tese`.
 
 ### Qual IA usar
