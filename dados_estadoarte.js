@@ -255,6 +255,49 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
+   "codigo": "49",
+   "titulo": "Caudron et al. (2025) — Behavioral factors and recurrence in FIC",
+   "marcas": {
+    "C1": {
+     "m": "✅",
+     "txt": "33 gatos com FIC (p. 92)"
+    },
+    "C2": {
+     "m": "✅",
+     "txt": "retrospectivo com questionário (p. 91)"
+    },
+    "C3": {
+     "m": "◐",
+     "txt": "seguimento médio de 21 meses, por lembrança do tutor (p. 92)"
+    },
+    "C4": {
+     "m": "◐",
+     "txt": "ambiente e medo avaliados por questionário (pp. 92–93)"
+    },
+    "C5": {
+     "m": "✗",
+     "txt": "relato do tutor, questionário não validado (p. 95)"
+    },
+    "C6": {
+     "m": "✗",
+     "txt": ""
+    },
+    "C7": {
+     "m": "◐",
+     "txt": "GLM e Fisher com n pequeno; P = 0,04 (pp. 92–93)"
+    },
+    "C8": {
+     "m": "◐",
+     "txt": "sem urocultura, ultrassom point-of-care (p. 94)"
+    },
+    "C9": {
+     "m": "✅",
+     "txt": "gatos de tutores, em casa (p. 92)"
+    }
+   },
+   "atualizado": "2026-09-26T16:14"
+  },
+  {
    "codigo": "50",
    "titulo": "Westropp, Welk e Buffington (2003) — Small adrenal glands",
    "marcas": {
@@ -556,5 +599,5 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   }
  ],
- "atualizado": "2026-09-26T16:11"
+ "atualizado": "2026-09-26T16:14"
 };
