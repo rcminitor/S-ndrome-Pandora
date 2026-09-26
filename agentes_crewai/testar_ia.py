@@ -12,9 +12,9 @@ cfg = dotenv_values(Path(__file__).with_name(".env"))
 base = cfg.get("LLM_BASE_URL") or None
 modelo = (cfg.get("MODELO_BARATO") or "").split("/", 1)[-1] if base else None
 if not base:
-    raise SystemExit("O principal não é um gateway (LLM_BASE_URL vazio): este teste é para o OmniRoute.")
+    raise SystemExit("A IA principal é a Anthropic (sem LLM_BASE_URL): este teste é para OmniRoute ou Gemini.")
 cli = OpenAI(base_url=base, api_key=cfg.get("LLM_API_KEY") or "x")
-print(f"Gateway: {base} · modelo: {modelo}\n")
+print(f"Endereço: {base} · modelo: {modelo}\n")
 for limite in (300, 4000):
     try:
         r = cli.chat.completions.create(model=modelo, max_tokens=limite, messages=[
