@@ -54,6 +54,10 @@ def criar_llm(cfg: dict, papel: str, max_tokens: int, temperature: float = 0.2):
         modelo = cfg.get(chave_reserva) or PADRAO_RESERVA[chave_reserva]
         return LLM(model=modelo, temperature=temperature, max_tokens=max_tokens, api_key=cfg["RESERVA_API_KEY"])
     modelo = cfg.get(chave_modelo) or cfg.get("MODELO_TUTOR" if papel == "orientador" else "MODELO_BARATO")
+    if not modelo.startswith("anthropic/"):
+        # modelos que "pensam" antes de responder (ex.: Gemini no OmniRoute) gastam parte do limite
+        # raciocinando; sem essa folga a resposta sai cortada (LengthFinishReasonError)
+        max_tokens += int(cfg.get("FOLGA_RACIOCINIO") or 6000)
     extra = {}
     if cfg.get("LLM_BASE_URL"):
         extra["base_url"] = cfg["LLM_BASE_URL"]

@@ -290,7 +290,7 @@ def triagem_ia(cands: list[Trecho]) -> tuple[set[int], int]:
         ag = Agent(role="Triador", goal="Selecionar trechos úteis à tese",
                    backstory="Pesquisador de Síndrome de Pandora em felinos: cistite idiopática, estresse, eixo HHA, "
                              "adrenais, ambiente, comportamento, enriquecimento, sensores/IoT e IA.",
-                   llm=_llm("barato", 300), allow_delegation=False, max_iter=1, memory=False)
+                   llm=_llm("barato", 1200), allow_delegation=False, max_iter=1, memory=False)
         tk = Task(description=f"Trechos (id: início do texto):\n{lista}\n\nDevolva os ids dos trechos com conteúdo "
                               "científico útil à tese (resultados, métodos, conceitos, discussão). Exclua "
                               "agradecimentos, financiamento, conflito de interesse e cabeçalhos.",
@@ -334,7 +334,11 @@ def traduzir(sel: list[Trecho]) -> int:
             c.kickoff()
             return {str(x.id): x.traducao for x in tk.output.pydantic.itens}, c.usage_metrics.total_tokens
 
-        mapa, tok = _cache("trad|" + CFG["MODELO_TRADUTOR"] + corpo, lambda: ia.com_reserva(CFG, gerar, f"tradução, lote {i}"))
+        try:
+            mapa, tok = _cache("trad|" + CFG["MODELO_TRADUTOR"] + corpo, lambda: ia.com_reserva(CFG, gerar, f"tradução, lote {i}"))
+        except Exception as e:
+            print(f"  ⚠ lote {i}/{len(lotes)} não traduzido ({type(e).__name__}: {str(e)[:120]})")
+            mapa, tok = {}, 0
         total += tok
         for t in lote:
             t.traducao = mapa.get(str(t.id), "")
@@ -518,9 +522,12 @@ def main() -> None:
 
     sel_ids = {t.id for t in cands}
     if not a.sem_traducao and not a.sem_triagem_ia and cands:
-        ids, tok = triagem_ia(cands)
-        tokens += tok
-        sel_ids = ids & sel_ids or sel_ids
+        try:
+            ids, tok = triagem_ia(cands)
+            tokens += tok
+            sel_ids = ids & sel_ids or sel_ids
+        except Exception as e:
+            print(f"  ⚠ triagem por IA falhou ({type(e).__name__}); seguindo só com as palavras-chave da tese")
     if not a.sem_traducao:
         tokens += traduzir([t for t in trechos if t.id in sel_ids])
 
