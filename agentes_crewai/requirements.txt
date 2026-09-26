@@ -3,3 +3,5 @@ python-dotenv
 pydantic>=2
 pymupdf
 requests
+flask
+markdown

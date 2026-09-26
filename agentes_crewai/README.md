@@ -1,4 +1,21 @@
-# Equipe CrewAI de estudo — Síndrome de Pandora
+# Agentes de estudo — Síndrome de Pandora
+
+## Painel de Estudo (o jeito mais fácil)
+
+Dois cliques em **`Iniciar painel.bat`** (na raiz do projeto). O painel abre no navegador, em `http://localhost:8765`, e só funciona no seu PC.
+
+| Aba | O que faz |
+|---|---|
+| **Para ler** | Clique num PDF e em **Ler com o agente**. Ele traz só o relevante (traduzido na íntegra), mostra quem o autor citou em cada trecho e baixa os artigos citados de acesso aberto para `<artigo> - citados`, na mesma pasta. **Marcar como lido** move o PDF e a leitura para Lidos. |
+| **Lidos** | O que você já estudou, com a leitura do agente ao lado. |
+| **Acervo do cofre** | Os PDFs das pastas `PDF\` do cofre. Não são movidos: o agente trabalha numa cópia em Para ler, para não quebrar os links do Obsidian. |
+| **Minha tese** | Editor das seções (arquivos `.md` em `Notas\Tese`, que abrem também no Obsidian) + **orientador**: *Me questione*, *Revise o texto* ou debata respondendo a ele. As conversas ficam em `Notas\Tese\Debates`. |
+
+Pastas criadas no cofre: `Leitura\1_Para_ler`, `Leitura\2_Lido` e `Notas\Tese`.
+
+O orientador usa **só** o seu texto e as leituras já feitas pelo agente. Ele não inventa referência: o que vier de conhecimento geral aparece marcado como "precisa de fonte".
+
+## Equipe de estudo (`estudo_crew.py`)
 
 Três agentes que ensinam um tema da tese usando **só o seu acervo** (inventário + fichamentos):
 
