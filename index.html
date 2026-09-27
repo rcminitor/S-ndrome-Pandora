@@ -603,16 +603,87 @@
     </div>
 
     <!-- PÁGINA: METAS & QUALIFICAÇÃO -->
-    <div class="tab-pane" id="tab-metas" role="tabpanel">
+        <div class="tab-pane" id="tab-metas" role="tabpanel">
+      <!-- CRONOGRAMA INTERATIVO DE ATIVIDADES E MARCOS -->
+      <div class="content-card" id="cronogramaCard">
+        <div class="pn-card-head">
+          <div>
+            <h3 class="card-title">Cronograma do Doutorado &amp; Artigo</h3>
+            <p class="pn-muted">Marque as etapas concluídas para acompanhar o avanço prático do doutorado. Os dados ficam salvos automaticamente no seu navegador.</p>
+          </div>
+          <div class="pn-actions">
+            <div class="pn-seg" id="cronoFiltros">
+              <button type="button" class="pn-seg-btn active" data-filtro="todos">Todas</button>
+              <button type="button" class="pn-seg-btn" data-filtro="pendentes">Pendentes</button>
+              <button type="button" class="pn-seg-btn" data-filtro="concluidos">Concluídas</button>
+            </div>
+            <button type="button" class="pn-btn pn-btn-sm" id="btnNovaEtapa">+ Nova etapa</button>
+            <button type="button" class="pn-btn pn-btn-sm" id="btnResetCrono" title="Restaurar etapas padrão do doutorado">↺ Padrão</button>
+          </div>
+        </div>
+
+        <!-- Progresso Geral do Cronograma -->
+        <div class="crono-prog-box">
+          <div class="pn-prob-head">
+            <strong id="cronoStatusTexto">0 de 9 etapas concluídas (0%)</strong>
+            <span id="cronoPrevisao" style="font-size: 0.85rem; color: var(--text-muted);">Defesa prevista: Set/2027</span>
+          </div>
+          <div class="pn-bar" style="height: 12px; margin-bottom: 6px;">
+            <div id="cronoProgBar" style="width: 0%; background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);"></div>
+          </div>
+          <small class="pn-muted" style="display:block; margin-top:4px;">Dica: Clique no botão circular à esquerda de qualquer etapa para alternar entre concluído e pendente.</small>
+        </div>
+
+        <!-- Lista de Etapas do Cronograma -->
+        <div class="crono-list" id="pnCronogramaList"></div>
+
+        <!-- Modal para Adicionar Etapa -->
+        <div id="formNovaEtapaModal" class="pn-modal" hidden>
+          <div class="pn-modal-box">
+            <button type="button" class="pn-modal-close" id="fecharNovaEtapa" aria-label="Fechar">×</button>
+            <h2>Adicionar Etapa ao Cronograma</h2>
+            <form id="formNovaEtapa" class="pn-form" style="margin-top: 16px;">
+              <label class="pn-span2">Nome da Etapa / Atividade*
+                <input type="text" id="novaEtapaNome" required placeholder="Ex.: Submeter artigo ao periódico X">
+              </label>
+              <label>Prazo previsto*
+                <input type="date" id="novaEtapaPrazo" required>
+              </label>
+              <label>Categoria
+                <select id="novaEtapaCat" class="pn-input" style="background:var(--bg-surface); border:1px solid var(--border-glass); color:var(--text-main); border-radius:var(--radius-sm); padding:9px 10px; font:.9rem var(--font-sans);">
+                  <option value="pesquisa">Pesquisa &amp; Fichamentos</option>
+                  <option value="iot">Projeto IoT &amp; Bancada</option>
+                  <option value="artigo">Artigo &amp; Qualificação</option>
+                  <option value="ia">Análise de Dados &amp; IA</option>
+                  <option value="tese">Tese &amp; Defesa</option>
+                </select>
+              </label>
+              <label class="pn-span2">Descrição / Entregável
+                <input type="text" id="novaEtapaObs" placeholder="Ex.: Relatório de testes com 3 semanas de amostragem">
+              </label>
+              <div class="pn-span2" style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+                <button type="button" class="pn-btn" id="cancelarNovaEtapa">Cancelar</button>
+                <button type="submit" class="pn-btn pn-btn-primary">Salvar etapa</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARCOS ATÉ A DEFESA -->
       <div class="content-card">
-        <h3 class="card-title">Marcos até a defesa</h3>
-        <p class="pn-muted">Três entregas em sequência: <strong>projetos IoT, até dezembro/2026</strong> → <strong>qualificação (artigo), até maio/2027</strong> → <strong>defesa da tese, até setembro/2027</strong> (limite: maio/2028). Ajuste metas e prazos; o painel recalcula tudo.</p>
+        <h3 class="card-title">Marcos Macro até a Defesa</h3>
+        <p class="pn-muted">Três entregas em sequência: <strong>projetos IoT, até dezembro/2026</strong> → <strong>qualificação (artigo), até maio/2027</strong> → <strong>defesa da tese, até setembro/2027</strong> (limite: maio/2028). Você pode informar se foi concluído diretamente pelo botão ou ajustar metas e prazos.</p>
         <div class="pn-timeline" id="pnTimeline"></div>
       </div>
+
+      <!-- CALENDÁRIO CIENTÍFICO -->
       <div class="content-card">
         <h3 class="card-title">Calendário científico — 01/06/2026 a 31/05/2027</h3>
         <div class="pn-feature"><figure class="pn-thumb pn-open-img" data-grupo="cal" data-src="Imagens/Cronogramas/Calendário_Artigo.jpeg" data-cap="Calendário científico do artigo (12 meses)" tabindex="0" role="button" aria-label="Ampliar Calendário científico do artigo (12 meses)"><img src="Imagens/Cronogramas/Calend%C3%A1rio_Artigo.jpeg" alt="Calendário científico do artigo (12 meses)" loading="lazy"><figcaption><span>Clique para ampliar</span>Calendário científico do artigo (12 meses)</figcaption></figure></div>
       </div>
+
+      <!-- CONFIGURAR METAS -->
       <div class="content-card">
         <h3 class="card-title">Configurar metas</h3>
         <form id="pnMetasForm" class="pn-form pn-form-3"></form>
