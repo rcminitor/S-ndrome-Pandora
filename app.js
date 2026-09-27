@@ -139,6 +139,7 @@ function renderArticles() {
     if (currentFilter === 'ler-primeiro') return (item.fase || '').toLowerCase().includes('ler primeiro');
     if (currentFilter === 'fichados') return (item.status || '').toLowerCase().includes('fichamento concluido');
     if (currentFilter === 'com-pdf') return item.arquivo && item.arquivo.trim() !== '' && !item.arquivo.includes('NAO CONFIRMADO');
+    if (currentFilter === 'sem-pdf') return !item.arquivo || item.arquivo.trim() === '' || item.arquivo.includes('NAO CONFIRMADO');
 
     return true;
   });
