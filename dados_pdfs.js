@@ -341,5 +341,11 @@ window.DADOS_PDFS = [
   "nome": "Mestrado-Medicina_Veterinaria-Julia_Aidos_Leal",
   "arquivo": "PDF_Para conhecimento/Mestrado-Medicina_Veterinaria-Julia_Aidos_Leal.pdf",
   "kb": 2320
+ },
+ {
+  "pasta": "PDF_Para conhecimento",
+  "nome": "1-s2.0-S2214180420301343-main",
+  "arquivo": "PDF_Para conhecimento/1-s2.0-S2214180420301343-main.pdf",
+  "kb": 1293
  }
 ];
