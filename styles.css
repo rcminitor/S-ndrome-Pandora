@@ -1343,6 +1343,96 @@ body {
   border-color: var(--blue-light);
 }
 
+/* Linha de ações do drawer (lido + editar) */
+.drawer-actions-row {
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  gap: 8px !important;
+  align-items: center;
+}
+
+/* Botão Abrir PDF */
+.btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+.btn-pdf:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
+  box-shadow: 0 2px 14px rgba(16, 185, 129, 0.5);
+}
+
+/* Botões Editar / Salvar / Cancelar */
+.btn-drawer-edit,
+.btn-drawer-save,
+.btn-drawer-cancel {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-drawer-edit {
+  background: var(--bg-surface-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+}
+.btn-drawer-edit:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+.btn-drawer-save {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+.btn-drawer-save:hover {
+  box-shadow: 0 2px 14px rgba(37, 99, 235, 0.5);
+}
+.btn-drawer-cancel {
+  background: var(--bg-surface-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-dim);
+}
+.btn-drawer-cancel:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-muted);
+}
+
+/* Inputs de edição inline no drawer */
+.drawer-edit-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--blue-light, #93c5fd);
+  background: var(--bg-surface-card);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.18s;
+  box-sizing: border-box;
+}
+.drawer-edit-input:focus {
+  border-color: var(--blue-soft, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */

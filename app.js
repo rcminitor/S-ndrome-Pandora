@@ -4,11 +4,27 @@
    ========================================================================== */
 
 const LIDOS_KEY = 'pandora.lidos.v1';
+const EDITS_KEY = 'pandora.edits.v1';
+
 let lidos = {};
+let edits = {};
+
 try { lidos = JSON.parse(localStorage.getItem(LIDOS_KEY)) || {}; } catch (e) {}
+try { edits = JSON.parse(localStorage.getItem(EDITS_KEY)) || {}; } catch (e) {}
 
 function saveLidos() {
   try { localStorage.setItem(LIDOS_KEY, JSON.stringify(lidos)); } catch (e) {}
+}
+
+function saveEdits() {
+  try { localStorage.setItem(EDITS_KEY, JSON.stringify(edits)); } catch (e) {}
+}
+
+function getMergedData() {
+  return (window.DADOS_INVENTARIO || []).map(item => {
+    const edit = edits[item.codigo];
+    return edit ? { ...item, ...edit } : item;
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -78,7 +94,7 @@ let currentFilter = 'all';
 let currentSearch = '';
 
 function initInventory() {
-  const data = window.DADOS_INVENTARIO || [];
+  const data = getMergedData();
   updateKpis(data);
 
   const searchInput = document.getElementById('searchInput');
@@ -129,10 +145,9 @@ function renderArticles() {
   const countLabel = document.getElementById('resultCount');
   if (!container) return;
 
-  const data = window.DADOS_INVENTARIO || [];
+  const data = getMergedData();
 
   const filtered = data.filter(item => {
-    // 1. Text Search Match
     const searchMatch = !currentSearch ||
       (item.titulo || '').toLowerCase().includes(currentSearch) ||
       (item.codigo || '').toLowerCase().includes(currentSearch) ||
@@ -142,7 +157,6 @@ function renderArticles() {
 
     if (!searchMatch) return false;
 
-    // 2. Filter Pill Match
     if (currentFilter === 'all') return true;
     if (currentFilter === 'n1') return (item.nucleo || '').includes('Nucleo 1');
     if (currentFilter === 'n2') return (item.nucleo || '').includes('Nucleo 2');
@@ -173,6 +187,7 @@ function renderArticles() {
     const isFichado = (item.status || '').toLowerCase().includes('fichamento concluido');
     const isLerPrimeiro = (item.fase || '').toLowerCase().includes('ler primeiro');
     const isLido = lidos[item.codigo] === true;
+    const isEdited = !!edits[item.codigo];
 
     let statusClass = 'status-later';
     let statusText = item.fase || 'Classificar';
@@ -196,6 +211,7 @@ function renderArticles() {
           <div class="article-header">
             <span class="article-code">#${safeCode}</span>
             <span class="article-year">${escapeHtml(item.ano || 'S/D')}</span>
+            ${isEdited ? '<span style="font-size:0.7rem;color:var(--accent);font-weight:700;margin-left:4px" title="Editado localmente">✎</span>' : ''}
           </div>
           <h3 class="article-title" title="${safeTitle}">${safeTitle}</h3>
           <div class="article-theme">${safeTheme}</div>
@@ -214,7 +230,6 @@ function renderArticles() {
     `;
   }).join('');
 
-  // Botão "Eu li" — toggle sem abrir o drawer
   container.querySelectorAll('.btn-lido').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -225,12 +240,11 @@ function renderArticles() {
     });
   });
 
-  // Botão "Ver detalhes" e clique no card — abre o drawer
   container.querySelectorAll('.article-card').forEach(card => {
     card.addEventListener('click', (e) => {
       if (e.target.classList.contains('btn-lido')) return;
       const code = card.getAttribute('data-code');
-      const article = (window.DADOS_INVENTARIO || []).find(a => String(a.codigo) === String(code));
+      const article = getMergedData().find(a => String(a.codigo) === String(code));
       if (article) openDrawer(article);
     });
   });
@@ -239,13 +253,13 @@ function renderArticles() {
 // --------------------------------------------------------------------------
 // 4. Modal / Detail Drawer
 // --------------------------------------------------------------------------
+let drawerArticle = null;
+
 function initDrawer() {
   const overlay = document.getElementById('drawerOverlay');
   const closeBtn = document.getElementById('drawerCloseBtn');
 
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeDrawer);
-  }
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
 
   if (overlay) {
     overlay.addEventListener('click', (e) => {
@@ -256,12 +270,29 @@ function initDrawer() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeDrawer();
   });
+
+  const editBtn = document.getElementById('drawerEditBtn');
+  const saveBtn = document.getElementById('drawerSaveBtn');
+  const cancelBtn = document.getElementById('drawerCancelBtn');
+
+  if (editBtn) editBtn.addEventListener('click', enterEditMode);
+  if (saveBtn) saveBtn.addEventListener('click', saveEdit);
+  if (cancelBtn) cancelBtn.addEventListener('click', exitEditMode);
 }
 
 function openDrawer(article) {
+  drawerArticle = article;
   const overlay = document.getElementById('drawerOverlay');
   if (!overlay) return;
 
+  exitEditMode();
+  renderDrawerView(article);
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderDrawerView(article) {
   document.getElementById('drawerCode').textContent = `#${article.codigo} (${article.ano || 'Ano não confirmado'})`;
   document.getElementById('drawerTitle').textContent = article.titulo || 'Sem título';
   document.getElementById('drawerTheme').textContent = article.grupo || 'Geral';
@@ -281,10 +312,8 @@ function openDrawer(article) {
   if (copyBtn) {
     copyBtn.onclick = () => {
       navigator.clipboard.writeText(refText).then(() => {
-        copyBtn.textContent = 'Copiado para a área de transferência!';
-        setTimeout(() => {
-          copyBtn.textContent = 'Copiar Referência ABNT';
-        }, 2000);
+        copyBtn.textContent = 'Copiado!';
+        setTimeout(() => { copyBtn.textContent = 'Copiar Referência ABNT'; }, 2000);
       });
     };
   }
@@ -292,7 +321,25 @@ function openDrawer(article) {
   const fileBox = document.getElementById('drawerFile');
   fileBox.textContent = article.arquivo || 'Arquivo ainda não obtido';
 
-  // Botão "Eu li" dentro do drawer
+  // Botão PDF
+  const pdfBtn = document.getElementById('drawerPdfBtn');
+  if (pdfBtn) {
+    const hasFile = article.arquivo && article.arquivo.trim() !== '' &&
+                    !article.arquivo.includes('NAO CONFIRMADO') &&
+                    !article.arquivo.includes('NÃO CONFIRMADO');
+    if (hasFile) {
+      pdfBtn.style.display = 'inline-flex';
+      pdfBtn.onclick = () => window.open(article.arquivo, '_blank');
+    } else {
+      pdfBtn.style.display = 'none';
+    }
+  }
+
+  // Badge "editado localmente"
+  const badge = document.getElementById('drawerEditBadge');
+  if (badge) badge.style.display = edits[article.codigo] ? 'block' : 'none';
+
+  // Botão "Eu li"
   const drawerLidoBtn = document.getElementById('drawerLidoBtn');
   if (drawerLidoBtn) {
     const isLido = lidos[article.codigo] === true;
@@ -307,12 +354,97 @@ function openDrawer(article) {
       renderArticles();
     };
   }
+}
 
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+// Campos editáveis: { elementId, dataKey, type }
+const EDIT_FIELDS = [
+  { id: 'drawerTitle',     key: 'titulo',     type: 'input'    },
+  { id: 'drawerNucleo',    key: 'nucleo',     type: 'input'    },
+  { id: 'drawerStudyType', key: 'tipoEstudo', type: 'input'    },
+  { id: 'drawerWhy',       key: 'porQueLer',  type: 'textarea' },
+  { id: 'drawerHowToUse',  key: 'comoUsar',   type: 'textarea' },
+  { id: 'drawerCaution',   key: 'cautelas',   type: 'textarea' },
+  { id: 'drawerRef',       key: 'referencia', type: 'textarea' },
+];
+
+function enterEditMode() {
+  if (!drawerArticle) return;
+
+  EDIT_FIELDS.forEach(({ id, key, type }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const currentVal = drawerArticle[key] || '';
+    const input = document.createElement(type);
+    input.className = 'drawer-edit-input';
+    input.value = currentVal;
+    if (type === 'textarea') input.rows = 3;
+    input.dataset.editKey = key;
+    el.replaceWith(input);
+    input.id = id; // manter o id
+  });
+
+  document.getElementById('drawerEditBtn').style.display = 'none';
+  document.getElementById('drawerSaveBtn').style.display = 'inline-flex';
+  document.getElementById('drawerCancelBtn').style.display = 'inline-flex';
+  document.getElementById('drawerLidoBtn').style.display = 'none';
+}
+
+function saveEdit() {
+  if (!drawerArticle) return;
+
+  const patch = {};
+  EDIT_FIELDS.forEach(({ id, key }) => {
+    const el = document.getElementById(id);
+    if (el && el.dataset.editKey) {
+      patch[key] = el.value.trim();
+    }
+  });
+
+  // Mesclar com edição anterior (se houver) e com dados base
+  edits[drawerArticle.codigo] = { ...(edits[drawerArticle.codigo] || {}), ...patch };
+  saveEdits();
+
+  // Atualizar drawerArticle com os novos valores
+  drawerArticle = { ...drawerArticle, ...patch };
+
+  exitEditMode();
+  renderDrawerView(drawerArticle);
+  renderArticles();
+  updateKpis(getMergedData());
+}
+
+function exitEditMode() {
+  // Se estiver em modo edição, restaurar os elementos originais
+  EDIT_FIELDS.forEach(({ id, type }) => {
+    const el = document.getElementById(id);
+    if (el && el.tagName.toLowerCase() === type && el.dataset.editKey) {
+      const div = document.createElement(id === 'drawerTitle' ? 'h2' : 'div');
+      div.id = id;
+      if (id === 'drawerTitle') {
+        div.style.cssText = 'font-size: 1.25rem; font-weight: 800; line-height: 1.4;';
+      } else if (id === 'drawerRef') {
+        div.className = 'drawer-code-block';
+      } else {
+        div.className = 'drawer-text';
+      }
+      el.replaceWith(div);
+    }
+  });
+
+  const editBtn = document.getElementById('drawerEditBtn');
+  const saveBtn = document.getElementById('drawerSaveBtn');
+  const cancelBtn = document.getElementById('drawerCancelBtn');
+  const lidoBtn = document.getElementById('drawerLidoBtn');
+
+  if (editBtn) editBtn.style.display = 'inline-flex';
+  if (saveBtn) saveBtn.style.display = 'none';
+  if (cancelBtn) cancelBtn.style.display = 'none';
+  if (lidoBtn) lidoBtn.style.display = 'inline-flex';
 }
 
 function closeDrawer() {
+  exitEditMode();
+  drawerArticle = null;
   const overlay = document.getElementById('drawerOverlay');
   if (overlay) overlay.classList.remove('open');
   document.body.style.overflow = '';
