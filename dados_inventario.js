@@ -130,7 +130,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar em microbioma, exames complementares e limites da interpretação clínica.",
         "arquivo": "PDF/Síndrome CIF/Characterization and comparative.pdf",
         "referencia": "THASSAKORN, P et al. Characterization and comparative analysis of urinary bacterial microbiome profiling in healthy cats and cats with feline idiopathic cystitis. Scientific Reports, 2026. DOI: 10.1038/s41598-025-34196-9.\n\n*Procedência:* gerada do .bib - CONFERIR no artigo — ⚠️ **A CONFERIR no artigo**\n\n## Por que ler\nConecta microbioma urinário, gatos saudáveis e FIC, útil para variáveis clínicas e discussão diagnóstica.\n\n## Como usar na tese\nUsar em microbioma, exames complementares e limites da interpretação clínica.\n\n## Cautelas\nVerificar metadados, pois o título está traduzido.\n\n## Tipo de estudo\n*NÃO CONFIRMADO no inventário.*\n\n## Minhas notas de leitura\n<!-- Escreva aqui. Regra do acervo: nada de número, página ou resultado sem conferir no PDF. -->\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 1 (base histórica, clínica e fisiológica)]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2026",
         "titulo": "Caracterização e análise comparativa do perfil do microbioma bacteriano urinário em gatos saudáveis e gatos com cistite idiopática felina.",
         "nucleo": "Núcleo 1"
