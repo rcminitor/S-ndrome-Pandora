@@ -108,7 +108,6 @@
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
           <button class="pn-btn" data-goto="tab-inventory" type="button">Acervo</button>
-          <button class="pn-btn" data-goto="tab-galeria" type="button">Galeria</button>
           <button class="pn-btn" data-goto="tab-pdfs" type="button">PDFs</button>
           <button class="pn-btn" data-goto="tab-fichamentos" type="button">Fichamentos</button>
         </div>
