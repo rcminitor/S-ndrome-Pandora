@@ -26,6 +26,18 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/A_classificar",
+  "nome": "Cistite intersticial felina_01",
+  "arquivo": "PDF/A_classificar/Cistite intersticial felina_01.pdf",
+  "kb": 35
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "Diagnosticando_a_cistite_idiopatica_feli",
+  "arquivo": "PDF/A_classificar/Diagnosticando_a_cistite_idiopatica_feli.pdf",
+  "kb": 548
+ },
+ {
+  "pasta": "PDF/A_classificar",
   "nome": "Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+.",
   "arquivo": "PDF/A_classificar/Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
   "kb": 279
