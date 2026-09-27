@@ -7,7 +7,7 @@
 
   const STORE_KEY = 'pandora.registros.v1';
   const METAS_KEY = 'pandora.metas.v4';
-  const INVENTARIO = window.DADOS_INVENTARIO || [];
+  const INVENTARIO = Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : [];
 
   const IMAGENS = [
     ['Mapas mentais', 'Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp', 'Mapa mental — Síndrome de Pandora'],
@@ -123,7 +123,9 @@
     }
   ];
 
-  let cronograma = ler(CRONOGRAMA_KEY, CRONOGRAMA_PADRAO);
+  let cronograma = lerArray(CRONOGRAMA_KEY, CRONOGRAMA_PADRAO)
+    .filter((item) => item && typeof item === 'object' && item.id && item.nome && item.prazo);
+  if (!cronograma.length) cronograma = JSON.parse(JSON.stringify(CRONOGRAMA_PADRAO));
   let filtroCronoAtual = 'todos';
 
   const METAS_PADRAO = {
@@ -145,14 +147,24 @@
   function ler(key, padrao) {
     try { const v = JSON.parse(localStorage.getItem(key)); return v ?? padrao; } catch (e) { return padrao; }
   }
+  function lerArray(key, padrao) {
+    const v = ler(key, padrao);
+    return Array.isArray(v) ? v : JSON.parse(JSON.stringify(padrao));
+  }
+  function lerObjeto(key) {
+    const v = ler(key, {});
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+  }
   function gravar(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { /* modo privado */ } }
 
   // Semanas: derivadas dos dados do cofre + automáticas (dados_progresso.js) + complemento manual.
   // Fichamentos e artigos lidos são calculados dos dados_fichamentos.js e dados_leituras.js.
   // Um valor digitado (> 0) prevalece sobre o automático; horas, IoT e páginas são só manuais.
   const CAMPOS = ['paginasLidas', 'artigosLidos', 'fichamentos', 'pagArtigo', 'pagTese', 'tarefasIot', 'horas'];
-  const AUTO = (window.DADOS_PROGRESSO && window.DADOS_PROGRESSO.semanas) || [];
-  let manuais = ler(STORE_KEY, []);
+  const autoBruto = window.DADOS_PROGRESSO && window.DADOS_PROGRESSO.semanas;
+  const AUTO = Array.isArray(autoBruto) ? autoBruto : [];
+  let manuais = lerArray(STORE_KEY, [])
+    .filter((item) => item && typeof item === 'object' && typeof item.semana === 'string');
   let registros = [];
   function getMondayISO(iso) {
     const d = new Date(iso.slice(0, 10) + 'T12:00:00');
@@ -162,12 +174,15 @@
   }
   function derivarDosDados() {
     const fichMap = {}, leitMap = {};
-    ((window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos) || []).forEach((f) => {
+    const fichamentosBrutos = window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos;
+    const fichamentos = Array.isArray(fichamentosBrutos) ? fichamentosBrutos : [];
+    const leituras = Array.isArray(window.DADOS_LEITURAS) ? window.DADOS_LEITURAS : [];
+    fichamentos.forEach((f) => {
       if (!f.data) return;
       const s = getMondayISO(f.data);
       fichMap[s] = (fichMap[s] || 0) + 1;
     });
-    (window.DADOS_LEITURAS || []).forEach((l) => {
+    leituras.forEach((l) => {
       if (!l.eu_li) return;
       const s = getMondayISO(l.eu_li);
       leitMap[s] = (leitMap[s] || 0) + 1;
@@ -197,7 +212,11 @@
     registros = Object.values(mapa).sort((a, b) => a.semana.localeCompare(b.semana));
   }
   mesclar();
-  let metas = Object.assign({}, METAS_PADRAO, ler(METAS_KEY, {}));
+  const metasSalvas = lerObjeto(METAS_KEY);
+  let metas = Object.fromEntries(Object.entries(METAS_PADRAO).map(([k, padrao]) => {
+    const salva = metasSalvas[k];
+    return [k, { ...padrao, ...(salva && typeof salva === 'object' && !Array.isArray(salva) ? salva : {}) }];
+  }));
   const salvarRegistros = () => { manuais.sort((a, b) => a.semana.localeCompare(b.semana)); gravar(STORE_KEY, manuais); mesclar(); renderTudo(); };
 
   const escrita = (r) => (+r.pagArtigo || 0) + (+r.pagTese || 0);
@@ -239,12 +258,16 @@
 
   // ---------------------------------------------------- páginas (rotas)
   function irPara(id, inicial) {
+    const pane = document.getElementById(id);
     const btn = $(`.tab-btn[data-tab="${id}"]`);
-    if (!btn) return;
+    if (!pane) return;
     $$('.tab-btn').forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', b === btn); });
     $$('.tab-pane').forEach((p) => p.classList.toggle('active', p.id === id));
     if (!inicial && location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
-    const nav = btn.parentElement; if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: btn.offsetLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
+    if (btn) {
+      const nav = btn.parentElement;
+      if (nav && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: btn.offsetLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
+    }
   }
   function initRotas() {
     $$('.tab-btn').forEach((b) => b.addEventListener('click', () => irPara(b.dataset.tab)));
@@ -257,7 +280,8 @@
           const pill = $(`.filter-pill[data-filter="${g.dataset.filterNucleo}"]`);
           if (pill) pill.click();
         }
-        window.scrollTo({ top: $('.tab-nav-wrapper').offsetTop - 80, behavior: 'smooth' });
+        const nav = $('.tab-nav-wrapper');
+        if (nav) window.scrollTo({ top: Math.max(0, nav.offsetTop - 80), behavior: 'smooth' });
       }
     });
     window.addEventListener('hashchange', () => irPara(location.hash.slice(1)));
@@ -306,6 +330,7 @@
   let galFiltro = 'Todas', galVisiveis = [], lbIdx = 0;
   function renderGaleriaLista() { galVisiveis = IMAGENS.filter((i) => galFiltro === 'Todas' || i[0] === galFiltro); }
   function renderGaleria() {
+    if (!$('#galFiltros') || !$('#pnGallery')) return;
     const cats = ['Todas', ...new Set(IMAGENS.map((i) => i[0]))];
     $('#galFiltros').innerHTML = cats.map((c) => `<button class="filter-pill ${c === galFiltro ? 'active' : ''}" data-gal="${esc(c)}" type="button">${esc(c)}</button>`).join('');
     galVisiveis = IMAGENS.filter((i) => galFiltro === 'Todas' || i[0] === galFiltro);
@@ -325,12 +350,15 @@
   function initGaleria() {
     document.addEventListener('click', (e) => { const f = e.target.closest('.pn-open-img'); if (f) abrirDestaque(f); });
     document.addEventListener('keydown', (e) => { const f = e.target.closest && e.target.closest('.pn-open-img'); if (f && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); abrirDestaque(f); } });
-    $('#galFiltros').addEventListener('click', (e) => { const b = e.target.closest('[data-gal]'); if (b) { galFiltro = b.dataset.gal; renderGaleria(); } });
-    $('#pnGallery').addEventListener('click', (e) => { const f = e.target.closest('.pn-thumb'); if (f) { renderGaleriaLista(); abrirLb(+f.dataset.idx); } });
-    $('#pnGallery').addEventListener('keydown', (e) => { const f = e.target.closest('.pn-thumb'); if (f && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); abrirLb(+f.dataset.idx); } });
-    $('#lbImg').addEventListener('click', () => $('#modalImg').classList.toggle('zoom'));
-    $('.pn-lb-prev').addEventListener('click', () => navLb(-1));
-    $('.pn-lb-next').addEventListener('click', () => navLb(1));
+    const filtros = $('#galFiltros'), galeria = $('#pnGallery'), imagem = $('#lbImg');
+    if (filtros) filtros.addEventListener('click', (e) => { const b = e.target.closest('[data-gal]'); if (b) { galFiltro = b.dataset.gal; renderGaleria(); } });
+    if (galeria) {
+      galeria.addEventListener('click', (e) => { const f = e.target.closest('.pn-thumb'); if (f) { renderGaleriaLista(); abrirLb(+f.dataset.idx); } });
+      galeria.addEventListener('keydown', (e) => { const f = e.target.closest('.pn-thumb'); if (f && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); abrirLb(+f.dataset.idx); } });
+    }
+    if (imagem) imagem.addEventListener('click', () => $('#modalImg').classList.toggle('zoom'));
+    if ($('.pn-lb-prev')) $('.pn-lb-prev').addEventListener('click', () => navLb(-1));
+    if ($('.pn-lb-next')) $('.pn-lb-next').addEventListener('click', () => navLb(1));
   }
 
   // --------------------------------------------------------------- KPIs
@@ -787,10 +815,39 @@
     pinta();
   }
 
-  function renderTudo() { renderKpis(); renderGrafico(); renderProb(); renderAcervo(); renderUso(); renderTabela(); renderTimeline(); renderCronograma(); }
+  const falhasPainel = new Set();
+  function executarEtapa(nome, tarefa) {
+    try {
+      tarefa();
+    } catch (erro) {
+      console.error(`[Painel] Falha em ${nome}:`, erro);
+      falhasPainel.add(nome);
+      const painel = $('#tab-painel');
+      if (painel && !$('#pnFalhaAviso')) {
+        const aviso = document.createElement('div');
+        aviso.id = 'pnFalhaAviso';
+        aviso.className = 'scientific-alert pn-runtime-alert';
+        aviso.innerHTML = '<div><strong>O painel carregou parcialmente.</strong> Um dado salvo no navegador não pôde ser lido. As demais funções continuam disponíveis; recarregue a página e, se necessário, exporte e refaça apenas o registro afetado.</div>';
+        painel.prepend(aviso);
+      }
+    }
+  }
+
+  function renderTudo() {
+    [
+      ['indicadores', renderKpis], ['gráfico', renderGrafico], ['probabilidade', renderProb],
+      ['acervo', renderAcervo], ['uso', renderUso], ['histórico', renderTabela],
+      ['metas', renderTimeline], ['cronograma', renderCronograma],
+    ].forEach(([nome, tarefa]) => executarEtapa(nome, tarefa));
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
-    initRotas(); initModais(); renderIotCusto(); initPdfs(); initPomodoro(); initGaleria(); renderGaleria(); initRegistro(); initMetas(); initCronograma();
+    [
+      ['navegação', initRotas], ['janelas', initModais], ['IoT', renderIotCusto],
+      ['PDFs', initPdfs], ['Pomodoro', initPomodoro], ['galeria', initGaleria],
+      ['imagens', renderGaleria], ['registro semanal', initRegistro],
+      ['configuração de metas', initMetas], ['cronograma interativo', initCronograma],
+    ].forEach(([nome, tarefa]) => executarEtapa(nome, tarefa));
     $$('.pn-seg-btn').forEach((b) => b.addEventListener('click', () => {
       $$('.pn-seg-btn').forEach((x) => x.classList.toggle('active', x === b)); metricaAtual = b.dataset.metric; renderGrafico();
     }));

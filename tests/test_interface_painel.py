@@ -1,0 +1,61 @@
+"""Regressões estruturais do painel publicado, sem abrir navegador."""
+from html.parser import HTMLParser
+from pathlib import Path
+import unittest
+
+
+RAIZ = Path(__file__).resolve().parents[1]
+
+
+class InventarioHtml(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.ids = []
+        self.tabs = []
+        self.destinos = []
+
+    def handle_starttag(self, _tag, attrs):
+        dados = dict(attrs)
+        if dados.get("id"):
+            self.ids.append(dados["id"])
+        if dados.get("data-tab"):
+            self.tabs.append(dados["data-tab"])
+        if dados.get("data-goto"):
+            self.destinos.append(dados["data-goto"])
+
+
+class InterfacePainel(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.html = (RAIZ / "index.html").read_text(encoding="utf-8")
+        cls.js = (RAIZ / "painel.js").read_text(encoding="utf-8")
+        cls.tema = (RAIZ / "tema.css").read_text(encoding="utf-8")
+        cls.doc = InventarioHtml()
+        cls.doc.feed(cls.html)
+
+    def test_ids_sao_unicos(self):
+        repetidos = sorted({item for item in self.doc.ids if self.doc.ids.count(item) > 1})
+        self.assertEqual(repetidos, [])
+
+    def test_botoes_e_atalhos_apontam_para_paineis_existentes(self):
+        ids = set(self.doc.ids)
+        self.assertEqual(sorted(set(self.doc.tabs) - ids), [])
+        self.assertEqual(sorted(set(self.doc.destinos) - ids), [])
+
+    def test_atalhos_fixos_do_painel_estao_presentes(self):
+        for destino in ("tab-registro", "tab-guia", "tab-roadmap", "tab-nucleos"):
+            self.assertIn(f'data-goto="{destino}"', self.html)
+        self.assertIn('data-modal="modalKpiAjuda"', self.html)
+
+    def test_inicializacao_e_dados_sao_resilientes(self):
+        self.assertIn("function lerArray", self.js)
+        self.assertIn("function executarEtapa", self.js)
+        self.assertIn("Array.isArray(window.DADOS_INVENTARIO)", self.js)
+
+    def test_barras_de_navegacao_sao_fixadas(self):
+        self.assertIn(".tab-nav-wrapper {\n  position: sticky;", self.tema)
+        self.assertIn("#tab-painel .pn-toolbar {\n  position: sticky;", self.tema)
+
+
+if __name__ == "__main__":
+    unittest.main()
