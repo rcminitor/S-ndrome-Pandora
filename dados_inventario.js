@@ -519,9 +519,9 @@ window.DADOS_INVENTARIO = [
         "procedencia": "gerada do .bib - CONFERIR no artigo",
         "porQueLer": "Apoia sensores, big data e machine learning, embora foque produção animal.",
         "comoUsar": "Usar como analogia tecnológica para coleta contínua e modelos preditivos.",
-        "arquivo": "",
+        "arquivo": "PDF_Para conhecimento/1-s2.0-S2214180420301343-main.pdf",
         "referencia": "NEETHIRAJAN, Suresh. The role of sensors, big data and machine learning in modern animal farming. Sensing and Bio-Sensing Research, v. 29, 2020. DOI: 10.1016/j.sbsr.2020.100367.",
-        "status": "ainda nao obtido",
+        "status": "PDF obtido",
         "ano": "2020",
         "titulo": "The role of sensors, big data and machine learning in modern animal farming",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
