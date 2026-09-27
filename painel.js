@@ -351,7 +351,7 @@
         <img src="${encodeURI(i[1])}" alt="${esc(i[2])}" loading="lazy" onerror="this.closest('figure').classList.add('pn-missing')">
         <figcaption><span>${esc(i[0])}</span>${esc(i[2])}</figcaption>
       </figure>`).join('');
-    $('#galeriaCount').textContent = IMAGENS.length;
+    if ($('#galeriaCount')) $('#galeriaCount').textContent = IMAGENS.length;
   }
   function abrirLb(n) { $('#modalImg').classList.remove('zoom'); lbIdx = n; const i = galVisiveis[n]; $('#lbImg').src = encodeURI(i[1]); $('#lbImg').alt = i[2]; $('#lbCap').textContent = `${i[2]} · ${n + 1}/${galVisiveis.length}`; if (!modalAberto) abrirModal('modalImg'); }
   function navLb(d) { abrirLb((lbIdx + d + galVisiveis.length) % galVisiveis.length); }
@@ -966,7 +966,7 @@
       <div class="pn-pdfs">${itens.map((d) => `<div class="pn-pdf"><span class="pn-pdf-ico">PDF</span><div><strong>${esc(d.nome)}</strong><small>${fmt(d.kb / 1024)} MB</small></div>
         ${d.publico === false ? '<span class="pn-muted" style="font-size:.75rem">Disponível só no cofre</span>' : `<div class="pn-actions"><button class="pn-btn pn-btn-sm" data-pdf="${esc(d.arquivo)}" data-nome="${esc(d.nome)}" type="button">Ler aqui</button><a class="pn-btn pn-btn-sm" href="${cofreUrl(d.arquivo)}" target="_blank" rel="noopener">Nova aba ↗</a></div>`}</div>`).join('')}</div></div>`).join('') || '<p class="pn-muted">Nenhum PDF encontrado.</p>';
     $('#pdfContagem').textContent = `${lista.length} de ${PDFS.length} PDFs`;
-    $('#pdfBadge').textContent = PDFS.length;
+    if ($('#pdfBadge')) $('#pdfBadge').textContent = PDFS.length;
   }
   function initPdfs() {
     if (!$('#pdfLista')) return;
@@ -975,7 +975,17 @@
     document.addEventListener('click', (e) => {
       const b = e.target.closest('[data-pdf]'); if (!b) return;
       const url = cofreUrl(b.dataset.pdf);
-      $('#pdfTitulo').textContent = b.dataset.nome; $('#pdfFrame').src = url; $('#pdfNovaAba').href = url;
+      $('#pdfTitulo').textContent = b.dataset.nome;
+      $('#pdfNovaAba').href = url;
+      if (window.location.protocol === 'file:') {
+        $('#pdfFrame').removeAttribute('srcdoc');
+        $('#pdfFrame').src = url;
+      } else {
+        const caminhoEsc = b.dataset.pdf.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const caminhoJS = JSON.stringify(b.dataset.pdf);
+        $('#pdfFrame').removeAttribute('src');
+        $('#pdfFrame').srcdoc = '<style>body{font-family:sans-serif;padding:24px;line-height:1.6;color:#333}code{background:#f3f3f3;padding:8px 12px;border-radius:6px;display:block;margin:10px 0;word-break:break-all;font-size:.9em}button{margin-top:14px;padding:9px 18px;background:#e47e3f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9em}</style><p><strong>PDF disponível apenas no computador local.</strong></p><p>Navegue até o cofre e abra:</p><code>' + caminhoEsc + '</code><button onclick="navigator.clipboard.writeText(' + caminhoJS + ').then(()=>this.textContent=\'✓ Copiado!\')">Copiar caminho</button>';
+      }
       abrirModal('modalPdf');
     });
     renderPdfs();
