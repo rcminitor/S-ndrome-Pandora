@@ -917,6 +917,44 @@ body {
   border-color: var(--orange-primary);
 }
 
+/* Wrapper dos botões no rodapé do card */
+.article-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Botão "Eu li" no card */
+.btn-lido {
+  background: var(--bg-surface-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.btn-lido:hover {
+  background: var(--blue-surface);
+  color: var(--blue-soft);
+  border-color: var(--blue-light);
+}
+
+.btn-lido.btn-lido-ativo {
+  background: var(--blue-surface);
+  color: var(--blue-soft);
+  border-color: var(--blue-light);
+}
+
+/* Card marcado como lido */
+.article-card.card-lido {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, var(--bg-surface) 100%);
+}
+
 /* ==========================================================================
    Aba 3: Roteiro Semanal (Mapa Mental)
    ========================================================================== */
@@ -1277,6 +1315,32 @@ body {
   background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
   box-shadow: 0 2px 12px rgba(249, 115, 22, 0.4);
   transform: translateY(-1px);
+}
+
+/* Botão "Marcar como lido" no drawer */
+.btn-drawer-lido {
+  background: var(--bg-surface-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  width: 100%;
+  transition: all var(--transition-fast);
+}
+
+.btn-drawer-lido:hover {
+  background: var(--blue-surface);
+  color: var(--blue-soft);
+  border-color: var(--blue-light);
+}
+
+.btn-drawer-lido.btn-lido-ativo {
+  background: var(--blue-surface);
+  color: var(--blue-soft);
+  border-color: var(--blue-light);
 }
 
 /* ==========================================================================

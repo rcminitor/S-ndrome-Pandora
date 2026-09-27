@@ -3,6 +3,14 @@
    JavaScript Application Logic
    ========================================================================== */
 
+const LIDOS_KEY = 'pandora.lidos.v1';
+let lidos = {};
+try { lidos = JSON.parse(localStorage.getItem(LIDOS_KEY)) || {}; } catch (e) {}
+
+function saveLidos() {
+  try { localStorage.setItem(LIDOS_KEY, JSON.stringify(lidos)); } catch (e) {}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initTabs();
@@ -106,12 +114,14 @@ function updateKpis(data) {
   const elN2 = document.getElementById('kpiN2');
   const elPriority = document.getElementById('kpiPriority');
   const elFichados = document.getElementById('kpiFichados');
+  const acervoBadge = document.getElementById('acervoBadge');
 
-  if (elTotal) elTotal.textContent = data.length || 64;
+  if (elTotal) elTotal.textContent = data.length;
   if (elN1) elN1.textContent = n1Count;
   if (elN2) elN2.textContent = n2Count;
   if (elPriority) elPriority.textContent = priorityCount;
   if (elFichados) elFichados.textContent = fichadosCount;
+  if (acervoBadge) acervoBadge.textContent = data.length;
 }
 
 function renderArticles() {
@@ -139,13 +149,14 @@ function renderArticles() {
     if (currentFilter === 'ler-primeiro') return (item.fase || '').toLowerCase().includes('ler primeiro');
     if (currentFilter === 'fichados') return (item.status || '').toLowerCase().includes('fichamento concluido');
     if (currentFilter === 'com-pdf') return item.arquivo && item.arquivo.trim() !== '' && !item.arquivo.includes('NAO CONFIRMADO');
-    if (currentFilter === 'sem-pdf') return !item.arquivo || item.arquivo.trim() === '' || item.arquivo.includes('NAO CONFIRMADO');
+    if (currentFilter === 'lidos') return lidos[item.codigo] === true;
 
     return true;
   });
 
   if (countLabel) {
-    countLabel.textContent = `Exibindo ${filtered.length} de ${data.length} artigos catalogados`;
+    const lidosCount = data.filter(d => lidos[d.codigo] === true).length;
+    countLabel.textContent = `Exibindo ${filtered.length} de ${data.length} artigos — ${lidosCount} marcados como lidos`;
   }
 
   if (filtered.length === 0) {
@@ -161,7 +172,8 @@ function renderArticles() {
   container.innerHTML = filtered.map(item => {
     const isFichado = (item.status || '').toLowerCase().includes('fichamento concluido');
     const isLerPrimeiro = (item.fase || '').toLowerCase().includes('ler primeiro');
-    
+    const isLido = lidos[item.codigo] === true;
+
     let statusClass = 'status-later';
     let statusText = item.fase || 'Classificar';
 
@@ -176,12 +188,13 @@ function renderArticles() {
     const safeTitle = escapeHtml(item.titulo || 'Sem título');
     const safeTheme = escapeHtml(item.grupo || 'Tema geral');
     const safeWhy = escapeHtml(item.porQueLer || item.comoUsar || 'Sem descrição cadastrada.');
+    const safeCode = escapeHtml(item.codigo);
 
     return `
-      <div class="article-card" data-code="${escapeHtml(item.codigo)}">
+      <div class="article-card${isLido ? ' card-lido' : ''}" data-code="${safeCode}">
         <div>
           <div class="article-header">
-            <span class="article-code">#${escapeHtml(item.codigo)}</span>
+            <span class="article-code">#${safeCode}</span>
             <span class="article-year">${escapeHtml(item.ano || 'S/D')}</span>
           </div>
           <h3 class="article-title" title="${safeTitle}">${safeTitle}</h3>
@@ -190,15 +203,32 @@ function renderArticles() {
         </div>
         <div class="article-footer">
           <span class="status-badge ${statusClass}">${statusText}</span>
-          <button class="btn-card-details" type="button">Ver detalhes</button>
+          <div class="article-actions">
+            <button class="btn-lido${isLido ? ' btn-lido-ativo' : ''}" type="button" data-lido-code="${safeCode}" title="${isLido ? 'Marcar como não lido' : 'Marcar como lido'}">
+              ${isLido ? '✓ Lido' : 'Eu li'}
+            </button>
+            <button class="btn-card-details" type="button">Ver detalhes</button>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 
-  // Attach click listener for drawer opening
+  // Botão "Eu li" — toggle sem abrir o drawer
+  container.querySelectorAll('.btn-lido').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const code = btn.getAttribute('data-lido-code');
+      lidos[code] = !lidos[code];
+      saveLidos();
+      renderArticles();
+    });
+  });
+
+  // Botão "Ver detalhes" e clique no card — abre o drawer
   container.querySelectorAll('.article-card').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('btn-lido')) return;
       const code = card.getAttribute('data-code');
       const article = (window.DADOS_INVENTARIO || []).find(a => String(a.codigo) === String(code));
       if (article) openDrawer(article);
@@ -242,8 +272,8 @@ function openDrawer(article) {
   document.getElementById('drawerStudyType').textContent = article.tipoEstudo || 'Não especificado';
 
   const refBox = document.getElementById('drawerRef');
-  const refText = article.referencia && article.referencia !== 'NAO CONFIRMADO' 
-    ? article.referencia 
+  const refText = article.referencia && article.referencia !== 'NAO CONFIRMADO'
+    ? article.referencia
     : 'Referência ABNT ainda NÃO CONFIRMADA no artigo original.';
   refBox.textContent = refText;
 
@@ -262,14 +292,20 @@ function openDrawer(article) {
   const fileBox = document.getElementById('drawerFile');
   fileBox.textContent = article.arquivo || 'Arquivo ainda não obtido';
 
-  const pdfBtn = document.getElementById('drawerPdfBtn');
-  if (pdfBtn) {
-    if (article.arquivo) {
-      pdfBtn.href = encodeURI(article.arquivo);
-      pdfBtn.removeAttribute('hidden');
-    } else {
-      pdfBtn.setAttribute('hidden', '');
-    }
+  // Botão "Eu li" dentro do drawer
+  const drawerLidoBtn = document.getElementById('drawerLidoBtn');
+  if (drawerLidoBtn) {
+    const isLido = lidos[article.codigo] === true;
+    drawerLidoBtn.textContent = isLido ? '✓ Marcado como lido' : 'Marcar como lido';
+    drawerLidoBtn.className = 'btn-drawer-lido' + (isLido ? ' btn-lido-ativo' : '');
+    drawerLidoBtn.onclick = () => {
+      lidos[article.codigo] = !lidos[article.codigo];
+      saveLidos();
+      const nowLido = lidos[article.codigo] === true;
+      drawerLidoBtn.textContent = nowLido ? '✓ Marcado como lido' : 'Marcar como lido';
+      drawerLidoBtn.className = 'btn-drawer-lido' + (nowLido ? ' btn-lido-ativo' : '');
+      renderArticles();
+    };
   }
 
   overlay.classList.add('open');
