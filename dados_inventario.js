@@ -658,6 +658,7 @@ window.DADOS_INVENTARIO = [
         "arquivo": "PDF/Relevantes/Anna.pdf",
         "referencia": "KONG, Chun Yin et al. Anna: an open-source platform for real-time integration of machine learning classifiers with veterinary electronic health records. BMC Veterinary Research, v. 21, n. 1, 2025. DOI: 10.1186/S12917-025-05000-7.",
         "status": "fichamento concluido",
+        "fichamento": "4 — Fichamento — Anna open-source platform ML classifiers EHR.md",
         "ano": "2025",
         "titulo": "Anna: an open-source platform for real-time integration of machine learning classifiers with veterinary electronic health records",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -1015,6 +1016,7 @@ window.DADOS_INVENTARIO = [
         "arquivo": "PDF/Relevantes/The Expanding Role of Artificial Intelligence in Companion.pdf",
         "referencia": "SABOLEK, Ivana; JOVIĆ, Alan. The Expanding Role of Artificial Intelligence in Companion Animal Care: A Systematic Review. Animals, v. 16, n. 7, p. 1035, 2026. DOI: 10.3390/ANI16071035/S1.",
         "status": "fichamento concluido",
+        "fichamento": "1 — Fichamento — The Expanding Role of AI in Companion Animal Care.md",
         "ano": "2026",
         "titulo": "The Expanding Role of Artificial Intelligence in Companion Animal Care: A Systematic Review",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -1083,6 +1085,7 @@ window.DADOS_INVENTARIO = [
         "arquivo": "PDF/A_classificar/Facial expressions of pain in cats.pdf",
         "referencia": "EVANGELISTA, M. C. et al. Scientific Reports. Referencia completa NAO CONFIRMADA.",
         "status": "fichamento concluido",
+        "fichamento": "S6 — Fichamento — Feline Grimace Scale development and validation.md",
         "ano": "NAO CONFIRMADO",
         "titulo": "Facial expressions of pain in cats: the development and validation of a Feline Grimace Scale",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
