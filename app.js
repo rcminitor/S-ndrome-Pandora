@@ -223,7 +223,8 @@ function renderArticles() {
             <button class="btn-lido${isLido ? ' btn-lido-ativo' : ''}" type="button" data-lido-code="${safeCode}" title="${isLido ? 'Marcar como não lido' : 'Marcar como lido'}">
               ${isLido ? '✓ Lido' : 'Eu li'}
             </button>
-            <button class="btn-card-details" type="button">Ver detalhes</button>
+            <button class="btn-card-edit" type="button" data-edit-code="${safeCode}" title="Editar os dados deste item">✎ Editar</button>
+            <button class="btn-card-details" type="button" data-details-code="${safeCode}">Ver detalhes</button>
           </div>
         </div>
       </div>
@@ -240,9 +241,30 @@ function renderArticles() {
     });
   });
 
+  container.querySelectorAll('.btn-card-edit').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const code = btn.getAttribute('data-edit-code');
+      const article = getMergedData().find(a => String(a.codigo) === String(code));
+      if (article) {
+        openDrawer(article);
+        enterEditMode();
+      }
+    });
+  });
+
+  container.querySelectorAll('.btn-card-details').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const code = btn.getAttribute('data-details-code');
+      const article = getMergedData().find(a => String(a.codigo) === String(code));
+      if (article) openDrawer(article);
+    });
+  });
+
   container.querySelectorAll('.article-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.classList.contains('btn-lido')) return;
+      if (e.target.closest('button')) return;
       const code = card.getAttribute('data-code');
       const article = getMergedData().find(a => String(a.codigo) === String(code));
       if (article) openDrawer(article);
@@ -398,15 +420,15 @@ function saveEdit() {
   EDIT_FIELDS.forEach(({ id, key }) => {
     const el = document.getElementById(id);
     if (el && el.dataset.editKey) {
-      patch[key] = el.value.trim();
+      patch[key] = el.value.trim() || 'NÃO CONFIRMADO';
     }
   });
 
-  // Mesclar com edição anterior (se houver) e com dados base
+  // Mesclar com edição anterior e salvar
   edits[drawerArticle.codigo] = { ...(edits[drawerArticle.codigo] || {}), ...patch };
   saveEdits();
 
-  // Atualizar drawerArticle com os novos valores
+  // Atualizar drawerArticle
   drawerArticle = { ...drawerArticle, ...patch };
 
   exitEditMode();

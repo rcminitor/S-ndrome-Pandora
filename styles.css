@@ -917,10 +917,29 @@ body {
   border-color: var(--orange-primary);
 }
 
+.btn-card-edit {
+  background: var(--blue-surface);
+  border: 1px solid var(--blue-light);
+  color: var(--blue-soft);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.btn-card-edit:hover {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
 /* Wrapper dos botões no rodapé do card */
 .article-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 6px;
 }
 
