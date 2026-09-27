@@ -126,47 +126,90 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
-   "codigo": "25",
-   "titulo": "Jhilta et al. (2026) — Smart boluses (sem PDF)",
+   "codigo": "19",
+   "titulo": "Buffington (2011) — Idiopathic cystitis beyond the LUT",
    "marcas": {
     "C1": {
-     "m": "NC",
-     "txt": ""
+     "m": "✅",
+     "txt": "define Síndrome de Pandora e FIC como sistêmicas (pp. 784–785, 792)"
     },
     "C2": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "revisão narrativa, sintetiza dados de estudos prévios (p. 784)"
     },
     "C3": {
-     "m": "NC",
-     "txt": ""
+     "m": "◐",
+     "txt": "discute cronicidade e história prévia de estresse (pp. 785, 792)"
     },
     "C4": {
-     "m": "NC",
-     "txt": ""
+     "m": "✅",
+     "txt": "experiências precoces e ativação do SRS no ambiente provocativo (pp. 785, 792)"
     },
     "C5": {
-     "m": "NC",
-     "txt": ""
+     "m": "◐",
+     "txt": "revisa catecolaminas, adrenais e permeabilidade (pp. 788–789)"
     },
     "C6": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "não emprega sensores nem IA (p. 784)"
     },
     "C7": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "revisão narrativa, sem análise estatística própria (p. 784)"
     },
     "C8": {
-     "m": "NC",
-     "txt": ""
+     "m": "◐",
+     "txt": "revisa critérios diagnósticos e resposta clínica ao MEMO (pp. 785, 791)"
     },
     "C9": {
-     "m": "NC",
-     "txt": ""
+     "m": "◐",
+     "txt": "discute gatos domiciliados e resposta ao enriquecimento (p. 791)"
     }
    },
-   "atualizado": "2026-09-26T15:53"
+   "atualizado": "2026-09-26T23:55"
+  },
+  {
+   "codigo": "25",
+   "titulo": "Jhilta et al. (2026) — Smart boluses & precision vet",
+   "marcas": {
+    "C1": {
+     "m": "✗",
+     "txt": "foco em pecuária (bovinos/ovinos), não cita gatos (pp. 1, 4)"
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "revisão narrativa sobre tecnologias de precisão (p. 1)"
+    },
+    "C3": {
+     "m": "◐",
+     "txt": "monitoramento contínuo via bolus de longa duração > 6 anos (p. 7)"
+    },
+    "C4": {
+     "m": "◐",
+     "txt": "monitora estresse térmico e parâmetros fisiológicos em rebanho (p. 10)"
+    },
+    "C5": {
+     "m": "✅",
+     "txt": "sensores objetivos de pH, temp, motilidade e FC (pp. 4, 10)"
+    },
+    "C6": {
+     "m": "✅",
+     "txt": "wearables, smart bolus com transmissão sem fio e IA/ML (pp. 4–5)"
+    },
+    "C7": {
+     "m": "◐",
+     "txt": "compara sensibilidade e especificidade de sensores (p. 6)"
+    },
+    "C8": {
+     "m": "◐",
+     "txt": "validação em fazendas experimentais e pecuária comercial (pp. 7, 10)"
+    },
+    "C9": {
+     "m": "✗",
+     "txt": "confinamento e pastagem em fazenda, não domiciliar (pp. 1, 4)"
+    }
+   },
+   "atualizado": "2026-09-26T23:55"
   },
   {
    "codigo": "38",
