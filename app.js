@@ -391,17 +391,29 @@ function renderDrawerView(article) {
   const fileBox = document.getElementById('drawerFile');
   fileBox.textContent = article.arquivo || 'Arquivo ainda não obtido';
 
-  // Botão PDF
+  // Botão PDF — resolve o caminho do inventário para o caminho real no git
   const pdfBtn = document.getElementById('drawerPdfBtn');
   if (pdfBtn) {
     const hasFile = article.arquivo && article.arquivo.trim() !== '' &&
                     !article.arquivo.includes('NAO CONFIRMADO') &&
                     !article.arquivo.includes('NÃO CONFIRMADO');
     if (hasFile) {
-      pdfBtn.style.display = 'inline-flex';
-      pdfBtn.dataset.pdf = article.arquivo;
-      pdfBtn.dataset.nome = article.titulo || '#' + article.codigo;
-      pdfBtn.onclick = null;
+      // Tenta encontrar o arquivo em DADOS_PDFS (PDFs no git)
+      // pelo mesmo nome de arquivo, ignorando a pasta
+      const nomeArquivo = article.arquivo.split('/').pop();
+      const pdfsGit = window.DADOS_PDFS || [];
+      const encontrado = pdfsGit.find(p => p.arquivo && p.arquivo.split('/').pop() === nomeArquivo);
+      const caminhoReal = encontrado ? encontrado.arquivo : null;
+
+      if (caminhoReal) {
+        pdfBtn.style.display = 'inline-flex';
+        pdfBtn.dataset.pdf = caminhoReal;
+        pdfBtn.dataset.nome = article.titulo || '#' + article.codigo;
+        pdfBtn.onclick = null;
+      } else {
+        // PDF não está no repositório: oculta o botão
+        pdfBtn.style.display = 'none';
+      }
     } else {
       pdfBtn.style.display = 'none';
     }
