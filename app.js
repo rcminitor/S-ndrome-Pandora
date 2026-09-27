@@ -318,7 +318,11 @@ function renderDrawerView(article) {
   document.getElementById('drawerCode').textContent = `#${article.codigo} (${article.ano || 'Ano não confirmado'})`;
   document.getElementById('drawerTitle').textContent = article.titulo || 'Sem título';
   document.getElementById('drawerTheme').textContent = article.grupo || 'Geral';
+  if (document.getElementById('drawerGroup')) document.getElementById('drawerGroup').textContent = article.grupo || 'NÃO CONFIRMADO';
+  if (document.getElementById('drawerYear')) document.getElementById('drawerYear').textContent = article.ano || 'Não confirmado';
+  if (document.getElementById('drawerFase')) document.getElementById('drawerFase').textContent = article.fase || 'A classificar';
   document.getElementById('drawerNucleo').textContent = article.nucleo || 'Não classificado';
+  if (document.getElementById('drawerStatus')) document.getElementById('drawerStatus').textContent = article.status || 'Não iniciado';
   document.getElementById('drawerWhy').textContent = article.porQueLer || 'Não especificado';
   document.getElementById('drawerHowToUse').textContent = article.comoUsar || 'Não especificado';
   document.getElementById('drawerCaution').textContent = article.cautelas || 'Nenhuma cautela registrada';
@@ -338,6 +342,50 @@ function renderDrawerView(article) {
         setTimeout(() => { copyBtn.textContent = 'Copiar Referência ABNT'; }, 2000);
       });
     };
+  }
+
+  // Fichamento da fonte
+  const fichInfo = document.getElementById('drawerFichStatus');
+  const verBtn = document.getElementById('drawerVerFichBtn');
+  const editBtnFich = document.getElementById('drawerEditarFichBtn');
+  const criarBtnFich = document.getElementById('drawerCriarFichBtn');
+  const localFichKey = 'pandora_fich_' + article.codigo;
+  const hasLocalFich = !!localStorage.getItem(localFichKey);
+  const dadosFichs = (window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos) || [];
+  const cofreFich = dadosFichs.find(f => String(f.codigo) === String(article.codigo) || (article.fichamento && f.arquivo === article.fichamento));
+  const hasFich = !!cofreFich || hasLocalFich;
+
+  if (fichInfo) {
+    if (hasFich) {
+      const nomeArq = (cofreFich && cofreFich.arquivo) || `${article.codigo} — Fichamento.md`;
+      fichInfo.innerHTML = `<strong>Disponível:</strong> ${escapeHtml(nomeArq)} ${hasLocalFich ? '<span style="color:var(--accent);font-weight:600">(● Editado localmente)</span>' : '<span style="color:var(--green);font-weight:600">(✔️ No acervo)</span>'}`;
+      if (verBtn) {
+        verBtn.style.display = 'inline-flex';
+        verBtn.onclick = () => {
+          closeDrawer();
+          const fichTab = document.querySelector('[data-tab="tab-fichamentos"]');
+          if (fichTab) fichTab.click();
+          if (window.abrirFichamentoPorCodigo) window.abrirFichamentoPorCodigo(article.codigo);
+        };
+      }
+      if (editBtnFich) {
+        editBtnFich.style.display = 'inline-flex';
+        editBtnFich.onclick = () => {
+          if (window.abrirEditorFichamento) window.abrirEditorFichamento(article.codigo, article.titulo, article);
+        };
+      }
+      if (criarBtnFich) criarBtnFich.style.display = 'none';
+    } else {
+      fichInfo.textContent = 'Nenhum fichamento registrado para esta fonte.';
+      if (verBtn) verBtn.style.display = 'none';
+      if (editBtnFich) editBtnFich.style.display = 'none';
+      if (criarBtnFich) {
+        criarBtnFich.style.display = 'inline-flex';
+        criarBtnFich.onclick = () => {
+          if (window.abrirEditorFichamento) window.abrirEditorFichamento(article.codigo, article.titulo, article);
+        };
+      }
+    }
   }
 
   const fileBox = document.getElementById('drawerFile');
@@ -380,11 +428,15 @@ function renderDrawerView(article) {
   }
 }
 
-// Campos editáveis: { elementId, dataKey, type }
+// Campos editáveis: { elementId, dataKey, type, options }
 const EDIT_FIELDS = [
-  { id: 'drawerTitle',     key: 'titulo',     type: 'input'    },
-  { id: 'drawerNucleo',    key: 'nucleo',     type: 'input'    },
-  { id: 'drawerStudyType', key: 'tipoEstudo', type: 'input'    },
+  { id: 'drawerTitle',     key: 'titulo',     type: 'input' },
+  { id: 'drawerYear',      key: 'ano',        type: 'input' },
+  { id: 'drawerGroup',     key: 'grupo',      type: 'input' },
+  { id: 'drawerFase',      key: 'fase',       type: 'select', options: ['Ler primeiro', 'Ler depois', 'Ler com cautela', 'A classificar'] },
+  { id: 'drawerNucleo',    key: 'nucleo',     type: 'select', options: ['Nucleo 1 - base historica, clinica e fisiologica', 'Nucleo 2 - ambiente, comportamento e tecnologia', 'Não classificado'] },
+  { id: 'drawerStatus',    key: 'status',     type: 'select', options: ['fichamento concluido', 'arquivo obtido', 'ainda nao obtido', 'nao iniciado'] },
+  { id: 'drawerStudyType', key: 'tipoEstudo', type: 'input' },
   { id: 'drawerWhy',       key: 'porQueLer',  type: 'textarea' },
   { id: 'drawerHowToUse',  key: 'comoUsar',   type: 'textarea' },
   { id: 'drawerCaution',   key: 'cautelas',   type: 'textarea' },
@@ -394,17 +446,34 @@ const EDIT_FIELDS = [
 function enterEditMode() {
   if (!drawerArticle) return;
 
-  EDIT_FIELDS.forEach(({ id, key, type }) => {
+  EDIT_FIELDS.forEach(({ id, key, type, options }) => {
     const el = document.getElementById(id);
     if (!el) return;
     const currentVal = drawerArticle[key] || '';
-    const input = document.createElement(type);
-    input.className = 'drawer-edit-input';
-    input.value = currentVal;
-    if (type === 'textarea') input.rows = 3;
+    let input;
+    if (type === 'select') {
+      input = document.createElement('select');
+      input.className = 'drawer-edit-select';
+      options.forEach((opt) => {
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt;
+        const curStr = String(currentVal).toLowerCase();
+        const optStr = opt.toLowerCase();
+        if (curStr === optStr || (opt.includes('1') && curStr.includes('1')) || (opt.includes('2') && curStr.includes('2'))) {
+          o.selected = true;
+        }
+        input.appendChild(o);
+      });
+    } else {
+      input = document.createElement(type);
+      input.className = 'drawer-edit-input';
+      input.value = currentVal;
+      if (type === 'textarea') input.rows = 3;
+    }
     input.dataset.editKey = key;
+    input.id = id;
     el.replaceWith(input);
-    input.id = id; // manter o id
   });
 
   document.getElementById('drawerEditBtn').style.display = 'none';
@@ -438,10 +507,9 @@ function saveEdit() {
 }
 
 function exitEditMode() {
-  // Se estiver em modo edição, restaurar os elementos originais
-  EDIT_FIELDS.forEach(({ id, type }) => {
+  EDIT_FIELDS.forEach(({ id }) => {
     const el = document.getElementById(id);
-    if (el && el.tagName.toLowerCase() === type && el.dataset.editKey) {
+    if (el && el.dataset && el.dataset.editKey) {
       const div = document.createElement(id === 'drawerTitle' ? 'h2' : 'div');
       div.id = id;
       if (id === 'drawerTitle') {

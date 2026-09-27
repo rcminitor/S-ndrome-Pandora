@@ -56,11 +56,7 @@
       <p class="subtitle">
         Referencial teórico, acompanhamento da escrita e projeto IoT: da doença urinária localizada (FLUTD/FIC) à síndrome multissistêmica, com monitoramento contínuo por sensores e IA.
       </p>
-      <dl class="hero-meta">
-        <div><dt>Área</dt><dd>Sistemas de Energia Elétrica</dd></div>
-        <div><dt>Instituição</dt><dd>Universidade Federal do Ceará</dd></div>
-      </dl>
-
+      <p class="hero-note">Agrupamento por núcleos proposto, não declarado pelos autores.</p>
       <div class="scientific-alert" role="note">
         <div><strong>Regra do referencial:</strong> nenhum dado, resultado, página ou referência entra no texto da tese sem confirmação no documento original.</div>
       </div>
@@ -73,9 +69,14 @@
       <button class="tab-btn" data-tab="tab-painel" role="tab" aria-selected="false" title="Painel de KPIs">
         Painel
       </button>
-
+      <button class="tab-btn" data-tab="tab-registro" role="tab" aria-selected="false" title="Registro Semanal">
+        Registro
+      </button>
       <button class="tab-btn" data-tab="tab-metas" role="tab" aria-selected="false" title="Metas & Qualificação">
         Metas
+      </button>
+      <button class="tab-btn" data-tab="tab-pdfs" role="tab" aria-selected="false" title="PDFs">
+        PDFs <span class="tab-badge" id="pdfBadge">0</span>
       </button>
       <button class="tab-btn" data-tab="tab-agentes" role="tab" aria-selected="false" title="Estudo com Agentes (painel local)">
         Estudo
@@ -83,7 +84,12 @@
       <button class="tab-btn" data-tab="tab-fichamentos" role="tab" aria-selected="false" title="Fichamentos">
         Fichamentos
       </button>
-
+      <button class="tab-btn" data-tab="tab-galeria" role="tab" aria-selected="false" title="Galeria">
+        Galeria <span class="tab-badge" id="galeriaCount">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-guia" role="tab" aria-selected="false" title="Guia Didático">
+        Guia
+      </button>
       <button class="tab-btn" data-tab="tab-estadoarte" role="tab" aria-selected="false" title="Estado da Arte">
         Estado
       </button>
@@ -96,7 +102,12 @@
       <button class="tab-btn" data-tab="tab-inventory" role="tab" aria-selected="false" title="Acervo e Inventário">
         Acervo <span class="tab-badge" id="acervoBadge">31</span>
       </button>
-
+      <button class="tab-btn" data-tab="tab-roadmap" role="tab" aria-selected="false" title="Roteiro Semanal de Escrita">
+        Roteiro
+      </button>
+      <button class="tab-btn" data-tab="tab-nucleos" role="tab" aria-selected="false" title="Núcleos da Pesquisa">
+        Núcleos
+      </button>
     </nav>
 
     <!-- TAB 1: VISÃO GERAL -->
@@ -473,9 +484,6 @@
         </div>
         <div class="pn-actions">
           <button class="pn-btn pn-btn-primary" data-goto="tab-registro" type="button">Registrar semana</button>
-          <button class="pn-btn" data-goto="tab-guia" type="button">Guia</button>
-          <button class="pn-btn" data-goto="tab-roadmap" type="button">Roteiro</button>
-          <button class="pn-btn" data-goto="tab-nucleos" type="button">Núcleos</button>
           <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
         </div>
       </div>
@@ -512,17 +520,6 @@
           <h3 class="card-title">Uso e constância</h3>
           <div id="pnUso"></div>
         </div>
-      </div>
-
-      <div class="content-card" style="margin-top:24px">
-        <div class="pn-card-head">
-          <h3 class="card-title">Galeria de imagens</h3>
-          <span class="pn-muted"><span id="galeriaCount"></span> imagens</span>
-        </div>
-        <div class="filter-bar" style="margin-bottom:16px">
-          <div class="pill-filters" id="galFiltros" role="group" aria-label="Filtrar imagens"></div>
-        </div>
-        <div class="pn-gallery" id="pnGallery"></div>
       </div>
     </div>
 
@@ -652,9 +649,12 @@
       </div>
     </div>
 
-    <!-- PÁGINA: GALERIA — conteúdo movido para dentro do Painel -->
+    <!-- PÁGINA: GALERIA -->
     <div class="tab-pane" id="tab-galeria" role="tabpanel">
-      <p class="pn-muted" style="padding:24px 0">A galeria está disponível diretamente no <button class="pn-btn" data-goto="tab-painel" type="button">Painel</button>.</p>
+      <div class="filter-bar">
+        <div class="pill-filters" id="galFiltros" role="group" aria-label="Filtrar imagens"></div>
+      </div>
+      <div class="pn-gallery" id="pnGallery"></div>
     </div>
 
     <!-- PÁGINA: GUIA DIDÁTICO -->
@@ -715,7 +715,7 @@
         <h3 class="card-title">Estado da arte por critérios</h3>
         <p>Subseção da fundamentação teórica. Critérios = focos da tese (monitoramento contínuo de gatos com Síndrome de Pandora). <strong>Os critérios e a divisão por núcleo são propostas do autor da tese, não dos autores citados.</strong> Cada marca traz a página do PDF que a justifica. Atualizado em 27/09/2026.</p>
         <p><span class="ea-m ea-ok">✅</span> atende · <span class="ea-m ea-meio">◐</span> em parte · <span class="ea-m ea-nao">✗</span> não atende · <span class="ea-m ea-nc">NC</span> NÃO CONFIRMADO (PDF não lido)</p>
-        <div style="overflow-x:auto"><table class="week-table ea-tabela"><thead><tr><th>Critério (foco da tese)</th><th>#43</th><th>#51</th><th>#53</th><th>S2</th><th>S3</th><th>#4</th><th>S6</th><th>#25</th><th>#50</th><th>#19</th><th>#40</th><th>#17</th><th>#48</th></tr></thead><tbody><tr><td><strong>C1. População:</strong> gatos com FIC/Pandora</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 15)</td><td><span class="ea-m ea-ok">✅</span> define Pandora (p. 389)</td><td><span class="ea-m ea-ok">✅</span> 20 gatos com FIC, cistoscopia (p. 68)</td><td><span class="ea-m ea-ok">✅</span> 46 gatos com cistite idiopática (p. 261)</td><td><span class="ea-m ea-meio">◐</span> fala de &quot;FUS&quot; (p. 994)</td><td><span class="ea-m ea-nao">✗</span> cães (p. 3)</td><td><span class="ea-m ea-meio">◐</span> FIC e obstrução entre os gatos com dor, sem análise separada (p. 4)</td><td><span class="ea-m ea-nao">✗</span> foco em pecuária (bovinos/ovinos), não cita gatos (pp. 1, 4)</td><td><span class="ea-m ea-ok">✅</span> 20 gatos com FIC + 11 saudáveis (p. 2494)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC/Pandora (p. 784)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 783)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 1)</td><td><span class="ea-m ea-ok">✅</span> gatos com FIC grave, recorrente (p. 435)</td></tr><tr><td><strong>C2. Estudo primário</strong> com dados próprios</td><td><span class="ea-m ea-nao">✗</span> revisão (pp. 15–32)</td><td><span class="ea-m ea-nao">✗</span> perspectiva (p. 385)</td><td><span class="ea-m ea-ok">✅</span> prospectivo (p. 67)</td><td><span class="ea-m ea-ok">✅</span> prospectivo (p. 261)</td><td><span class="ea-m ea-nao">✗</span> revisão (p. 994)</td><td><span class="ea-m ea-meio">◐</span> software, sem dados (p. 11)</td><td><span class="ea-m ea-ok">✅</span> caso-controle (p. 1)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa sobre tecnologias de precisão (p. 1)</td><td><span class="ea-m ea-ok">✅</span> caso-controle (p. 2494)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 784)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 783)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 1)</td><td><span class="ea-m ea-meio">◐</span> revisão + dados experimentais (p. 435); PDF incompleto</td></tr><tr><td><strong>C3. Dimensão temporal</strong> (acompanhamento longitudinal)</td><td><span class="ea-m ea-meio">◐</span> remissão/recidiva citadas (p. 16)</td><td><span class="ea-m ea-meio">◐</span> critérios temporais (p. 390)</td><td><span class="ea-m ea-ok">✅</span> 77 semanas (p. 70)</td><td><span class="ea-m ea-ok">✅</span> ≈ 10 meses (p. 261)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> séries temporais só como futuro (p. 11)</td><td><span class="ea-m ea-nao">✗</span> antes/depois de 1 h (p. 3)</td><td><span class="ea-m ea-meio">◐</span> monitoramento contínuo via bolus de longa duração &gt; 6 anos (p. 7)</td><td><span class="ea-m ea-nao">✗</span> ponto único, sem seguimento</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C4. Ambiente e estresse</strong> como variável</td><td><span class="ea-m ea-ok">✅</span> paradigma psiconeuroendócrino (p. 25)</td><td><span class="ea-m ea-ok">✅</span> gato sensível × ambiente (p. 385)</td><td><span class="ea-m ea-ok">✅</span> eventos externos (p. 70)</td><td><span class="ea-m ea-ok">✅</span> MEMO (p. 262)</td><td><span class="ea-m ea-ok">✅</span> fatores externos (p. 994)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> monitora estresse térmico e parâmetros fisiológicos em rebanho (p. 10)</td><td><span class="ea-m ea-meio">◐</span> estresse moderado na chegada (p. 2494)</td><td><span class="ea-m ea-ok">✅</span> flutuação com estressores; critério 2 de Pandora (p. 785)</td><td><span class="ea-m ea-ok">✅</span> estresse e enriquecimento ambiental (pp. 787–789)</td><td><span class="ea-m ea-ok">✅</span> eventos estressores como gatilho (p. 5)</td><td><span class="ea-m ea-ok">✅</span> SNS e eixo HHA; resposta ao estresse (p. 435)</td></tr><tr><td><strong>C5. Medida objetiva</strong> (não relato)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> observador humano único (p. 70)</td><td><span class="ea-m ea-nao">✗</span> relato do tutor (p. 264)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-ok">✅</span> exames laboratoriais (p. 3)</td><td><span class="ea-m ea-meio">◐</span> imagem pontuada por humanos (p. 3)</td><td><span class="ea-m ea-ok">✅</span> sensores objetivos de pH, temp, motilidade e FC (pp. 4, 10)</td><td><span class="ea-m ea-ok">✅</span> cortisol sérico, morfometria adrenal (p. 2495)</td><td><span class="ea-m ea-nao">✗</span> síntese, sem medida própria</td><td><span class="ea-m ea-nao">✗</span> sem medidas próprias</td><td><span class="ea-m ea-nao">✗</span> sem medidas próprias</td><td><span class="ea-m ea-meio">◐</span> catecolaminas plasmáticas (p. 435); valores NC</td></tr><tr><td><strong>C6. Sensor, IoT ou IA</strong></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-ok">✅</span> classificadores de ML (p. 3)</td><td><span class="ea-m ea-nao">✗</span> ML só proposto por outro grupo (p. 2)</td><td><span class="ea-m ea-ok">✅</span> wearables, smart bolus com transmissão sem fio e IA/ML (pp. 4–5)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td></tr><tr><td><strong>C7. Validação estatística</strong></td><td><span class="ea-m ea-nao">✗</span> não se aplica</td><td><span class="ea-m ea-nao">✗</span> critérios &quot;tentativos&quot; (p. 390)</td><td><span class="ea-m ea-ok">✅</span> modelo de efeitos aleatórios (p. 70)</td><td><span class="ea-m ea-meio">◐</span> Wilcoxon, sem controle (pp. 263, 266)</td><td><span class="ea-m ea-nao">✗</span> ORs de terceiros (p. 995)</td><td><span class="ea-m ea-meio">◐</span> só fidelidade computacional (p. 6)</td><td><span class="ea-m ea-ok">✅</span> ICC, alfa, AUC (pp. 6–7)</td><td><span class="ea-m ea-meio">◐</span> compara sensibilidade e especificidade de sensores (p. 6)</td><td><span class="ea-m ea-ok">✅</span> t de Student, ANOVA Tukey-Kramer (p. 2495)</td><td><span class="ea-m ea-nao">✗</span> sem estatística própria</td><td><span class="ea-m ea-nao">✗</span> sem estatística própria</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C8. Validação clínica</strong></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> vivário, não domicílio (p. 72)</td><td><span class="ea-m ea-meio">◐</span> sem grupo controle (p. 266)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> fora do escopo (p. 2)</td><td><span class="ea-m ea-meio">◐</span> contra rCMPS-F, sem padrão-ouro (p. 9)</td><td><span class="ea-m ea-meio">◐</span> validação em fazendas experimentais e pecuária comercial (pp. 7, 10)</td><td><span class="ea-m ea-meio">◐</span> gatos de instituição, não domicílio (p. 2494)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C9. Contexto domiciliar</strong> (casa do tutor)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> gatos de pesquisa (p. 388)</td><td><span class="ea-m ea-nao">✗</span> vivário (p. 68)</td><td><span class="ea-m ea-ok">✅</span> gatos domiciliados (p. 262)</td><td><span class="ea-m ea-meio">◐</span> discute moradia interna (p. 994)</td><td><span class="ea-m ea-nao">✗</span> hospital (p. 9)</td><td><span class="ea-m ea-nao">✗</span> hospital (p. 2)</td><td><span class="ea-m ea-nao">✗</span> confinamento e pastagem em fazenda, não domiciliar (pp. 1, 4)</td><td><span class="ea-m ea-nao">✗</span> gaiolas de aço inox (p. 2494)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr></tbody></table></div>
+        <div style="overflow-x:auto"><table class="week-table ea-tabela"><thead><tr><th>Critério (foco da tese)</th><th>#43</th><th>#51</th><th>#53</th><th>S2</th><th>S3</th><th>#4</th><th>S6</th><th>#25</th><th>#50</th><th>#19</th><th>#40</th><th>#17</th><th>#48</th></tr></thead><tbody><tr><td><strong>C1. População:</strong> gatos com FIC/Pandora</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 15)</td><td><span class="ea-m ea-ok">✅</span> define Pandora (p. 389)</td><td><span class="ea-m ea-ok">✅</span> 20 gatos com FIC, cistoscopia (p. 68)</td><td><span class="ea-m ea-ok">✅</span> 46 gatos com cistite idiopática (p. 261)</td><td><span class="ea-m ea-meio">◐</span> fala de &quot;FUS&quot; (p. 994)</td><td><span class="ea-m ea-nao">✗</span> cães (p. 3)</td><td><span class="ea-m ea-meio">◐</span> FIC e obstrução entre os gatos com dor, sem análise separada (p. 4)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> 20 gatos com FIC + 11 saudáveis (p. 2494)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC/Pandora (p. 784)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 783)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 1)</td><td><span class="ea-m ea-ok">✅</span> gatos com FIC grave, recorrente (p. 435)</td></tr><tr><td><strong>C2. Estudo primário</strong> com dados próprios</td><td><span class="ea-m ea-nao">✗</span> revisão (pp. 15–32)</td><td><span class="ea-m ea-nao">✗</span> perspectiva (p. 385)</td><td><span class="ea-m ea-ok">✅</span> prospectivo (p. 67)</td><td><span class="ea-m ea-ok">✅</span> prospectivo (p. 261)</td><td><span class="ea-m ea-nao">✗</span> revisão (p. 994)</td><td><span class="ea-m ea-meio">◐</span> software, sem dados (p. 11)</td><td><span class="ea-m ea-ok">✅</span> caso-controle (p. 1)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> caso-controle (p. 2494)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 784)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 783)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 1)</td><td><span class="ea-m ea-meio">◐</span> revisão + dados experimentais (p. 435); PDF incompleto</td></tr><tr><td><strong>C3. Dimensão temporal</strong> (acompanhamento longitudinal)</td><td><span class="ea-m ea-meio">◐</span> remissão/recidiva citadas (p. 16)</td><td><span class="ea-m ea-meio">◐</span> critérios temporais (p. 390)</td><td><span class="ea-m ea-ok">✅</span> 77 semanas (p. 70)</td><td><span class="ea-m ea-ok">✅</span> ≈ 10 meses (p. 261)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> séries temporais só como futuro (p. 11)</td><td><span class="ea-m ea-nao">✗</span> antes/depois de 1 h (p. 3)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-nao">✗</span> ponto único, sem seguimento</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C4. Ambiente e estresse</strong> como variável</td><td><span class="ea-m ea-ok">✅</span> paradigma psiconeuroendócrino (p. 25)</td><td><span class="ea-m ea-ok">✅</span> gato sensível × ambiente (p. 385)</td><td><span class="ea-m ea-ok">✅</span> eventos externos (p. 70)</td><td><span class="ea-m ea-ok">✅</span> MEMO (p. 262)</td><td><span class="ea-m ea-ok">✅</span> fatores externos (p. 994)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-meio">◐</span> estresse moderado na chegada (p. 2494)</td><td><span class="ea-m ea-ok">✅</span> flutuação com estressores; critério 2 de Pandora (p. 785)</td><td><span class="ea-m ea-ok">✅</span> estresse e enriquecimento ambiental (pp. 787–789)</td><td><span class="ea-m ea-ok">✅</span> eventos estressores como gatilho (p. 5)</td><td><span class="ea-m ea-ok">✅</span> SNS e eixo HHA; resposta ao estresse (p. 435)</td></tr><tr><td><strong>C5. Medida objetiva</strong> (não relato)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> observador humano único (p. 70)</td><td><span class="ea-m ea-nao">✗</span> relato do tutor (p. 264)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-ok">✅</span> exames laboratoriais (p. 3)</td><td><span class="ea-m ea-meio">◐</span> imagem pontuada por humanos (p. 3)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> cortisol sérico, morfometria adrenal (p. 2495)</td><td><span class="ea-m ea-nao">✗</span> síntese, sem medida própria</td><td><span class="ea-m ea-nao">✗</span> sem medidas próprias</td><td><span class="ea-m ea-nao">✗</span> sem medidas próprias</td><td><span class="ea-m ea-meio">◐</span> catecolaminas plasmáticas (p. 435); valores NC</td></tr><tr><td><strong>C6. Sensor, IoT ou IA</strong></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-ok">✅</span> classificadores de ML (p. 3)</td><td><span class="ea-m ea-nao">✗</span> ML só proposto por outro grupo (p. 2)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td></tr><tr><td><strong>C7. Validação estatística</strong></td><td><span class="ea-m ea-nao">✗</span> não se aplica</td><td><span class="ea-m ea-nao">✗</span> critérios &quot;tentativos&quot; (p. 390)</td><td><span class="ea-m ea-ok">✅</span> modelo de efeitos aleatórios (p. 70)</td><td><span class="ea-m ea-meio">◐</span> Wilcoxon, sem controle (pp. 263, 266)</td><td><span class="ea-m ea-nao">✗</span> ORs de terceiros (p. 995)</td><td><span class="ea-m ea-meio">◐</span> só fidelidade computacional (p. 6)</td><td><span class="ea-m ea-ok">✅</span> ICC, alfa, AUC (pp. 6–7)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> t de Student, ANOVA Tukey-Kramer (p. 2495)</td><td><span class="ea-m ea-nao">✗</span> sem estatística própria</td><td><span class="ea-m ea-nao">✗</span> sem estatística própria</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C8. Validação clínica</strong></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> vivário, não domicílio (p. 72)</td><td><span class="ea-m ea-meio">◐</span> sem grupo controle (p. 266)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> fora do escopo (p. 2)</td><td><span class="ea-m ea-meio">◐</span> contra rCMPS-F, sem padrão-ouro (p. 9)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-meio">◐</span> gatos de instituição, não domicílio (p. 2494)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C9. Contexto domiciliar</strong> (casa do tutor)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> gatos de pesquisa (p. 388)</td><td><span class="ea-m ea-nao">✗</span> vivário (p. 68)</td><td><span class="ea-m ea-ok">✅</span> gatos domiciliados (p. 262)</td><td><span class="ea-m ea-meio">◐</span> discute moradia interna (p. 994)</td><td><span class="ea-m ea-nao">✗</span> hospital (p. 9)</td><td><span class="ea-m ea-nao">✗</span> hospital (p. 2)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-nao">✗</span> gaiolas de aço inox (p. 2494)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr></tbody></table></div>
         <p style="margin-top:1rem"><strong>Leitura (hipótese, não conclusão):</strong> nenhuma fonte atende ao mesmo tempo C1 (gato com FIC/Pandora), C6 (sensor/IA) e C9 (domicílio). A lacuna segue como hipótese até concluir a análise do bloco tecnológico e fazer uma busca sistemática completa.</p>
         <p><small>Fonte: <code>Notas/Fundamentação — Estado da arte.md</code> (Tabelas 1–3).</small></p>
       </div>
@@ -858,8 +858,28 @@
         <h2 style="font-size: 1.25rem; font-weight: 800; line-height: 1.4;" id="drawerTitle">Título do Artigo</h2>
 
         <div class="drawer-section">
+          <div class="drawer-label">Ano de Publicação</div>
+          <div class="drawer-text" id="drawerYear">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Grupo Temático</div>
+          <div class="drawer-text" id="drawerGroup">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Fase de Leitura</div>
+          <div class="drawer-text" id="drawerFase">-</div>
+        </div>
+
+        <div class="drawer-section">
           <div class="drawer-label">Núcleo Proposto</div>
           <div class="drawer-text" id="drawerNucleo">-</div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-label">Status no Acervo</div>
+          <div class="drawer-text" id="drawerStatus">-</div>
         </div>
 
         <div class="drawer-section">
@@ -888,6 +908,16 @@
           <button class="copy-btn" id="drawerCopyRefBtn" type="button">Copiar Referência ABNT</button>
         </div>
 
+        <div class="drawer-section" id="drawerFichSection">
+          <div class="drawer-label">Fichamento da Fonte</div>
+          <div class="drawer-text" id="drawerFichStatus">Verificando fichamento...</div>
+          <div class="drawer-actions-row" id="drawerFichActions" style="margin-top:8px">
+            <button class="btn-drawer-fich btn-fich-ver" id="drawerVerFichBtn" type="button" style="display:none">📖 Ver Fichamento</button>
+            <button class="btn-drawer-fich btn-fich-edit" id="drawerEditarFichBtn" type="button" style="display:none">✏️ Editar Fichamento</button>
+            <button class="btn-drawer-fich btn-fich-novo" id="drawerCriarFichBtn" type="button">➕ Fazer Fichamento</button>
+          </div>
+        </div>
+
         <div class="drawer-section">
           <div class="drawer-label">Arquivo Local no Acervo</div>
           <div class="drawer-code-block" id="drawerFile">-</div>
@@ -900,7 +930,7 @@
           <button class="btn-drawer-save" id="drawerSaveBtn" type="button" style="display:none">Salvar</button>
           <button class="btn-drawer-cancel" id="drawerCancelBtn" type="button" style="display:none">Cancelar</button>
         </div>
-        <div id="drawerEditBadge" style="display:none;margin-top:6px;font-size:0.75rem;color:var(--accent);font-weight:600">● Editado localmente (localStorage)</div>
+        <div id="drawerEditBadge" style="display:none;margin-top:6px;font-size:0.75rem;color:var(--accent);font-weight:600">● Edição manual salva neste navegador</div>
       </div>
     </div>
   </div>
@@ -910,7 +940,6 @@
     <div class="container">
       <p><strong>Síndrome de Pandora em Felinos</strong> — Tese de Doutorado</p>
       <p>Universidade Federal do Ceará (UFC) • Pesquisador: Romulo</p>
-      <p>Orientador: Prof. Victor Hugo Costa de Albuquerque • Área: Sistemas de Energia Elétrica</p>
       <p style="font-size: 0.78rem; margin-top: 10px; color: var(--text-dim);">
         Cofre Obsidian: <code>c:\Users\rcmin\OneDrive\Documents\Pos-Graduacao\Doutorado UFC\Síndrome de Pandora</code>
       </p>
@@ -1013,6 +1042,41 @@
       <h2 id="pdfTitulo"></h2>
       <iframe id="pdfFrame" title="Leitor de PDF"></iframe>
       <p><a id="pdfNovaAba" class="pn-btn" target="_blank" rel="noopener">Abrir em nova aba ↗</a></p>
+    </div>
+  </div>
+
+  <!-- Modal Editor de Fichamento -->
+  <div class="pn-modal pn-fichedit" id="modalFichamento" role="dialog" aria-modal="true" aria-labelledby="fichModalTitulo" hidden>
+    <div class="pn-modal-box pn-fichedit-box">
+      <div class="pn-fichedit-header">
+        <div class="pn-fichedit-title-wrap">
+          <span class="pn-fich-badge" id="fichModalBadge">#00</span>
+          <h2 id="fichModalTitulo" class="pn-fichedit-title">Fichamento</h2>
+        </div>
+        <button class="pn-modal-close" id="fichModalCloseBtn" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+
+      <div class="pn-fichedit-toolbar">
+        <div class="pn-fichedit-toolbar-left">
+          <button class="pn-btn pn-btn-primary" id="btnFichSalvar" type="button">💾 Salvar Fichamento</button>
+          <button class="pn-btn" id="btnFichToggleModo" type="button">👁️ Alternar Prévia / Editor</button>
+          <button class="pn-btn" id="btnFichCopiar" type="button">📋 Copiar Markdown</button>
+          <button class="pn-btn" id="btnFichBaixar" type="button">⬇️ Baixar .md</button>
+          <button class="pn-btn pn-btn-danger" id="btnFichRestaurar" type="button" style="display:none">↺ Restaurar Original</button>
+        </div>
+        <div class="pn-fichedit-toolbar-right">
+          <span class="pn-fichedit-status-info" id="fichEditorStatus">Pronto</span>
+        </div>
+      </div>
+
+      <div class="pn-fichedit-body">
+        <div class="pn-fichedit-pane pane-editor" id="paneFichEditor">
+          <textarea id="fichEditorTextarea" class="fich-textarea" spellcheck="false" placeholder="Escreva o fichamento em Markdown..."></textarea>
+        </div>
+        <div class="pn-fichedit-pane pane-preview" id="paneFichPreview" style="display:none">
+          <article class="content-card fi-texto" id="fichEditorPreviewHtml"></article>
+        </div>
+      </div>
     </div>
   </div>
   <script src="dados_pdfs.js"></script>
