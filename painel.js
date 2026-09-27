@@ -239,12 +239,12 @@
 
   // ---------------------------------------------------- páginas (rotas)
   function irPara(id, inicial) {
+    if (!id || !$(`#${id}`)) return;
     const btn = $(`.tab-btn[data-tab="${id}"]`);
-    if (!btn) return;
     $$('.tab-btn').forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', b === btn); });
     $$('.tab-pane').forEach((p) => p.classList.toggle('active', p.id === id));
     if (!inicial && location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
-    const nav = btn.parentElement; if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: btn.offsetLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' });
+    if (btn) { const nav = btn.parentElement; if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: btn.offsetLeft - nav.clientWidth / 2 + btn.offsetWidth / 2, behavior: 'smooth' }); }
   }
   function initRotas() {
     $$('.tab-btn').forEach((b) => b.addEventListener('click', () => irPara(b.dataset.tab)));
@@ -261,7 +261,7 @@
       }
     });
     window.addEventListener('hashchange', () => irPara(location.hash.slice(1)));
-    irPara(location.hash.slice(1) && $(`.tab-btn[data-tab="${location.hash.slice(1)}"]`) ? location.hash.slice(1) : 'tab-painel', true);
+    irPara(location.hash.slice(1) && $(`#${location.hash.slice(1)}`) ? location.hash.slice(1) : 'tab-painel', true);
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (location.hash) window.scrollTo(0, 0);
   }
