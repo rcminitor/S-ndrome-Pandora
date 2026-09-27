@@ -122,12 +122,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "785661",
-  "arquivo": "PDF/Síndrome CIF/785661.pdf",
-  "kb": 1470
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
   "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
   "kb": 408
@@ -149,12 +143,6 @@ window.DADOS_PDFS = [
   "nome": "Anna",
   "arquivo": "PDF/Síndrome CIF/Anna.pdf",
   "kb": 1681
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "ANSIEDADE DE SEPARAÇÃO EM FELINOS DOMÉSTICOS",
-  "arquivo": "PDF/Síndrome CIF/ANSIEDADE DE SEPARAÇÃO EM FELINOS DOMÉSTICOS.pdf",
-  "kb": 4029
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -389,12 +377,6 @@ window.DADOS_PDFS = [
   "nome": "Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath",
   "arquivo": "PDF/Síndrome CIF/Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath.pdf",
   "kb": 903
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Veterinary Medicine   Sci - 2026 - Maden - Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive",
-  "arquivo": "PDF/Síndrome CIF/Veterinary Medicine   Sci - 2026 - Maden - Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive.pdf",
-  "kb": 1155
  },
  {
   "pasta": "PDF/Síndrome CIF",
