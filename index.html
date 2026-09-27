@@ -870,11 +870,16 @@
         <div class="drawer-section">
           <div class="drawer-label">Arquivo Local no Acervo</div>
           <div class="drawer-code-block" id="drawerFile">-</div>
+          <button class="btn-pdf" id="drawerPdfBtn" type="button" style="display:none;margin-top:8px">Abrir PDF ↗</button>
         </div>
 
-        <div class="drawer-section">
+        <div class="drawer-section drawer-actions-row">
           <button class="btn-drawer-lido" id="drawerLidoBtn" type="button">Marcar como lido</button>
+          <button class="btn-drawer-edit" id="drawerEditBtn" type="button">Editar</button>
+          <button class="btn-drawer-save" id="drawerSaveBtn" type="button" style="display:none">Salvar</button>
+          <button class="btn-drawer-cancel" id="drawerCancelBtn" type="button" style="display:none">Cancelar</button>
         </div>
+        <div id="drawerEditBadge" style="display:none;margin-top:6px;font-size:0.75rem;color:var(--accent);font-weight:600">● Editado localmente (localStorage)</div>
       </div>
     </div>
   </div>
