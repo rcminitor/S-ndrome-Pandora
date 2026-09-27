@@ -16,7 +16,7 @@
 /* Botões */
 .pn-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: var(--radius-full);
   border: 1px solid var(--border-glass); background: var(--bg-glass-subtle); color: var(--text-main);
-  font: 600 .85rem var(--font-sans); cursor: pointer; transition: all var(--transition-fast); }
+  font: 600 .85rem var(--font-sans); cursor: pointer; transition: all var(--transition-fast); text-decoration: none; }
 .pn-btn:hover { border-color: var(--blue-light); background: var(--blue-surface); }
 .pn-btn:focus-visible, .pn-thumb:focus-visible, .pn-tile:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
 .pn-btn-primary { background: var(--gradient-blue-orange); border: 0; color: #fff; }
@@ -54,9 +54,10 @@
 .pn-bar div { height: 100%; background: var(--gradient-brand); transition: width var(--transition-smooth); }
 .pn-hbars { display: grid; gap: 8px; }
 .pn-hbar { display: grid; grid-template-columns: 140px 1fr 48px; align-items: center; gap: 10px; font-size: .84rem; }
+.pn-hbar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); }
 .pn-hbar div { height: 10px; background: var(--bg-glass-subtle); border-radius: 99px; overflow: hidden; }
 .pn-hbar i { display: block; height: 100%; border-radius: 99px; }
-.pn-hbar b { font-family: var(--font-mono); text-align: right; }
+.pn-hbar b { font-family: var(--font-mono); text-align: right; font-size: .8rem; color: var(--text-dim); }
 
 /* Formulários */
 .pn-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -317,4 +318,131 @@
 .crono-del-btn:hover {
   color: #ef4444;
   background: rgba(239, 68, 68, 0.12);
+}
+
+/* ==========================================================================
+   Aba "Estudo com Agentes" — tiles de revisão espaçada e iframe do painel
+   ========================================================================== */
+
+/* Grid de 4 métricas da revisão espaçada */
+.est-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 14px;
+  margin: 18px 0 20px;
+}
+
+.est-tile {
+  background: var(--bg-surface-card);
+  border: 1px solid var(--border-glass);
+  border-top: 3px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 18px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.est-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.est-tile b {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  line-height: 1;
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
+}
+.est-tile span {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.est-tile small {
+  font-size: .74rem;
+  color: var(--text-dim);
+}
+
+/* Variantes de cor por métrica */
+.est-tile.est-green { border-top-color: #22c55e; }
+.est-tile.est-green b { color: #22c55e; }
+
+.est-tile.est-blue { border-top-color: var(--blue-soft); }
+.est-tile.est-blue b { color: var(--blue-soft); }
+
+.est-tile.est-orange { border-top-color: var(--orange-soft); }
+.est-tile.est-orange b { color: var(--orange-soft); }
+
+.est-tile.est-pink { border-top-color: var(--pink-soft); }
+.est-tile.est-pink b { color: var(--pink-soft); }
+
+/* Badge de conexão ativa (verde com ponto pulsante) */
+.ag-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  color: #22c55e;
+  font-size: .84rem;
+  font-weight: 600;
+}
+.ag-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: ag-pulse 2s ease-in-out infinite;
+}
+@keyframes ag-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, .45); }
+  50%       { opacity: .7; box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
+}
+
+/* Contêiner do iframe com borda e sombra */
+.ag-frame-wrap {
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--bg-surface);
+}
+.ag-frame {
+  display: block;
+  width: 100%;
+  height: 72vh;
+  min-height: 520px;
+  border: none;
+}
+
+/* Lista de passos de instalação */
+.ag-passos {
+  margin: 14px 0 18px 22px;
+  color: var(--text-muted);
+  font-size: .9rem;
+  display: grid;
+  gap: 10px;
+}
+.ag-passos li { line-height: 1.65; }
+.ag-passos li b { color: var(--text-main); }
+.ag-passos code {
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  background: var(--bg-surface-card);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border-glass);
+  word-break: break-all;
+}
+
+@media (max-width: 600px) {
+  .est-tiles { grid-template-columns: 1fr 1fr; }
+  .ag-frame { height: 60vh; min-height: 380px; }
 }

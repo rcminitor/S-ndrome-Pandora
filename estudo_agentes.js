@@ -23,53 +23,79 @@
     box.innerHTML = `
       <div class="content-card">
         <h3 class="card-title">O painel do seu computador não respondeu</h3>
-        <p>Esta aba funciona no <b>seu PC</b>: é ele que lê os PDFs, baixa os artigos citados e roda o orientador. O site só mostra.</p>
+        <p style="margin-bottom:14px;color:var(--text-muted)">Esta aba funciona no <b>seu PC</b>: é ele que lê os PDFs, baixa os artigos citados e roda o orientador. O site só mostra.</p>
         <ol class="ag-passos">
           <li><b>Primeira vez:</b> na pasta <code>C:\\Users\\rcmin\\Projetos\\S-ndrome-Pandora</code>, dê dois cliques em <b>Ligar painel automaticamente.bat</b>. A partir daí ele liga sozinho sempre que o Windows iniciar.</li>
           <li>Se o navegador perguntar se este site pode <b>acessar dispositivos da rede local</b>, clique em <b>Permitir</b>.</li>
           <li>Clique em <b>Tentar de novo</b>.</li>
         </ol>
-        <div class="pn-actions">
+        <div class="pn-actions" style="margin-top:18px">
           <button class="pn-btn pn-btn-primary" id="agTentar" type="button">Tentar de novo</button>
           <a class="pn-btn" href="${URL_PAINEL}" target="_blank" rel="noopener">Abrir o painel direto ↗</a>
         </div>
-        <p class="pn-muted">Em outro computador ou no celular esta aba não funciona — os seus PDFs e o seu texto ficam só no seu PC.</p>
+        <p class="pn-muted" style="margin-top:14px">Em outro computador ou no celular esta aba não funciona — os seus PDFs e o seu texto ficam só no seu PC.</p>
       </div>`;
     document.getElementById('agTentar').onclick = conectar;
   }
 
   function mostrar() {
     box.innerHTML = `
-      <div class="pn-toolbar" style="margin-bottom:10px">
-        <p class="pn-muted" style="margin:0">● Conectado ao painel do seu computador.</p>
-        <a class="pn-btn" href="${URL_PAINEL}" target="_blank" rel="noopener">Abrir em tela cheia ↗</a>
+      <div class="pn-toolbar" style="margin-bottom:14px;align-items:center">
+        <span class="ag-status"><span class="ag-status-dot"></span>Conectado ao painel do seu computador</span>
+        <a class="pn-btn pn-btn-primary" href="${URL_PAINEL}" target="_blank" rel="noopener">Abrir em tela cheia ↗</a>
       </div>
-      <iframe class="ag-frame" src="${URL_PAINEL}/?embed=1" title="Painel de Estudo" allow="local-network-access"></iframe>`;
+      <div class="ag-frame-wrap">
+        <iframe class="ag-frame" src="${URL_PAINEL}/?embed=1" title="Painel de Estudo" allow="local-network-access"></iframe>
+      </div>`;
   }
 
-  async function conectar() {
-    box.innerHTML = '<p class="pn-muted">Procurando o painel no seu computador…</p>';
-    ligado = await ping();
-    ligado ? mostrar() : desligado();
+  function limparTitulo(t) {
+    return String(t)
+      .replace(/\.[a-z]{2,4}$/i, '')
+      .replace(/[_\-]/g, ' ')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
   }
 
-  // ---- registro público de leituras (vem de dados_leituras.js, enviado pelo painel do PC)
   function blocoRevisao() {
     const R = window.DADOS_REVISAO;
     if (!R || !R.total) return '';
     const pct = (a) => a.total ? Math.round(100 * a.firmes / a.total) : 0;
     return `
       <div class="content-card" style="margin-bottom:18px">
-        <div class="pn-card-head"><h3 class="card-title">Revisão espaçada</h3>
-          <span class="pn-muted">atualizado em ${R.atualizado.slice(8, 10)}/${R.atualizado.slice(5, 7)} ${R.atualizado.slice(11, 16)}</span></div>
-        <div class="est-tiles">
-          <div class="est-tile"><b>${R.firmes}</b><span>cartões firmes</span><small>de ${R.total} no total</small></div>
-          <div class="est-tile"><b>${R.aprendendo}</b><span>aprendendo</span><small>${R.novos} ainda não revistos</small></div>
-          <div class="est-tile"><b>${R.acerto_7d == null ? '—' : R.acerto_7d + '%'}</b><span>acerto em 7 dias</span><small>${R.revisoes_7d} respostas</small></div>
-          <div class="est-tile"><b>${R.hoje}</b><span>para revisar hoje</span><small>no painel do PC</small></div>
+        <div class="pn-card-head">
+          <h3 class="card-title">Revisão espaçada</h3>
+          <span class="pn-muted">atualizado em ${R.atualizado.slice(8, 10)}/${R.atualizado.slice(5, 7)} ${R.atualizado.slice(11, 16)}</span>
         </div>
-        <div class="pn-hbars">${R.por_artigo.slice(0, 8).map((a) => `<div class="pn-hbar"><span>${a.codigo ? '#' + a.codigo + ' ' : ''}${String(a.titulo).slice(0, 28)}</span><div><i style="width:${pct(a)}%;background:#16a34a"></i></div><b>${a.firmes}/${a.total}</b></div>`).join('')}</div>
-        <p class="pn-muted">Barras: cartões firmes por artigo. Perguntas e respostas ficam no seu PC.</p>
+        <div class="est-tiles">
+          <div class="est-tile est-green">
+            <b>${R.firmes}</b>
+            <span>cartões firmes</span>
+            <small>de ${R.total} no total</small>
+          </div>
+          <div class="est-tile est-blue">
+            <b>${R.aprendendo}</b>
+            <span>aprendendo</span>
+            <small>${R.novos} ainda não revistos</small>
+          </div>
+          <div class="est-tile est-orange">
+            <b>${R.acerto_7d == null ? '—' : R.acerto_7d + '%'}</b>
+            <span>acerto em 7 dias</span>
+            <small>${R.revisoes_7d} respostas</small>
+          </div>
+          <div class="est-tile est-pink">
+            <b>${R.hoje}</b>
+            <span>para revisar hoje</span>
+            <small>no painel do PC</small>
+          </div>
+        </div>
+        <div class="pn-hbars" style="margin-top:16px">
+          ${R.por_artigo.slice(0, 8).map((a) => {
+            const label = a.codigo ? '#' + a.codigo : limparTitulo(a.titulo).slice(0, 32);
+            return `<div class="pn-hbar"><span title="${String(a.titulo).replace(/"/g, '&quot;')}">${label}</span><div><i style="width:${pct(a)}%;background:#16a34a"></i></div><b>${a.firmes}/${a.total}</b></div>`;
+          }).join('')}
+        </div>
+        <p class="pn-muted" style="margin-top:10px">Barras: cartões firmes por artigo. Perguntas e respostas ficam no seu PC.</p>
       </div>`;
   }
 
@@ -101,4 +127,10 @@
 
   btn.addEventListener('click', () => { if (!ligado) conectar(); });
   if (location.hash === '#agentes') { btn.click(); }
+
+  async function conectar() {
+    box.innerHTML = '<p class="pn-muted" style="padding:24px 0">Procurando o painel no seu computador…</p>';
+    ligado = await ping();
+    ligado ? mostrar() : desligado();
+  }
 })();
