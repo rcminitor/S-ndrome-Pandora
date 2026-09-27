@@ -177,3 +177,144 @@
 .fi-texto blockquote { border-left: 4px solid #9a6700; margin: .8rem 0; padding: .4rem .9rem; background: rgba(154,103,0,.06); }
 .fi-callout-tit { display: block; font-weight: 700; }
 .fi-note { color: #0969da; } .fi-warning { color: #9a6700; } .fi-quote { color: #6e7781; } .fi-important { color: #8250df; } .fi-info { color: #0969da; }
+
+
+/* ==========================================================================
+   Cronograma Interativo do Doutorado (com status Concluído / Pendente)
+   ========================================================================== */
+.crono-prog-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+.crono-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.crono-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-left: 4px solid #3b82f6;
+  transition: all var(--transition-fast);
+}
+.crono-item:hover {
+  border-color: var(--blue-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.crono-item.concluido {
+  border-left-color: #10b981 !important;
+  background: color-mix(in srgb, #10b981 5%, var(--bg-surface));
+}
+.crono-item.atrasado {
+  border-left-color: #ef4444 !important;
+}
+.crono-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.crono-check-btn {
+  background: transparent;
+  border: 2px solid var(--border-glass);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.crono-check-btn:hover {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+}
+.crono-item.concluido .crono-check-btn {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+.crono-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.crono-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.crono-item.concluido .crono-title span.text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.crono-desc {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.crono-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.crono-prazo-badge {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: var(--bg-glass-subtle);
+  border: 1px solid var(--border-glass);
+  color: var(--text-light);
+  white-space: nowrap;
+}
+.crono-item.concluido .crono-prazo-badge {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+.crono-cat-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--blue-surface);
+  color: var(--blue-soft, #3b82f6);
+  border: 1px solid var(--accent-line, rgba(59, 130, 246, 0.2));
+}
+.crono-del-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  display: grid;
+  place-items: center;
+  transition: color .15s, background .15s;
+}
+.crono-del-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+}

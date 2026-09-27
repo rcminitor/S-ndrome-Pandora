@@ -28,6 +28,104 @@
   ];
 
   // Ordem obrigatória: IoT → qualificação (artigo) → defesa da tese.
+    const CRONOGRAMA_KEY = 'pandora.cronograma.v1';
+  const CRONOGRAMA_PADRAO = [
+    {
+      id: 'crono-1',
+      nome: 'Revisão Bibliográfica Sistemática & Fichamentos',
+      cat: 'pesquisa',
+      catNome: 'Pesquisa',
+      prazo: '2026-10-31',
+      obs: 'Núcleo 1 (Fisiologia/HHA) e Núcleo 2 (Tecnologia/Comportamento), atingindo as 34 fontes prioritárias.',
+      concluido: true,
+      dataConclusao: '2026-09-25'
+    },
+    {
+      id: 'crono-2',
+      nome: 'Especificação e Arquitetura de Sensores IoT',
+      cat: 'iot',
+      catNome: 'Projeto IoT',
+      prazo: '2026-11-30',
+      obs: 'Dimensionamento de células de carga, microfone INMP441, AHT10 e placa ESP32-S3-CAM.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-3',
+      nome: 'Montagem e Calibração dos Dispositivos (Bancada IoT)',
+      cat: 'iot',
+      catNome: 'Projeto IoT',
+      prazo: '2026-12-31',
+      obs: 'Prototipagem da caixa de areia instrumentada e da fonte de água com pesagem contínua.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-4',
+      nome: 'Redação da Seção Teórica e Metodologia do Artigo',
+      cat: 'artigo',
+      catNome: 'Artigo Científico',
+      prazo: '2027-02-28',
+      obs: 'Fundamentação: ruptura conceitual de FUS à Síndrome de Pandora e lacuna de sensoriamento contínuo.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-5',
+      nome: 'Coleta Experimental de Dados Comportamentais',
+      cat: 'pesquisa',
+      catNome: 'Experimentos',
+      prazo: '2027-04-15',
+      obs: 'Registro contínuo de frequência de uso, tempo de permanência, peso e eventos externos.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-6',
+      nome: 'Exame de Qualificação de Doutorado (UFC)',
+      cat: 'artigo',
+      catNome: 'Qualificação',
+      prazo: '2027-05-31',
+      obs: 'Apresentação do artigo submetido e qualificação formal do projeto de pesquisa perante a banca.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-7',
+      nome: 'Desenvolvimento do Pipeline de IA e Análise de Padrões',
+      cat: 'ia',
+      catNome: 'Inteligência Artificial',
+      prazo: '2027-07-31',
+      obs: 'Modelos para classificação de eventos e detecção precoce de "sickness behaviors" em felinos.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-8',
+      nome: 'Redação Completa da Tese de Doutorado',
+      cat: 'tese',
+      catNome: 'Tese',
+      prazo: '2027-08-31',
+      obs: 'Consolidação de todos os capítulos: introdução, revisão, metodologia experimental, resultados e discussão.',
+      concluido: false,
+      dataConclusao: null
+    },
+    {
+      id: 'crono-9',
+      nome: 'Depósito e Defesa da Tese de Doutorado',
+      cat: 'tese',
+      catNome: 'Defesa',
+      prazo: '2027-09-30',
+      prazoLimite: '2028-05-31',
+      obs: 'Homologação final e defesa pública perante a comissão examinadora do Programa na UFC.',
+      concluido: false,
+      dataConclusao: null
+    }
+  ];
+
+  let cronograma = ler(CRONOGRAMA_KEY, CRONOGRAMA_PADRAO);
+  let filtroCronoAtual = 'todos';
+
   const METAS_PADRAO = {
     iot:    { nome: '1. Elaborar os projetos IoT', unidade: 'tarefas', total: 12, feitoBase: 0, prazo: '2026-12-31', campo: 'tarefasIot' },
     artigo: { nome: '2. Qualificação — escrever o artigo', unidade: 'páginas', total: 20, feitoBase: 0, prazo: '2027-05-31', campo: 'pagArtigo' },
@@ -100,13 +198,14 @@
     const semanas = Math.max(0, semanasEntre(hoje(), parseData(m.prazo)));
     const serie = registros.map((r) => +r[m.campo] || 0);
     let prob = null;
-    if (falta === 0) prob = 1;
+    if (falta === 0 || m.concluidoManual) prob = 1;
     else if (semanas <= 0) prob = 0;
     else if (serie.length >= 2) {
       const mu = media(serie), sd = Math.max(desvio(serie), mu * 0.15, 0.5);
       prob = 1 - phi((falta - semanas * mu) / (Math.sqrt(semanas) * sd));
     }
-    return { ...m, feito, falta, semanas, pct: Math.min(1, feito / (m.total || 1)), prob, ritmoNecessario: semanas > 0 ? falta / semanas : null, ritmo: media(serie) };
+    const pct = m.concluidoManual ? 1 : Math.min(1, feito / (m.total || 1));
+    return { ...m, feito, falta, semanas, pct, prob, ritmoNecessario: semanas > 0 ? falta / semanas : null, ritmo: media(serie) };
   }
 
   // ---------------------------------------------------- páginas (rotas)
@@ -365,24 +464,220 @@
         <label>Já feito antes dos registros<input type="number" min="0" step="0.5" data-k="${k}" data-f="feitoBase" value="${m.feitoBase}"></label>
         <label>Prazo<input type="date" data-k="${k}" data-f="prazo" value="${m.prazo}"></label>
         ${m.prazoLimite ? `<label>Prazo limite<input type="date" data-k="${k}" data-f="prazoLimite" value="${m.prazoLimite}"></label>` : ''}
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:6px;">
+          <input type="checkbox" data-k="${k}" data-f="concluidoManual" ${m.concluidoManual ? 'checked' : ''} style="cursor:pointer; width:auto;">
+          <span>Marco concluído</span>
+        </label>
       </fieldset>`).join('') + `<p class="pn-muted pn-span3">Os valores iniciais são apenas exemplos editáveis — ajuste-os à sua realidade e às normas do programa.</p>`;
   }
+
   function renderTimeline() {
-    $('#pnTimeline').innerHTML = Object.keys(metas).map((k, i) => {
+    const el = $('#pnTimeline');
+    if (!el) return;
+    el.innerHTML = Object.keys(metas).map((k, i) => {
       const p = progressoMeta(k);
+      const isConcluido = !!p.concluidoManual || p.pct >= 1;
       return `<div class="pn-tl-item"><div class="pn-tl-dot">${i + 1}</div><div class="pn-tl-body">
-        <div class="pn-prob-head"><strong>${esc(p.nome)}</strong><span>${dataBR(p.prazo)}${p.prazoLimite ? ' (limite ' + dataBR(p.prazoLimite) + ')' : ''}</span></div>
-        <div class="pn-bar"><div style="width:${p.pct * 100}%"></div></div>
-        <small>${fmt(p.pct * 100, 0)}% concluído · ${p.prob == null ? 'probabilidade: dados insuficientes' : 'probabilidade: ' + fmt(p.prob * 100, 0) + '%'}</small></div></div>`;
+        <div class="pn-prob-head">
+          <strong>${esc(p.nome)}</strong>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-size:0.8rem; font-weight:600; color:${isConcluido ? 'var(--success, #10b981)' : 'var(--text-muted)'}; background:var(--bg-glass-subtle); padding:2px 8px; border-radius:99px; border:1px solid var(--border-glass);">
+              <input type="checkbox" class="pn-meta-check" data-meta="${k}" ${isConcluido ? 'checked' : ''} style="cursor:pointer;">
+              ${isConcluido ? '✓ Concluído' : 'Marcar concluído'}
+            </label>
+            <span>${dataBR(p.prazo)}${p.prazoLimite ? ' (limite ' + dataBR(p.prazoLimite) + ')' : ''}</span>
+          </div>
+        </div>
+        <div class="pn-bar"><div style="width:${p.pct * 100}%; background:${isConcluido ? '#10b981' : 'var(--gradient-brand)'}"></div></div>
+        <small>${isConcluido ? '100% concluído' : fmt(p.pct * 100, 0) + '% concluído · ' + (p.prob == null ? 'probabilidade: dados insuficientes' : 'probabilidade: ' + fmt(p.prob * 100, 0) + '%')}</small></div></div>`;
     }).join('') + ordemAviso();
+
+    $$('.pn-meta-check').forEach((chk) => {
+      chk.addEventListener('change', (e) => {
+        const k = e.target.dataset.meta;
+        if (!metas[k]) return;
+        metas[k].concluidoManual = e.target.checked;
+        gravar(METAS_KEY, metas);
+        renderTudo();
+        toast(metas[k].concluidoManual ? `Marco "${metas[k].nome}" marcado como CONCLUÍDO!` : `Marco "${metas[k].nome}" marcado como pendente.`);
+      });
+    });
   }
+
   function initMetas() {
     renderMetasForm();
     $('#pnMetasForm').addEventListener('change', (e) => {
       const i = e.target; if (!i.dataset.k) return;
-      metas[i.dataset.k] = { ...metas[i.dataset.k], [i.dataset.f]: i.type === 'number' ? Math.max(0, +i.value || 0) : i.value };
+      const val = i.type === 'checkbox' ? i.checked : (i.type === 'number' ? Math.max(0, +i.value || 0) : i.value);
+      metas[i.dataset.k] = { ...metas[i.dataset.k], [i.dataset.f]: val };
       gravar(METAS_KEY, metas); renderTudo();
     });
+  }
+
+  // -------------------------------------------------------- cronograma
+  function salvarCronograma() {
+    gravar(CRONOGRAMA_KEY, cronograma);
+    renderCronograma();
+  }
+
+  function renderCronograma() {
+    const listEl = $('#pnCronogramaList');
+    if (!listEl) return;
+
+    const total = cronograma.length;
+    const concluidos = cronograma.filter(e => e.concluido).length;
+    const pct = total ? Math.round((concluidos / total) * 100) : 0;
+
+    const txtEl = $('#cronoStatusTexto');
+    if (txtEl) txtEl.textContent = `${concluidos} de ${total} etapas concluídas (${pct}%)`;
+
+    const barEl = $('#cronoProgBar');
+    if (barEl) barEl.style.width = `${pct}%`;
+
+    let itens = cronograma;
+    if (filtroCronoAtual === 'pendentes') itens = cronograma.filter(e => !e.concluido);
+    else if (filtroCronoAtual === 'concluidos') itens = cronograma.filter(e => e.concluido);
+
+    if (itens.length === 0) {
+      listEl.innerHTML = `<div class="pn-empty" style="padding:24px 12px;"><p class="pn-muted">Nenhuma etapa encontrada neste filtro.</p></div>`;
+      return;
+    }
+
+    const agora = hoje();
+    listEl.innerHTML = itens.map(e => {
+      const dPrazo = parseData(e.prazo);
+      const atrasado = !e.concluido && dPrazo < agora;
+      const statusClasse = e.concluido ? 'concluido' : (atrasado ? 'atrasado' : 'pendente');
+
+      let badgePrazo = '';
+      if (e.concluido) {
+        badgePrazo = `<span class="crono-prazo-badge" title="Data de conclusão">✓ Concluído${e.dataConclusao ? ' em ' + dataBR(e.dataConclusao) : ''}</span>`;
+      } else if (atrasado) {
+        badgePrazo = `<span class="crono-prazo-badge" style="color:#ef4444; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.1);">Atrasado (${dataBR(e.prazo)})</span>`;
+      } else {
+        const dias = Math.ceil((dPrazo - agora) / (1000 * 60 * 60 * 24));
+        badgePrazo = `<span class="crono-prazo-badge">Prazo: ${dataBR(e.prazo)} (${dias}d)</span>`;
+      }
+
+      return `
+        <div class="crono-item ${statusClasse}" data-id="${esc(e.id)}">
+          <div class="crono-left">
+            <button type="button" class="crono-check-btn" data-action="toggle" title="${e.concluido ? 'Marcar como pendente' : 'Marcar como concluído'}" aria-label="${e.concluido ? 'Concluído' : 'Pendente'}">
+              ${e.concluido ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+            </button>
+            <div class="crono-info">
+              <div class="crono-title">
+                <span class="text">${esc(e.nome)}</span>
+                <span class="crono-cat-tag">${esc(e.catNome || e.cat)}</span>
+              </div>
+              ${e.obs ? `<div class="crono-desc">${esc(e.obs)}</div>` : ''}
+            </div>
+          </div>
+          <div class="crono-right">
+            ${badgePrazo}
+            <button type="button" class="crono-del-btn" data-action="del" title="Excluir etapa" aria-label="Excluir">🗑</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function initCronograma() {
+    renderCronograma();
+
+    const listEl = $('#pnCronogramaList');
+    if (listEl) {
+      listEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const itemEl = btn.closest('.crono-item');
+        if (!itemEl) return;
+        const id = itemEl.dataset.id;
+        const item = cronograma.find(x => x.id === id);
+        if (!item) return;
+
+        if (btn.dataset.action === 'toggle') {
+          item.concluido = !item.concluido;
+          item.dataConclusao = item.concluido ? new Date().toISOString().slice(0, 10) : null;
+          salvarCronograma();
+          toast(item.concluido ? `Etapa "${item.nome}" marcada como CONCLUÍDA!` : `Etapa "${item.nome}" marcada como pendente.`);
+        } else if (btn.dataset.action === 'del') {
+          if (confirm(`Deseja excluir a etapa "${item.nome}" do cronograma?`)) {
+            cronograma = cronograma.filter(x => x.id !== id);
+            salvarCronograma();
+            toast('Etapa removida.');
+          }
+        }
+      });
+    }
+
+    // Filtros
+    $$('#cronoFiltros .pn-seg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('#cronoFiltros .pn-seg-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filtroCronoAtual = btn.dataset.filtro;
+        renderCronograma();
+      });
+    });
+
+    // Reset para padrão
+    const btnReset = $('#btnResetCrono');
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        if (confirm('Deseja restaurar as etapas padrão do cronograma do doutorado?')) {
+          cronograma = JSON.parse(JSON.stringify(CRONOGRAMA_PADRAO));
+          salvarCronograma();
+          toast('Cronograma restaurado com as etapas padrão.');
+        }
+      });
+    }
+
+    // Modal Nova Etapa
+    const modal = $('#formNovaEtapaModal');
+    const btnNova = $('#btnNovaEtapa');
+    const fechar = $('#fecharNovaEtapa');
+    const cancelar = $('#cancelarNovaEtapa');
+    const form = $('#formNovaEtapa');
+
+    const abreModal = () => { if (modal) { modal.removeAttribute('hidden'); modal.classList.add('open'); } };
+    const fechaModal = () => { if (modal) { modal.classList.remove('open'); modal.setAttribute('hidden', ''); } };
+
+    if (btnNova) btnNova.addEventListener('click', abreModal);
+    if (fechar) fechar.addEventListener('click', fechaModal);
+    if (cancelar) cancelar.addEventListener('click', fechaModal);
+
+    if (form) {
+      form.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const nome = $('#novaEtapaNome').value.trim();
+        const prazo = $('#novaEtapaPrazo').value;
+        const catSelect = $('#novaEtapaCat');
+        const cat = catSelect ? catSelect.value : 'geral';
+        const catNome = catSelect && catSelect.selectedOptions[0] ? catSelect.selectedOptions[0].textContent : cat;
+        const obs = $('#novaEtapaObs').value.trim();
+
+        if (!nome || !prazo) return;
+
+        const nova = {
+          id: 'crono-' + Date.now(),
+          nome,
+          cat,
+          catNome,
+          prazo,
+          obs,
+          concluido: false,
+          dataConclusao: null
+        };
+
+        cronograma.push(nova);
+        cronograma.sort((a, b) => a.prazo.localeCompare(b.prazo));
+        salvarCronograma();
+        fechaModal();
+        form.reset();
+        toast('Nova etapa adicionada ao cronograma!');
+      });
+    }
   }
 
   // -------------------------------------------------------------- toast
@@ -453,10 +748,10 @@
     pinta();
   }
 
-  function renderTudo() { renderKpis(); renderGrafico(); renderProb(); renderAcervo(); renderUso(); renderTabela(); renderTimeline(); }
+  function renderTudo() { renderKpis(); renderGrafico(); renderProb(); renderAcervo(); renderUso(); renderTabela(); renderTimeline(); renderCronograma(); }
 
   document.addEventListener('DOMContentLoaded', () => {
-    initRotas(); initModais(); renderIotCusto(); initPdfs(); initPomodoro(); initGaleria(); renderGaleria(); initRegistro(); initMetas();
+    initRotas(); initModais(); renderIotCusto(); initPdfs(); initPomodoro(); initGaleria(); renderGaleria(); initRegistro(); initMetas(); initCronograma();
     $$('.pn-seg-btn').forEach((b) => b.addEventListener('click', () => {
       $$('.pn-seg-btn').forEach((x) => x.classList.toggle('active', x === b)); metricaAtual = b.dataset.metric; renderGrafico();
     }));
