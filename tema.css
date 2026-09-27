@@ -259,6 +259,9 @@ body { font-family: var(--font-sans); background: var(--bg-body); color: var(--t
 :root[data-theme="dark"] .tab-btn { color: color-mix(in srgb, var(--tc) 55%, #fff) !important; }
 :root[data-theme="dark"] .tab-btn.active { color: #fff !important; }
 .tab-btn:nth-child(13) { --tc: #1d4ed8; }
+.tab-btn:nth-child(14) { --tc: #059669; }
+.tab-btn:nth-child(15) { --tc: #ea580c; }
+.tab-btn:nth-child(16) { --tc: #4f46e5; }
 .pn-sec { border-top: 3px solid var(--c) !important; }
 .pn-sec details { border-bottom: 1px solid var(--border-glass); padding: 10px 0; }
 .pn-sec details:last-of-type { border-bottom: 0; }
