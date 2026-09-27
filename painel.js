@@ -250,7 +250,15 @@
     $$('.tab-btn').forEach((b) => b.addEventListener('click', () => irPara(b.dataset.tab)));
     document.addEventListener('click', (e) => {
       const g = e.target.closest('[data-goto]');
-      if (g) { fecharModal(); irPara(g.dataset.goto); window.scrollTo({ top: $('.tab-nav-wrapper').offsetTop - 80, behavior: 'smooth' }); }
+      if (g) {
+        fecharModal();
+        irPara(g.dataset.goto);
+        if (g.dataset.filterNucleo) {
+          const pill = $(`.filter-pill[data-filter="${g.dataset.filterNucleo}"]`);
+          if (pill) pill.click();
+        }
+        window.scrollTo({ top: $('.tab-nav-wrapper').offsetTop - 80, behavior: 'smooth' });
+      }
     });
     window.addEventListener('hashchange', () => irPara(location.hash.slice(1)));
     irPara(location.hash.slice(1) && $(`.tab-btn[data-tab="${location.hash.slice(1)}"]`) ? location.hash.slice(1) : 'tab-painel', true);
