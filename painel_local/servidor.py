@@ -565,6 +565,38 @@ def salvar_secao():
     return jsonify({"ok": True, "nome": p.stem})
 
 
+@app.post("/api/fichamento")
+def salvar_fichamento():
+    d = request.get_json() or {}
+    codigo = str(d.get("codigo", "")).strip()
+    nome_arq = d.get("arquivo", "")
+    texto = d.get("texto", "")
+    if not codigo or not texto:
+        return jsonify({"erro": "Código e texto são obrigatórios."}), 400
+
+    pasta_fich = COFRE / "Fichamentos"
+    if not pasta_fich.exists():
+        return jsonify({"erro": "Pasta Fichamentos não encontrada no cofre."}), 404
+
+    arquivo_dest = None
+    for f in pasta_fich.glob("*.md"):
+        if f.name.startswith(f"{codigo} —") or f.name.startswith(f"{codigo} "):
+            arquivo_dest = f
+            break
+
+    if not arquivo_dest:
+        if not nome_arq or not nome_arq.endswith(".md"):
+            nome_arq = f"{codigo} — Fichamento.md"
+        arquivo_dest = pasta_fich / nome_arq
+
+    arquivo_dest.write_text(texto, encoding="utf-8")
+    try:
+        FICH.escrever_site()
+    except Exception:
+        pass
+    return jsonify({"ok": True, "arquivo": arquivo_dest.name})
+
+
 @app.post("/api/orientador")
 def conversar():
     d = request.get_json()
