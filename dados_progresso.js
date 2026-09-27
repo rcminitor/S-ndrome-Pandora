@@ -1,6 +1,6 @@
 // Gerado pelo Painel de Estudo (painel_local/progresso.py). Só números.
 window.DADOS_PROGRESSO = {
- "atualizado": "2026-09-26T22:45",
+ "atualizado": "2026-09-26T22:47",
  "palavras_por_pagina": 300,
  "escrita_atual": {
   "tese_palavras": 0,
@@ -29,7 +29,7 @@ window.DADOS_PROGRESSO = {
    "fichamentos": 16,
    "pagTese": 0.0,
    "pagArtigo": 0.0,
-   "leiturasIA": 0,
+   "leiturasIA": 1,
    "revisoes": 0,
    "conversas": 0,
    "acerto": null
