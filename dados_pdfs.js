@@ -1,6 +1,12 @@
 ﻿// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
 window.DADOS_PDFS = [
  {
+  "pasta": "Imagens",
+  "nome": "Síndrome de pandora",
+  "arquivo": "Imagens/Síndrome de pandora.pdf",
+  "kb": 3277
+ },
+ {
   "pasta": "Imagens/Mapas-Mentais",
   "nome": "Mapa_Mental_Semanal_com_Links",
   "arquivo": "Imagens/Mapas-Mentais/Mapa_Mental_Semanal_com_Links.pdf",
@@ -19,10 +25,28 @@ window.DADOS_PDFS = [
   "kb": 3277
  },
  {
-  "pasta": "Imagens",
-  "nome": "Síndrome de pandora",
-  "arquivo": "Imagens/Síndrome de pandora.pdf",
-  "kb": 3277
+  "pasta": "Leitura/1_Para_ler",
+  "nome": "01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC",
+  "arquivo": "Leitura/1_Para_ler/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC.pdf",
+  "kb": 692
+ },
+ {
+  "pasta": "Leitura/1_Para_ler",
+  "nome": "06_Síndrome de Pandora",
+  "arquivo": "Leitura/1_Para_ler/06_Síndrome de Pandora.pdf",
+  "kb": 106
+ },
+ {
+  "pasta": "Leitura/1_Para_ler",
+  "nome": "buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats",
+  "arquivo": "Leitura/1_Para_ler/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
+  "kb": 127
+ },
+ {
+  "pasta": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC - citados",
+  "nome": "2005_jablonka_jablonka-e-lamb-mj-evolution-in-four-dimensions-ge",
+  "arquivo": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC - citados/2005_jablonka_jablonka-e-lamb-mj-evolution-in-four-dimensions-ge.pdf",
+  "kb": 114
  },
  {
   "pasta": "PDF/Primeiras Leituras",
@@ -80,18 +104,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães",
-  "arquivo": "PDF/Síndrome CIF/12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães.pdf",
-  "kb": 349
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "13_46",
-  "arquivo": "PDF/Síndrome CIF/13_46.pdf",
-  "kb": 1218
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "1-s2.0-S016815912600211X-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S016815912600211X-main.pdf",
   "kb": 1344
@@ -122,9 +134,15 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
-  "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
-  "kb": 408
+  "nome": "12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães",
+  "arquivo": "PDF/Síndrome CIF/12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães.pdf",
+  "kb": 349
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "13_46",
+  "arquivo": "PDF/Síndrome CIF/13_46.pdf",
+  "kb": 1218
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -173,6 +191,12 @@ window.DADOS_PDFS = [
   "nome": "Association between behavioral factors and recurrence rate in cats with",
   "arquivo": "PDF/Síndrome CIF/Association between behavioral factors and recurrence rate in cats with.pdf",
   "kb": 426
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
+  "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
+  "kb": 408
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -344,15 +368,15 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "SÍNDROME DE PANDORA PREVENÇÃO",
-  "arquivo": "PDF/Síndrome CIF/SÍNDROME DE PANDORA PREVENÇÃO.pdf",
-  "kb": 301
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "Sindrome-de-Pandora-Muito-alem-da-cistite",
   "arquivo": "PDF/Síndrome CIF/Sindrome-de-Pandora-Muito-alem-da-cistite.pdf",
   "kb": 352
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "SÍNDROME DE PANDORA PREVENÇÃO",
+  "arquivo": "PDF/Síndrome CIF/SÍNDROME DE PANDORA PREVENÇÃO.pdf",
+  "kb": 301
  },
  {
   "pasta": "PDF/Síndrome CIF",
