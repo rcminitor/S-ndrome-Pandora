@@ -128,6 +128,18 @@
   if (!cronograma.length) cronograma = JSON.parse(JSON.stringify(CRONOGRAMA_PADRAO));
   let filtroCronoAtual = 'todos';
 
+  // Gantt helpers (module-level so initGantt can read after each renderGantt)
+  let gCS = null, gTotalMs = 0;
+  const CAT_C = { pesquisa: '#6366f1', iot: '#f59e0b', artigo: '#10b981', ia: '#8b5cf6', tese: '#ef4444', geral: '#64748b' };
+  function gMs(iso) { return new Date(iso + 'T12:00:00').getTime(); }
+  function gIni(e, i) {
+    if (e.inicio) return e.inicio;
+    const d = new Date(e.prazo + 'T12:00:00');
+    d.setDate(1);
+    d.setMonth(d.getMonth() - 1);
+    return d.toISOString().slice(0, 10);
+  }
+
   const METAS_PADRAO = {
     iot:    { nome: '1. Elaborar os projetos IoT', unidade: 'tarefas', total: 12, feitoBase: 0, prazo: '2026-12-31', campo: 'tarefasIot' },
     artigo: { nome: '2. Qualificação — escrever o artigo', unidade: 'páginas', total: 20, feitoBase: 0, prazo: '2027-05-31', campo: 'pagArtigo' },
@@ -538,37 +550,67 @@
       </fieldset>`).join('') + `<p class="pn-muted pn-span3">Os valores iniciais são apenas exemplos editáveis — ajuste-os à sua realidade e às normas do programa.</p>`;
   }
 
-  function renderTimeline() {
+  function renderGantt() {
     const el = $('#pnTimeline');
     if (!el) return;
-    el.innerHTML = Object.keys(metas).map((k, i) => {
-      const p = progressoMeta(k);
-      const isConcluido = !!p.concluidoManual || p.pct >= 1;
-      return `<div class="pn-tl-item"><div class="pn-tl-dot">${i + 1}</div><div class="pn-tl-body">
-        <div class="pn-prob-head">
-          <strong>${esc(p.nome)}</strong>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-size:0.8rem; font-weight:600; color:${isConcluido ? 'var(--success, #10b981)' : 'var(--text-muted)'}; background:var(--bg-glass-subtle); padding:2px 8px; border-radius:99px; border:1px solid var(--border-glass);">
-              <input type="checkbox" class="pn-meta-check" data-meta="${k}" ${isConcluido ? 'checked' : ''} style="cursor:pointer;">
-              ${isConcluido ? '✓ Concluído' : 'Marcar concluído'}
-            </label>
-            <span>${dataBR(p.prazo)}${p.prazoLimite ? ' (limite ' + dataBR(p.prazoLimite) + ')' : ''}</span>
+    if (!cronograma.length) { el.innerHTML = '<p class="pn-muted">Nenhuma etapa no cronograma ainda.</p>'; return; }
+
+    const starts = cronograma.map((e, i) => gMs(gIni(e, i)));
+    const ends = cronograma.map((e) => gMs(e.prazo));
+    const csDate = new Date(Math.min(...starts)); csDate.setDate(1);
+    const ceDate = new Date(Math.max(...ends)); ceDate.setMonth(ceDate.getMonth() + 1, 0);
+    gCS = csDate; gTotalMs = ceDate.getTime() - csDate.getTime();
+
+    const pL = (ms) => ((ms - csDate.getTime()) / gTotalMs * 100).toFixed(2) + '%';
+    const pW = (s, e) => (Math.max(0, e - s) / gTotalMs * 100).toFixed(2) + '%';
+
+    const MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const months = []; const mIt = new Date(csDate);
+    while (mIt <= ceDate) { months.push(new Date(mIt)); mIt.setMonth(mIt.getMonth() + 1); }
+
+    const todayMs = new Date().setHours(12, 0, 0, 0);
+    const todayL = todayMs >= csDate.getTime() && todayMs <= ceDate.getTime() ? pL(todayMs) : null;
+    const minW = Math.max(680, months.length * 80);
+
+    el.innerHTML = `
+<div class="gantt-scroll">
+  <div class="gantt-canvas" style="min-width:${minW}px">
+    <div class="gantt-head">
+      <div class="gantt-namecol" style="width:200px"></div>
+      <div class="gantt-tlcol" style="height:28px">
+        ${months.map((m) => `<div class="gantt-mlbl" style="left:${pL(m)}">${MESES[m.getMonth()]} ${m.getFullYear()}</div>`).join('')}
+      </div>
+    </div>
+    ${cronograma.map((e, i) => {
+      const ini = gIni(e, i);
+      const color = CAT_C[e.cat] || CAT_C.geral;
+      return `<div class="gantt-row" data-id="${e.id}">
+        <div class="gantt-namecol" style="width:200px">
+          <span class="gantt-dot" style="background:${color}"></span>
+          <span class="gantt-lbl" title="${esc(e.nome)}">${esc(e.nome)}</span>
+          <button type="button" class="gantt-delbtn" data-gdel="${e.id}" title="Excluir">×</button>
+        </div>
+        <div class="gantt-tlcol">
+          ${months.map((m) => `<div class="gantt-gridln" style="left:${pL(m)}"></div>`).join('')}
+          <div class="gantt-bar${e.concluido ? ' gantt-done' : ''}"
+            data-gedit="${e.id}" data-ini="${ini}"
+            style="left:${pL(gMs(ini))};width:${pW(gMs(ini), gMs(e.prazo))};background:${e.concluido ? '#10b981' : color}"
+            title="${esc(e.nome)} — ${dataBR(ini)} → ${dataBR(e.prazo)}">
+            <span>${esc(e.nome.length > 22 ? e.nome.slice(0, 20) + '…' : e.nome)}</span>
           </div>
         </div>
-        <div class="pn-bar"><div style="width:${p.pct * 100}%; background:${isConcluido ? '#10b981' : 'var(--gradient-brand)'}"></div></div>
-        <small>${isConcluido ? '100% concluído' : fmt(p.pct * 100, 0) + '% concluído · ' + (p.prob == null ? 'probabilidade: dados insuficientes' : 'probabilidade: ' + fmt(p.prob * 100, 0) + '%')}</small></div></div>`;
-    }).join('') + ordemAviso();
-
-    $$('.pn-meta-check').forEach((chk) => {
-      chk.addEventListener('change', (e) => {
-        const k = e.target.dataset.meta;
-        if (!metas[k]) return;
-        metas[k].concluidoManual = e.target.checked;
-        gravar(METAS_KEY, metas);
-        renderTudo();
-        toast(metas[k].concluidoManual ? `Marco "${metas[k].nome}" marcado como CONCLUÍDO!` : `Marco "${metas[k].nome}" marcado como pendente.`);
-      });
-    });
+      </div>`;
+    }).join('')}
+    ${todayL ? `<div class="gantt-today" style="left:${todayL}"></div>` : ''}
+  </div>
+</div>
+<div class="gantt-footer">
+  <button type="button" class="pn-btn pn-btn-sm" id="btnGanttAdd">+ Nova etapa</button>
+  <div class="gantt-leg">
+    ${Object.entries(CAT_C).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join('')}
+    <span><i style="background:#22c55e"></i>hoje</span>
+  </div>
+</div>`;
   }
 
   function initMetas() {
@@ -581,10 +623,149 @@
     });
   }
 
+  function initGantt() {
+    const el = $('#pnTimeline');
+    if (!el) return;
+    const modal = $('#modalGanttEditar');
+
+    // Abrir modal de edição ao clicar numa barra
+    el.addEventListener('click', (ev) => {
+      const del = ev.target.closest('[data-gdel]');
+      const bar = ev.target.closest('[data-gedit]');
+      const add = ev.target.closest('#btnGanttAdd');
+
+      if (del) {
+        const id = del.dataset.gdel;
+        const item = cronograma.find((x) => x.id === id);
+        if (item && confirm(`Excluir a etapa "${item.nome}"?`)) {
+          cronograma = cronograma.filter((x) => x.id !== id);
+          salvarCronograma();
+          toast('Etapa removida do cronograma.');
+        }
+        return;
+      }
+      if (add) {
+        const m = $('#formNovaEtapaModal');
+        if (m) { m.removeAttribute('hidden'); m.classList.add('open'); }
+        return;
+      }
+      if (bar && modal) {
+        const id = bar.dataset.gedit;
+        const item = cronograma.find((x) => x.id === id);
+        if (!item) return;
+        const idx = cronograma.indexOf(item);
+        modal.querySelector('#geId').value = id;
+        modal.querySelector('#geNome').value = item.nome;
+        modal.querySelector('#geInicio').value = item.inicio || gIni(item, idx);
+        modal.querySelector('#gePrazo').value = item.prazo;
+        modal.querySelector('#geCat').value = item.cat || 'geral';
+        modal.querySelector('#geObs').value = item.obs || '';
+        modal.removeAttribute('hidden'); modal.classList.add('open');
+      }
+    });
+
+    // Modal de edição — salvar / fechar
+    if (modal) {
+      const fecharModal = () => { modal.classList.remove('open'); modal.setAttribute('hidden', ''); };
+      modal.querySelector('.pn-modal-close').addEventListener('click', fecharModal);
+      modal.querySelector('#geCancelar').addEventListener('click', fecharModal);
+      modal.addEventListener('click', (ev) => { if (ev.target === modal) fecharModal(); });
+      modal.querySelector('#ganttEditForm').addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const id = modal.querySelector('#geId').value;
+        const item = cronograma.find((x) => x.id === id);
+        if (!item) return;
+        const newIni = modal.querySelector('#geInicio').value;
+        const newPrazo = modal.querySelector('#gePrazo').value;
+        if (newIni >= newPrazo) { toast('O início deve ser anterior ao prazo.'); return; }
+        item.nome = modal.querySelector('#geNome').value.trim();
+        item.inicio = newIni;
+        item.prazo = newPrazo;
+        const catEl = modal.querySelector('#geCat');
+        item.cat = catEl.value;
+        item.catNome = catEl.selectedOptions[0]?.textContent || item.cat;
+        item.obs = modal.querySelector('#geObs').value.trim();
+        fecharModal();
+        salvarCronograma();
+        toast('Etapa atualizada.');
+      });
+    }
+
+    // Arrastar barra para mover datas
+    let drag = null;
+    el.addEventListener('mousedown', (ev) => {
+      const bar = ev.target.closest('[data-gedit]');
+      if (!bar || !gCS) return;
+      ev.preventDefault();
+      const id = bar.dataset.gedit;
+      const item = cronograma.find((x) => x.id === id);
+      if (!item) return;
+      const ini = item.inicio || gIni(item, cronograma.indexOf(item));
+      const tlcol = bar.closest('.gantt-tlcol');
+      drag = { bar, item, origIni: ini, origPrazo: item.prazo, startX: ev.clientX, tlW: tlcol.getBoundingClientRect().width };
+      bar.classList.add('dragging');
+    });
+    document.addEventListener('mousemove', (ev) => {
+      if (!drag || !gCS) return;
+      const dx = ev.clientX - drag.startX;
+      const delta = (dx / drag.tlW) * gTotalMs;
+      const durMs = gMs(drag.origPrazo) - gMs(drag.origIni);
+      const newIniMs = gMs(drag.origIni) + delta;
+      drag.bar.style.left = ((newIniMs - gCS.getTime()) / gTotalMs * 100).toFixed(2) + '%';
+      drag.previewIni = new Date(newIniMs).toISOString().slice(0, 10);
+      drag.previewPrazo = new Date(newIniMs + durMs).toISOString().slice(0, 10);
+    });
+    document.addEventListener('mouseup', () => {
+      if (!drag) return;
+      if (drag.previewIni && drag.previewIni !== drag.origIni) {
+        drag.item.inicio = drag.previewIni;
+        drag.item.prazo = drag.previewPrazo;
+        salvarCronograma();
+        toast('Etapa movida.');
+      }
+      drag.bar.classList.remove('dragging');
+      drag = null;
+    });
+
+    // Suporte a toque (mobile)
+    el.addEventListener('touchstart', (ev) => {
+      const bar = ev.target.closest('[data-gedit]');
+      if (!bar || !gCS) return;
+      const t = ev.touches[0];
+      const id = bar.dataset.gedit;
+      const item = cronograma.find((x) => x.id === id);
+      if (!item) return;
+      const ini = item.inicio || gIni(item, cronograma.indexOf(item));
+      const tlcol = bar.closest('.gantt-tlcol');
+      drag = { bar, item, origIni: ini, origPrazo: item.prazo, startX: t.clientX, tlW: tlcol.getBoundingClientRect().width };
+    }, { passive: true });
+    document.addEventListener('touchmove', (ev) => {
+      if (!drag || !gCS) return;
+      const dx = ev.touches[0].clientX - drag.startX;
+      const delta = (dx / drag.tlW) * gTotalMs;
+      const durMs = gMs(drag.origPrazo) - gMs(drag.origIni);
+      const newIniMs = gMs(drag.origIni) + delta;
+      drag.bar.style.left = ((newIniMs - gCS.getTime()) / gTotalMs * 100).toFixed(2) + '%';
+      drag.previewIni = new Date(newIniMs).toISOString().slice(0, 10);
+      drag.previewPrazo = new Date(newIniMs + durMs).toISOString().slice(0, 10);
+    }, { passive: true });
+    document.addEventListener('touchend', () => {
+      if (!drag) return;
+      if (drag.previewIni && drag.previewIni !== drag.origIni) {
+        drag.item.inicio = drag.previewIni;
+        drag.item.prazo = drag.previewPrazo;
+        salvarCronograma();
+        toast('Etapa movida.');
+      }
+      drag = null;
+    });
+  }
+
   // -------------------------------------------------------- cronograma
   function salvarCronograma() {
     gravar(CRONOGRAMA_KEY, cronograma);
     renderCronograma();
+    renderGantt();
   }
 
   function renderCronograma() {
@@ -837,7 +1018,7 @@
     [
       ['indicadores', renderKpis], ['gráfico', renderGrafico], ['probabilidade', renderProb],
       ['acervo', renderAcervo], ['uso', renderUso], ['histórico', renderTabela],
-      ['metas', renderTimeline], ['cronograma', renderCronograma],
+      ['metas', renderGantt], ['cronograma', renderCronograma],
     ].forEach(([nome, tarefa]) => executarEtapa(nome, tarefa));
   }
 
@@ -847,6 +1028,7 @@
       ['PDFs', initPdfs], ['Pomodoro', initPomodoro], ['galeria', initGaleria],
       ['imagens', renderGaleria], ['registro semanal', initRegistro],
       ['configuração de metas', initMetas], ['cronograma interativo', initCronograma],
+      ['gantt', initGantt],
     ].forEach(([nome, tarefa]) => executarEtapa(nome, tarefa));
     $$('.pn-seg-btn').forEach((b) => b.addEventListener('click', () => {
       $$('.pn-seg-btn').forEach((x) => x.classList.toggle('active', x === b)); metricaAtual = b.dataset.metric; renderGrafico();

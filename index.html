@@ -637,11 +637,15 @@
         </div>
       </div>
 
-      <!-- MARCOS ATÉ A DEFESA -->
+      <!-- CRONOGRAMA VISUAL — GANTT -->
       <div class="content-card">
-        <h3 class="card-title">Marcos Macro até a Defesa</h3>
-        <p class="pn-muted">Três entregas em sequência: <strong>projetos IoT, até dezembro/2026</strong> → <strong>qualificação (artigo), até maio/2027</strong> → <strong>defesa da tese, até setembro/2027</strong> (limite: maio/2028). Você pode informar se foi concluído diretamente pelo botão ou ajustar metas e prazos.</p>
-        <div class="pn-timeline" id="pnTimeline"></div>
+        <div class="pn-card-head" style="margin-bottom:12px">
+          <div>
+            <h3 class="card-title">Cronograma Visual — Linha do Tempo</h3>
+            <p class="pn-muted">Arraste uma barra para mover a etapa · Clique para editar · × para excluir · Linha verde = hoje</p>
+          </div>
+        </div>
+        <div id="pnTimeline"></div>
       </div>
 
       <!-- CALENDÁRIO CIENTÍFICO -->
@@ -1097,6 +1101,35 @@
   </div>
   <script src="dados_pdfs.js"></script>
   <script src="dados_inventario.js"></script>
+  <!-- Modal editar etapa do Gantt -->
+  <div class="pn-modal" id="modalGanttEditar" role="dialog" aria-modal="true" hidden>
+    <div class="pn-modal-box">
+      <button class="pn-modal-close" type="button" aria-label="Fechar">×</button>
+      <h2 style="margin-bottom:16px">Editar etapa</h2>
+      <form id="ganttEditForm" class="pn-form">
+        <input type="hidden" id="geId">
+        <label class="pn-span2">Nome <input type="text" id="geNome" required placeholder="Ex.: Submeter artigo"></label>
+        <label>Início <input type="date" id="geInicio" required></label>
+        <label>Prazo (fim) <input type="date" id="gePrazo" required></label>
+        <label>Categoria
+          <select id="geCat" style="background:var(--bg-surface);border:1px solid var(--border-glass);color:var(--text-main);border-radius:var(--radius-sm);padding:9px 10px;font:.9rem var(--font-sans);width:100%">
+            <option value="pesquisa">Pesquisa &amp; Fichamentos</option>
+            <option value="iot">Projeto IoT &amp; Bancada</option>
+            <option value="artigo">Artigo &amp; Qualificação</option>
+            <option value="ia">Análise de Dados &amp; IA</option>
+            <option value="tese">Tese &amp; Defesa</option>
+            <option value="geral">Geral</option>
+          </select>
+        </label>
+        <label class="pn-span2">Descrição / Entregável <input type="text" id="geObs" placeholder="Ex.: Apresentar resultados preliminares"></label>
+        <div class="pn-span2" style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+          <button type="button" class="pn-btn" id="geCancelar">Cancelar</button>
+          <button type="submit" class="pn-btn pn-btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="dados_estadoarte.js"></script>
   <script src="dados_fichamentos.js"></script>
   <script src="dados_estatisticas.js"></script>
