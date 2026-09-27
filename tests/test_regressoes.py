@@ -8,6 +8,8 @@ import tempfile
 import threading
 import types
 import unittest
+import uuid
+from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import Mock, patch
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -18,7 +20,7 @@ from registro import Registro, SITE
 def funcoes_servidor():
     # Importar servidor.py inicia rotinas e escreve no cofre real.
     arvore = ast.parse((RAIZ / "painel_local/servidor.py").read_text(encoding="utf-8"))
-    nomes = {"secao_path", "salvar_secao", "mover_leitura", "mover", "eu_li"}
+    nomes = {"secao_path", "salvar_secao", "mover_leitura", "mover", "eu_li", "analisar", "identidade_artigo"}
     funcoes = [n for n in arvore.body if isinstance(n, ast.FunctionDef) and n.name in nomes]
     for n in funcoes:
         n.decorator_list = []
@@ -71,6 +73,16 @@ class Arquivos(unittest.TestCase):
         volta = self.ns["mover_leitura"](novo, self.lido, self.ler)
         self.assertEqual(volta.read_bytes(), b"artigo.pdf")
 
+    def test_audio_acompanha_pdf_e_identidade_permanece(self):
+        pdf = self.preparar()
+        pdf.with_suffix('.mp3').write_bytes(b'audio')
+        self.ns['resolver_id'] = lambda _: pdf
+        antes = self.ns['identidade_artigo']('id')['chave']
+        novo = self.ns['mover_leitura'](pdf, self.ler, self.lido)
+        self.assertEqual(novo.with_suffix('.mp3').read_bytes(), b'audio')
+        self.ns['resolver_id'] = lambda _: novo
+        self.assertEqual(antes, self.ns['identidade_artigo']('id')['chave'])
+
     def test_conflito_relatorio_preserva_conjunto_e_registro(self):
         pdf = self.preparar()
         destino = self.lido / "subpasta"
@@ -92,6 +104,75 @@ class Arquivos(unittest.TestCase):
                 self.ns["mover_leitura"](pdf, self.ler, self.lido)
         self.assertEqual(len(list(pdf.parent.iterdir())), 3)
         self.assertEqual(list((self.lido / "subpasta").iterdir()), [])
+
+
+class Analises(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.base = Path(tmp.name)
+        self.pdf = self.base / "artigo.pdf"
+        self.pdf.write_bytes(b"pdf")
+        self.ns = funcoes_servidor()
+        self.threads = Mock()
+        self.proc = Mock()
+        self.ns.update(threading=self.threads, subprocess=self.proc, sys=sys, uuid=uuid,
+                       JOBS={}, ANALISES_ATIVAS={}, TRAVA_ANALISES=threading.Lock(),
+                       PARA_LER=self.base, AGENTES=self.base, resolver_id=lambda _: self.pdf)
+        self.ns["request"].get_json.return_value = {"id": "ler:artigo.pdf"}
+
+    def rodar(self):
+        self.threads.Thread.call_args.kwargs["target"]()
+
+    def test_cliques_simultaneos_iniciam_uma_analise(self):
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            jobs = list(pool.map(lambda _: self.ns["analisar"](), range(16)))
+        self.assertEqual(len({j["id"] for j in jobs}), 1)
+        self.threads.Thread.assert_called_once()
+
+    def test_acervo_e_copia_compartilham_execucao(self):
+        primeiro = self.ns["analisar"]()
+        original = self.base / "acervo" / self.pdf.name
+        original.parent.mkdir()
+        original.write_bytes(b"pdf")
+        self.ns["resolver_id"] = lambda _: original
+        self.ns["request"].get_json.return_value = {"id": "acervo:artigo.pdf"}
+        self.assertEqual(self.ns["analisar"]()["id"], primeiro["id"])
+        self.threads.Thread.assert_called_once()
+
+    def test_artigos_distintos_podem_rodar(self):
+        primeiro = self.ns["analisar"]()
+        outro = self.base / "outro.pdf"
+        outro.write_bytes(b"outro")
+        self.ns["resolver_id"] = lambda _: outro
+        self.assertNotEqual(self.ns["analisar"]()["id"], primeiro["id"])
+        self.assertEqual(self.threads.Thread.call_count, 2)
+
+    def test_sucesso_libera_nova_leitura(self):
+        processo = Mock(stdout=["concluido\n"])
+        processo.wait.return_value = 0
+        from unittest.mock import MagicMock
+        contexto = MagicMock()
+        contexto.__enter__.return_value = processo
+        self.proc.Popen.return_value = contexto
+        primeiro = self.ns["analisar"]()
+        self.rodar()
+        self.assertEqual(primeiro["status"], "ok")
+        self.assertNotEqual(self.ns["analisar"]()["id"], primeiro["id"])
+
+    def test_falha_processo_ou_registro_libera_tentativa(self):
+        for registro_falha in (False, True):
+            self.proc.Popen.side_effect = OSError("falha ao iniciar")
+            self.ns["REG"].ia_fim.side_effect = OSError("falha registro") if registro_falha else None
+            job = self.ns["analisar"]()
+            self.rodar()
+            self.assertEqual(job["status"], "erro")
+            self.assertEqual(self.ns["ANALISES_ATIVAS"], {})
+
+    def test_falha_thread_libera_tentativa(self):
+        self.threads.Thread.return_value.start.side_effect = RuntimeError("falha thread")
+        self.assertEqual(self.ns["analisar"]()["status"], "erro")
+        self.assertEqual(self.ns["ANALISES_ATIVAS"], {})
 
 
 class Publicacao(unittest.TestCase):

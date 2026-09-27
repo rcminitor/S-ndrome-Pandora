@@ -130,7 +130,12 @@ except Exception:
     pass
 
 app = Flask(__name__, static_folder=None)
+app.config["NOTEBOOKLM_HISTORICO"] = str(BIBLIOTECA / "NotebookLM" / "Historico")
+from notebook_bridge import bp as notebooklm_bp
+app.register_blueprint(notebooklm_bp)
 JOBS: dict[str, dict] = {}
+ANALISES_ATIVAS: dict[Path, dict] = {}
+TRAVA_ANALISES = threading.Lock()
 PORTA = 8765
 # O site publicado pode conversar com este painel (só ele e o próprio PC).
 ORIGENS = {"https://rcminitor.github.io", f"http://localhost:{PORTA}", f"http://127.0.0.1:{PORTA}"}
@@ -208,6 +213,37 @@ def resolver_id(ident: str) -> Path:
     return seguro(rel, raiz)
 
 
+def identidade_artigo(ident: str) -> dict:
+    import hashlib
+    pdf = resolver_id(ident)
+    resumo = hashlib.sha256()
+    with pdf.open("rb") as arquivo:
+        for bloco in iter(lambda: arquivo.read(1024 * 1024), b""):
+            resumo.update(bloco)
+    return {"chave": resumo.hexdigest(), "nome": pdf.stem}
+
+
+app.config["NOTEBOOKLM_ARTIGO"] = identidade_artigo
+
+
+@app.get("/api/artigo/materiais")
+def materiais_artigo():
+    ident = request.args["id"]
+    pdf = resolver_id(ident)
+    audios = [ext for ext in (".mp3", ".m4a", ".wav", ".ogg") if pdf.with_suffix(ext).is_file()]
+    return jsonify({**identidade_artigo(ident), "audios": audios})
+
+
+@app.get("/api/artigo/audio")
+def audio_artigo():
+    pdf = resolver_id(request.args["id"])
+    ext = request.args.get("ext")
+    if ext not in (".mp3", ".m4a", ".wav", ".ogg"):
+        abort(400)
+    audio = seguro(str(pdf.with_suffix(ext)), pdf.parent)
+    return send_file(audio, conditional=True)
+
+
 # ------------------------------------------------------------------ páginas
 @app.get("/")
 def pagina():
@@ -251,11 +287,9 @@ def ver_leitura():
 def analisar():
     d = request.get_json()
     pdf = resolver_id(d["id"])
-    if d["id"].startswith("acervo:"):                  # do acervo: trabalha numa cópia em Para ler
-        copia = PARA_LER / pdf.name
-        if not copia.exists():
-            shutil.copy2(pdf, copia)
-        pdf = copia
+    original = pdf
+    if d["id"].startswith("acervo:"):                  # usa a mesma chave da cópia em Para ler
+        pdf = PARA_LER / pdf.name
     cmd = [sys.executable, "-u", str(AGENTES / "leitor_artigos.py"), str(pdf),
            "--destino", str(pdf.parent / f"{pdf.stem} - citados"),
            "--relatorio-dir", str(pdf.parent),
@@ -263,22 +297,51 @@ def analisar():
            "--baixar", d.get("baixar", "relevantes")]
     if d.get("sem_traducao"):
         cmd.append("--sem-traducao")
-    job = {"id": uuid.uuid4().hex[:8], "arquivo": pdf.name, "status": "rodando", "log": []}
-    JOBS[job["id"]] = job
-    REG.ia_inicio(pdf, {"profundidade": int(d.get("profundidade", 1)), "sem_traducao": bool(d.get("sem_traducao"))})
+    chave = pdf.resolve()
+    with TRAVA_ANALISES:
+        if chave in ANALISES_ATIVAS:
+            # Outro clique/aba acompanha a execução existente, com as opções originais.
+            return jsonify({**ANALISES_ATIVAS[chave], "reutilizado": True})
+        if original != pdf and not pdf.exists():
+            shutil.copy2(original, pdf)
+        job = {"id": uuid.uuid4().hex[:8], "arquivo": pdf.name, "status": "rodando", "log": []}
+        JOBS[job["id"]] = job
+        ANALISES_ATIVAS[chave] = job
 
     def rodar():
-        proc = subprocess.Popen(cmd, cwd=AGENTES, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                text=True, encoding="utf-8", errors="replace",
-                                env={**__import__("os").environ, "PYTHONIOENCODING": "utf-8"})
-        for linha in proc.stdout:
-            job["log"].append(linha.rstrip())
-        ok = proc.wait() == 0
-        job["versao"] = REG.ia_fim(pdf, ok, job["log"])       # guarda tudo no histórico
-        job["status"] = "ok" if ok else "erro"
-        atualizar_fila()                                      # novas citações cruzadas mudam a ordem
+        ok = False
+        iniciado = False
+        try:
+            REG.ia_inicio(pdf, {"profundidade": int(d.get("profundidade", 1)), "sem_traducao": bool(d.get("sem_traducao"))})
+            iniciado = True
+            with subprocess.Popen(cmd, cwd=AGENTES, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                  text=True, encoding="utf-8", errors="replace",
+                                  env={**__import__("os").environ, "PYTHONIOENCODING": "utf-8"}) as proc:
+                for linha in proc.stdout:
+                    job["log"].append(linha.rstrip())
+                ok = proc.wait() == 0
+        except Exception as e:
+            job["log"].append(f"Falha na análise: {type(e).__name__}: {e}")
+        finally:
+            try:
+                if iniciado:
+                    job["versao"] = REG.ia_fim(pdf, ok, job["log"])
+                atualizar_fila()
+            except Exception as e:
+                ok = False
+                job["log"].append(f"Falha ao registrar análise: {type(e).__name__}: {e}")
+            finally:
+                with TRAVA_ANALISES:
+                    job["status"] = "ok" if ok else "erro"
+                    ANALISES_ATIVAS.pop(chave, None)
 
-    threading.Thread(target=rodar, daemon=True).start()
+    try:
+        threading.Thread(target=rodar, daemon=True).start()
+    except Exception as e:
+        with TRAVA_ANALISES:
+            job["status"] = "erro"
+            job["log"].append(f"Não foi possível iniciar a análise: {e}")
+            ANALISES_ATIVAS.pop(chave, None)
     return jsonify(job)
 
 
@@ -298,7 +361,8 @@ def mover_leitura(pdf: Path, origem: Path, destino: Path) -> Path:
         return pdf
     with TRAVA_MOVIMENTO:
         arquivos = [p for p in (pdf, pdf.with_suffix(".leitura.md"),
-                                pdf.with_suffix(".leitura.json")) if p.exists()]
+                                pdf.with_suffix(".leitura.json"),
+                                *(pdf.with_suffix(ext) for ext in (".mp3", ".m4a", ".wav", ".ogg"))) if p.exists()]
         if any((alvo_dir / p.name).exists() for p in arquivos):
             raise FileExistsError("Já existe um PDF ou relatório com esse nome no destino. Nenhum arquivo foi movido.")
         alvo_dir.mkdir(parents=True, exist_ok=True)

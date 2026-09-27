@@ -110,6 +110,7 @@ body.embed main { padding: 12px 4px; }
     <button data-aba="revisao">Revisão<b id="nRev"></b></button>
     <button data-aba="tese">Minha tese</button>
   </nav>
+  <a class="btn" href="/notebooklm" target="_blank" rel="noopener">NotebookLM</a>
   <span id="aviso"></span>
 </header>
 
@@ -301,9 +302,13 @@ async function abrir(id) {
       <span class="status" id="stCart"></span>
     </div>
     <div class="acoes" id="histBox" hidden><span class="status">Leituras da IA guardadas:</span><select class="btn" id="oVersao" aria-label="Versão da leitura"></select></div>
+    <details><summary>PDF original nesta tela</summary><iframe loading="lazy" src="/pdf?id=${encodeURIComponent(atual.id)}" title="PDF original" style="width:100%;height:650px;border:0"></iframe></details>
+    <section class="card" id="materiais"><h3>Materiais deste artigo</h3><a class="btn" href="/notebooklm?artigo=${encodeURIComponent(atual.id)}" target="_blank" rel="noopener">Consultar no NotebookLM</a><button class="btn" id="atualizarMateriais">Atualizar materiais</button><div id="audiosArtigo"></div><div id="consultasArtigo"></div><pre id="consultaArtigo" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></section>
     <div id="job" hidden><p class="status" id="jobSt"></p><div class="log" id="jobLog"></div></div>
     <div class="leitura" id="leitura">${atual.leitura ? '<p class="status">Carregando leitura…</p>' : '<p class="vazio">Ainda não lido pelo agente.</p>'}</div>`;
   $('#bLer').onclick = ler;
+  $('#atualizarMateriais').onclick = () => carregarMateriais(id);
+  carregarMateriais(id);
   if ($('#bEuLi')) $('#bEuLi').onclick = () => { $('#euLiBox').hidden = false; $('#euLiNota').focus(); };
   if ($('#euLiCancela')) $('#euLiCancela').onclick = () => { $('#euLiBox').hidden = true; };
   if ($('#euLiOk')) $('#euLiOk').onclick = async () => {
@@ -338,6 +343,24 @@ async function abrir(id) {
   }
 }
 
+async function carregarMateriais(id) {
+  const host = $('#materiais');
+  try {
+    const d = await api('/api/artigo/materiais?id=' + encodeURIComponent(id));
+    const grupos = await Promise.all(['pro','plus'].map(conta => api('/api/notebooklm/historico?conta='+conta+'&artigo='+d.chave)));
+    const importados = await api('/api/notebooklm/importados?artigo='+d.chave);
+    if ($('#materiais') !== host) return;
+    $('#audiosArtigo').replaceChildren();
+    for (const ext of d.audios) { const audio = document.createElement('audio'); audio.controls = true; audio.preload = 'none'; audio.src = '/api/artigo/audio?id='+encodeURIComponent(id)+'&ext='+ext; $('#audiosArtigo').append(audio); }
+    if (!d.audios.length) $('#audiosArtigo').textContent = 'Nenhum áudio local associado. Áudios com o mesmo nome do PDF, na mesma pasta, aparecem aqui.';
+    for(const m of importados.itens){const div=document.createElement('div'),a=document.createElement('a');a.textContent=m.titulo+' ('+m.tipo+')';a.href='/api/notebooklm/importados/'+m.id;a.target='_blank';a.rel='noopener';div.append(a);if(m.tipo==='audio'){const audio=document.createElement('audio');audio.controls=true;audio.preload='none';audio.src=a.href;div.append(document.createElement('br'),audio);}$('#audiosArtigo').append(div);}
+    $('#consultasArtigo').replaceChildren();
+    const itens = grupos.flatMap(g=>g.itens).sort((a,b)=>b.data.localeCompare(a.data));
+    if (!itens.length) $('#consultasArtigo').textContent = 'Ainda não há consultas vinculadas. Use Consultar no NotebookLM para criar uma.';
+    for (const item of itens) { const b=document.createElement('button'); b.className='btn'; b.textContent=item.conta.toUpperCase()+' · '+dataBR(item.data)+' · '+item.prompt.slice(0,80); b.onclick=async()=>{try{const r=await api('/api/notebooklm/historico/'+item.id);if($('#materiais')===host)$('#consultaArtigo').textContent='Caderno: '+r.caderno+'\n\n'+r.prompt+'\n\n'+r.answer+'\n\nReferências\n'+JSON.stringify(r.references,null,2);}catch(e){if($('#materiais')===host)$('#consultaArtigo').textContent=e.message;}};$('#consultasArtigo').append(b); }
+  } catch(e) { if ($('#materiais')===host) $('#consultasArtigo').textContent='Não foi possível carregar os materiais: '+e.message; }
+}
+
 async function ler() {
   $('#bLer').disabled = true;
   $('#job').hidden = false;
@@ -345,7 +368,7 @@ async function ler() {
   const nome = job.arquivo;
   const tick = async () => {
     const j = await api('/api/job/' + job.id);
-    $('#jobSt').textContent = j.status === 'rodando' ? 'O agente está lendo… (pode levar alguns minutos)' : j.status === 'ok' ? 'Concluído.' : 'Terminou com erro — veja o registro abaixo.';
+    $('#jobSt').textContent = j.status === 'rodando' ? (job.reutilizado ? 'Este artigo já está em análise. Acompanhando a leitura em andamento, sem iniciar outra.' : 'O agente está lendo… (pode levar alguns minutos)') : j.status === 'ok' ? 'Concluído.' : 'Terminou com erro — veja o registro abaixo.';
     $('#jobLog').textContent = j.log.join('\n');
     $('#jobLog').scrollTop = 1e9;
     if (j.status === 'rodando') return setTimeout(tick, 1500);
