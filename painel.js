@@ -943,10 +943,8 @@
   }
 
   // ------------------------------------------------------------- PDFs
-  // Caminho absoluto do cofre — PDFs abrem localmente via file://
-  // Funciona quando o site é acessado de file:// ou de servidor local.
-  // No GitHub Pages (https://) o navegador bloqueia file://, mas o caminho fica visível.
-  const COFRE_FILE_BASE = 'file:///C:/Users/rcmin/OneDrive/Documents/Pos-Graduacao/Doutorado%20UFC/S%C3%ADndrome%20de%20Pandora/';
+  // PDFs hospedados no GitHub Pages — mesma raiz do site.
+  const COFRE_FILE_BASE = 'https://rcminitor.github.io/S-ndrome-Pandora/';
   function cofreUrl(caminho) {
     if (!caminho) return '';
     return COFRE_FILE_BASE + caminho.replace(/\\/g, '/').split('/').map(encodeURIComponent).join('/');
@@ -977,15 +975,8 @@
       const url = cofreUrl(b.dataset.pdf);
       $('#pdfTitulo').textContent = b.dataset.nome;
       $('#pdfNovaAba').href = url;
-      if (window.location.protocol === 'file:') {
-        $('#pdfFrame').removeAttribute('srcdoc');
-        $('#pdfFrame').src = url;
-      } else {
-        const caminhoEsc = b.dataset.pdf.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        const caminhoJS = JSON.stringify(b.dataset.pdf);
-        $('#pdfFrame').removeAttribute('src');
-        $('#pdfFrame').srcdoc = '<style>body{font-family:sans-serif;padding:24px;line-height:1.6;color:#333}code{background:#f3f3f3;padding:8px 12px;border-radius:6px;display:block;margin:10px 0;word-break:break-all;font-size:.9em}button{margin-top:14px;padding:9px 18px;background:#e47e3f;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9em}</style><p><strong>PDF disponível apenas no computador local.</strong></p><p>Navegue até o cofre e abra:</p><code>' + caminhoEsc + '</code><button onclick="navigator.clipboard.writeText(' + caminhoJS + ').then(()=>this.textContent=\'✓ Copiado!\')">Copiar caminho</button>';
-      }
+      $('#pdfFrame').removeAttribute('srcdoc');
+      $('#pdfFrame').src = url;
       abrirModal('modalPdf');
     });
     renderPdfs();
