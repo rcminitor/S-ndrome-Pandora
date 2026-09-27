@@ -38,6 +38,8 @@
         <li><a href="#tab-galeria" data-goto="tab-galeria">Galeria</a></li>
         <li><a href="#tab-estudo" data-goto="tab-estudo">Normas</a></li>
         <li><a href="#tab-inventory" data-goto="tab-inventory">Acervo</a></li>
+        <li><a href="#tab-roadmap" data-goto="tab-roadmap">Roteiro</a></li>
+        <li><a href="#tab-nucleos" data-goto="tab-nucleos">Núcleos</a></li>
       </ul>
       <div class="nav-actions">
         <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="Alternar tema claro/escuro">◐ <span id="themeText">Tema</span></button>
@@ -549,23 +551,22 @@
     <div class="tab-pane" id="tab-registro" role="tabpanel">
       <div class="pn-grid-2">
         <div class="content-card">
-          <h3 class="card-title">Registrar uma semana</h3>
+          <h3 class="card-title">Complementar manualmente</h3>
+          <p class="pn-muted" style="margin-bottom:12px">📊 Artigos lidos e fichamentos são calculados automaticamente a partir dos dados do cofre. Preencha abaixo apenas o que não pode ser medido de outra forma.</p>
           <form id="pnForm" class="pn-form">
             <label>Semana (segunda-feira)<input type="date" name="semana" required></label>
             <label>Páginas lidas<input type="number" name="paginasLidas" min="0" step="1" value="0"></label>
-            <label>Artigos lidos<input type="number" name="artigosLidos" min="0" step="1" value="0"></label>
-            <label>Fichamentos concluídos<input type="number" name="fichamentos" min="0" step="1" value="0"></label>
             <label>Páginas escritas — artigo<input type="number" name="pagArtigo" min="0" step="0.5" value="0"></label>
             <label>Páginas escritas — tese<input type="number" name="pagTese" min="0" step="0.5" value="0"></label>
             <label>Tarefas IoT concluídas<input type="number" name="tarefasIot" min="0" step="1" value="0"></label>
             <label>Horas de estudo<input type="number" name="horas" min="0" step="0.5" value="0"></label>
             <label class="pn-span2">Observação<input type="text" name="obs" maxlength="200" placeholder="Ex.: fichei o S2 (MEMO)"></label>
             <div class="pn-span2 pn-actions">
-              <button class="pn-btn pn-btn-primary" type="submit">Salvar semana</button>
+              <button class="pn-btn pn-btn-primary" type="submit">Salvar</button>
               <button class="pn-btn" type="reset">Limpar</button>
             </div>
           </form>
-          <p class="pn-muted">Se a semana já existir, ela é substituída. Os dados ficam salvos neste navegador; use <strong>Exportar</strong> para guardar uma cópia no cofre (OneDrive).</p>
+          <p class="pn-muted">Se a semana já existir, ela é substituída. Os dados ficam salvos neste navegador; use <strong>Exportar</strong> para guardar uma cópia.</p>
         </div>
         <div class="content-card">
           <h3 class="card-title">Dados</h3>

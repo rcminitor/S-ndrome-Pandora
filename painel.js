@@ -147,17 +147,46 @@
   }
   function gravar(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { /* modo privado */ } }
 
-  // Semanas: as automáticas (dados_progresso.js, enviadas pelo Painel de Estudo do PC) + as digitadas aqui.
-  // Um valor digitado (> 0) vale sobre o automático; horas e tarefas IoT são só manuais.
+  // Semanas: derivadas dos dados do cofre + automáticas (dados_progresso.js) + complemento manual.
+  // Fichamentos e artigos lidos são calculados dos dados_fichamentos.js e dados_leituras.js.
+  // Um valor digitado (> 0) prevalece sobre o automático; horas, IoT e páginas são só manuais.
   const CAMPOS = ['paginasLidas', 'artigosLidos', 'fichamentos', 'pagArtigo', 'pagTese', 'tarefasIot', 'horas'];
   const AUTO = (window.DADOS_PROGRESSO && window.DADOS_PROGRESSO.semanas) || [];
   let manuais = ler(STORE_KEY, []);
   let registros = [];
+  function getMondayISO(iso) {
+    const d = new Date(iso.slice(0, 10) + 'T12:00:00');
+    const offset = (d.getDay() + 6) % 7;
+    d.setDate(d.getDate() - offset);
+    return d.toISOString().slice(0, 10);
+  }
+  function derivarDosDados() {
+    const fichMap = {}, leitMap = {};
+    ((window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos) || []).forEach((f) => {
+      if (!f.data) return;
+      const s = getMondayISO(f.data);
+      fichMap[s] = (fichMap[s] || 0) + 1;
+    });
+    (window.DADOS_LEITURAS || []).forEach((l) => {
+      if (!l.eu_li) return;
+      const s = getMondayISO(l.eu_li);
+      leitMap[s] = (leitMap[s] || 0) + 1;
+    });
+    return { fichMap, leitMap };
+  }
   function mesclar() {
+    const { fichMap, leitMap } = derivarDosDados();
     const mapa = {};
     AUTO.forEach((a) => {
       mapa[a.semana] = { semana: a.semana, obs: '', auto: a };
       CAMPOS.forEach((k) => { mapa[a.semana][k] = +a[k] || 0; });
+    });
+    const semanasDerivadas = new Set([...Object.keys(fichMap), ...Object.keys(leitMap)]);
+    semanasDerivadas.forEach((s) => {
+      if (!mapa[s]) { mapa[s] = { semana: s, obs: '' }; CAMPOS.forEach((k) => { mapa[s][k] = 0; }); }
+      if (fichMap[s] != null) mapa[s].fichamentos = fichMap[s];
+      if (leitMap[s] != null) mapa[s].artigosLidos = leitMap[s];
+      mapa[s].derivado = true;
     });
     manuais.forEach((m) => {
       const r = mapa[m.semana] || (mapa[m.semana] = { semana: m.semana, obs: '' });
@@ -416,8 +445,8 @@
     const t = $('#pnTabela');
     if (!registros.length) { t.innerHTML = '<tbody><tr><td>Nenhuma semana registrada.</td></tr></tbody>'; return; }
     t.innerHTML = `<thead><tr><th>Semana</th><th>Origem</th><th>Pág. lidas</th><th>Artigos</th><th>Fichamentos</th><th>Artigo (pág.)</th><th>Tese (pág.)</th><th>IoT</th><th>Horas</th><th>Obs.</th><th></th></tr></thead><tbody>` +
-      registros.slice().reverse().map((r) => `<tr><td>${dataBR(r.semana)}</td><td title="${r.auto ? `Painel: ${r.auto.leiturasIA} leitura(s) da IA · ${r.auto.revisoes} revisão(ões)${r.auto.acerto != null ? ` (${r.auto.acerto}% de acerto)` : ''} · ${r.auto.conversas} conversa(s) com o orientador` : ''}">${r.auto ? '🤖' : ''}${r.manual ? '✍️' : ''}</td><td>${fmt(r.paginasLidas)}</td><td>${fmt(r.artigosLidos)}</td><td>${fmt(r.fichamentos)}</td><td>${fmt(r.pagArtigo)}</td><td>${fmt(r.pagTese)}</td><td>${fmt(r.tarefasIot)}</td><td>${fmt(r.horas)}</td><td>${esc(r.obs || '')}</td><td><button class="pn-btn pn-btn-sm" data-edit="${r.semana}" type="button">${r.manual ? 'Editar' : 'Completar'}</button>${r.manual ? ` <button class="pn-btn pn-btn-sm pn-btn-danger" data-del="${r.semana}" type="button">Excluir manual</button>` : ''}</td></tr>`).join('') + '</tbody>' +
-      `<caption class="pn-muted" style="caption-side:bottom;text-align:left;padding-top:8px">🤖 = vindo sozinho do Painel de Estudo (leituras, fichamentos do cofre, páginas escritas) · ✍️ = digitado aqui. Um valor digitado vale sobre o automático; horas e IoT são só manuais.${window.DADOS_PROGRESSO ? ` Atualizado em ${dataBR(window.DADOS_PROGRESSO.atualizado.slice(0, 10))}.` : ''}</caption>`;
+      registros.slice().reverse().map((r) => `<tr><td>${dataBR(r.semana)}</td><td title="${r.derivado ? 'Calculado dos dados do cofre' : ''}${r.auto ? ' · Painel de Estudo (progresso.py)' : ''}${r.manual ? ' · complemento manual' : ''}">${r.derivado ? '📊' : ''}${r.auto ? '🤖' : ''}${r.manual ? '✍️' : ''}</td><td>${fmt(r.paginasLidas)}</td><td>${fmt(r.artigosLidos)}</td><td>${fmt(r.fichamentos)}</td><td>${fmt(r.pagArtigo)}</td><td>${fmt(r.pagTese)}</td><td>${fmt(r.tarefasIot)}</td><td>${fmt(r.horas)}</td><td>${esc(r.obs || '')}</td><td><button class="pn-btn pn-btn-sm" data-edit="${r.semana}" type="button">${r.manual ? 'Editar' : 'Completar'}</button>${r.manual ? ` <button class="pn-btn pn-btn-sm pn-btn-danger" data-del="${r.semana}" type="button">Excluir manual</button>` : ''}</td></tr>`).join('') + '</tbody>' +
+      `<caption class="pn-muted" style="caption-side:bottom;text-align:left;padding-top:8px">📊 = calculado dos dados do cofre (fichamentos e leituras) · 🤖 = Painel de Estudo (progresso.py) · ✍️ = complemento manual. Um valor digitado prevalece sobre o automático; horas, IoT e páginas são só manuais.${window.DADOS_PROGRESSO ? ` Painel atualizado em ${dataBR(window.DADOS_PROGRESSO.atualizado.slice(0, 10))}.` : ''}</caption>`;
   }
   function segundaDe(d) { const x = new Date(d); const dia = (x.getDay() + 6) % 7; x.setDate(x.getDate() - dia); return x.toISOString().slice(0, 10); }
   function initRegistro() {
