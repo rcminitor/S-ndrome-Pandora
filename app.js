@@ -261,6 +261,16 @@ function openDrawer(article) {
   const fileBox = document.getElementById('drawerFile');
   fileBox.textContent = article.arquivo || 'Arquivo ainda não obtido';
 
+  const pdfBtn = document.getElementById('drawerPdfBtn');
+  if (pdfBtn) {
+    if (article.arquivo) {
+      pdfBtn.href = encodeURI(article.arquivo);
+      pdfBtn.removeAttribute('hidden');
+    } else {
+      pdfBtn.setAttribute('hidden', '');
+    }
+  }
+
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
