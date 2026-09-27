@@ -203,6 +203,10 @@ body { font-family: var(--font-sans); background: var(--bg-body); color: var(--t
 .feat-tag { display: inline-flex; align-items: center; gap: .4rem; background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: 9999px; padding: .35rem .85rem; font-size: .86rem; font-weight: 500; color: var(--text-light); }
 .feat-tag svg { width: 14px; height: 14px; fill: var(--success); }
 .hero-note { color: var(--text-dim); font-size: .8rem; margin: 1rem 0 1.25rem; }
+.hero-autoria { display: flex; flex-direction: column; gap: .45rem; margin: 1.4rem 0 1rem; max-width: 560px; }
+.hero-autoria-linha { display: flex; gap: .6rem; align-items: baseline; font-size: .9rem; }
+.hero-autoria-label { color: var(--text-dim); font-size: .78rem; min-width: 82px; text-transform: uppercase; letter-spacing: .04em; }
+.hero-autoria-valor { color: var(--text-light); font-weight: 600; }
 .hero .scientific-alert { max-width: 720px; margin: 0 auto; }
 .tab-nav-wrapper { margin-bottom: 3rem; }
 

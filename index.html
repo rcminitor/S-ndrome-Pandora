@@ -34,6 +34,7 @@
         <li><a href="#tab-metas" data-goto="tab-metas">Metas</a></li>
         <li><a href="#tab-estudo" data-goto="tab-estudo">Normas</a></li>
         <li><a href="#tab-inventory" data-goto="tab-inventory">Acervo</a></li>
+        <li><a href="#tab-galeria" data-goto="tab-galeria">Galeria</a></li>
       </ul>
       <div class="nav-actions">
         <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="Alternar tema claro/escuro">◐ <span id="themeText">Tema</span></button>
@@ -54,6 +55,11 @@
       <p class="subtitle">
         Referencial teórico, acompanhamento da escrita e projeto IoT: da doença urinária localizada (FLUTD/FIC) à síndrome multissistêmica, com monitoramento contínuo por sensores e IA.
       </p>
+      <div class="hero-autoria">
+        <div class="hero-autoria-linha"><span class="hero-autoria-label">Doutorando</span><span class="hero-autoria-valor">Romulo Cesar Cunha Lima</span></div>
+        <div class="hero-autoria-linha"><span class="hero-autoria-label">Orientador</span><span class="hero-autoria-valor" id="heroOrientador">—</span></div>
+        <div class="hero-autoria-linha"><span class="hero-autoria-label">Instituição</span><span class="hero-autoria-valor">Universidade Federal do Ceará — UFC</span></div>
+      </div>
       <p class="hero-note">Agrupamento por núcleos proposto, não declarado pelos autores.</p>
       <div class="scientific-alert" role="note">
         <div><strong>Regra do referencial:</strong> nenhum dado, resultado, página ou referência entra no texto da tese sem confirmação no documento original.</div>
@@ -87,6 +93,9 @@
       </button>
       <button class="tab-btn" data-tab="tab-inventory" role="tab" aria-selected="false" title="Acervo e Inventário">
         Acervo <span class="tab-badge" id="acervoBadge">31</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-galeria" role="tab" aria-selected="false" title="Galeria de imagens e mapas mentais">
+        Galeria <span class="tab-badge" id="galeriaCount">0</span>
       </button>
     </nav>
 
@@ -1147,7 +1156,7 @@
   <script src="dados_revisao.js"></script>
   <script src="dados_leituras.js"></script>
   <script src="app.js"></script>
-  <script src="painel.js?v=20260927"></script>
+  <script src="painel.js?v=20260927b"></script>
   <script src="estadoarte.js"></script>
   <script src="fichamentos.js" defer></script>
   <script src="estudo_agentes.js" defer></script>
