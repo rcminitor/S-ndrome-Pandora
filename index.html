@@ -78,6 +78,12 @@
       <button class="tab-btn" data-tab="tab-pdfs" role="tab" aria-selected="false" title="PDFs">
         PDFs <span class="tab-badge" id="pdfBadge">0</span>
       </button>
+      <button class="tab-btn" data-tab="tab-agentes" role="tab" aria-selected="false" title="Estudo com Agentes (painel local)">
+        Estudo
+      </button>
+      <button class="tab-btn" data-tab="tab-fichamentos" role="tab" aria-selected="false" title="Fichamentos">
+        Fichamentos
+      </button>
       <button class="tab-btn" data-tab="tab-galeria" role="tab" aria-selected="false" title="Galeria">
         Galeria <span class="tab-badge" id="galeriaCount">0</span>
       </button>
@@ -688,6 +694,21 @@
     </div>
 
 
+    <!-- PÁGINA: ESTUDO COM AGENTES — painel local em 127.0.0.1:8765 -->
+    <div class="tab-pane" id="tab-agentes" role="tabpanel">
+      <div class="pn-toolbar"><div>
+        <h3 class="card-title" style="margin:0">Estudo com agentes</h3>
+        <p class="pn-muted">Para ler · Lidos · Acervo · Minha tese com orientador — roda no seu computador, com os seus PDFs.</p>
+      </div></div>
+      <div id="agRegistro"></div>
+      <div id="agConteudo"><p class="pn-muted">Clique na aba para conectar ao painel local. Se aparecer esta mensagem, inicie o painel: execute <code>Iniciar painel.bat</code> em <code>C:\Users\rcmin\Projetos\S-ndrome-Pandora\</code>.</p></div>
+    </div>
+
+    <!-- PÁGINA: FICHAMENTOS — dados em dados_fichamentos.js -->
+    <div class="tab-pane" id="tab-fichamentos" role="tabpanel">
+      <div id="fiConteudo"></div>
+    </div>
+
     <!-- PÁGINA: ESTADO DA ARTE (gerada de Notas/Fundamentação — Estado da arte.md, Tabela 3) -->
     <div class="tab-pane" id="tab-estadoarte" role="tabpanel">
       <div class="card">
@@ -996,8 +1017,13 @@
   <script src="dados_pdfs.js"></script>
   <script src="dados_inventario.js"></script>
   <script src="dados_estadoarte.js"></script>
+  <script src="dados_fichamentos.js"></script>
+  <script src="dados_estatisticas.js"></script>
+  <script src="dados_revisao.js"></script>
   <script src="app.js"></script>
   <script src="painel.js"></script>
   <script src="estadoarte.js"></script>
+  <script src="fichamentos.js" defer></script>
+  <script src="estudo_agentes.js" defer></script>
 </body>
 </html>
