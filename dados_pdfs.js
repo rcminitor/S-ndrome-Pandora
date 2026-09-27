@@ -1,4 +1,4 @@
-// Gerado a partir das pastas do cofre: todos os PDFs
+﻿// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
 window.DADOS_PDFS = [
  {
   "pasta": "Imagens/Mapas-Mentais",
@@ -19,106 +19,10 @@ window.DADOS_PDFS = [
   "kb": 3277
  },
  {
-  "pasta": "PDF/A_classificar",
-  "nome": "Characterization and comparative",
-  "arquivo": "PDF/A_classificar/Characterization and comparative.pdf",
-  "kb": 1728
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Cistite intersticial felina_01",
-  "arquivo": "PDF/A_classificar/Cistite intersticial felina_01.pdf",
-  "kb": 35
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Diagnosticando_a_cistite_idiopatica_feli",
-  "arquivo": "PDF/A_classificar/Diagnosticando_a_cistite_idiopatica_feli.pdf",
-  "kb": 548
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+.",
-  "arquivo": "PDF/A_classificar/Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
-  "kb": 279
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "ETIOPATHOGENESIS OF FELINE",
-  "arquivo": "PDF/A_classificar/ETIOPATHOGENESIS OF FELINE.pdf",
-  "kb": 31
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Facial expressions of pain in cats",
-  "arquivo": "PDF/A_classificar/Facial expressions of pain in cats.pdf",
-  "kb": 1538
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Sickness behaviors in response",
-  "arquivo": "PDF/A_classificar/Sickness behaviors in response.pdf",
-  "kb": 521
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "SÍNDROME DE PANDORA PREVENÇÃO",
-  "arquivo": "PDF/A_classificar/SÍNDROME DE PANDORA PREVENÇÃO.pdf",
-  "kb": 301
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "01_Buffington_2014_FUS_to_Pandora",
-  "arquivo": "PDF/Adrenal_FIC_aluno/01_Buffington_2014_FUS_to_Pandora.pdf",
-  "kb": 692
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "02_Combes_2013_US_adrenais_gatos",
-  "arquivo": "PDF/Adrenal_FIC_aluno/02_Combes_2013_US_adrenais_gatos.pdf",
-  "kb": 761
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "03_PerezLopez_2021_adrenal_peso",
-  "arquivo": "PDF/Adrenal_FIC_aluno/03_PerezLopez_2021_adrenal_peso.pdf",
-  "kb": 559
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "04_Giron_2023_atrofia_iatrogenica_US",
-  "arquivo": "PDF/Adrenal_FIC_aluno/04_Giron_2023_atrofia_iatrogenica_US.pdf",
-  "kb": 1984
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "05_Ramspott_2012_funcao_adrenal_hipertireoidismo",
-  "arquivo": "PDF/Adrenal_FIC_aluno/05_Ramspott_2012_funcao_adrenal_hipertireoidismo.pdf",
-  "kb": 471
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "06_Pan_2023_segmentacao_TC_MLPMixer",
-  "arquivo": "PDF/Adrenal_FIC_aluno/06_Pan_2023_segmentacao_TC_MLPMixer.pdf",
-  "kb": 2
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "07_Oluigbo_2024_feocromocitoma_TC",
-  "arquivo": "PDF/Adrenal_FIC_aluno/07_Oluigbo_2024_feocromocitoma_TC.pdf",
-  "kb": 764
- },
- {
-  "pasta": "PDF/Adrenal_FIC_aluno",
-  "nome": "08_Haghofer_2023_DL_histopatologia_felina",
-  "arquivo": "PDF/Adrenal_FIC_aluno/08_Haghofer_2023_DL_histopatologia_felina.pdf",
-  "kb": 3409
- },
- {
-  "pasta": "PDF/Primeiras Leituras",
-  "nome": "01_fichamento_stress_gatos_domesticos",
-  "arquivo": "PDF/Primeiras Leituras/01_fichamento_stress_gatos_domesticos.pdf",
-  "kb": 82
+  "pasta": "Imagens",
+  "nome": "Síndrome de pandora",
+  "arquivo": "Imagens/Síndrome de pandora.pdf",
+  "kb": 3277
  },
  {
   "pasta": "PDF/Primeiras Leituras",
@@ -128,33 +32,15 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Primeiras Leituras",
-  "nome": "02_fichamento_small_adrenal_glands",
-  "arquivo": "PDF/Primeiras Leituras/02_fichamento_small_adrenal_glands.pdf",
-  "kb": 1884
- },
- {
-  "pasta": "PDF/Primeiras Leituras",
   "nome": "02_SMALL ADRENAL GLANDS IN CATS WITH FELINE INTERSTITIAL",
   "arquivo": "PDF/Primeiras Leituras/02_SMALL ADRENAL GLANDS IN CATS WITH FELINE INTERSTITIAL.pdf",
   "kb": 104
  },
  {
   "pasta": "PDF/Primeiras Leituras",
-  "nome": "02_Traducao_tecnica_small_adrenal_glands",
-  "arquivo": "PDF/Primeiras Leituras/02_Traducao_tecnica_small_adrenal_glands.pdf",
-  "kb": 91
- },
- {
-  "pasta": "PDF/Primeiras Leituras",
   "nome": "03_A systematic review of social and environmental factors",
   "arquivo": "PDF/Primeiras Leituras/03_A systematic review of social and environmental factors.pdf",
   "kb": 670
- },
- {
-  "pasta": "PDF/Primeiras Leituras",
-  "nome": "03_fichamento_A systematic of social and environmental factors",
-  "arquivo": "PDF/Primeiras Leituras/03_fichamento_A systematic of social and environmental factors.pdf",
-  "kb": 16
  },
  {
   "pasta": "PDF/Primeiras Leituras",
@@ -176,12 +62,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Primordiais",
-  "nome": "Artigo_Original",
-  "arquivo": "PDF/Primordiais/Artigo_Original.pdf",
-  "kb": 692
- },
- {
-  "pasta": "PDF/Primordiais",
   "nome": "buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats",
   "arquivo": "PDF/Primordiais/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
   "kb": 127
@@ -199,165 +79,345 @@ window.DADOS_PDFS = [
   "kb": 689
  },
  {
-  "pasta": "PDF/Relevantes",
-  "nome": "Anna",
-  "arquivo": "PDF/Relevantes/Anna.pdf",
-  "kb": 1681
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães",
+  "arquivo": "PDF/Síndrome CIF/12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães.pdf",
+  "kb": 349
  },
  {
-  "pasta": "PDF/Relevantes",
-  "nome": "Artificial intelligence and companion animals",
-  "arquivo": "PDF/Relevantes/Artificial intelligence and companion animals.pdf",
-  "kb": 3132
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "13_46",
+  "arquivo": "PDF/Síndrome CIF/13_46.pdf",
+  "kb": 1218
  },
  {
-  "pasta": "PDF/Relevantes",
-  "nome": "Artificial intelligence in veterinary and animal science",
-  "arquivo": "PDF/Relevantes/Artificial intelligence in veterinary and animal science.pdf",
-  "kb": 203
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S016815912600211X-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S016815912600211X-main.pdf",
+  "kb": 1344
  },
  {
-  "pasta": "PDF/Relevantes",
-  "nome": "Artificial intelligence is beginning to create value for selected",
-  "arquivo": "PDF/Relevantes/Artificial intelligence is beginning to create value for selected.pdf",
-  "kb": 390
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Association between behavioral factors and recurrence rate in cats with",
-  "arquivo": "PDF/Relevantes/Association between behavioral factors and recurrence rate in cats with.pdf",
-  "kb": 426
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Changing Paradigms",
-  "arquivo": "PDF/Relevantes/Changing Paradigms.pdf",
-  "kb": 417
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Diagnosis_and_Management_of",
-  "arquivo": "PDF/Relevantes/Diagnosis_and_Management_of.pdf",
-  "kb": 1453
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Feline_idiopathic_cystitis_VCNA_2015",
-  "arquivo": "PDF/Relevantes/Feline_idiopathic_cystitis_VCNA_2015.pdf",
-  "kb": 736
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Meow-Omni 1",
-  "arquivo": "PDF/Relevantes/Meow-Omni 1.pdf",
-  "kb": 2073
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Prevalence, Risk Factors,",
-  "arquivo": "PDF/Relevantes/Prevalence, Risk Factors,.pdf",
-  "kb": 1266
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Remote Vital Sensing in Clinical Veterinary Medicine",
-  "arquivo": "PDF/Relevantes/Remote Vital Sensing in Clinical Veterinary Medicine.pdf",
-  "kb": 1564
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Review of applications of deep",
-  "arquivo": "PDF/Relevantes/Review of applications of deep.pdf",
-  "kb": 922
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "The Expanding Role of Artificial Intelligence in Companion",
-  "arquivo": "PDF/Relevantes/The Expanding Role of Artificial Intelligence in Companion.pdf",
-  "kb": 1830
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "The potential application of",
-  "arquivo": "PDF/Relevantes/The potential application of.pdf",
-  "kb": 556
- },
- {
-  "pasta": "PDF/Relevantes",
-  "nome": "Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath",
-  "arquivo": "PDF/Relevantes/Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath.pdf",
-  "kb": 903
- },
- {
-  "pasta": "PDF/_Duplicatas_confirmadas",
-  "nome": "01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC",
-  "arquivo": "PDF/_Duplicatas_confirmadas/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC.pdf",
-  "kb": 692
- },
- {
-  "pasta": "PDF/_Duplicatas_confirmadas",
-  "nome": "buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats",
-  "arquivo": "PDF/_Duplicatas_confirmadas/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
-  "kb": 127
- },
- {
-  "pasta": "PDF/_Duplicatas_confirmadas",
-  "nome": "traducao_tecnica_small_adrenal_glands",
-  "arquivo": "PDF/_Duplicatas_confirmadas/traducao_tecnica_small_adrenal_glands.pdf",
-  "kb": 91
- },
- {
-  "pasta": "PDF/_Versoes_a_comparar",
-  "nome": "A systematic review of social and environmental factors and their",
-  "arquivo": "PDF/_Versoes_a_comparar/A systematic review of social and environmental factors and their.pdf",
-  "kb": 670
- },
- {
-  "pasta": "PDF/_Versoes_a_comparar",
-  "nome": "Diagnosis and Management of",
-  "arquivo": "PDF/_Versoes_a_comparar/Diagnosis and Management of.pdf",
-  "kb": 1464
- },
- {
-  "pasta": "PDF_Para conhecimento",
+  "pasta": "PDF/Síndrome CIF",
   "nome": "1-s2.0-S0168169925005010-main",
-  "arquivo": "PDF_Para conhecimento/1-s2.0-S0168169925005010-main.pdf",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S0168169925005010-main.pdf",
   "kb": 3690
  },
  {
-  "pasta": "PDF_Para conhecimento",
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S0940960226000178-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S0940960226000178-main.pdf",
+  "kb": 1718
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "1-s2.0-S1773224725009669-main",
-  "arquivo": "PDF_Para conhecimento/1-s2.0-S1773224725009669-main.pdf",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S1773224725009669-main.pdf",
   "kb": 6296
  },
  {
-  "pasta": "PDF_Para conhecimento",
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S2214180420301343-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S2214180420301343-main.pdf",
+  "kb": 1293
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "785661",
+  "arquivo": "PDF/Síndrome CIF/785661.pdf",
+  "kb": 1470
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
+  "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
+  "kb": 408
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "aalaf029",
+  "arquivo": "PDF/Síndrome CIF/aalaf029.pdf",
+  "kb": 485
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "ajvr-ajvr.67.4.731",
-  "arquivo": "PDF_Para conhecimento/ajvr-ajvr.67.4.731.pdf",
+  "arquivo": "PDF/Síndrome CIF/ajvr-ajvr.67.4.731.pdf",
   "kb": 409
  },
  {
-  "pasta": "PDF_Para conhecimento",
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Anna",
+  "arquivo": "PDF/Síndrome CIF/Anna.pdf",
+  "kb": 1681
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "ANSIEDADE DE SEPARAÇÃO EM FELINOS DOMÉSTICOS",
+  "arquivo": "PDF/Síndrome CIF/ANSIEDADE DE SEPARAÇÃO EM FELINOS DOMÉSTICOS.pdf",
+  "kb": 4029
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Artificial intelligence and companion animals",
+  "arquivo": "PDF/Síndrome CIF/Artificial intelligence and companion animals.pdf",
+  "kb": 3132
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Artificial intelligence in veterinary and animal science",
+  "arquivo": "PDF/Síndrome CIF/Artificial intelligence in veterinary and animal science.pdf",
+  "kb": 203
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Artificial intelligence is beginning to create value for selected",
+  "arquivo": "PDF/Síndrome CIF/Artificial intelligence is beginning to create value for selected.pdf",
+  "kb": 390
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Artigo01",
+  "arquivo": "PDF/Síndrome CIF/Artigo01.pdf",
+  "kb": 1410
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Association between behavioral factors and recurrence rate in cats with",
+  "arquivo": "PDF/Síndrome CIF/Association between behavioral factors and recurrence rate in cats with.pdf",
+  "kb": 426
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "biomolecules-16-00138-v2",
+  "arquivo": "PDF/Síndrome CIF/biomolecules-16-00138-v2.pdf",
+  "kb": 1821
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Changing Paradigms",
+  "arquivo": "PDF/Síndrome CIF/Changing Paradigms.pdf",
+  "kb": 417
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Characterization and comparative",
+  "arquivo": "PDF/Síndrome CIF/Characterization and comparative.pdf",
+  "kb": 1728
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Cistite intersticial felina_01",
+  "arquivo": "PDF/Síndrome CIF/Cistite intersticial felina_01.pdf",
+  "kb": 35
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis",
+  "arquivo": "PDF/Síndrome CIF/defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis.pdf",
+  "kb": 1509
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Diagnosis_and_Management_of",
+  "arquivo": "PDF/Síndrome CIF/Diagnosis_and_Management_of.pdf",
+  "kb": 1453
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Diagnosticando_a_cistite_idiopatica_feli",
+  "arquivo": "PDF/Síndrome CIF/Diagnosticando_a_cistite_idiopatica_feli.pdf",
+  "kb": 548
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Doença do trato urinário inferior em felinos",
+  "arquivo": "PDF/Síndrome CIF/Doença do trato urinário inferior em felinos.pdf",
+  "kb": 977
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+.",
+  "arquivo": "PDF/Síndrome CIF/Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
+  "kb": 279
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "ETIOPATHOGENESIS OF FELINE",
+  "arquivo": "PDF/Síndrome CIF/ETIOPATHOGENESIS OF FELINE.pdf",
+  "kb": 31
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Exploring Viewer Perceptions of Videos Depicting Cat-Dissented  Play  and Their Potential to Contribute to Harmful Interactions",
+  "arquivo": "PDF/Síndrome CIF/Exploring Viewer Perceptions of Videos Depicting Cat-Dissented  Play  and Their Potential to Contribute to Harmful Interactions.pdf",
+  "kb": 938
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Facial expressions of pain in cats",
+  "arquivo": "PDF/Síndrome CIF/Facial expressions of pain in cats.pdf",
+  "kb": 1538
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Feline_idiopathic_cystitis_VCNA_2015",
+  "arquivo": "PDF/Síndrome CIF/Feline_idiopathic_cystitis_VCNA_2015.pdf",
+  "kb": 736
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "fvets-13-1727001",
+  "arquivo": "PDF/Síndrome CIF/fvets-13-1727001.pdf",
+  "kb": 3150
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "fvets-13-1780868",
+  "arquivo": "PDF/Síndrome CIF/fvets-13-1780868.pdf",
+  "kb": 163
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "IFPB - Repositório Digital_ Manejo cat friendly_ implementação e avaliação em hospital veterinário sobre a percepção de médicos veterinários, graduandos e tutores",
+  "arquivo": "PDF/Síndrome CIF/IFPB - Repositório Digital_ Manejo cat friendly_ implementação e avaliação em hospital veterinário sobre a percepção de médicos veterinários, graduandos e tutores.pdf",
+  "kb": 1488
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "j.1939-1676.2011.0732.x",
-  "arquivo": "PDF_Para conhecimento/j.1939-1676.2011.0732.x.pdf",
+  "arquivo": "PDF/Síndrome CIF/j.1939-1676.2011.0732.x.pdf",
   "kb": 207
  },
  {
-  "pasta": "PDF_Para conhecimento",
+  "pasta": "PDF/Síndrome CIF",
   "nome": "krause-et-al-2024-survey-of-veterinarians-in-the-usa-to-evaluate-trends-in-the-treatment-approach-for-non-obstructive",
-  "arquivo": "PDF_Para conhecimento/krause-et-al-2024-survey-of-veterinarians-in-the-usa-to-evaluate-trends-in-the-treatment-approach-for-non-obstructive.pdf",
+  "arquivo": "PDF/Síndrome CIF/krause-et-al-2024-survey-of-veterinarians-in-the-usa-to-evaluate-trends-in-the-treatment-approach-for-non-obstructive.pdf",
   "kb": 1924
  },
  {
-  "pasta": "PDF_Para conhecimento",
-  "nome": "Mestrado-Medicina_Veterinaria-Julia_Aidos_Leal",
-  "arquivo": "PDF_Para conhecimento/Mestrado-Medicina_Veterinaria-Julia_Aidos_Leal.pdf",
-  "kb": 2320
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Meow-Omni 1",
+  "arquivo": "PDF/Síndrome CIF/Meow-Omni 1.pdf",
+  "kb": 2073
  },
  {
-  "pasta": "PDF_Para conhecimento",
-  "nome": "1-s2.0-S2214180420301343-main",
-  "arquivo": "PDF_Para conhecimento/1-s2.0-S2214180420301343-main.pdf",
-  "kb": 1293
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Neurourology and Urodynamics - 2025 - Werneburg - Interstitial Cystitis Bladder Pain Syndrome  IC BPS  Diagnosis  Current",
+  "arquivo": "PDF/Síndrome CIF/Neurourology and Urodynamics - 2025 - Werneburg - Interstitial Cystitis Bladder Pain Syndrome  IC BPS  Diagnosis  Current.pdf",
+  "kb": 312
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Paper-Cistiteintersticial-Proclim-2016",
+  "arquivo": "PDF/Síndrome CIF/Paper-Cistiteintersticial-Proclim-2016.pdf",
+  "kb": 681
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Prevalence, Risk Factors,",
+  "arquivo": "PDF/Síndrome CIF/Prevalence, Risk Factors,.pdf",
+  "kb": 1266
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "ReginaldoPereira_Tese",
+  "arquivo": "PDF/Síndrome CIF/ReginaldoPereira_Tese.pdf",
+  "kb": 2773
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Relatório de Estágio - Nicoli Poliana.pdf,a",
+  "arquivo": "PDF/Síndrome CIF/Relatório de Estágio - Nicoli Poliana.pdf,a.pdf",
+  "kb": 29524
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Remote Vital Sensing in Clinical Veterinary Medicine",
+  "arquivo": "PDF/Síndrome CIF/Remote Vital Sensing in Clinical Veterinary Medicine.pdf",
+  "kb": 1564
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Review of applications of deep",
+  "arquivo": "PDF/Síndrome CIF/Review of applications of deep.pdf",
+  "kb": 922
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive and Non‐Obstructive Feline Urolithiasis and Interstitial Cystitis",
+  "arquivo": "PDF/Síndrome CIF/Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive and Non‐Obstructive Feline Urolithiasis and Interstitial Cystitis.pdf",
+  "kb": 872
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Sickness behaviors in response",
+  "arquivo": "PDF/Síndrome CIF/Sickness behaviors in response.pdf",
+  "kb": 521
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "SÍNDROME DE PANDORA PREVENÇÃO",
+  "arquivo": "PDF/Síndrome CIF/SÍNDROME DE PANDORA PREVENÇÃO.pdf",
+  "kb": 301
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Sindrome-de-Pandora-Muito-alem-da-cistite",
+  "arquivo": "PDF/Síndrome CIF/Sindrome-de-Pandora-Muito-alem-da-cistite.pdf",
+  "kb": 352
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "The Expanding Role of Artificial Intelligence in Companion",
+  "arquivo": "PDF/Síndrome CIF/The Expanding Role of Artificial Intelligence in Companion.pdf",
+  "kb": 1830
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "The potential application of",
+  "arquivo": "PDF/Síndrome CIF/The potential application of.pdf",
+  "kb": 556
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "The Role of Human-Cat Interactions in Shaping Domestic Cat",
+  "arquivo": "PDF/Síndrome CIF/The Role of Human-Cat Interactions in Shaping Domestic Cat.pdf",
+  "kb": 454
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath",
+  "arquivo": "PDF/Síndrome CIF/Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath.pdf",
+  "kb": 903
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Veterinary Medicine   Sci - 2026 - Maden - Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive",
+  "arquivo": "PDF/Síndrome CIF/Veterinary Medicine   Sci - 2026 - Maden - Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive.pdf",
+  "kb": 1155
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "vetsci-13-00181",
+  "arquivo": "PDF/Síndrome CIF/vetsci-13-00181.pdf",
+  "kb": 1791
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "vfaf057",
+  "arquivo": "PDF/Síndrome CIF/vfaf057.pdf",
+  "kb": 2022
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Vista do Estresse em gatos domésticos",
+  "arquivo": "PDF/Síndrome CIF/Vista do Estresse em gatos domésticos.pdf",
+  "kb": 4381
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos",
+  "arquivo": "PDF/Síndrome CIF/Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos.pdf",
+  "kb": 1254
  }
 ];

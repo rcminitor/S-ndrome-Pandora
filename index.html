@@ -94,7 +94,7 @@
         Visão
       </button>
       <button class="tab-btn" data-tab="tab-inventory" role="tab" aria-selected="false" title="Acervo e Inventário">
-        Acervo <span class="tab-badge" id="acervoBadge">34</span>
+        Acervo <span class="tab-badge" id="acervoBadge">31</span>
       </button>
       <button class="tab-btn" data-tab="tab-roadmap" role="tab" aria-selected="false" title="Roteiro Semanal de Escrita">
         Roteiro
@@ -242,7 +242,6 @@
           <button class="filter-pill" data-filter="n2" type="button">Núcleo 2 (Ambiente & IA)</button>
           <button class="filter-pill" data-filter="ler-primeiro" type="button">Ler Primeiro</button>
           <button class="filter-pill" data-filter="fichados" type="button">Fichados</button>
-          <button class="filter-pill" data-filter="com-pdf" type="button">Com PDF</button>
           <button class="filter-pill" data-filter="lidos" type="button">Eu li</button>
         </div>
 
@@ -480,7 +479,6 @@
         <div class="pn-actions">
           <button class="pn-btn pn-btn-primary" data-goto="tab-registro" type="button">Registrar semana</button>
           <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
-          <button class="pn-btn" type="button" onclick="document.getElementById('painel-nucleos').scrollIntoView({behavior:'smooth'})">Núcleos ↓</button>
         </div>
       </div>
 
@@ -515,72 +513,6 @@
         <div class="content-card">
           <h3 class="card-title">Uso e constância</h3>
           <div id="pnUso"></div>
-        </div>
-      </div>
-
-      <!-- NÚCLEOS DA PESQUISA NO PAINEL -->
-      <div class="content-card" id="painel-nucleos" style="margin-top: 24px;">
-        <div class="pn-card-head" style="margin-bottom: 20px;">
-          <div>
-            <h3 class="card-title" style="margin: 0; font-size: 1.25rem;">Núcleos da Pesquisa</h3>
-            <p class="pn-muted" style="margin: 4px 0 0 0;">
-              Divisão conceitual proposta do referencial teórico da tese (não declarada por autor único).
-            </p>
-          </div>
-          <div class="pn-actions">
-            <button class="pn-btn pn-btn-sm" data-goto="tab-overview" type="button">Visão Geral</button>
-            <button class="pn-btn pn-btn-sm" data-goto="tab-inventory" type="button">Ver no Acervo</button>
-          </div>
-        </div>
-
-        <div class="nucleos-grid">
-          
-          <!-- Núcleo 1 -->
-          <div class="nucleo-card n1">
-            <span class="nucleo-badge">Núcleo 1 Proposto (22 Fontes)</span>
-            <h3 class="nucleo-title">Base Histórica, Clínica e Fisiológica</h3>
-            <p class="nucleo-desc">
-              Compreende a transição da afecção pontual urológica para o modelo sistêmico neuroendócrino. 
-              Mapeia as respostas fisiológicas ao estresse, a hiporreatividade adrenal do eixo HHA e o excesso de tônus simpático.
-            </p>
-            <ul class="nucleo-topics">
-              <li><span class="bullet">▸</span> Doenças do trato urinário inferior felino (FLUTD e FUS histórico)</li>
-              <li><span class="bullet">▸</span> Cistite idiopática (FIC) e intersticial</li>
-              <li><span class="bullet">▸</span> Proposta formal da Síndrome de Pandora como doença sistêmica</li>
-              <li><span class="bullet">▸</span> Eixo hipotálamo-hipófise-adrenal (HHA) e glândulas adrenais</li>
-              <li><span class="bullet">▸</span> Hiperatividade do sistema nervoso simpático e mediadores de dor</li>
-              <li><span class="bullet">▸</span> Diagnóstico diferencial de infecção bacteriana (Diretriz ISCAID)</li>
-            </ul>
-            <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-glass);">
-              <button class="pn-btn pn-btn-sm" data-goto="tab-inventory" data-filter-nucleo="n1" type="button">
-                Explorar Núcleo 1 no Acervo →
-              </button>
-            </div>
-          </div>
-
-          <!-- Núcleo 2 -->
-          <div class="nucleo-card n2">
-            <span class="nucleo-badge">Núcleo 2 Proposto (42 Fontes)</span>
-            <h3 class="nucleo-title">Ambiente, Comportamento e Tecnologia</h3>
-            <p class="nucleo-desc">
-              Foca no impacto do ambiente confinado na etologia felina, nas respostas comportamentais a eventos externos, 
-              no enriquecimento ambiental e nas fronteiras computacionais com sensores e Inteligência Artificial.
-            </p>
-            <ul class="nucleo-topics">
-              <li><span class="bullet">▸</span> Comportamento e respostas ao estresse doméstico ("sickness behaviors")</li>
-              <li><span class="bullet">▸</span> Confinamento em ambientes internos e relação tutor–gato</li>
-              <li><span class="bullet">▸</span> Manejo Ambiental Multimodal (MEMO) e recursos essenciais</li>
-              <li><span class="bullet">▸</span> Sensores biométricos remotos e monitoramento fisiológico contínuo</li>
-              <li><span class="bullet">▸</span> Visão computacional e redes neurais profundas para detecção de postura</li>
-              <li><span class="bullet">▸</span> Modelos de Linguagem Multimodais aplicados à etologia felina</li>
-            </ul>
-            <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-glass);">
-              <button class="pn-btn pn-btn-sm" data-goto="tab-inventory" data-filter-nucleo="n2" type="button">
-                Explorar Núcleo 2 no Acervo →
-              </button>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
