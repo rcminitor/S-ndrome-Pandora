@@ -465,7 +465,7 @@
     $('#pnTabela').addEventListener('click', (e) => {
       const d = e.target.closest('[data-del]'), ed = e.target.closest('[data-edit]');
       if (d && confirm(`Apagar a semana de ${dataBR(d.dataset.del)}?`)) { manuais = manuais.filter((x) => x.semana !== d.dataset.del); salvarRegistros(); }
-      if (ed) { const r = manuais.find((x) => x.semana === ed.dataset.edit) || { semana: ed.dataset.edit }; f.reset(); setTimeout(() => { Object.keys(r).forEach((k) => { if (f[k]) f[k].value = r[k]; }); f.semana.value = ed.dataset.edit; }); f.scrollIntoView({ behavior: 'smooth' }); }
+      if (ed) { const r = manuais.find((x) => x.semana === ed.dataset.edit) || { semana: ed.dataset.edit }; f.reset(); setTimeout(() => { Object.keys(r).forEach((k) => { if (f[k]) f[k].value = r[k]; }); f.semana.value = ed.dataset.edit; }); f.scrollIntoView({ behavior: 'smooth' }); toast(`Semana de ${dataBR(ed.dataset.edit)} carregada no formulário acima.`); }
     });
     $('#pnExport').addEventListener('click', () => {
       const blob = new Blob([JSON.stringify({ exportado: new Date().toISOString(), metas, registros: manuais }, null, 2)], { type: 'application/json' });
