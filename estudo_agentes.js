@@ -99,16 +99,32 @@
       </div>`;
   }
 
+  function blocoAtalhos() {
+    return `
+      <div class="content-card" style="margin-bottom:18px">
+        <div class="pn-card-head">
+          <h3 class="card-title">Acesso rápido</h3>
+          <span class="pn-muted">seções do painel</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+          <button class="pn-btn" data-goto="tab-inventory" type="button">Acervo</button>
+          <button class="pn-btn" data-goto="tab-galeria" type="button">Galeria</button>
+          <button class="pn-btn" data-goto="tab-pdfs" type="button">PDFs</button>
+          <button class="pn-btn" data-goto="tab-fichamentos" type="button">Fichamentos</button>
+        </div>
+      </div>`;
+  }
+
   function registro() {
     const alvo = document.getElementById('agRegistro');
     const L = window.DADOS_LEITURAS || [];
     if (!alvo) return;
-    if (!L.length) { alvo.innerHTML = blocoRevisao(); return; }
+    if (!L.length) { alvo.innerHTML = blocoRevisao() + blocoAtalhos(); return; }
     const d = (iso) => iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) + '/' + iso.slice(0, 4) : '';
     const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const ia = L.filter((x) => x.ia_status === 'ok').length, eu = L.filter((x) => x.eu_li).length;
     const lendo = L.filter((x) => x.ia_status === 'lendo').length;
-    alvo.innerHTML = blocoRevisao() + `
+    alvo.innerHTML = blocoRevisao() + blocoAtalhos() + `
       <div class="content-card" style="margin-bottom:18px">
         <div class="pn-card-head"><h3 class="card-title">Registro de leituras</h3>
           <span class="pn-muted">${ia} lido(s) pela IA · ${eu} lido(s) por você${lendo ? ` · ${lendo} em leitura agora` : ''}</span></div>
