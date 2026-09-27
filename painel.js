@@ -943,6 +943,15 @@
   }
 
   // ------------------------------------------------------------- PDFs
+  // Caminho absoluto do cofre — PDFs abrem localmente via file://
+  // Funciona quando o site é acessado de file:// ou de servidor local.
+  // No GitHub Pages (https://) o navegador bloqueia file://, mas o caminho fica visível.
+  const COFRE_FILE_BASE = 'file:///C:/Users/rcmin/OneDrive/Documents/Pos-Graduacao/Doutorado%20UFC/S%C3%ADndrome%20de%20Pandora/';
+  function cofreUrl(caminho) {
+    if (!caminho) return '';
+    return COFRE_FILE_BASE + caminho.replace(/\\/g, '/').split('/').map(encodeURIComponent).join('/');
+  }
+
   const PDFS = window.DADOS_PDFS || [];
   let pdfPasta = 'Todas', pdfTexto = '';
   function renderPdfs() {
@@ -955,7 +964,7 @@
     $('#pdfLista').innerHTML = Object.entries(grupos).map(([g, itens]) => `
       <div class="content-card"><h3 class="card-title">${esc(g)} <small class="pn-muted">(${itens.length})</small></h3>
       <div class="pn-pdfs">${itens.map((d) => `<div class="pn-pdf"><span class="pn-pdf-ico">PDF</span><div><strong>${esc(d.nome)}</strong><small>${fmt(d.kb / 1024)} MB</small></div>
-        ${d.publico === false ? '<span class="pn-muted" style="font-size:.75rem">Disponível só no cofre</span>' : `<div class="pn-actions"><button class="pn-btn pn-btn-sm" data-pdf="${esc(d.arquivo)}" data-nome="${esc(d.nome)}" type="button">Ler aqui</button><a class="pn-btn pn-btn-sm" href="${encodeURI(d.arquivo)}" target="_blank" rel="noopener">Nova aba ↗</a></div>`}</div>`).join('')}</div></div>`).join('') || '<p class="pn-muted">Nenhum PDF encontrado.</p>';
+        ${d.publico === false ? '<span class="pn-muted" style="font-size:.75rem">Disponível só no cofre</span>' : `<div class="pn-actions"><button class="pn-btn pn-btn-sm" data-pdf="${esc(d.arquivo)}" data-nome="${esc(d.nome)}" type="button">Ler aqui</button><a class="pn-btn pn-btn-sm" href="${cofreUrl(d.arquivo)}" target="_blank" rel="noopener">Nova aba ↗</a></div>`}</div>`).join('')}</div></div>`).join('') || '<p class="pn-muted">Nenhum PDF encontrado.</p>';
     $('#pdfContagem').textContent = `${lista.length} de ${PDFS.length} PDFs`;
     $('#pdfBadge').textContent = PDFS.length;
   }
@@ -965,7 +974,7 @@
     $('#pdfBusca').addEventListener('input', (e) => { pdfTexto = e.target.value; renderPdfs(); });
     document.addEventListener('click', (e) => {
       const b = e.target.closest('[data-pdf]'); if (!b) return;
-      const url = encodeURI(b.dataset.pdf);
+      const url = cofreUrl(b.dataset.pdf);
       $('#pdfTitulo').textContent = b.dataset.nome; $('#pdfFrame').src = url; $('#pdfNovaAba').href = url;
       abrirModal('modalPdf');
     });
