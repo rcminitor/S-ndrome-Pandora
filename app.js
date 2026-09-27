@@ -329,7 +329,9 @@ function renderDrawerView(article) {
                     !article.arquivo.includes('NÃO CONFIRMADO');
     if (hasFile) {
       pdfBtn.style.display = 'inline-flex';
-      pdfBtn.onclick = () => window.open(article.arquivo, '_blank');
+      pdfBtn.dataset.pdf = article.arquivo;
+      pdfBtn.dataset.nome = article.titulo || '#' + article.codigo;
+      pdfBtn.onclick = null;
     } else {
       pdfBtn.style.display = 'none';
     }
