@@ -69,9 +69,6 @@
       <button class="tab-btn" data-tab="tab-painel" role="tab" aria-selected="false" title="Painel de KPIs">
         Painel
       </button>
-      <button class="tab-btn" data-tab="tab-registro" role="tab" aria-selected="false" title="Registro Semanal">
-        Registro
-      </button>
       <button class="tab-btn" data-tab="tab-metas" role="tab" aria-selected="false" title="Metas & Qualificação">
         Metas
       </button>
@@ -84,12 +81,6 @@
       <button class="tab-btn" data-tab="tab-fichamentos" role="tab" aria-selected="false" title="Fichamentos">
         Fichamentos
       </button>
-      <button class="tab-btn" data-tab="tab-galeria" role="tab" aria-selected="false" title="Galeria">
-        Galeria <span class="tab-badge" id="galeriaCount">0</span>
-      </button>
-      <button class="tab-btn" data-tab="tab-guia" role="tab" aria-selected="false" title="Guia Didático">
-        Guia
-      </button>
       <button class="tab-btn" data-tab="tab-estadoarte" role="tab" aria-selected="false" title="Estado da Arte">
         Estado
       </button>
@@ -101,12 +92,6 @@
       </button>
       <button class="tab-btn" data-tab="tab-inventory" role="tab" aria-selected="false" title="Acervo e Inventário">
         Acervo <span class="tab-badge" id="acervoBadge">31</span>
-      </button>
-      <button class="tab-btn" data-tab="tab-roadmap" role="tab" aria-selected="false" title="Roteiro Semanal de Escrita">
-        Roteiro
-      </button>
-      <button class="tab-btn" data-tab="tab-nucleos" role="tab" aria-selected="false" title="Núcleos da Pesquisa">
-        Núcleos
       </button>
     </nav>
 
@@ -265,6 +250,14 @@
 
     <!-- TAB 3: ROTEIRO SEMANAL -->
     <div class="tab-pane" id="tab-roadmap" role="tabpanel">
+      <div class="pn-actions" style="flex-wrap:wrap;gap:8px;margin-bottom:20px">
+        <button class="pn-btn" data-goto="tab-painel" type="button">← Painel</button>
+        <button class="pn-btn" data-goto="tab-registro" type="button">Registrar semana</button>
+        <button class="pn-btn" data-goto="tab-guia" type="button">Guia</button>
+        <button class="pn-btn pn-btn-primary" data-goto="tab-roadmap" type="button">Roteiro</button>
+        <button class="pn-btn" data-goto="tab-nucleos" type="button">Núcleos</button>
+        <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
+      </div>
       <div class="roadmap-container">
 
         <!-- Semana 1 -->
@@ -433,6 +426,14 @@
 
     <!-- TAB 4: NÚCLEOS DA PESQUISA -->
     <div class="tab-pane" id="tab-nucleos" role="tabpanel">
+      <div class="pn-actions" style="flex-wrap:wrap;gap:8px;margin-bottom:20px">
+        <button class="pn-btn" data-goto="tab-painel" type="button">← Painel</button>
+        <button class="pn-btn" data-goto="tab-registro" type="button">Registrar semana</button>
+        <button class="pn-btn" data-goto="tab-guia" type="button">Guia</button>
+        <button class="pn-btn" data-goto="tab-roadmap" type="button">Roteiro</button>
+        <button class="pn-btn pn-btn-primary" data-goto="tab-nucleos" type="button">Núcleos</button>
+        <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
+      </div>
       <div class="nucleos-grid">
         
         <!-- Núcleo 1 -->
@@ -528,6 +529,14 @@
 
     <!-- PÁGINA: REGISTRO SEMANAL -->
     <div class="tab-pane" id="tab-registro" role="tabpanel">
+      <div class="pn-actions" style="flex-wrap:wrap;gap:8px;margin-bottom:20px">
+        <button class="pn-btn" data-goto="tab-painel" type="button">← Painel</button>
+        <button class="pn-btn pn-btn-primary" data-goto="tab-registro" type="button">Registrar semana</button>
+        <button class="pn-btn" data-goto="tab-guia" type="button">Guia</button>
+        <button class="pn-btn" data-goto="tab-roadmap" type="button">Roteiro</button>
+        <button class="pn-btn" data-goto="tab-nucleos" type="button">Núcleos</button>
+        <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
+      </div>
       <div class="pn-grid-2">
         <div class="content-card">
           <h3 class="card-title">Registrar uma semana</h3>
@@ -662,6 +671,14 @@
 
     <!-- PÁGINA: GUIA DIDÁTICO -->
     <div class="tab-pane" id="tab-guia" role="tabpanel">
+      <div class="pn-actions" style="flex-wrap:wrap;gap:8px;margin-bottom:20px">
+        <button class="pn-btn" data-goto="tab-painel" type="button">← Painel</button>
+        <button class="pn-btn" data-goto="tab-registro" type="button">Registrar semana</button>
+        <button class="pn-btn pn-btn-primary" data-goto="tab-guia" type="button">Guia</button>
+        <button class="pn-btn" data-goto="tab-roadmap" type="button">Roteiro</button>
+        <button class="pn-btn" data-goto="tab-nucleos" type="button">Núcleos</button>
+        <button class="pn-btn" data-modal="modalKpiAjuda" type="button">Como ler os KPIs</button>
+      </div>
       <div class="pn-grid-3">
         <button class="pn-tile" data-modal="modalPandora" type="button"><img class="pn-tile-img" src="Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp" alt="Mapa mental da Síndrome de Pandora" loading="lazy"><strong>O que é a Síndrome de Pandora?</strong><small>Conceito em 1 minuto</small></button>
         <button class="pn-tile" data-modal="modalHHA" type="button"><img class="pn-tile-img" src="Imagens/Fichamentos/FICHEIRO%20SMALL%20ADRENAL%20GLANDS%20IN%20CATS%20WITH%20FELINE%20INTERSTITIAL.png" alt="Ficheiro do estudo sobre adrenais" loading="lazy"><strong>Estresse, eixo HHA e simpático</strong><small>Base fisiológica</small></button>
