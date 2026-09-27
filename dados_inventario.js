@@ -11,7 +11,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como base neuroendócrina para discutir estresse, eixo HHA, adrenal e resposta fisiológica na Síndrome de Pandora.",
         "arquivo": "PDF/Primeiras Leituras/02_SMALL ADRENAL GLANDS IN CATS WITH FELINE INTERSTITIAL.pdf",
         "referencia": "WESTROPP, Jodi L.; WELK, Kristin A.; BUFFINGTON, C. A. Tony. Small adrenal glands in cats with feline interstitial cystitis. The Journal of Urology, v. 170, n. 6 Pt 1, p. 2494–2497, 2003. DOI: 10.1097/01.ju.0000095566.63870.66.",
-        "status": "fichamento incompleto — referência A CONFERIR",
+        "status": "fichamento concluido",
         "ano": "2003",
         "titulo": "Small adrenal glands in cats with feline interstitial cystitis",
         "nucleo": "Nucleo 1 - base historica, clinica e fisiologica"
@@ -28,7 +28,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar na introdução clínica/histórica.",
         "arquivo": "PDF/Relevantes/Changing Paradigms.pdf",
         "referencia": "KRUGER, John M.; OSBORNE, Carl A.; LULICH, Jody P. Changing Paradigms of Feline Idiopathic Cystitis. Veterinary Clinics of North America - Small Animal Practice, v. 39, n. 1, p. 15-40, 2009. DOI: 10.1016/j.cvsm.2008.09.008.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2009",
         "titulo": "Changing Paradigms of Feline Idiopathic Cystitis",
         "nucleo": "Nucleo 1 - base historica, clinica e fisiologica"
@@ -45,7 +45,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar para a transição FIC → Síndrome de Pandora e ferramenta sistêmica.",
         "arquivo": "",
         "referencia": "BUFFINGTON, C. A. Tony. Idiopathic cystitis in domestic cats-beyond the lower urinary tract. Journal of Veterinary Internal Medicine, v. 25, n. 4, p. 784-796, 2011. DOI: 10.1111/j.1939-1676.2011.0732.x.",
-        "status": "ainda nao obtido",
+        "status": "fichamento concluido",
         "ano": "2011",
         "titulo": "Idiopathic cystitis in domestic cats-beyond the lower urinary tract",
         "nucleo": "Nucleo 1 - base historica, clinica e fisiologica"
@@ -96,7 +96,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como apoio clínico, especialmente para linguagem veterinária.",
         "arquivo": "PDF/Relevantes/Feline_idiopathic_cystitis_VCNA_2015.pdf",
         "referencia": "FORRESTER, S. Dru; TOWELL, Todd L. Feline Idiopathic Cystitis. Veterinary Clinics of North America - Small Animal Practice, v. 45, n. 4, p. 783-806, 2015. DOI: 10.1016/j.cvsm.2015.02.007.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2015",
         "titulo": "Feline Idiopathic Cystitis",
         "nucleo": "Nucleo 1 - base historica, clinica e fisiologica"
@@ -181,7 +181,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como base clínica principal para o problema-alvo.",
         "arquivo": "PDF/Relevantes/Prevalence, Risk Factors,.pdf",
         "referencia": "HE, Chengxi et al. Prevalence, Risk Factors, Pathophysiology, Potential Biomarkers and Management of Feline Idiopathic Cystitis: An Update Review. Frontiers in Veterinary Science, v. 9, 2022. DOI: 10.3389/fvets.2022.900847.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2022",
         "titulo": "Prevalence, Risk Factors, Pathophysiology, Potential Biomarkers and Management of Feline Idiopathic Cystitis: An Update Review",
         "nucleo": "Nucleo 1 - base historica, clinica e fisiologica"
@@ -317,7 +317,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Ponte conceitual entre ambiente e fisiologia, anterior a formulacao da Sindrome de Pandora.",
         "arquivo": "PDF/Primordiais/External and internal influences.pdf",
         "referencia": "BUFFINGTON, C. A. T. Referencia completa NAO CONFIRMADA.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "NAO CONFIRMADO",
         "titulo": "External and internal influences on disease risk in cats",
         "nucleo": "Nucleo 1 - base historica, clinica e fisiologica"
@@ -385,7 +385,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como base clínica para explicar a etiopatogênese da CIF e sua relação com a Síndrome de Pandora.",
         "arquivo": "PDF/ETIOPATHOGENESIS OF FELINE.pdf",
         "referencia": "WESTROPP, Jodi L.; BUFFINGTON, C. A. Tony. Etiopathogenesis of feline idiopathic cystitis. In: [OBRA NAO CONFIRMADA], cap. 47, p. 435-[final NAO CONFIRMADO], 2005.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2005",
         "titulo": "Etiopathogenesis of Feline Idiopathic Cystitis",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -657,7 +657,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como modelo de arquitetura para ferramenta de apoio à decisão.",
         "arquivo": "PDF/Relevantes/Anna.pdf",
         "referencia": "KONG, Chun Yin et al. Anna: an open-source platform for real-time integration of machine learning classifiers with veterinary electronic health records. BMC Veterinary Research, v. 21, n. 1, 2025. DOI: 10.1186/S12917-025-05000-7.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2025",
         "titulo": "Anna: an open-source platform for real-time integration of machine learning classifiers with veterinary electronic health records",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -759,7 +759,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar para justificar questionários do tutor, monitoramento comportamental, previsão de recorrência e variáveis comportamentais em ferramentas de IA.",
         "arquivo": "PDF/Relevantes/Association between behavioral factors and recurrence rate in cats with.pdf",
         "referencia": "NAO CONFIRMADO",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2025",
         "titulo": "Association between behavioral factors and recurrence rate in cats with feline “idiopathic” cystitis",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -827,7 +827,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar na base metodológica de IA, tipos de dados e modelos.",
         "arquivo": "PDF/Relevantes/Review of applications of deep.pdf",
         "referencia": "XIAO, Sam et al. Review of applications of deep learning in veterinary diagnostics and animal health. Frontiers in Veterinary Science, v. 12, 2025. DOI: 10.3389/FVETS.2025.1511522.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2025",
         "titulo": "Review of applications of deep learning in veterinary diagnostics and animal health",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -861,7 +861,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar para separar recomendações fortes, fracas e lacunas que a ferramenta pode apoiar.",
         "arquivo": "PDF/Relevantes/Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath.pdf",
         "referencia": "MACLEOD, B. et al. Understanding the current evidence base for the commonly recommended management strategies for recurrent feline idiopathic cystitis: a systematic review. New Zealand Veterinary Journal, v. 73, n. 4, p. 233-245, 2025. DOI: 10.1080/00480169.2025.2477542.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2025",
         "titulo": "Understanding the current evidence base for the commonly recommended management strategies for recurrent feline idiopathic cystitis: a systematic review",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -929,7 +929,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar para justificar dados ambientais, rotina, enriquecimento, sinais de estresse e questionário do tutor.",
         "arquivo": "PDF/Estresse+em+gatos+domesticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
         "referencia": "QUEIROZ, Beatriz Lopes; QUEIROZ, Hélio Lemes. Estresse em gatos domésticos: impacto do ambiente urbano na saúde física e comportamental. Revista ft, v. 30, n. 158, p. 01-23, 2026. DOI: 10.69849/y3zpv398.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2026",
         "titulo": "Estresse em gatos domésticos: impacto do ambiente urbano na saúde física e comportamental",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -980,7 +980,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como tendência/protótipo de IA multimodal para comportamento, sinais fisiológicos e apoio ao raciocínio veterinário.",
         "arquivo": "PDF/Relevantes/Meow-Omni 1.pdf",
         "referencia": "HU, Jucheng et al. Meow-Omni 1: A Multimodal Large Language Model for Feline Ethology. [periodico NAO CONFIRMADO], 2026. Disponivel em: https://arxiv.org/pdf/2605.09152.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "2026",
         "titulo": "Meow-Omni 1: A Multimodal Large Language Model for Feline Ethology",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -1065,7 +1065,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "E a intervencao que fecha o argumento: se o ambiente causa, o ambiente tratado reduz o problema.",
         "arquivo": "PDF/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
         "referencia": "BUFFINGTON, C. A. T. et al. Referencia completa NAO CONFIRMADA.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "NAO CONFIRMADO",
         "titulo": "Clinical evaluation of multimodal environmental modification (MEMO) in the management of cats with idiopathic cystitis",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
@@ -1082,7 +1082,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Unico instrumento validado de leitura de sinal clinico por imagem no acervo: ponte entre o Nucleo 1 e a captura por sensor/visao computacional.",
         "arquivo": "PDF/Facial expressions of pain in cats.pdf",
         "referencia": "EVANGELISTA, M. C. et al. Scientific Reports. Referencia completa NAO CONFIRMADA.",
-        "status": "arquivo obtido",
+        "status": "fichamento concluido",
         "ano": "NAO CONFIRMADO",
         "titulo": "Facial expressions of pain in cats: the development and validation of a Feline Grimace Scale",
         "nucleo": "Nucleo 2 - ambiente, comportamento e tecnologia"
