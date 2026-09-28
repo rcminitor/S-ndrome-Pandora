@@ -60,7 +60,6 @@ function normalizeForMatch(value) {
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  initTabs();
   initInventory();
   initDrawer();
 });
@@ -96,29 +95,6 @@ function initTheme() {
 }
 
 // --------------------------------------------------------------------------
-// 2. Tabs Navigation
-// --------------------------------------------------------------------------
-function initTabs() {
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabPanes = document.querySelectorAll('.tab-pane');
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-tab');
-
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabPanes.forEach(p => p.classList.remove('active'));
-
-      btn.classList.add('active');
-      const targetPane = document.getElementById(targetId);
-      if (targetPane) {
-        targetPane.classList.add('active');
-      }
-    });
-  });
-}
-
-// --------------------------------------------------------------------------
 // 3. Inventory Dashboard (Search & Filters)
 // --------------------------------------------------------------------------
 let currentFilter = 'all';
@@ -151,10 +127,11 @@ function initInventory() {
 }
 
 function updateKpis(data) {
+  const fichamentoCodes = new Set(((window.DADOS_FICHAMENTOS || {}).fichamentos || []).map(f => String(f.codigo)));
   const n1Count = data.filter(d => normalizeForMatch(d.nucleo).includes('nucleo 1')).length;
   const n2Count = data.filter(d => normalizeForMatch(d.nucleo).includes('nucleo 2')).length;
   const priorityCount = data.filter(d => (d.fase || '').toLowerCase().includes('ler primeiro')).length;
-  const fichadosCount = data.filter(d => (d.status || '').toLowerCase().includes('fichamento concluido')).length;
+  const fichadosCount = data.filter(d => fichamentoCodes.has(String(d.codigo))).length;
 
   const elTotal = document.getElementById('kpiTotal');
   const elN1 = document.getElementById('kpiN1');
@@ -177,6 +154,7 @@ function renderArticles() {
   if (!container) return;
 
   const data = getMergedData();
+  const fichamentoCodes = new Set(((window.DADOS_FICHAMENTOS || {}).fichamentos || []).map(f => String(f.codigo)));
 
   const filtered = data.filter(item => {
     const searchMatch = !currentSearch ||
@@ -192,8 +170,8 @@ function renderArticles() {
     if (currentFilter === 'n1') return normalizeForMatch(item.nucleo).includes('nucleo 1');
     if (currentFilter === 'n2') return normalizeForMatch(item.nucleo).includes('nucleo 2');
     if (currentFilter === 'ler-primeiro') return (item.fase || '').toLowerCase().includes('ler primeiro');
-    if (currentFilter === 'fichados') return (item.status || '').toLowerCase().includes('fichamento concluido');
-    if (currentFilter === 'nao-fichados') return !(item.status || '').toLowerCase().includes('fichamento concluido');
+    if (currentFilter === 'fichados') return fichamentoCodes.has(String(item.codigo));
+    if (currentFilter === 'nao-fichados') return !fichamentoCodes.has(String(item.codigo));
     if (currentFilter === 'com-pdf') return item.arquivo && item.arquivo.trim() !== '' && !item.arquivo.includes('NAO CONFIRMADO') && !item.arquivo.includes('verificar');
     if (currentFilter === 'sem-pdf') return !item.arquivo || item.arquivo.trim() === '' || item.arquivo.includes('NAO CONFIRMADO') || item.arquivo.includes('verificar');
     if (currentFilter === 'lidos') return lidos[item.codigo] === true;
@@ -203,7 +181,7 @@ function renderArticles() {
 
   if (countLabel) {
     const lidosCount = data.filter(d => lidos[d.codigo] === true).length;
-    const fichadosCount = data.filter(d => (d.status || '').toLowerCase().includes('fichamento concluido')).length;
+    const fichadosCount = data.filter(d => fichamentoCodes.has(String(d.codigo))).length;
     const pdfCount = getAuthorizedPdfPaths().size;
     const versionCount = Math.max(0, pdfCount - data.length);
     const versionText = versionCount === 1 ? '1 versão adicional' : `${versionCount} versões adicionais`;
@@ -221,7 +199,7 @@ function renderArticles() {
   }
 
   container.innerHTML = filtered.map(item => {
-    const isFichado = (item.status || '').toLowerCase().includes('fichamento concluido');
+    const isFichado = fichamentoCodes.has(String(item.codigo));
     const isLerPrimeiro = (item.fase || '').toLowerCase().includes('ler primeiro');
     const isLido = lidos[item.codigo] === true;
     const isEdited = !!edits[item.codigo];

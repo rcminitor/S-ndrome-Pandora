@@ -95,7 +95,16 @@
   }
 
   function render() {
-    box.innerHTML = tabela() + formulario();
+    const badge = document.getElementById('eaCount');
+    if (badge) badge.textContent = dados.fontes.length;
+    box.innerHTML = `<div class="card">
+      <h3 class="card-title">Estado da arte por critérios</h3>
+      <p>Os critérios representam os focos desta tese sobre monitoramento contínuo de gatos com Síndrome de Pandora. <strong>Os critérios e a divisão por núcleo são propostas do autor da tese, não dos autores citados.</strong> Cada marca positiva ou parcial deve trazer a página do PDF que a sustenta.</p>
+      <p><span class="ea-m ea-ok">✅</span> atende · <span class="ea-m ea-meio">◐</span> em parte · <span class="ea-m ea-nao">✗</span> não atende · <span class="ea-m ea-nc">NC</span> NÃO CONFIRMADO</p>
+      ${tabela()}
+      <p style="margin-top:1rem"><strong>Leitura (hipótese, não conclusão):</strong> a lacuna só pode ser confirmada depois da leitura do bloco tecnológico e de uma busca sistemática completa.</p>
+      <p><small>Fonte: <code>dados_estadoarte.js</code>, sincronizado com <code>Notas/Fundamentação — Estado da arte.md</code>.</small></p>
+    </div>${formulario()}`;
     const form = document.getElementById('eaForm');
     if (form) {
       form.addEventListener('submit', salvar);

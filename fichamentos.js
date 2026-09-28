@@ -10,6 +10,7 @@
   const box = document.getElementById('fiConteudo');
   const D = window.DADOS_FICHAMENTOS || { fichamentos: [] };
   const baseLista = Array.isArray(D.fichamentos) ? D.fichamentos : [];
+  const codigosNoAcervo = new Set((window.DADOS_INVENTARIO || []).map((a) => String(a.codigo)));
 
   const esc = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rot = (c) => (/^\d/.test(c) ? '#' + c : c);
@@ -87,12 +88,15 @@
       return;
     }
 
-    const card = (f) => `
+    const card = (f) => {
+      const semPdfNoAcervo = !codigosNoAcervo.has(String(f.codigo));
+      return `
       <div class="pn-tile fi-card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left; cursor:pointer;" data-fi="${esc(f.arquivo)}">
         <div>
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
             <strong style="font-size:0.95rem; color:var(--text-main);">${esc(rot(f.codigo))} — ${esc(f.titulo)}</strong>
             ${f.isEdited ? '<span style="font-size:0.7rem; color:var(--accent); font-weight:700; background:rgba(236,72,153,0.1); padding:2px 6px; border-radius:4px; margin-left:6px; flex-shrink:0;">● Editado</span>' : ''}
+            ${semPdfNoAcervo ? '<span style="font-size:0.7rem; color:var(--orange-primary); font-weight:700; margin-left:6px; flex-shrink:0;">Sem PDF no acervo</span>' : ''}
           </div>
           <small class="pn-muted" style="display:block; margin-bottom:12px;">
             ${f.nucleo ? 'Núcleo ' + esc(f.nucleo) + ' · ' : ''}${f.paginas ? esc(f.paginas) + ' págs. · ' : ''}${f.data ? 'fichado em ' + esc(f.data.split('-').reverse().join('/')) : ''}
@@ -103,12 +107,16 @@
           <button class="pn-btn pn-btn-sm" type="button" data-fi-edit="${esc(f.codigo)}" style="background:var(--blue-surface); color:var(--blue-soft);">Editar</button>
         </div>
       </div>`;
+    };
+
+    const vinculados = lista.filter((f) => codigosNoAcervo.has(String(f.codigo))).length;
+    const rastreabilidade = lista.length - vinculados;
 
     box.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
         <div>
           <p style="margin:0; font-size:0.95rem;">
-            <strong>${lista.length} fichamentos disponíveis.</strong> Clique em qualquer um para ler, corrigir ou exportar.
+            <strong>${lista.length} fichamentos disponíveis.</strong> ${vinculados} vinculados a fontes com PDF${rastreabilidade ? ` · ${rastreabilidade} preservado para rastreabilidade, sem PDF no acervo` : ''}.
             <small class="pn-muted" style="display:block">Edições feitas no navegador são salvas automaticamente no localStorage e podem ser baixadas em .md para o cofre.</small>
           </p>
         </div>

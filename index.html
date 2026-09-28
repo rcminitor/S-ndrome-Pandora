@@ -80,10 +80,10 @@
         Estudo
       </button>
       <button class="tab-btn" data-tab="tab-fichamentos" role="tab" aria-selected="false" title="Fichamentos">
-        Fichamentos
+        Fichamentos <span class="tab-badge" id="fiCount">0</span>
       </button>
       <button class="tab-btn" data-tab="tab-estadoarte" role="tab" aria-selected="false" title="Estado da Arte">
-        Estado
+        Estado <span class="tab-badge" id="eaCount">0</span>
       </button>
       <button class="tab-btn" data-tab="tab-estudo" role="tab" aria-selected="false" title="Estudo & Normas">
         Normas
@@ -750,18 +750,10 @@
       <div id="fiConteudo"></div>
     </div>
 
-    <!-- PÁGINA: ESTADO DA ARTE (gerada de Notas/Fundamentação — Estado da arte.md, Tabela 3) -->
+    <!-- PÁGINA: ESTADO DA ARTE — renderizada por estadoarte.js a partir de dados_estadoarte.js -->
     <div class="tab-pane" id="tab-estadoarte" role="tabpanel">
-      <div class="card">
-        <h3 class="card-title">Estado da arte por critérios</h3>
-        <p>Subseção da fundamentação teórica. Critérios = focos da tese (monitoramento contínuo de gatos com Síndrome de Pandora). <strong>Os critérios e a divisão por núcleo são propostas do autor da tese, não dos autores citados.</strong> Cada marca traz a página do PDF que a justifica. Atualizado em 27/09/2026.</p>
-        <p><span class="ea-m ea-ok">✅</span> atende · <span class="ea-m ea-meio">◐</span> em parte · <span class="ea-m ea-nao">✗</span> não atende · <span class="ea-m ea-nc">NC</span> NÃO CONFIRMADO (PDF não lido)</p>
-        <div style="overflow-x:auto"><table class="week-table ea-tabela"><thead><tr><th>Critério (foco da tese)</th><th>#43</th><th>#51</th><th>#53</th><th>S2</th><th>S3</th><th>#4</th><th>S6</th><th>#25</th><th>#50</th><th>#19</th><th>#40</th><th>#17</th><th>#48</th></tr></thead><tbody><tr><td><strong>C1. População:</strong> gatos com FIC/Pandora</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 15)</td><td><span class="ea-m ea-ok">✅</span> define Pandora (p. 389)</td><td><span class="ea-m ea-ok">✅</span> 20 gatos com FIC, cistoscopia (p. 68)</td><td><span class="ea-m ea-ok">✅</span> 46 gatos com cistite idiopática (p. 261)</td><td><span class="ea-m ea-meio">◐</span> fala de &quot;FUS&quot; (p. 994)</td><td><span class="ea-m ea-nao">✗</span> cães (p. 3)</td><td><span class="ea-m ea-meio">◐</span> FIC e obstrução entre os gatos com dor, sem análise separada (p. 4)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> 20 gatos com FIC + 11 saudáveis (p. 2494)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC/Pandora (p. 784)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 783)</td><td><span class="ea-m ea-meio">◐</span> revisão sobre FIC (p. 1)</td><td><span class="ea-m ea-ok">✅</span> gatos com FIC grave, recorrente (p. 435)</td></tr><tr><td><strong>C2. Estudo primário</strong> com dados próprios</td><td><span class="ea-m ea-nao">✗</span> revisão (pp. 15–32)</td><td><span class="ea-m ea-nao">✗</span> perspectiva (p. 385)</td><td><span class="ea-m ea-ok">✅</span> prospectivo (p. 67)</td><td><span class="ea-m ea-ok">✅</span> prospectivo (p. 261)</td><td><span class="ea-m ea-nao">✗</span> revisão (p. 994)</td><td><span class="ea-m ea-meio">◐</span> software, sem dados (p. 11)</td><td><span class="ea-m ea-ok">✅</span> caso-controle (p. 1)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> caso-controle (p. 2494)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 784)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 783)</td><td><span class="ea-m ea-nao">✗</span> revisão narrativa (p. 1)</td><td><span class="ea-m ea-meio">◐</span> revisão + dados experimentais (p. 435); PDF incompleto</td></tr><tr><td><strong>C3. Dimensão temporal</strong> (acompanhamento longitudinal)</td><td><span class="ea-m ea-meio">◐</span> remissão/recidiva citadas (p. 16)</td><td><span class="ea-m ea-meio">◐</span> critérios temporais (p. 390)</td><td><span class="ea-m ea-ok">✅</span> 77 semanas (p. 70)</td><td><span class="ea-m ea-ok">✅</span> ≈ 10 meses (p. 261)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> séries temporais só como futuro (p. 11)</td><td><span class="ea-m ea-nao">✗</span> antes/depois de 1 h (p. 3)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-nao">✗</span> ponto único, sem seguimento</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C4. Ambiente e estresse</strong> como variável</td><td><span class="ea-m ea-ok">✅</span> paradigma psiconeuroendócrino (p. 25)</td><td><span class="ea-m ea-ok">✅</span> gato sensível × ambiente (p. 385)</td><td><span class="ea-m ea-ok">✅</span> eventos externos (p. 70)</td><td><span class="ea-m ea-ok">✅</span> MEMO (p. 262)</td><td><span class="ea-m ea-ok">✅</span> fatores externos (p. 994)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-meio">◐</span> estresse moderado na chegada (p. 2494)</td><td><span class="ea-m ea-ok">✅</span> flutuação com estressores; critério 2 de Pandora (p. 785)</td><td><span class="ea-m ea-ok">✅</span> estresse e enriquecimento ambiental (pp. 787–789)</td><td><span class="ea-m ea-ok">✅</span> eventos estressores como gatilho (p. 5)</td><td><span class="ea-m ea-ok">✅</span> SNS e eixo HHA; resposta ao estresse (p. 435)</td></tr><tr><td><strong>C5. Medida objetiva</strong> (não relato)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> observador humano único (p. 70)</td><td><span class="ea-m ea-nao">✗</span> relato do tutor (p. 264)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-ok">✅</span> exames laboratoriais (p. 3)</td><td><span class="ea-m ea-meio">◐</span> imagem pontuada por humanos (p. 3)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> cortisol sérico, morfometria adrenal (p. 2495)</td><td><span class="ea-m ea-nao">✗</span> síntese, sem medida própria</td><td><span class="ea-m ea-nao">✗</span> sem medidas próprias</td><td><span class="ea-m ea-nao">✗</span> sem medidas próprias</td><td><span class="ea-m ea-meio">◐</span> catecolaminas plasmáticas (p. 435); valores NC</td></tr><tr><td><strong>C6. Sensor, IoT ou IA</strong></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-ok">✅</span> classificadores de ML (p. 3)</td><td><span class="ea-m ea-nao">✗</span> ML só proposto por outro grupo (p. 2)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td></tr><tr><td><strong>C7. Validação estatística</strong></td><td><span class="ea-m ea-nao">✗</span> não se aplica</td><td><span class="ea-m ea-nao">✗</span> critérios &quot;tentativos&quot; (p. 390)</td><td><span class="ea-m ea-ok">✅</span> modelo de efeitos aleatórios (p. 70)</td><td><span class="ea-m ea-meio">◐</span> Wilcoxon, sem controle (pp. 263, 266)</td><td><span class="ea-m ea-nao">✗</span> ORs de terceiros (p. 995)</td><td><span class="ea-m ea-meio">◐</span> só fidelidade computacional (p. 6)</td><td><span class="ea-m ea-ok">✅</span> ICC, alfa, AUC (pp. 6–7)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-ok">✅</span> t de Student, ANOVA Tukey-Kramer (p. 2495)</td><td><span class="ea-m ea-nao">✗</span> sem estatística própria</td><td><span class="ea-m ea-nao">✗</span> sem estatística própria</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C8. Validação clínica</strong></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-meio">◐</span> vivário, não domicílio (p. 72)</td><td><span class="ea-m ea-meio">◐</span> sem grupo controle (p. 266)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> fora do escopo (p. 2)</td><td><span class="ea-m ea-meio">◐</span> contra rCMPS-F, sem padrão-ouro (p. 9)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-meio">◐</span> gatos de instituição, não domicílio (p. 2494)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr><tr><td><strong>C9. Contexto domiciliar</strong> (casa do tutor)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span> gatos de pesquisa (p. 388)</td><td><span class="ea-m ea-nao">✗</span> vivário (p. 68)</td><td><span class="ea-m ea-ok">✅</span> gatos domiciliados (p. 262)</td><td><span class="ea-m ea-meio">◐</span> discute moradia interna (p. 994)</td><td><span class="ea-m ea-nao">✗</span> hospital (p. 9)</td><td><span class="ea-m ea-nao">✗</span> hospital (p. 2)</td><td><span class="ea-m ea-nc">NC</span></td><td><span class="ea-m ea-nao">✗</span> gaiolas de aço inox (p. 2494)</td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nao">✗</span></td><td><span class="ea-m ea-nc">NC</span> PDF incompleto</td></tr></tbody></table></div>
-        <p style="margin-top:1rem"><strong>Leitura (hipótese, não conclusão):</strong> nenhuma fonte atende ao mesmo tempo C1 (gato com FIC/Pandora), C6 (sensor/IA) e C9 (domicílio). A lacuna segue como hipótese até concluir a análise do bloco tecnológico e fazer uma busca sistemática completa.</p>
-        <p><small>Fonte: <code>Notas/Fundamentação — Estado da arte.md</code> (Tabelas 1–3).</small></p>
-      </div>
+      <div id="eaConteudo"></div>
     </div>
-
     <!-- PÁGINA: ESTUDO & NORMAS -->
     <div class="tab-pane" id="tab-estudo" role="tabpanel">
       <div class="pn-toolbar">
@@ -1121,7 +1113,7 @@
     </div>
   </div>
   <script src="dados_pdfs.js?v=20260928e"></script>
-  <script src="dados_inventario.js?v=20260928h"></script>
+  <script src="dados_inventario.js?v=20260928i"></script>
   <!-- Modal editar etapa do Gantt -->
   <div class="pn-modal" id="modalGanttEditar" role="dialog" aria-modal="true" hidden>
     <div class="pn-modal-box">
@@ -1156,10 +1148,10 @@
   <script src="dados_estatisticas.js?v=20260928a"></script>
   <script src="dados_revisao.js?v=20260928a"></script>
   <script src="dados_leituras.js?v=20260928a"></script>
-  <script src="app.js?v=20260928d"></script>
-  <script src="painel.js?v=20260928c"></script>
-  <script src="estadoarte.js"></script>
-  <script src="fichamentos.js" defer></script>
+  <script src="app.js?v=20260928e"></script>
+  <script src="painel.js?v=20260928d"></script>
+  <script src="estadoarte.js?v=20260928b"></script>
+  <script src="fichamentos.js?v=20260928b" defer></script>
   <script src="estudo_agentes.js" defer></script>
 </body>
 </html>
