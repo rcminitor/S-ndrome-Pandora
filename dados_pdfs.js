@@ -2,9 +2,27 @@
 window.DADOS_PDFS = [
  {
   "pasta": "PDF/29062026",
+  "nome": "3027-9480-1-PB",
+  "arquivo": "PDF/29062026/3027-9480-1-PB.pdf",
+  "kb": 338
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "animals-15-03307-v2",
+  "arquivo": "PDF/29062026/animals-15-03307-v2.pdf",
+  "kb": 453
+ },
+ {
+  "pasta": "PDF/29062026",
   "nome": "Feline-idiopathic-cystitis--current-understanding-",
   "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
   "kb": 207
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "fnsys-12-00013",
+  "arquivo": "PDF/29062026/fnsys-12-00013.pdf",
+  "kb": 5986
  },
  {
   "pasta": "PDF/29062026",
@@ -20,6 +38,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/29062026",
+  "nome": "Lower-Urinary-Tract-Cancer_2015_vsp",
+  "arquivo": "PDF/29062026/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
+  "kb": 273
+ },
+ {
+  "pasta": "PDF/29062026",
   "nome": "lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible",
   "arquivo": "PDF/29062026/lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible.pdf",
   "kb": 86
@@ -29,6 +53,24 @@ window.DADOS_PDFS = [
   "nome": "metabolites-16-00330",
   "arquivo": "PDF/29062026/metabolites-16-00330.pdf",
   "kb": 8640
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Relatório de Estágio Vitória Vosgnach",
+  "arquivo": "PDF/29062026/Relatório de Estágio Vitória Vosgnach.pdf",
+  "kb": 4318
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Urinalysis_vsp",
+  "arquivo": "PDF/29062026/Urinalysis_vsp.pdf",
+  "kb": 1455
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Urinary-Tract-Infections_2015_vsp",
+  "arquivo": "PDF/29062026/Urinary-Tract-Infections_2015_vsp.pdf",
+  "kb": 1183
  },
  {
   "pasta": "PDF/29062026",
