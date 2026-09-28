@@ -289,6 +289,20 @@ def construir(cofre: Path, painel: Path) -> tuple[list[dict], list[dict], dict, 
                 retirar.add(codigo)
                 avisos.append(f"{codigo}: retirado da publicação porque não possui nota nem PDF ativo")
                 continue
+            codigo_canonico = next(
+                (
+                    codigo_nota
+                    for codigo_nota, nota_canonica in notas.items()
+                    if nota_canonica["pdf_valido"] == atual_valido
+                ),
+                None,
+            )
+            if codigo_canonico and codigo_canonico != codigo:
+                retirar.add(codigo)
+                avisos.append(
+                    f"{codigo}: retirado da publicação; o PDF pertence à nota canônica {codigo_canonico}"
+                )
+                continue
             avisos.append(f"{codigo}: registro publicado ainda nao possui nota em Fontes/")
         if codigo in fich_por_codigo and not item.get("fichamento"):
             item["fichamento"] = fich_por_codigo[codigo]["arquivo"]
