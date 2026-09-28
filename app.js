@@ -23,7 +23,18 @@ function saveEdits() {
 function getMergedData() {
   return (window.DADOS_INVENTARIO || []).map(item => {
     const edit = edits[item.codigo];
-    return edit ? { ...item, ...edit } : item;
+    if (!edit) return item;
+
+    // Versões antigas do editor chegaram a salvar patches com os campos
+    // deslocados (por exemplo, uma cautela no lugar do status e texto de
+    // conferência no campo de arquivo). Não deixe esse estado local obsoleto
+    // ocultar os dados corretos que vieram do inventário.
+    const validStatuses = ['fichamento concluido', 'arquivo obtido', 'ainda nao obtido', 'nao iniciado'];
+    const hasInvalidStatus = edit.status && !validStatuses.includes(String(edit.status).toLowerCase());
+    const hasUnexpectedFileEdit = Object.prototype.hasOwnProperty.call(edit, 'arquivo');
+
+    if (hasInvalidStatus || hasUnexpectedFileEdit) return item;
+    return { ...item, ...edit };
   });
 }
 
