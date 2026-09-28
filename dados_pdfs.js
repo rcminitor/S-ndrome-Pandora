@@ -20,12 +20,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/29062026",
-  "nome": "fnsys-12-00013",
-  "arquivo": "PDF/29062026/fnsys-12-00013.pdf",
-  "kb": 5986
- },
- {
-  "pasta": "PDF/29062026",
   "nome": "fvets-10-1258375",
   "arquivo": "PDF/29062026/fvets-10-1258375.pdf",
   "kb": 1212

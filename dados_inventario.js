@@ -1256,22 +1256,5 @@ window.DADOS_INVENTARIO = [
         "ano": "2026",
         "titulo": "Relatório de Estágio Curricular Obrigatório: Clínica Médica de Pequenos Animais",
         "nucleo": "A classificar"
-    },
-    {
-        "fase": "Ler depois",
-        "fichamento": "42 — Fichamento — Inflammation tissue remodeling FIC.md",
-        "cautelas": "Estudo histológico observacional sem acompanhamento longitudinal; amostra não descrita nos metadados do Scopus — verificar n no PDF. O título estava traduzido para o português no inventário original; o título correto em inglês foi corrigido nesta nota.",
-        "codigo": "42",
-        "grupo": "Inflamação e remodelação tecidual na bexiga e uretra na FIC",
-        "tipoEstudo": "estudo observacional histológico e molecular",
-        "procedencia": "✔️ confirmada na fonte — conferida na p. 1 do PDF (fnsys-12-00013.txt). Recebido: 25 jan. 2018 · Aceito: 28 mar. 2018 · Publicado: 13 abr. 2018.",
-        "porQueLer": "Investiga as alterações histológicas e moleculares da lâmina própria da bexiga e uretra proximal em gatos com FIC. Documenta inflamação crônica com remodelação tecidual — mastócitos degranulados, leucócitos, COX-1/2, ninhos de Von Brunn, neovascularização e alterações de elastina — como base estrutural dos sinais urinários recorrentes.",
-        "comoUsar": "Usar na fundamentação fisiopatológica: a remodelação tecidual como consequência do estresse crônico na bexiga, suporte ao argumento de que a FIC não é uma doença vesical isolada mas reflexo de uma disfunção sistêmica.",
-        "arquivo": "PDF/29062026/fnsys-12-00013.pdf",
-        "referencia": "KULLMANN, F. Aura et al. Inflammation and tissue remodeling in the bladder and urethra in feline interstitial cystitis. Frontiers in Systems Neuroscience, v. 12, art. 13, 13 abr. 2018. DOI: 10.3389/fnsys.2018.00013.",
-        "status": "fichamento concluido",
-        "ano": "2018",
-        "titulo": "Inflammation and tissue remodeling in the bladder and urethra in feline interstitial cystitis",
-        "nucleo": "Núcleo 1"
     }
 ];
