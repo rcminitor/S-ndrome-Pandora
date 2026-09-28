@@ -145,7 +145,10 @@ function updateKpis(data) {
   if (elN2) elN2.textContent = n2Count;
   if (elPriority) elPriority.textContent = priorityCount;
   if (elFichados) elFichados.textContent = fichadosCount;
-  if (acervoBadge) acervoBadge.textContent = data.length;
+  if (acervoBadge) {
+    acervoBadge.textContent = data.length;
+    acervoBadge.title = `${data.length} fontes únicas com PDF`;
+  }
 }
 
 function renderArticles() {
@@ -183,9 +186,7 @@ function renderArticles() {
     const lidosCount = data.filter(d => lidos[d.codigo] === true).length;
     const fichadosCount = data.filter(d => fichamentoCodes.has(String(d.codigo))).length;
     const pdfCount = getAuthorizedPdfPaths().size;
-    const versionCount = Math.max(0, pdfCount - data.length);
-    const versionText = versionCount === 1 ? '1 versão adicional' : `${versionCount} versões adicionais`;
-    countLabel.textContent = `Exibindo ${filtered.length} de ${data.length} fontes únicas — ${pdfCount} PDFs (${versionText}) — ${fichadosCount} com fichamento concluído — ${lidosCount} marcadas como lidas`;
+    countLabel.textContent = `Exibindo ${filtered.length} de ${data.length} fontes únicas (artigos/TCC) — ${pdfCount} PDFs vinculados — ${fichadosCount} com fichamento concluído — ${lidosCount} marcadas como lidas`;
   }
 
   if (filtered.length === 0) {

@@ -14,6 +14,7 @@ import os
 import re
 import shutil
 import tempfile
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 
@@ -22,6 +23,7 @@ from guardiao_acervo import ler_json_js, validar_dados
 
 
 IGNORAR_PDF = {"_Versoes_a_comparar", "_Duplicatas_confirmadas", "IA"}
+STATUS_NAO_PUBLICAVEL = ("duplicata", "arquivo nao localizado", "arquivo corrompido", "ainda nao obtido")
 
 
 def _frontmatter(texto: str) -> dict[str, str]:
@@ -82,6 +84,10 @@ def _normalizar_nucleo(valor: str) -> str:
     if "2" in valor:
         return "Núcleo 2"
     return valor or "A classificar"
+
+
+def _sem_acentos(valor: str) -> str:
+    return unicodedata.normalize("NFKD", valor).encode("ascii", "ignore").decode().casefold()
 
 
 def _caminho_pdf_valido(cofre: Path, caminho: str) -> str:
@@ -180,6 +186,10 @@ def construir(cofre: Path, painel: Path) -> tuple[list[dict], list[dict], dict, 
     for codigo, nota in notas.items():
         if codigo in por_codigo:
             continue
+        status_nota = _sem_acentos(nota["fm"].get("status", ""))
+        if any(marca in status_nota for marca in STATUS_NAO_PUBLICAVEL):
+            avisos.append(f"{codigo}: nota mantida apenas para rastreabilidade ({nota['fm'].get('status')})")
+            continue
         if not nota["pdf_valido"]:
             avisos.append(f"{codigo}: nao publicado porque nao possui PDF valido dentro de PDF/")
             continue
@@ -188,6 +198,8 @@ def construir(cofre: Path, painel: Path) -> tuple[list[dict], list[dict], dict, 
         avisos.append(f"{codigo}: nova fonte pronta para inclusao")
 
     inventario_novo = [por_codigo[c] for c in ordem]
+    caminhos_ativos = {str(item.get("arquivo", "")).replace("\\", "/") for item in inventario_novo}
+    pdfs = [pdf for pdf in pdfs if pdf["arquivo"] in caminhos_ativos]
     conteudo_fichas = {"atualizado": fich_atual.get("atualizado", ""), "fichamentos": fichamentos}
     if fichamentos != fich_atual.get("fichamentos", []):
         conteudo_fichas["atualizado"] = datetime.now().isoformat(timespec="minutes")

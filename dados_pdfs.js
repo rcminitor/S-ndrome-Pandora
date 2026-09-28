@@ -2,57 +2,9 @@
 window.DADOS_PDFS = [
  {
   "pasta": "PDF/29062026",
-  "nome": "1-s2.0-S0011502903900022-main",
-  "arquivo": "PDF/29062026/1-s2.0-S0011502903900022-main.pdf",
-  "kb": 149
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "3027-9480-1-PB",
-  "arquivo": "PDF/29062026/3027-9480-1-PB.pdf",
-  "kb": 338
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "animals-15-03307-v2",
-  "arquivo": "PDF/29062026/animals-15-03307-v2.pdf",
-  "kb": 453
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis",
-  "arquivo": "PDF/29062026/defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis.pdf",
-  "kb": 1509
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "dissertacao-ines-goncalves",
-  "arquivo": "PDF/29062026/dissertacao-ines-goncalves.pdf",
-  "kb": 1142
- },
- {
-  "pasta": "PDF/29062026",
   "nome": "Feline-idiopathic-cystitis--current-understanding-",
   "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
   "kb": 207
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Feline-idiopathic-cystitis",
-  "arquivo": "PDF/29062026/Feline-idiopathic-cystitis.pdf",
-  "kb": 242
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "fnsys-12-00013",
-  "arquivo": "PDF/29062026/fnsys-12-00013.pdf",
-  "kb": 5986
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "fvets-09-900847",
-  "arquivo": "PDF/29062026/fvets-09-900847.pdf",
-  "kb": 1207
  },
  {
   "pasta": "PDF/29062026",
@@ -68,45 +20,9 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/29062026",
-  "nome": "Lipidomic Signatures in Feline Disease_ A PRISMA-Guided Systematic Review",
-  "arquivo": "PDF/29062026/Lipidomic Signatures in Feline Disease_ A PRISMA-Guided Systematic Review.pdf",
-  "kb": 8616
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Lower-Urinary-Tract-Cancer_2015_vsp",
-  "arquivo": "PDF/29062026/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
-  "kb": 273
- },
- {
-  "pasta": "PDF/29062026",
   "nome": "lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible",
   "arquivo": "PDF/29062026/lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible.pdf",
   "kb": 86
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "metabolites-16-00330",
-  "arquivo": "PDF/29062026/metabolites-16-00330.pdf",
-  "kb": 8640
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Relatório de Estágio Vitória Vosgnach",
-  "arquivo": "PDF/29062026/Relatório de Estágio Vitória Vosgnach.pdf",
-  "kb": 4318
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Urinalysis_vsp",
-  "arquivo": "PDF/29062026/Urinalysis_vsp.pdf",
-  "kb": 1455
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Urinary-Tract-Infections_2015_vsp",
-  "arquivo": "PDF/29062026/Urinary-Tract-Infections_2015_vsp.pdf",
-  "kb": 1183
  },
  {
   "pasta": "PDF/29062026",
@@ -145,18 +61,6 @@ window.DADOS_PDFS = [
   "kb": 238
  },
  {
-  "pasta": "PDF/Primeiras Leituras",
-  "nome": "05_From Fus To Pandora Syndrome",
-  "arquivo": "PDF/Primeiras Leituras/05_From Fus To Pandora Syndrome.pdf",
-  "kb": 692
- },
- {
-  "pasta": "PDF/Primeiras Leituras",
-  "nome": "06_Síndrome de Pandora",
-  "arquivo": "PDF/Primeiras Leituras/06_Síndrome de Pandora.pdf",
-  "kb": 106
- },
- {
   "pasta": "PDF/Primordiais",
   "nome": "buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats",
   "arquivo": "PDF/Primordiais/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
@@ -179,12 +83,6 @@ window.DADOS_PDFS = [
   "nome": "1-s2.0-S016815912600211X-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S016815912600211X-main.pdf",
   "kb": 1344
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "1-s2.0-S0168169925005010-main",
-  "arquivo": "PDF/Síndrome CIF/1-s2.0-S0168169925005010-main.pdf",
-  "kb": 3690
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -497,12 +395,6 @@ window.DADOS_PDFS = [
   "nome": "vfaf057",
   "arquivo": "PDF/Síndrome CIF/vfaf057.pdf",
   "kb": 2022
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Vista do Estresse em gatos domésticos",
-  "arquivo": "PDF/Síndrome CIF/Vista do Estresse em gatos domésticos.pdf",
-  "kb": 4381
  },
  {
   "pasta": "PDF/Síndrome CIF",

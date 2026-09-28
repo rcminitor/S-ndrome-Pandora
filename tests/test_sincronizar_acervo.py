@@ -82,6 +82,12 @@ class SincronizarAcervoTeste(unittest.TestCase):
         (self.cofre / "Fontes" / "3 Sem PDF.md").write_text(
             _nota("3", "Sem PDF", "PDF/Síndrome CIF/ausente.pdf"), encoding="utf-8"
         )
+        pdf_duplicado = "PDF/Síndrome CIF/copia.pdf"
+        (self.cofre / pdf_duplicado).write_bytes(b"%PDF-1.4\ncopia rastreavel")
+        nota_duplicada = _nota("4", "Cópia histórica", pdf_duplicado).replace(
+            "status: arquivo obtido", "status: duplicata - ver código 1"
+        )
+        (self.cofre / "Fontes" / "4 Copia.md").write_text(nota_duplicada, encoding="utf-8")
         antes = {p.name: p.read_bytes() for p in self.painel.iterdir() if p.is_file()}
 
         self.assertEqual(0, sincronizar(self.cofre, self.painel, escrever=False))
@@ -90,7 +96,10 @@ class SincronizarAcervoTeste(unittest.TestCase):
 
         self.assertEqual(0, sincronizar(self.cofre, self.painel, escrever=True))
         inventario = ler_json_js(self.painel / "dados_inventario.js", "DADOS_INVENTARIO")
+        pdfs = ler_json_js(self.painel / "dados_pdfs.js", "DADOS_PDFS")
         self.assertEqual(["1", "2"], [str(a["codigo"]) for a in inventario])
+        self.assertEqual({"PDF/Síndrome CIF/a.pdf", "PDF/Síndrome CIF/b.pdf"},
+                         {p["arquivo"] for p in pdfs})
         self.assertEqual("Fonte A corrigida no painel", inventario[0]["titulo"])
         self.assertTrue((self.painel / pdf_b).is_file())
         self.assertTrue(validar_publicacao(self.painel).ok)

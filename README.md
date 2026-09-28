@@ -4,9 +4,10 @@ Site do referencial teórico e do acompanhamento da tese de doutorado (UFC): pai
 
 Publicado em: https://rcminitor.github.io/S-ndrome-Pandora/
 
-Os PDFs autorizados para leitura no site ficam em `PDF/`. O inventário publicado
-somente pode apontar para arquivos reais dessa pasta; mapas mentais, imagens e
-outros anexos não entram na contagem de fontes.
+Os PDFs autorizados para leitura no site ficam em `PDF/`. O manifesto publicado
+contém somente os arquivos ligados às fontes ativas — artigos e TCC. Mapas
+mentais, imagens, cópias adicionais e materiais de apoio permanecem fora do
+painel e não entram em nenhuma contagem.
 
 ## Publicação segura do acervo
 
