@@ -1528,3 +1528,11 @@ window.DADOS_INVENTARIO = [
         "referencia": "BATISTA, Nicoli Poliana. Relatório de Estágio Curricular Supervisionado na área de Clínica Médica e Cirúrgica de Felinos Domésticos. 2026. Trabalho de Conclusão de Curso (Graduação em Medicina Veterinária) — Centro de Ciências Rurais, Universidade Federal de Santa Catarina, Curitibanos, 2026."
     }
 ];
+
+// Regra do acervo: somente documentos com PDF na pasta autorizada permanecem
+// no inventário publicado. S7 existe apenas no espelho do site; o original não
+// está na pasta PDF do cofre e, por isso, também é removido.
+window.DADOS_INVENTARIO = window.DADOS_INVENTARIO.filter(item => {
+    const arquivo = String(item.arquivo || '').replace(/\\/g, '/');
+    return item.codigo !== 'S7' && arquivo.startsWith('PDF/');
+});
