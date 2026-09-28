@@ -56,6 +56,20 @@ class InterfacePainel(unittest.TestCase):
         self.assertIn(".tab-nav-wrapper {\n  position: sticky;", self.tema)
         self.assertIn("#tab-painel .pn-toolbar {\n  position: sticky;", self.tema)
 
+    def test_estado_da_arte_tem_nome_completo_e_cor_estavel(self):
+        self.assertIn(
+            'data-goto="tab-estadoarte">Estado da Arte</a>',
+            self.html,
+        )
+        self.assertIn(
+            'Estado da Arte <span class="tab-badge" id="eaCount">0</span>',
+            self.html,
+        )
+        self.assertIn(
+            '.tab-btn[data-tab="tab-estadoarte"]',
+            self.tema,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
