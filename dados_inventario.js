@@ -171,20 +171,20 @@
     },
     {
         "fase": "Ler primeiro",
-        "fichamento": "48 — Fichamento — Etiopathogenesis of Feline Idiopathic Cystitis.md",
-        "cautelas": "ARQUIVO INCOMPLETO: o PDF tem 1 pagina apenas (pagina 435, inicio do capitulo 47). Obter o capitulo completo antes de fichar. Marca de composicao no rodape indica 2005.",
+        "fichamento": "48 — Fichamento — Feline idiopathic cystitis current understanding.md",
+        "cautelas": "Artigo de revisão com dados clínicos preliminares dos autores (76 gatos; estudo em andamento em 2004). Os autores são os maiores proponentes do enriquecimento ambiental — verificar se a evidência foi formalizada em artigo separado.",
         "codigo": "48",
-        "grupo": "Fisiopatologia da FIC",
-        "tipoEstudo": "Capitulo de livro",
-        "procedencia": "parcial - autoria, capitulo e ano confirmados no PDF; obra e paginacao final NAO CONFIRMADAS",
-        "porQueLer": "Capítulo clássico sobre a etiopatogênese da cistite idiopática felina, abordando os mecanismos envolvidos na condição.",
-        "comoUsar": "Usar como base clínica para explicar a etiopatogênese da CIF e sua relação com a Síndrome de Pandora.",
-        "arquivo": "PDF/Síndrome CIF/ETIOPATHOGENESIS OF FELINE.pdf",
-        "referencia": "WESTROPP, Jodi L.; BUFFINGTON, C. A. Tony. Etiopathogenesis of feline idiopathic cystitis. In: [OBRA NAO CONFIRMADA], cap. 47, p. 435-[final NAO CONFIRMADO], 2005.\n\n*Procedência:* parcial - autoria, capitulo e ano confirmados no PDF; obra e paginacao final NAO CONFIRMADAS — 🟡 **parcialmente confirmada no PDF — o resto A CONFERIR**\n\n## Por que ler\nCapítulo clássico sobre a etiopatogênese da cistite idiopática felina, abordando os mecanismos envolvidos na condição.\n\n## Como usar na tese\nUsar como base clínica para explicar a etiopatogênese da CIF e sua relação com a Síndrome de Pandora.\n\n## Cautelas\nARQUIVO INCOMPLETO: o PDF tem 1 pagina apenas (pagina 435, inicio do capitulo 47). Obter o capitulo completo antes de fichar. Marca de composicao no rodape indica 2005.\n\n## Tipo de estudo\nCapitulo de livro\n\n## Minhas notas de leitura\n<!-- Escreva aqui. Regra do acervo: nada de número, página ou resultado sem conferir no PDF. -->\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 2 (ambiente, comportamento e tecnologia)]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
+        "grupo": "Fisiopatologia e manejo",
+        "tipoEstudo": "revisão com dados clínicos preliminares",
+        "procedencia": "confirmada na fonte",
+        "porQueLer": "Artigo seminal de Westropp & Buffington propondo base neuroendócrina da FIC (SNS + eixo HHA) e enriquecimento ambiental como terapia primária. Peça-chave da trajetória histórica da Síndrome de Pandora.",
+        "comoUsar": "Fundamento fisiopatológico (CRF hipotalâmico, SNS, adrenal insuficiente) e base clínica do enriquecimento ambiental. Fonte primária da Figura 1 (sistema neuroendócrino desequilibrado) reproduzida no #40.",
+        "arquivo": "",
+        "referencia": "WESTROPP, Jodi L.; BUFFINGTON, C. A. Tony. Feline idiopathic cystitis: current understanding of pathophysiology and management. Veterinary Clinics of North America: Small Animal Practice, v. 34, p. 1043–1055, 2004. DOI: 10.1016/j.cvsm.2004.03.002.",
         "status": "fichamento concluido",
-        "ano": "2005",
-        "titulo": "Etiopathogenesis of Feline Idiopathic Cystitis",
-        "nucleo": "Núcleo 2"
+        "ano": "2004",
+        "titulo": "Feline idiopathic cystitis: current understanding of pathophysiology and management",
+        "nucleo": "Núcleo 1"
     },
     {
         "fase": "Ler depois",
@@ -1021,3 +1021,4 @@
         "nucleo": "Núcleo 2"
     }
 ];
+
