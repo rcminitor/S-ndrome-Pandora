@@ -284,6 +284,11 @@ def construir(cofre: Path, painel: Path) -> tuple[list[dict], list[dict], dict, 
             elif nota["pdf"] and nota["pdf_valido"] != atual_valido:
                 avisos.append(f"{codigo}: link divergente na nota ignorado; mantido {item.get('arquivo')}")
         else:
+            atual_valido = _caminho_pdf_valido(cofre, str(item.get("arquivo", "")))
+            if not atual_valido:
+                retirar.add(codigo)
+                avisos.append(f"{codigo}: retirado da publicação porque não possui nota nem PDF ativo")
+                continue
             avisos.append(f"{codigo}: registro publicado ainda nao possui nota em Fontes/")
         if codigo in fich_por_codigo and not item.get("fichamento"):
             item["fichamento"] = fich_por_codigo[codigo]["arquivo"]

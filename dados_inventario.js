@@ -629,23 +629,6 @@ window.DADOS_INVENTARIO = [
         "nucleo": "Núcleo 2"
     },
     {
-        "fase": "A classificar",
-        "fichamento": "N07 — Fichamento — Faceta psicológica da cistite intersticial.md",
-        "cautelas": "Literatura cinzenta; PDF fragmentário (pp. 9–29); o trecho disponível não apresenta método de busca.",
-        "codigo": "N07",
-        "grupo": "Faceta psicológica da cistite intersticial",
-        "tipoEstudo": "TCC de especialização — revisão narrativa",
-        "procedencia": "🟡 parcialmente confirmada.",
-        "porQueLer": "Fundamentação ambiental e comportamental da FIC.",
-        "comoUsar": "Núcleo: Núcleo 2. Uso: Fundamentação ambiental e comportamental da FIC.",
-        "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
-        "referencia": "ENGLES, F. S. A faceta psicológica da cistite intersticial dos gatos domésticos. 2013. Trabalho de Conclusão de Curso (Especialização) — Equalis, Curitiba, 2013. Demais elementos: NÃO CONFIRMADO.",
-        "status": "fichamento concluido",
-        "ano": "2013",
-        "titulo": "A faceta psicológica da cistite intersticial dos gatos domésticos",
-        "nucleo": "Núcleo 2"
-    },
-    {
         "fase": "Ler depois",
         "fichamento": "41 — Fichamento — Low-dose RT for FIC in male cats.md",
         "cautelas": "Não é artigo de IA.",
