@@ -332,7 +332,7 @@ window.DADOS_INVENTARIO = [
         "procedencia": "parcial - autoria confirmada no PDF, resto NAO CONFIRMADO",
         "porQueLer": "Revisao sistematica guiada por PRISMA sobre assinaturas lipidomicas em doencas felinas.",
         "comoUsar": "Amplia o repertorio de biomarcadores alem dos urinarios ja no acervo.",
-        "arquivo": "PDF/Lipidomic Signatures in Feline Disease A PRISMA-Guided.pdf",
+        "arquivo": "PDF/Síndrome CIF/Lipidomic Signatures in Feline Disease.pdf",
         "referencia": "FONTES, A. C. et al. Referencia completa NAO CONFIRMADA.",
         "status": "arquivo obtido",
         "ano": "NAO CONFIRMADO",
