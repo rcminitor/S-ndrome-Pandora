@@ -8,6 +8,9 @@
   const STORE_KEY = 'pandora.registros.v1';
   const METAS_KEY = 'pandora.metas.v4';
   const INVENTARIO = Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : [];
+  const FICHAMENTOS = Array.isArray(window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos)
+    ? window.DADOS_FICHAMENTOS.fichamentos : [];
+  const CODIGOS_FICHADOS = new Set(FICHAMENTOS.map((f) => String(f.codigo)));
   const normalizar = (valor) => String(valor || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -390,7 +393,7 @@
   }
   function renderKpis() {
     const u4 = registros.slice(-4);
-    const fichInv = INVENTARIO.filter((a) => /fichamento concluido/i.test(a.status || '')).length;
+    const fichInv = INVENTARIO.filter((a) => CODIGOS_FICHADOS.has(String(a.codigo))).length;
     // os fichamentos automáticos vêm do cofre, que já conta no inventário: somar só os digitados aqui
     const fichReg = manuais.reduce((s, r) => s + (+r.fichamentos || 0), 0);
     const prazo = metas.tese.prazo;
@@ -477,7 +480,7 @@
       ['Núcleo 2', c((a) => normalizar(a.nucleo).includes('nucleo 2')), 'var(--pink-soft)'],
       ['Ler primeiro', c((a) => a.fase === 'Ler primeiro'), 'var(--orange-primary)'],
       ['Com arquivo', c((a) => a.arquivo), '#22c55e'],
-      ['Fichados', c((a) => /fichamento concluido/i.test(a.status)), '#16a34a'],
+      ['Fichados', c((a) => CODIGOS_FICHADOS.has(String(a.codigo))), '#16a34a'],
       ['Não obtidos', c((a) => /nao obtido/i.test(a.status)), 'var(--gray-subtle)'],
     ]) + `<p class="pn-muted">Fonte: <code>dados_inventario.js</code> (inventário de ${INVENTARIO.length} registros). Agrupamento por núcleo é proposto, não declarado por autor.</p>`;
   }
