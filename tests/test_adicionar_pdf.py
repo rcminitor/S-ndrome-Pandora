@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
 
 import pymupdf
 from werkzeug.datastructures import FileStorage
@@ -81,6 +82,27 @@ class AdicionarPdfTeste(unittest.TestCase):
         adicionador = AdicionadorPDF(self.cofre, self.painel, self._sincronizador_aprovado)
         with self.assertRaisesRegex(ErroAdicao, "já existe"):
             adicionador.adicionar(_arquivo_pdf(), self.dados)
+
+    def test_move_pdf_da_caixa_de_entrada_apos_aprovacao(self):
+        origem = self.cofre / "PDF/_Entrada/fonte.pdf"
+        origem.parent.mkdir()
+        arquivo = _arquivo_pdf()
+        origem.write_bytes(arquivo.stream.read())
+        adicionador = AdicionadorPDF(self.cofre, self.painel, self._sincronizador_aprovado)
+        adicionador.adicionar(SimpleNamespace(filename=origem.name), self.dados, origem_movel=origem)
+        self.assertFalse(origem.exists())
+        self.assertTrue((self.cofre / "PDF/A_classificar/fonte.pdf").is_file())
+
+    def test_restaura_pdf_na_entrada_quando_guardiao_recusa(self):
+        origem = self.cofre / "PDF/_Entrada/fonte.pdf"
+        origem.parent.mkdir()
+        arquivo = _arquivo_pdf()
+        origem.write_bytes(arquivo.stream.read())
+        adicionador = AdicionadorPDF(self.cofre, self.painel, lambda *_: 1)
+        with self.assertRaisesRegex(ErroAdicao, "Guardião recusou"):
+            adicionador.adicionar(SimpleNamespace(filename=origem.name), self.dados, origem_movel=origem)
+        self.assertTrue(origem.is_file())
+        self.assertFalse((self.cofre / "PDF/A_classificar/fonte.pdf").exists())
 
 
 if __name__ == "__main__":

@@ -34,6 +34,7 @@ import threading
 import uuid
 import webbrowser
 from pathlib import Path
+from types import SimpleNamespace
 
 from flask import Flask, abort, jsonify, request, send_file
 
@@ -53,6 +54,8 @@ from resumo_semanal import Resumo  # noqa: E402
 from estadoarte import EstadoArte  # noqa: E402
 from fichamentos import Fichamentos  # noqa: E402
 from adicionar_pdf import AdicionadorPDF, ErroAdicao  # noqa: E402
+from caixa_entrada_pdf import caminho_seguro, listar_entrada  # noqa: E402
+from publicar_acervo import ErroPublicacao, PublicadorAcervo  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -140,6 +143,7 @@ ANALISES_ATIVAS: dict[Path, dict] = {}
 TRAVA_ANALISES = threading.Lock()
 PORTA = 8765
 ADICIONADOR_PDF = AdicionadorPDF(BASE, RAIZ)
+PUBLICADOR_ACERVO = PublicadorAcervo(BASE, RAIZ)
 # O site publicado pode conversar com este painel (só ele e o próprio PC).
 ORIGENS = {"https://rcminitor.github.io", f"http://localhost:{PORTA}", f"http://127.0.0.1:{PORTA}"}
 
@@ -429,17 +433,43 @@ def publicar_agora():
 
 @app.post("/api/acervo/adicionar")
 def adicionar_pdf_acervo():
-    """Inclui PDF + nota de fonte e só publica depois da aprovação do Guardião."""
+    """Inclui PDF + nota, valida, cria commits restritos e envia os dois repositórios."""
     try:
-        resultado = ADICIONADOR_PDF.adicionar(request.files.get("pdf"), request.form)
+        envio = request.files.get("pdf")
+        entrada_nome = str(request.form.get("entrada", "") or "").strip()
+        if envio and getattr(envio, "filename", "") and entrada_nome:
+            raise ErroAdicao("Escolha o upload ou a Caixa de entrada, não os dois.")
+        origem = caminho_seguro(BASE, entrada_nome) if entrada_nome else None
+        arquivo = SimpleNamespace(filename=origem.name) if origem else envio
+        resultado = ADICIONADOR_PDF.adicionar(arquivo, request.form, origem_movel=origem)
     except ErroAdicao as e:
         return jsonify({"ok": False, "erro": str(e)}), e.status
+    except ValueError as e:
+        return jsonify({"ok": False, "erro": str(e)}), 400
     except Exception as e:
         return jsonify({"ok": False, "erro": f"Falha ao adicionar PDF: {type(e).__name__}: {e}"}), 500
     COFRE_OBJ._cache = None
     atualizar_fila()
-    REG.publicar(f"acervo: PDF {resultado['item']['codigo']} adicionado")
-    return jsonify({"ok": True, **resultado})
+    try:
+        publicacao = PUBLICADOR_ACERVO.publicar(
+            str(resultado["item"]["codigo"]), BASE / "Fontes" / resultado["nota"], resultado["arquivo"],
+        )
+    except ErroPublicacao as e:
+        return jsonify({
+            "ok": True, "publicado": False, **resultado,
+            "aviso": "Fonte salva e validada localmente, mas o envio ao GitHub falhou.",
+            "erro_publicacao": str(e),
+        }), 202
+    return jsonify({"ok": True, "publicado": True, "publicacao": publicacao, **resultado})
+
+
+@app.get("/api/acervo/entrada")
+def caixa_entrada_acervo():
+    """Lista PDFs ainda não publicados e metadados apresentados apenas como sugestões."""
+    try:
+        return jsonify({"ok": True, **listar_entrada(BASE)})
+    except Exception as e:
+        return jsonify({"ok": False, "erro": f"Falha ao ler a Caixa de entrada: {e}"}), 500
 
 
 # ------------------------------------------------------------------ estado da arte

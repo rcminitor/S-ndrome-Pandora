@@ -176,7 +176,7 @@ class AdicionadorPDF:
                     rel = existente.relative_to(self.cofre).as_posix()
                     raise ErroAdicao(f"Este PDF já existe no acervo: {rel}", 409)
 
-    def adicionar(self, arquivo, dados) -> dict:
+    def adicionar(self, arquivo, dados, origem_movel: Path | None = None) -> dict:
         valores = self._validar_dados(arquivo, dados)
         destino_dir = self.cofre / "PDF" / "A_classificar"
         fontes_dir = self.cofre / "Fontes"
@@ -191,7 +191,11 @@ class AdicionadorPDF:
         with TRAVA_ADICAO:
             if destino_pdf.exists() or destino_nota.exists():
                 raise ErroAdicao("Já existe um PDF ou uma nota com esse nome. Nada foi sobrescrito.", 409)
-            arquivo.save(temporario)
+            origem_movel = Path(origem_movel).resolve() if origem_movel else None
+            if origem_movel:
+                origem_movel.replace(temporario)
+            else:
+                arquivo.save(temporario)
             criou_pdf = criou_nota = False
             try:
                 self._validar_pdf(temporario)
@@ -210,7 +214,12 @@ class AdicionadorPDF:
                 if criou_nota and destino_nota.exists():
                     destino_nota.unlink()
                 if criou_pdf and destino_pdf.exists():
-                    destino_pdf.unlink()
+                    if origem_movel:
+                        destino_pdf.replace(origem_movel)
+                    else:
+                        destino_pdf.unlink()
+                elif origem_movel and temporario.exists():
+                    temporario.replace(origem_movel)
                 raise
             finally:
                 temporario.unlink(missing_ok=True)

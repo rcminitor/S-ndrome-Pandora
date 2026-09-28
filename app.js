@@ -97,7 +97,13 @@ function initAddPdf() {
   const connection = document.getElementById('addPdfConnection');
   const result = document.getElementById('addPdfResult');
   const submit = document.getElementById('addPdfSubmitBtn');
+  const inbox = document.getElementById('inboxPdf');
+  const inboxHint = document.getElementById('inboxPdfHint');
+  const refreshInbox = document.getElementById('refreshInboxBtn');
+  const pdfFile = document.getElementById('addPdfFile');
   if (!openBtn || !modal || !form || !fields || !connection || !result || !submit) return;
+
+  let inboxItems = new Map();
 
   const close = () => {
     modal.classList.remove('open');
@@ -107,6 +113,34 @@ function initAddPdf() {
   const showResult = (message, type = '') => {
     result.textContent = message;
     result.className = `add-pdf-result${type ? ` is-${type}` : ''}`;
+  };
+  const loadInbox = async () => {
+    if (!inbox) return;
+    inbox.disabled = true;
+    inbox.innerHTML = '<option value="">Verificando PDF/_Entrada…</option>';
+    try {
+      const response = await fetch(`${LOCAL_PANEL_API}/api/acervo/entrada`, { cache: 'no-store' });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.erro || 'Caixa de entrada indisponível.');
+      inboxItems = new Map((data.itens || []).map(item => [item.arquivo, item]));
+      inbox.innerHTML = '<option value="">Usar upload manual</option>';
+      for (const item of data.itens || []) {
+        const option = document.createElement('option');
+        option.value = item.arquivo;
+        option.textContent = `${item.arquivo} — ${item.paginas || 0} pág.${item.aviso ? ` — ${item.aviso}` : ''}`;
+        option.disabled = !item.valido || !!item.duplicado_em;
+        inbox.appendChild(option);
+      }
+      inbox.disabled = false;
+      if (inboxHint) {
+        inboxHint.textContent = `${(data.itens || []).length} PDF(s) aguardando triagem. Metadados são apenas sugestões para conferência.`;
+      }
+      const code = form.elements.codigo;
+      if (code && !code.value) code.value = data.codigo_sugerido || '';
+    } catch (error) {
+      inbox.innerHTML = '<option value="">Não foi possível consultar a caixa</option>';
+      if (inboxHint) inboxHint.textContent = error.message;
+    }
   };
   const checkConnection = async () => {
     fields.disabled = true;
@@ -120,6 +154,7 @@ function initAddPdf() {
       fields.disabled = false;
       connection.textContent = 'Painel local conectado. A inclusão será validada antes de alterar o acervo.';
       connection.classList.add('is-ok');
+      await loadInbox();
     } catch (_) {
       connection.textContent = 'Abra o Painel de Estudo no computador para adicionar PDFs. A consulta ao acervo continua disponível.';
       connection.classList.add('is-error');
@@ -135,6 +170,27 @@ function initAddPdf() {
   });
   document.getElementById('addPdfCloseBtn')?.addEventListener('click', close);
   document.getElementById('addPdfCancelBtn')?.addEventListener('click', close);
+  refreshInbox?.addEventListener('click', loadInbox);
+  inbox?.addEventListener('change', () => {
+    const item = inboxItems.get(inbox.value);
+    if (!item) return;
+    if (pdfFile) pdfFile.value = '';
+    const titulo = form.elements.titulo;
+    const ano = form.elements.ano;
+    if (titulo && !titulo.value) titulo.value = item.titulo_sugerido || '';
+    if (ano && !ano.value) ano.value = item.ano_sugerido || '';
+    if (inboxHint) {
+      const sugestoes = [
+        item.autores_sugeridos && `Autores sugeridos: ${item.autores_sugeridos}`,
+        item.doi_sugerido && `DOI sugerido: ${item.doi_sugerido}`,
+        'Confirme tudo no PDF antes de preencher a referência.',
+      ].filter(Boolean);
+      inboxHint.textContent = sugestoes.join(' · ');
+    }
+  });
+  pdfFile?.addEventListener('change', () => {
+    if (pdfFile.files.length && inbox) inbox.value = '';
+  });
   modal.addEventListener('click', (event) => { if (event.target === modal) close(); });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !modal.hidden) close();
@@ -142,6 +198,10 @@ function initAddPdf() {
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (!pdfFile?.files.length && !inbox?.value) {
+      showResult('Selecione um PDF ou escolha um arquivo da Caixa de entrada.', 'error');
+      return;
+    }
     submit.disabled = true;
     submit.textContent = 'Validando…';
     showResult('Conferindo PDF, duplicatas e integridade do acervo…');
@@ -157,7 +217,12 @@ function initAddPdf() {
       form.reset();
       renderArticles();
       updateKpis(getMergedData());
-      showResult(`${data.item.codigo} adicionado com segurança. A publicação foi colocada na fila.`, 'ok');
+      if (data.publicado) {
+        const commits = `${data.publicacao.cofre.commit} / ${data.publicacao.painel.commit}`;
+        showResult(`${data.item.codigo} adicionado, validado e enviado ao GitHub. Commits: ${commits}.`, 'ok');
+      } else {
+        showResult(`${data.item.codigo} foi salvo localmente, mas a publicação falhou: ${data.erro_publicacao || data.aviso}`, 'error');
+      }
     } catch (error) {
       showResult(error.message || 'Falha ao adicionar o PDF.', 'error');
     } finally {

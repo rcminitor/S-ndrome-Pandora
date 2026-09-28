@@ -81,6 +81,9 @@ class InterfacePainel(unittest.TestCase):
         self.assertIn("/api/acervo/adicionar", self.app)
         self.assertIn("new FormData(form)", self.app)
         self.assertIn("modal.classList.add('open')", self.app)
+        self.assertIn('id="inboxPdf"', self.html)
+        self.assertIn("/api/acervo/entrada", self.app)
+        self.assertIn("data.publicacao.cofre.commit", self.app)
 
     def test_acervo_ordena_codigos_em_ordem_numerica_crescente(self):
         self.assertIn("function compareArticleCodes", self.app)

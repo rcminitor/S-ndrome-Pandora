@@ -270,8 +270,19 @@
         <div class="pn-note add-pdf-connection" id="addPdfConnection">Verificando o Painel de Estudo local…</div>
         <form class="pn-form add-pdf-form" id="addPdfForm">
           <fieldset id="addPdfFields" disabled>
-            <label>PDF do artigo ou TCC
-              <input type="file" name="pdf" accept="application/pdf,.pdf" required>
+            <div class="pn-note">
+              <label>Caixa de entrada <code>PDF/_Entrada</code>
+                <select name="entrada" id="inboxPdf">
+                  <option value="">Carregando PDFs encontrados…</option>
+                </select>
+              </label>
+              <div class="pn-actions" style="margin-top:8px">
+                <button class="pn-btn" id="refreshInboxBtn" type="button">Atualizar caixa</button>
+              </div>
+              <p class="pn-muted" id="inboxPdfHint">Arquivos nessa pasta são apenas analisados; não entram no Acervo antes da confirmação.</p>
+            </div>
+            <label>Ou selecione um PDF do artigo ou TCC
+              <input type="file" id="addPdfFile" name="pdf" accept="application/pdf,.pdf">
             </label>
             <div class="add-pdf-grid">
               <label>Código
@@ -1206,7 +1217,7 @@
   <script src="dados_estatisticas.js?v=20260928a"></script>
   <script src="dados_revisao.js?v=20260928a"></script>
   <script src="dados_leituras.js?v=20260928a"></script>
-  <script src="app.js?v=20260928g"></script>
+  <script src="app.js?v=20260928h"></script>
   <script src="painel.js?v=20260928d"></script>
   <script src="estadoarte.js?v=20260928b"></script>
   <script src="fichamentos.js?v=20260928b" defer></script>
