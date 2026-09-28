@@ -20,6 +20,7 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
         cls.inventario = ler_array_js("dados_inventario.js", "DADOS_INVENTARIO")
         cls.pdfs = ler_array_js("dados_pdfs.js", "DADOS_PDFS")
         cls.fichamentos = ler_array_js("dados_fichamentos.js", "DADOS_FICHAMENTOS")["fichamentos"]
+        cls.estado_arte = ler_array_js("dados_estadoarte.js", "ESTADO_ARTE")["fontes"]
 
     def test_inventario_publica_somente_fontes_com_pdf(self):
         caminhos_manifesto = {p["arquivo"].replace("\\", "/") for p in self.pdfs}
@@ -43,6 +44,10 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
         por_codigo = {str(a["codigo"]): a for a in self.inventario}
         self.assertIn("Etiopathogenesis", por_codigo["48"]["titulo"])
         self.assertIn("current understanding", por_codigo["N45"]["titulo"].lower())
+
+    def test_estado_da_arte_nao_publica_fonte_fora_do_acervo(self):
+        codigos = {str(a["codigo"]) for a in self.inventario}
+        self.assertEqual(set(), {str(f["codigo"]) for f in self.estado_arte} - codigos)
 
     def test_estado_e_fichamentos_sao_renderizados_dos_dados(self):
         html = (RAIZ / "index.html").read_text(encoding="utf-8")

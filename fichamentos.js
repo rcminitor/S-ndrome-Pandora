@@ -10,7 +10,10 @@
   const box = document.getElementById('fiConteudo');
   const D = window.DADOS_FICHAMENTOS || { fichamentos: [] };
   const baseLista = Array.isArray(D.fichamentos) ? D.fichamentos : [];
-  const codigosNoAcervo = new Set((window.DADOS_INVENTARIO || []).map((a) => String(a.codigo)));
+  const inventarioAtivo = () => window.PANDORA_ACERVO
+    ? window.PANDORA_ACERVO.inventario()
+    : (Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : []);
+  const codigosNoAcervo = () => new Set(inventarioAtivo().map((a) => String(a.codigo)));
 
   const esc = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rot = (c) => (/^\d/.test(c) ? '#' + c : c);
@@ -29,7 +32,8 @@
 
   // Obter lista consolidada (cofre + localStorage)
   function getConsolidatedFichamentos() {
-    const list = baseLista.map((f) => {
+    const ativos = codigosNoAcervo();
+    const list = baseLista.filter((f) => ativos.has(String(f.codigo))).map((f) => {
       const localMd = localStorage.getItem('pandora_fich_' + f.codigo);
       if (localMd) {
         return { ...f, md: localMd, isEdited: true };
@@ -42,6 +46,7 @@
       const k = localStorage.key(i);
       if (k && k.startsWith('pandora_fich_')) {
         const cod = k.replace('pandora_fich_', '');
+        if (!ativos.has(String(cod))) continue;
         if (!list.some((x) => String(x.codigo) === String(cod))) {
           const rawMd = localStorage.getItem(k) || '';
           // Tentar extrair título da primeira linha ou frontmatter
@@ -92,14 +97,12 @@
     }
 
     const card = (f) => {
-      const semPdfNoAcervo = !codigosNoAcervo.has(String(f.codigo));
       return `
       <div class="pn-tile fi-card" style="display:flex; flex-direction:column; justify-content:space-between; text-align:left; cursor:pointer;" data-fi="${esc(f.arquivo)}">
         <div>
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
             <strong style="font-size:0.95rem; color:var(--text-main);">${esc(rot(f.codigo))} — ${esc(f.titulo)}</strong>
             ${f.isEdited ? '<span style="font-size:0.7rem; color:var(--accent); font-weight:700; background:rgba(236,72,153,0.1); padding:2px 6px; border-radius:4px; margin-left:6px; flex-shrink:0;">● Editado</span>' : ''}
-            ${semPdfNoAcervo ? '<span style="font-size:0.7rem; color:var(--orange-primary); font-weight:700; margin-left:6px; flex-shrink:0;">Sem PDF no acervo</span>' : ''}
           </div>
           <small class="pn-muted" style="display:block; margin-bottom:12px;">
             ${f.nucleo ? 'Núcleo ' + esc(f.nucleo) + ' · ' : ''}${f.paginas ? esc(f.paginas) + ' págs. · ' : ''}${f.data ? 'fichado em ' + esc(f.data.split('-').reverse().join('/')) : ''}
@@ -112,14 +115,11 @@
       </div>`;
     };
 
-    const vinculados = lista.filter((f) => codigosNoAcervo.has(String(f.codigo))).length;
-    const rastreabilidade = lista.length - vinculados;
-
     box.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
         <div>
           <p style="margin:0; font-size:0.95rem;">
-            <strong>${lista.length} fichamentos disponíveis.</strong> ${vinculados} vinculados a fontes com PDF${rastreabilidade ? ` · ${rastreabilidade} preservado para rastreabilidade, sem PDF no acervo` : ''}.
+            <strong>${lista.length} fichamentos disponíveis.</strong> Todos vinculados a fontes com PDF válido no acervo.
             <small class="pn-muted" style="display:block">Edições feitas no navegador são salvas automaticamente no localStorage e podem ser baixadas em .md para o cofre.</small>
           </p>
         </div>
@@ -270,12 +270,16 @@ ${artigo.cautelas && artigo.cautelas !== 'NÃO CONFIRMADO' ? artigo.cautelas : '
   let modoEditor = 'editor'; // 'editor' ou 'preview'
 
   window.abrirEditorFichamento = function (codigo, tituloOpt, artigoOpt) {
+    if (!codigosNoAcervo().has(String(codigo))) {
+      alert('Este código não pertence ao acervo publicado. Sem PDF válido, não é possível criar ou editar um fichamento.');
+      return;
+    }
     const lista = getConsolidatedFichamentos();
     let f = lista.find((x) => String(x.codigo) === String(codigo));
     let artigo = artigoOpt;
 
-    if (!artigo && window.DADOS_INVENTARIO) {
-      artigo = window.DADOS_INVENTARIO.find((x) => String(x.codigo) === String(codigo));
+    if (!artigo) {
+      artigo = inventarioAtivo().find((x) => String(x.codigo) === String(codigo));
     }
 
     editorCodigoAtual = String(codigo);
@@ -481,7 +485,14 @@ ${artigo.cautelas && artigo.cautelas !== 'NÃO CONFIRMADO' ? artigo.cautelas : '
       if (btnNovo) {
         // Modal de seleção de artigo ou criar avulso
         const cod = prompt('Digite o código da fonte para fichar (ex: 26, 32, N01):');
-        if (cod) window.abrirEditorFichamento(cod.trim());
+        if (cod) {
+          const codigo = cod.trim().replace(/^#/, '');
+          if (!codigosNoAcervo().has(codigo)) {
+            alert('Código fora do acervo publicado. Adicione primeiro um PDF válido à fonte.');
+          } else {
+            window.abrirEditorFichamento(codigo);
+          }
+        }
         return;
       }
 

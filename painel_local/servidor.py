@@ -55,6 +55,7 @@ from estadoarte import EstadoArte  # noqa: E402
 from fichamentos import Fichamentos  # noqa: E402
 from adicionar_pdf import AdicionadorPDF, ErroAdicao  # noqa: E402
 from caixa_entrada_pdf import caminho_seguro, listar_entrada  # noqa: E402
+from acervo_ativo import codigos_ativos  # noqa: E402
 from publicar_acervo import ErroPublicacao, PublicadorAcervo  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
@@ -475,7 +476,10 @@ def caixa_entrada_acervo():
 # ------------------------------------------------------------------ estado da arte
 @app.get("/api/estadoarte")
 def estadoarte_ler():
-    return jsonify(EA.ler())
+    dados = EA.ler()
+    ativos = codigos_ativos(RAIZ)
+    dados["fontes"] = [f for f in dados.get("fontes", []) if str(f.get("codigo")) in ativos]
+    return jsonify(dados)
 
 
 @app.post("/api/estadoarte")
@@ -487,11 +491,20 @@ def estadoarte_salvar():
         if ok:
             REG.publicar("estado da arte: fonte removida")
         return jsonify({"ok": ok})
+    codigo = str(d.get("codigo", "")).strip().removeprefix("#")
+    if codigo not in codigos_ativos(RAIZ):
+        return jsonify({
+            "ok": False,
+            "erros": ["Código fora do acervo publicado. Sem PDF válido, a fonte não entra no Estado da Arte."],
+        }), 400
     erros = EA.salvar(d)
     if erros:
         return jsonify({"ok": False, "erros": erros}), 400
     REG.publicar(f"estado da arte: fonte {d.get('codigo')}")
-    return jsonify({"ok": True, "dados": EA.ler()})
+    dados = EA.ler()
+    ativos = codigos_ativos(RAIZ)
+    dados["fontes"] = [f for f in dados.get("fontes", []) if str(f.get("codigo")) in ativos]
+    return jsonify({"ok": True, "dados": dados})
 
 
 # ------------------------------------------------------------------ revisão espaçada
@@ -621,6 +634,10 @@ def salvar_fichamento():
     texto = d.get("texto", "")
     if not codigo or not texto:
         return jsonify({"erro": "Código e texto são obrigatórios."}), 400
+    if codigo not in codigos_ativos(RAIZ):
+        return jsonify({
+            "erro": "Código fora do acervo publicado. Sem PDF válido, não é possível salvar fichamento."
+        }), 400
 
     pasta_fich = COFRE / "Fichamentos"
     if not pasta_fich.exists():

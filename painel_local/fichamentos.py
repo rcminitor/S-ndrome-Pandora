@@ -12,6 +12,8 @@ import re
 from datetime import datetime
 from pathlib import Path
 
+from acervo_ativo import codigos_ativos
+
 CABECALHO = "// Gerado pelo Painel de Estudo (painel_local/fichamentos.py) a partir de Fichamentos\\ do cofre.\n"
 
 
@@ -55,8 +57,13 @@ class Fichamentos:
     def escrever_site(self) -> None:
         if not self.cofre_dir or not (Path(self.cofre_dir) / "Fichamentos").exists():
             return
+        ativos = codigos_ativos(self.js.parent)
+        fichamentos = [
+            ficha for ficha in ler_fichamentos(self.cofre_dir)
+            if str(ficha.get("codigo", "")) in ativos
+        ]
         dados = {"atualizado": datetime.now().isoformat(timespec="minutes"),
-                 "fichamentos": ler_fichamentos(self.cofre_dir)}
+                 "fichamentos": fichamentos}
         novo = CABECALHO + "window.DADOS_FICHAMENTOS = " + json.dumps(dados, ensure_ascii=False, indent=1) + ";\n"
         antigo = self.js.read_text(encoding="utf-8") if self.js.exists() else ""
         if re.sub(r'"atualizado": "[^"]*"', "", novo) == re.sub(r'"atualizado": "[^"]*"', "", antigo):

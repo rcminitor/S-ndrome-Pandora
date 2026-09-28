@@ -28,10 +28,34 @@ function getAuthorizedPdfPaths() {
   );
 }
 
-function getMergedData() {
+function getActiveInventoryData() {
   const authorizedPdfPaths = getAuthorizedPdfPaths();
+  const inventory = Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : [];
+  return inventory.filter(item => {
+    const arquivo = String(item.arquivo || '').replace(/\\/g, '/');
+    return authorizedPdfPaths.has(arquivo);
+  });
+}
 
-  return (window.DADOS_INVENTARIO || []).map(item => {
+function getActiveInventoryCodes() {
+  return new Set(getActiveInventoryData().map(item => String(item.codigo)));
+}
+
+function getActiveFichamentos() {
+  const activeCodes = getActiveInventoryCodes();
+  const entries = (window.DADOS_FICHAMENTOS || {}).fichamentos;
+  return (Array.isArray(entries) ? entries : [])
+    .filter(item => activeCodes.has(String(item.codigo)));
+}
+
+window.PANDORA_ACERVO = {
+  inventario: getActiveInventoryData,
+  codigos: getActiveInventoryCodes,
+  fichamentos: getActiveFichamentos,
+};
+
+function getMergedData() {
+  return getActiveInventoryData().map(item => {
     const edit = edits[item.codigo];
     if (!edit) return item;
 
@@ -45,9 +69,6 @@ function getMergedData() {
 
     if (hasInvalidStatus || hasUnexpectedFileEdit) return item;
     return { ...item, ...edit };
-  }).filter(item => {
-    const arquivo = String(item.arquivo || '').replace(/\\/g, '/');
-    return authorizedPdfPaths.has(arquivo);
   });
 }
 
@@ -295,7 +316,7 @@ function initInventory() {
 }
 
 function updateKpis(data) {
-  const fichamentoCodes = new Set(((window.DADOS_FICHAMENTOS || {}).fichamentos || []).map(f => String(f.codigo)));
+  const fichamentoCodes = new Set(getActiveFichamentos().map(f => String(f.codigo)));
   const n1Count = data.filter(d => normalizeForMatch(d.nucleo).includes('nucleo 1')).length;
   const n2Count = data.filter(d => normalizeForMatch(d.nucleo).includes('nucleo 2')).length;
   const priorityCount = data.filter(d => (d.fase || '').toLowerCase().includes('ler primeiro')).length;
@@ -307,12 +328,16 @@ function updateKpis(data) {
   const elPriority = document.getElementById('kpiPriority');
   const elFichados = document.getElementById('kpiFichados');
   const acervoBadge = document.getElementById('acervoBadge');
+  const nucleo1Count = document.getElementById('nucleo1Count');
+  const nucleo2Count = document.getElementById('nucleo2Count');
 
   if (elTotal) elTotal.textContent = data.length;
   if (elN1) elN1.textContent = n1Count;
   if (elN2) elN2.textContent = n2Count;
   if (elPriority) elPriority.textContent = priorityCount;
   if (elFichados) elFichados.textContent = fichadosCount;
+  if (nucleo1Count) nucleo1Count.textContent = n1Count;
+  if (nucleo2Count) nucleo2Count.textContent = n2Count;
   if (acervoBadge) {
     acervoBadge.textContent = data.length;
     acervoBadge.title = `${data.length} fontes únicas com PDF`;
@@ -325,7 +350,7 @@ function renderArticles() {
   if (!container) return;
 
   const data = getMergedData();
-  const fichamentoCodes = new Set(((window.DADOS_FICHAMENTOS || {}).fichamentos || []).map(f => String(f.codigo)));
+  const fichamentoCodes = new Set(getActiveFichamentos().map(f => String(f.codigo)));
 
   const filtered = data.filter(item => {
     const searchMatch = !currentSearch ||
@@ -540,7 +565,7 @@ function renderDrawerView(article) {
   const criarBtnFich = document.getElementById('drawerCriarFichBtn');
   const localFichKey = 'pandora_fich_' + article.codigo;
   const hasLocalFich = !!localStorage.getItem(localFichKey);
-  const dadosFichs = (window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos) || [];
+  const dadosFichs = getActiveFichamentos();
   const cofreFich = dadosFichs.find(f => String(f.codigo) === String(article.codigo) || (article.fichamento && f.arquivo === article.fichamento));
   const hasFich = !!cofreFich || hasLocalFich;
 
