@@ -82,6 +82,10 @@ class InterfacePainel(unittest.TestCase):
         self.assertIn("new FormData(form)", self.app)
         self.assertIn("modal.classList.add('open')", self.app)
 
+    def test_acervo_ordena_codigos_em_ordem_numerica_crescente(self):
+        self.assertIn("function compareArticleCodes", self.app)
+        self.assertIn("}).sort(compareArticleCodes);", self.app)
+
 
 if __name__ == "__main__":
     unittest.main()
