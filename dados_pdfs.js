@@ -425,5 +425,11 @@ window.DADOS_PDFS = [
   "nome": "Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos",
   "arquivo": "PDF/Síndrome CIF/Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos.pdf",
   "kb": 1254
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Cat and Dog Behavior Recognition IMU",
+  "arquivo": "PDF/Síndrome CIF/Cat and Dog Behavior Recognition IMU.pdf",
+  "kb": 2532
  }
 ];

@@ -8,6 +8,10 @@
   const STORE_KEY = 'pandora.registros.v1';
   const METAS_KEY = 'pandora.metas.v4';
   const INVENTARIO = Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : [];
+  const normalizar = (valor) => String(valor || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
 
   const IMAGENS = [
     ['Mapas mentais', 'Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.webp', 'Mapa mental — Síndrome de Pandora'],
@@ -469,13 +473,13 @@
     const c = (f) => INVENTARIO.filter(f).length;
     $('#pnAcervo').innerHTML = barras([
       ['Registros', INVENTARIO.length, 'var(--blue-light)'],
-      ['Núcleo 1', c((a) => /nucleo 1/i.test(a.nucleo)), 'var(--blue-soft)'],
-      ['Núcleo 2', c((a) => /nucleo 2/i.test(a.nucleo)), 'var(--pink-soft)'],
+      ['Núcleo 1', c((a) => normalizar(a.nucleo).includes('nucleo 1')), 'var(--blue-soft)'],
+      ['Núcleo 2', c((a) => normalizar(a.nucleo).includes('nucleo 2')), 'var(--pink-soft)'],
       ['Ler primeiro', c((a) => a.fase === 'Ler primeiro'), 'var(--orange-primary)'],
       ['Com arquivo', c((a) => a.arquivo), '#22c55e'],
       ['Fichados', c((a) => /fichamento concluido/i.test(a.status)), '#16a34a'],
       ['Não obtidos', c((a) => /nao obtido/i.test(a.status)), 'var(--gray-subtle)'],
-    ]) + `<p class="pn-muted">Fonte: <code>dados_inventario.js</code> (inventário de 64 registros). Agrupamento por núcleo é proposto, não declarado por autor.</p>`;
+    ]) + `<p class="pn-muted">Fonte: <code>dados_inventario.js</code> (inventário de ${INVENTARIO.length} registros). Agrupamento por núcleo é proposto, não declarado por autor.</p>`;
   }
   function renderUso() {
     if (!registros.length) { $('#pnUso').innerHTML = '<p class="pn-muted">Sem registros ainda.</p>'; return; }
