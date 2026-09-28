@@ -289,23 +289,6 @@ window.DADOS_INVENTARIO = [
         "nucleo": "Núcleo 1"
     },
     {
-        "fase": "Ler com cautela",
-        "fichamento": "Modelo — Fichamento.md",
-        "cautelas": "LITERATURA CINZENTA. Titulo, instituicao e ano NAO CONFIRMADOS.",
-        "codigo": "S10",
-        "grupo": "Contexto e revisao",
-        "tipoEstudo": "Dissertacao",
-        "procedencia": "NAO CONFIRMADO",
-        "porQueLer": "Material de apoio para contexto e vocabulario da area.",
-        "comoUsar": "Apoio de leitura. Nao citar como fonte primaria.",
-        "arquivo": "PDF_Para conhecimento/Mestrado-Medicina_Veterinaria-Julia_Aidos_Leal.pdf",
-        "referencia": "# Dissertacao de mestrado em Medicina Veterinaria (Julia Aidos Leal)\n\n> [!info] Identificação\n> **Código na triagem:** S10 · **Ano:** NAO CONFIRMADO · **Núcleo:** Núcleo 1 · **Fase:** Ler com cautela\n> **Tema:** Contexto e revisao · **Status:** arquivo obtido\n\n## Arquivo\n- **PDF:** [[PDF_Para conhecimento/Mestrado-Medicina_Veterinaria-Julia_Aidos_Leal.pdf]]\n- **Fichamento:** a fazer → criar em `Fichamentos/` a partir de [[Modelo — Fichamento]]\n\n## Referência (ABNT)\n> LEAL, J. A. Referencia completa NAO CONFIRMADA.\n\n*Procedência:* NAO CONFIRMADO — ❌ **sem procedência registrada — montar a referência a partir do artigo**\n\n## Por que ler\nMaterial de apoio para contexto e vocabulario da area.\n\n## Como usar na tese\nApoio de leitura. Nao citar como fonte primaria.\n\n## Cautelas\nLITERATURA CINZENTA. Titulo, instituicao e ano NAO CONFIRMADOS.\n\n## Tipo de estudo\nDissertacao\n\n## Minhas notas de leitura\n<!-- Escreva aqui. Regra do acervo: nada de número, página ou resultado sem conferir no PDF. -->\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 1 (base histórica, clínica e fisiológica)]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "arquivo obtido",
-        "ano": "NAO CONFIRMADO",
-        "titulo": "Dissertacao de mestrado em Medicina Veterinaria (Julia Aidos Leal)",
-        "nucleo": "Núcleo 1"
-    },
-    {
         "fase": "Ler primeiro",
         "fichamento": "S3 — Fichamento — External and internal influences on disease risk.md",
         "cautelas": "Secao \"Reference Point\" (JAVMA). Ano, volume e paginacao NAO CONFIRMADOS.",
@@ -354,23 +337,6 @@ window.DADOS_INVENTARIO = [
         "status": "fichamento concluido",
         "ano": "NAO CONFIRMADO",
         "titulo": "Sindrome de Pandora: prevencao",
-        "nucleo": "Núcleo 1"
-    },
-    {
-        "fase": "Ler com cautela",
-        "fichamento": "nao iniciado",
-        "cautelas": "LITERATURA CINZENTA. Titulo, instituicao e ano NAO CONFIRMADOS.",
-        "codigo": "S11",
-        "grupo": "Contexto e revisao",
-        "tipoEstudo": "TCC",
-        "procedencia": "NAO CONFIRMADO",
-        "porQueLer": "Material de apoio para contexto da area.",
-        "comoUsar": "Apoio de leitura. Nao citar como fonte primaria.",
-        "arquivo": "PDF_Para conhecimento/tcc_ Suzane Guimaraes.pdf",
-        "referencia": "GUIMARAES, S. Referencia completa NAO CONFIRMADA.",
-        "status": "arquivo obtido",
-        "ano": "NAO CONFIRMADO",
-        "titulo": "Trabalho de conclusao de curso (Suzane Guimaraes)",
         "nucleo": "Núcleo 1"
     },
     {
