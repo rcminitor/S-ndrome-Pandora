@@ -94,6 +94,14 @@ Conferir resultados no original.
         self.assertTrue(extra.is_file())
         self.assertFalse(any(a["corrigivel"] for a in resultado["depois"]["achados"]))
 
+    def test_corrige_formato_legado_sem_marcador_de_lista(self):
+        texto = self.nota.read_text(encoding="utf-8")
+        texto = texto.replace("- **PDF:** [[PDF/Antiga/fonte.pdf]]", "**PDF:** `PDF/Antiga/fonte.pdf`")
+        self.nota.write_text(texto, encoding="utf-8")
+        resultado = corrigir(self.cofre, self.painel, publicar=False)
+        self.assertIn(f"- **PDF:** [[{self.pdf_rel}]]", self.nota.read_text(encoding="utf-8"))
+        self.assertFalse(any(a["corrigivel"] for a in resultado["depois"]["achados"]))
+
 
 if __name__ == "__main__":
     unittest.main()
