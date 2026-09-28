@@ -20,7 +20,17 @@ function saveEdits() {
   try { localStorage.setItem(EDITS_KEY, JSON.stringify(edits)); } catch (e) {}
 }
 
+function getAuthorizedPdfPaths() {
+  return new Set(
+    (window.DADOS_PDFS || [])
+      .map(item => String(item.arquivo || '').replace(/\\/g, '/'))
+      .filter(path => path.startsWith('PDF/'))
+  );
+}
+
 function getMergedData() {
+  const authorizedPdfPaths = getAuthorizedPdfPaths();
+
   return (window.DADOS_INVENTARIO || []).map(item => {
     const edit = edits[item.codigo];
     if (!edit) return item;
@@ -35,6 +45,9 @@ function getMergedData() {
 
     if (hasInvalidStatus || hasUnexpectedFileEdit) return item;
     return { ...item, ...edit };
+  }).filter(item => {
+    const arquivo = String(item.arquivo || '').replace(/\\/g, '/');
+    return authorizedPdfPaths.has(arquivo);
   });
 }
 
@@ -190,7 +203,11 @@ function renderArticles() {
 
   if (countLabel) {
     const lidosCount = data.filter(d => lidos[d.codigo] === true).length;
-    countLabel.textContent = `Exibindo ${filtered.length} de ${data.length} artigos — ${lidosCount} marcados como lidos`;
+    const fichadosCount = data.filter(d => (d.status || '').toLowerCase().includes('fichamento concluido')).length;
+    const pdfCount = getAuthorizedPdfPaths().size;
+    const versionCount = Math.max(0, pdfCount - data.length);
+    const versionText = versionCount === 1 ? '1 versão adicional' : `${versionCount} versões adicionais`;
+    countLabel.textContent = `Exibindo ${filtered.length} de ${data.length} fontes únicas — ${pdfCount} PDFs (${versionText}) — ${fichadosCount} com fichamento concluído — ${lidosCount} marcadas como lidas`;
   }
 
   if (filtered.length === 0) {
