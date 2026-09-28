@@ -43,6 +43,12 @@ window.DADOS_PDFS = [
   "kb": 4549
  },
  {
+  "pasta": "PDF/A_classificar",
+  "nome": "Feline Idiopathic Cystitis Pathogenesis Histopathology 2021",
+  "arquivo": "PDF/A_classificar/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
+  "kb": 1393
+ },
+ {
   "pasta": "PDF/Primeiras Leituras",
   "nome": "01_Stress in owned cats_behavioural",
   "arquivo": "PDF/Primeiras Leituras/01_Stress in owned cats_behavioural.pdf",
