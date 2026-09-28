@@ -7,7 +7,7 @@ window.DADOS_REVISAO = {
  "firmes": 0,
  "acerto_7d": null,
  "revisoes_7d": 0,
- "atualizado": "2026-09-26T22:47",
+ "atualizado": "2026-09-27T23:28",
  "por_artigo": [
   {
    "titulo": "01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC",
