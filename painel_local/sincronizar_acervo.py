@@ -58,14 +58,40 @@ def _limpar_markdown(texto: str) -> str:
     return " ".join(linhas)
 
 
+def _campo_sintese(texto: str, rotulo: str) -> str:
+    """Lê campos curtos dentro de ``## Síntese de uso``.
+
+    Algumas notas consolidadas usam uma seção única em vez de três seções
+    separadas. O exportador precisa reconhecer os dois formatos para não
+    publicar ``NÃO CONFIRMADO`` quando a nota já contém a síntese verificada.
+    """
+    secao = _secao(texto, "Síntese de uso")
+    if not secao:
+        return ""
+    m = re.search(
+        rf"(?im)^\s*[-*]\s+\*\*{re.escape(rotulo)}:\*\*\s*(.+?)\s*$",
+        secao,
+    )
+    return _limpar_markdown(m.group(1)) if m else ""
+
+
+def _campo_rotulado(texto: str, *rotulos: str) -> str:
+    """Compatibilidade com notas antigas no formato ``rótulo: valor``."""
+    opcoes = "|".join(re.escape(r) for r in rotulos)
+    m = re.search(rf"(?im)^\s*(?:[-*]\s*)?(?:{opcoes})\s*:\s*(.+?)\s*$", texto)
+    return _limpar_markdown(m.group(1)) if m else ""
+
+
 def _referencia(texto: str) -> str:
     m = re.search(r"(?ims)^##\s+[^\n]*Refer[\u00eae]ncia[^\n]*\n(.*?)(?=^##\s+|\Z)", texto)
     secao = m.group(1).strip() if m else ""
     for linha in secao.splitlines():
         limpa = _limpar_markdown(linha)
         if limpa and not limpa.casefold().startswith("proced"):
+            if limpa.startswith(("✔", "🟡", "⚠")) and "—" in limpa:
+                limpa = limpa.split("—", 1)[1].strip()
             return limpa
-    return ""
+    return _campo_rotulado(texto, "referência ABNT", "referencia ABNT")
 
 
 def _procedencia(texto: str) -> str:
@@ -135,16 +161,32 @@ def _manifesto_pdfs(cofre: Path) -> tuple[list[dict], dict[str, int]]:
 
 def _item_novo(codigo: str, nota: dict, fichamento: str) -> dict:
     fm, texto = nota["fm"], nota["texto"]
+    por_que_ler = (
+        _limpar_markdown(_secao(texto, "Por que ler"))
+        or _campo_sintese(texto, "Por que ler")
+        or _campo_rotulado(texto, "por que ler")
+    )
+    como_usar = (
+        _limpar_markdown(_secao(texto, "Como usar"))
+        or _campo_sintese(texto, "Como usar")
+        or _campo_rotulado(texto, "como usar na tese", "como usar")
+    )
+    cautelas = (
+        _limpar_markdown(_secao(texto, "Cautelas"))
+        or _campo_sintese(texto, "Cautela")
+        or _campo_sintese(texto, "Cautelas")
+        or _campo_rotulado(texto, "cautelas", "cautela")
+    )
     return {
         "fase": fm.get("fase", "A classificar"),
         "fichamento": fichamento,
-        "cautelas": _limpar_markdown(_secao(texto, "Cautelas")) or "NÃO CONFIRMADO",
+        "cautelas": cautelas or "NÃO CONFIRMADO",
         "codigo": codigo,
-        "grupo": fm.get("tema", "NÃO CONFIRMADO"),
-        "tipoEstudo": fm.get("tipo_de_estudo", "NÃO CONFIRMADO"),
+        "grupo": fm.get("tema") or _campo_rotulado(texto, "grupo temático", "grupo tematico") or "NÃO CONFIRMADO",
+        "tipoEstudo": fm.get("tipo_de_estudo") or _campo_rotulado(texto, "tipo de estudo") or "NÃO CONFIRMADO",
         "procedencia": _procedencia(texto),
-        "porQueLer": _limpar_markdown(_secao(texto, "Por que ler")) or "NÃO CONFIRMADO",
-        "comoUsar": _limpar_markdown(_secao(texto, "Como usar")) or "NÃO CONFIRMADO",
+        "porQueLer": por_que_ler or "NÃO CONFIRMADO",
+        "comoUsar": como_usar or "NÃO CONFIRMADO",
         "arquivo": nota["pdf_valido"],
         "referencia": _referencia(texto) or "NÃO CONFIRMADO",
         "status": fm.get("status", "arquivo obtido"),
@@ -154,32 +196,97 @@ def _item_novo(codigo: str, nota: dict, fichamento: str) -> dict:
     }
 
 
+def _completar_com_fichamento(item: dict, ficha: dict | None) -> dict:
+    """Usa somente seções já conferidas do fichamento para sanar lacunas."""
+    if not ficha:
+        return item
+    texto = ficha.get("md", "")
+    referencia = _referencia(texto)
+    limitacoes = (
+        _limpar_markdown(_secao(texto, "Limitações apontadas"))
+        or _limpar_markdown(_secao(texto, "Limitações"))
+    )
+    onde_entra = _secao(texto, "Onde entra na tese") or _secao(texto, "Uso na tese")
+    argumento = _campo_rotulado(onde_entra, "Argumento que sustenta")
+    como_usar = _limpar_markdown(onde_entra)
+    minha_leitura = _limpar_markdown(_secao(texto, "Minha leitura"))
+    candidatos = {
+        "referencia": referencia,
+        "cautelas": limitacoes,
+        "comoUsar": como_usar,
+        "porQueLer": argumento or minha_leitura or _limpar_markdown(onde_entra),
+    }
+    for campo, valor in candidatos.items():
+        if _nao_confirmado(item.get(campo)) and valor and not _nao_confirmado(valor):
+            item[campo] = valor
+    return item
+
+
+def _nao_confirmado(valor) -> bool:
+    normalizado = _sem_acentos(str(valor or ""))
+    return not normalizado or "nao confirmado" in normalizado
+
+
+def _atualizar_da_nota(item: dict, codigo: str, nota: dict, ficha: dict | None) -> None:
+    """Promove dados confirmados da nota sem apagar correções legadas úteis.
+
+    A nota é a origem canônica dos campos bibliográficos e de classificação.
+    Valores confirmados na nota substituem cópias antigas do painel. Se ambos
+    ainda estiverem pendentes, prevalece a formulação canônica da nota. Título
+    e classificação também são sincronizados para evitar códigos deslocados.
+    """
+    origem = _completar_com_fichamento(
+        _item_novo(codigo, nota, ficha["arquivo"] if ficha else ""), ficha
+    )
+    campos_canonicos = (
+        "fase", "cautelas", "grupo", "tipoEstudo", "procedencia",
+        "porQueLer", "comoUsar", "referencia", "status", "ano", "nucleo",
+    )
+    for campo in campos_canonicos:
+        valor = origem.get(campo)
+        if not _nao_confirmado(valor):
+            item[campo] = valor
+        elif not item.get(campo) or _nao_confirmado(item.get(campo)):
+            item[campo] = valor
+    if not _nao_confirmado(origem.get("titulo")):
+        item["titulo"] = origem["titulo"]
+
+
 def construir(cofre: Path, painel: Path) -> tuple[list[dict], list[dict], dict, list[str], dict[str, int]]:
     inventario = ler_json_js(painel / "dados_inventario.js", "DADOS_INVENTARIO")
     fich_atual = ler_json_js(painel / "dados_fichamentos.js", "DADOS_FICHAMENTOS")
     notas, marcas_notas = _notas(cofre)
     pdfs, marcas_pdfs = _manifesto_pdfs(cofre)
     fichamentos = ler_fichamentos(cofre)
-    fich_por_codigo = {str(f["codigo"]): f["arquivo"] for f in fichamentos}
+    fich_por_codigo = {str(f["codigo"]): f for f in fichamentos}
     avisos: list[str] = []
     for nota in notas.values():
         nota["pdf_valido"] = _caminho_pdf_valido(cofre, nota["pdf"])
 
     por_codigo = {str(a["codigo"]): dict(a) for a in inventario}
     ordem = [str(a["codigo"]) for a in inventario]
+    retirar: set[str] = set()
     for codigo in ordem:
         item = por_codigo[codigo]
         nota = notas.get(codigo)
         if nota:
+            status_nota = _sem_acentos(nota["fm"].get("status", ""))
+            if any(marca in status_nota for marca in STATUS_NAO_PUBLICAVEL):
+                retirar.add(codigo)
+                avisos.append(f"{codigo}: retirado da publicacao; nota preservada para rastreabilidade")
+                continue
+            _atualizar_da_nota(item, codigo, nota, fich_por_codigo.get(codigo))
             atual_valido = _caminho_pdf_valido(cofre, str(item.get("arquivo", "")))
-            if not atual_valido and nota["pdf_valido"]:
+            if nota["pdf_valido"] and nota["pdf_valido"] != atual_valido:
                 item["arquivo"] = nota["pdf_valido"]
+                if atual_valido:
+                    avisos.append(f"{codigo}: caminho do PDF atualizado pela nota canônica")
             elif nota["pdf"] and nota["pdf_valido"] != atual_valido:
                 avisos.append(f"{codigo}: link divergente na nota ignorado; mantido {item.get('arquivo')}")
         else:
             avisos.append(f"{codigo}: registro publicado ainda nao possui nota em Fontes/")
         if codigo in fich_por_codigo and not item.get("fichamento"):
-            item["fichamento"] = fich_por_codigo[codigo]
+            item["fichamento"] = fich_por_codigo[codigo]["arquivo"]
         elif not item.get("fichamento"):
             item["fichamento"] = ""
 
@@ -193,15 +300,25 @@ def construir(cofre: Path, painel: Path) -> tuple[list[dict], list[dict], dict, 
         if not nota["pdf_valido"]:
             avisos.append(f"{codigo}: nao publicado porque nao possui PDF valido dentro de PDF/")
             continue
-        por_codigo[codigo] = _item_novo(codigo, nota, fich_por_codigo.get(codigo, ""))
+        ficha = fich_por_codigo.get(codigo)
+        por_codigo[codigo] = _completar_com_fichamento(
+            _item_novo(codigo, nota, ficha["arquivo"] if ficha else ""), ficha
+        )
         ordem.append(codigo)
         avisos.append(f"{codigo}: nova fonte pronta para inclusao")
 
-    inventario_novo = [por_codigo[c] for c in ordem]
+    inventario_novo = [por_codigo[c] for c in ordem if c not in retirar]
+    codigos_ativos = {str(item["codigo"]) for item in inventario_novo}
+    fichamentos_ativos = [f for f in fichamentos if str(f.get("codigo")) in codigos_ativos]
+    for ficha in fichamentos:
+        if str(ficha.get("codigo")) not in codigos_ativos:
+            avisos.append(
+                f"{ficha.get('codigo')}: fichamento mantido no cofre, mas não publicado sem PDF ativo"
+            )
     caminhos_ativos = {str(item.get("arquivo", "")).replace("\\", "/") for item in inventario_novo}
     pdfs = [pdf for pdf in pdfs if pdf["arquivo"] in caminhos_ativos]
-    conteudo_fichas = {"atualizado": fich_atual.get("atualizado", ""), "fichamentos": fichamentos}
-    if fichamentos != fich_atual.get("fichamentos", []):
+    conteudo_fichas = {"atualizado": fich_atual.get("atualizado", ""), "fichamentos": fichamentos_ativos}
+    if fichamentos_ativos != fich_atual.get("fichamentos", []):
         conteudo_fichas["atualizado"] = datetime.now().isoformat(timespec="minutes")
     return inventario_novo, pdfs, conteudo_fichas, avisos, {**marcas_notas, **marcas_pdfs}
 

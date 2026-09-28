@@ -119,6 +119,45 @@
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
+/* Inclusão transacional de PDF no Acervo */
+#tab-inventory { scroll-margin-top: 155px; }
+.inventory-command-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.inventory-heading { margin: 0; color: var(--text-main); font: 600 1.25rem var(--font-serif); }
+.inventory-subtitle { margin: 3px 0 0; color: var(--text-muted); font-size: .84rem; }
+.add-pdf-modal-box { width: min(720px, 100%); }
+.add-pdf-connection { margin: 16px 0; }
+.add-pdf-connection.is-ok { border-left-color: var(--success, #047857); }
+.add-pdf-connection.is-error { border-left-color: #b91c1c; }
+.add-pdf-form { display: block; }
+.add-pdf-form fieldset { display: grid; gap: 12px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.add-pdf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.add-pdf-form select, .add-pdf-form textarea {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+  padding: 9px 10px;
+  font: .9rem var(--font-sans);
+}
+.add-pdf-form textarea { resize: vertical; min-height: 78px; }
+.add-pdf-form input:focus, .add-pdf-form select:focus, .add-pdf-form textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue-primary) 18%, transparent);
+}
+.add-pdf-form fieldset:disabled { opacity: .58; }
+.add-pdf-actions { justify-content: flex-end; margin-top: 4px; }
+.add-pdf-result { min-height: 1.5em; margin: 12px 0 0; font-size: .86rem; font-weight: 600; }
+.add-pdf-result.is-error { color: #b91c1c; }
+.add-pdf-result.is-ok { color: var(--success, #047857); }
+
+@media (max-width: 700px) {
+  .inventory-command-bar { align-items: stretch; flex-direction: column; }
+  .inventory-command-bar .pn-btn { width: 100%; justify-content: center; }
+  .add-pdf-grid { grid-template-columns: 1fr; }
+}
+
 /* Imagens em destaque nas páginas */
 .pn-feature .pn-thumb img { aspect-ratio: auto; object-fit: contain; max-height: 70vh; }
 .pn-open-img img { object-fit: contain; background: #fff; }

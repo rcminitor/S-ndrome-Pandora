@@ -52,6 +52,7 @@ from backup_cofre import Backup  # noqa: E402
 from resumo_semanal import Resumo  # noqa: E402
 from estadoarte import EstadoArte  # noqa: E402
 from fichamentos import Fichamentos  # noqa: E402
+from adicionar_pdf import AdicionadorPDF, ErroAdicao  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
 
@@ -130,6 +131,7 @@ except Exception:
     pass
 
 app = Flask(__name__, static_folder=None)
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 app.config["NOTEBOOKLM_HISTORICO"] = str(BIBLIOTECA / "NotebookLM" / "Historico")
 from notebook_bridge import bp as notebooklm_bp
 app.register_blueprint(notebooklm_bp)
@@ -137,6 +139,7 @@ JOBS: dict[str, dict] = {}
 ANALISES_ATIVAS: dict[Path, dict] = {}
 TRAVA_ANALISES = threading.Lock()
 PORTA = 8765
+ADICIONADOR_PDF = AdicionadorPDF(BASE, RAIZ)
 # O site publicado pode conversar com este painel (só ele e o próprio PC).
 ORIGENS = {"https://rcminitor.github.io", f"http://localhost:{PORTA}", f"http://127.0.0.1:{PORTA}"}
 
@@ -422,6 +425,21 @@ def historico():
 def publicar_agora():
     REG.publicar("envio manual")
     return jsonify({"ok": True})
+
+
+@app.post("/api/acervo/adicionar")
+def adicionar_pdf_acervo():
+    """Inclui PDF + nota de fonte e só publica depois da aprovação do Guardião."""
+    try:
+        resultado = ADICIONADOR_PDF.adicionar(request.files.get("pdf"), request.form)
+    except ErroAdicao as e:
+        return jsonify({"ok": False, "erro": str(e)}), e.status
+    except Exception as e:
+        return jsonify({"ok": False, "erro": f"Falha ao adicionar PDF: {type(e).__name__}: {e}"}), 500
+    COFRE_OBJ._cache = None
+    atualizar_fila()
+    REG.publicar(f"acervo: PDF {resultado['item']['codigo']} adicionado")
+    return jsonify({"ok": True, **resultado})
 
 
 # ------------------------------------------------------------------ estado da arte

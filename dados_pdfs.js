@@ -26,6 +26,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/29062026",
+  "nome": "metabolites-16-00330",
+  "arquivo": "PDF/29062026/metabolites-16-00330.pdf",
+  "kb": 8640
+ },
+ {
+  "pasta": "PDF/29062026",
   "nome": "Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in",
   "arquivo": "PDF/29062026/Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in.pdf",
   "kb": 447
@@ -61,6 +67,12 @@ window.DADOS_PDFS = [
   "kb": 238
  },
  {
+  "pasta": "PDF/Primeiras Leituras",
+  "nome": "06_Síndrome de Pandora",
+  "arquivo": "PDF/Primeiras Leituras/06_Síndrome de Pandora.pdf",
+  "kb": 106
+ },
+ {
   "pasta": "PDF/Primordiais",
   "nome": "buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats",
   "arquivo": "PDF/Primordiais/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
@@ -83,6 +95,12 @@ window.DADOS_PDFS = [
   "nome": "1-s2.0-S016815912600211X-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S016815912600211X-main.pdf",
   "kb": 1344
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S0168169925005010-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S0168169925005010-main.pdf",
+  "kb": 3690
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -143,12 +161,6 @@ window.DADOS_PDFS = [
   "nome": "Artificial intelligence and companion animals",
   "arquivo": "PDF/Síndrome CIF/Artificial intelligence and companion animals.pdf",
   "kb": 3132
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Artificial intelligence in veterinary and animal science",
-  "arquivo": "PDF/Síndrome CIF/Artificial intelligence in veterinary and animal science.pdf",
-  "kb": 203
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -395,11 +407,5 @@ window.DADOS_PDFS = [
   "nome": "vfaf057",
   "arquivo": "PDF/Síndrome CIF/vfaf057.pdf",
   "kb": 2022
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos",
-  "arquivo": "PDF/Síndrome CIF/Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos.pdf",
-  "kb": 1254
  }
 ];

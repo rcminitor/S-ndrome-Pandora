@@ -29,7 +29,22 @@ class GuardiaoAcervoTeste(unittest.TestCase):
         pdfs = [{"arquivo": "PDF/x.pdf"}]
         rel = validar_dados(inventario, pdfs, [], lambda _: True, lambda _: b"%PDF-")
         self.assertTrue(rel.ok, rel.texto())
-        self.assertEqual({"fontes": 1, "pdfs_autorizados": 1, "fichamentos": 0}, rel.numeros)
+        self.assertEqual(
+            {"fontes": 1, "pdfs_autorizados": 1, "fichamentos": 0, "fontes_com_pendencia": 0},
+            rel.numeros,
+        )
+
+    def test_expoe_campos_nao_confirmados_sem_inventar_dados(self):
+        inventario = [{
+            "codigo": "X", "arquivo": "PDF/x.pdf", "status": "arquivo obtido",
+            "referencia": "NÃO CONFIRMADO",
+        }]
+        rel = validar_dados(
+            inventario, [{"arquivo": "PDF/x.pdf"}], [], lambda _: True, lambda _: b"%PDF-"
+        )
+        self.assertTrue(rel.ok, rel.texto())
+        self.assertEqual(1, rel.numeros["fontes_com_pendencia"])
+        self.assertTrue(any("X (referencia)" in aviso for aviso in rel.avisos))
 
     def test_bloqueia_duplicata_por_titulo_ou_doi_mesmo_com_pdf_diferente(self):
         inventario = [

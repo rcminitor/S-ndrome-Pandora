@@ -62,7 +62,91 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initInventory();
   initDrawer();
+  initAddPdf();
 });
+
+// --------------------------------------------------------------------------
+// Inclusão segura de artigo/TCC pelo Painel de Estudo local
+// --------------------------------------------------------------------------
+const LOCAL_PANEL_API = 'http://127.0.0.1:8765';
+
+function initAddPdf() {
+  const openBtn = document.getElementById('addPdfBtn');
+  const modal = document.getElementById('addPdfModal');
+  const form = document.getElementById('addPdfForm');
+  const fields = document.getElementById('addPdfFields');
+  const connection = document.getElementById('addPdfConnection');
+  const result = document.getElementById('addPdfResult');
+  const submit = document.getElementById('addPdfSubmitBtn');
+  if (!openBtn || !modal || !form || !fields || !connection || !result || !submit) return;
+
+  const close = () => {
+    modal.classList.remove('open');
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+  const showResult = (message, type = '') => {
+    result.textContent = message;
+    result.className = `add-pdf-result${type ? ` is-${type}` : ''}`;
+  };
+  const checkConnection = async () => {
+    fields.disabled = true;
+    connection.textContent = 'Verificando o Painel de Estudo local…';
+    connection.className = 'pn-note add-pdf-connection';
+    try {
+      const response = await fetch(`${LOCAL_PANEL_API}/api/ping`, { cache: 'no-store' });
+      if (!response.ok) throw new Error('indisponível');
+      const data = await response.json();
+      if (!data.ok) throw new Error('resposta inválida');
+      fields.disabled = false;
+      connection.textContent = 'Painel local conectado. A inclusão será validada antes de alterar o acervo.';
+      connection.classList.add('is-ok');
+    } catch (_) {
+      connection.textContent = 'Abra o Painel de Estudo no computador para adicionar PDFs. A consulta ao acervo continua disponível.';
+      connection.classList.add('is-error');
+    }
+  };
+
+  openBtn.addEventListener('click', () => {
+    modal.hidden = false;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    showResult('');
+    checkConnection();
+  });
+  document.getElementById('addPdfCloseBtn')?.addEventListener('click', close);
+  document.getElementById('addPdfCancelBtn')?.addEventListener('click', close);
+  modal.addEventListener('click', (event) => { if (event.target === modal) close(); });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) close();
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    submit.disabled = true;
+    submit.textContent = 'Validando…';
+    showResult('Conferindo PDF, duplicatas e integridade do acervo…');
+    try {
+      const response = await fetch(`${LOCAL_PANEL_API}/api/acervo/adicionar`, {
+        method: 'POST',
+        body: new FormData(form),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.ok) throw new Error(data.erro || 'Não foi possível adicionar o PDF.');
+      window.DADOS_INVENTARIO = [...(window.DADOS_INVENTARIO || []), data.item];
+      window.DADOS_PDFS = [...(window.DADOS_PDFS || []), data.pdf];
+      form.reset();
+      renderArticles();
+      updateKpis(getMergedData());
+      showResult(`${data.item.codigo} adicionado com segurança. A publicação foi colocada na fila.`, 'ok');
+    } catch (error) {
+      showResult(error.message || 'Falha ao adicionar o PDF.', 'error');
+    } finally {
+      submit.disabled = false;
+      submit.textContent = 'Validar e adicionar';
+    }
+  });
+}
 
 // --------------------------------------------------------------------------
 // 1. Theme Toggle (Dark / Light)

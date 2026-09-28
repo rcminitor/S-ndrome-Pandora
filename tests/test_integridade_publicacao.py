@@ -36,8 +36,8 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
         self.assertEqual(len(fichados), len(codigos & fichados))
         self.assertEqual(set(), fichados - codigos)
         self.assertTrue({"11", "20", "34", "38", "41", "48", "54", "55", "57"}.issubset(codigos))
-        self.assertTrue({"N35", "N36", "N38", "N42", "N44", "N45"}.issubset(codigos))
-        self.assertTrue({"N03", "N33", "N34", "N37", "N39", "N40", "N41", "N43"}.isdisjoint(codigos))
+        self.assertTrue({"N35", "N36", "N38", "N40", "N42", "N45", "S7"}.issubset(codigos))
+        self.assertTrue({"N03", "N33", "N34", "N37", "N39", "N41", "N43", "N44"}.isdisjoint(codigos))
 
     def test_codigo_48_continua_ligado_ao_fichamento_correto(self):
         por_codigo = {str(a["codigo"]): a for a in self.inventario}

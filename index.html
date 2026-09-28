@@ -220,6 +220,13 @@
       
       <!-- Filter Bar -->
       <div class="filter-bar">
+        <div class="inventory-command-bar">
+          <div>
+            <h2 class="inventory-heading">Acervo de artigos e TCC</h2>
+            <p class="inventory-subtitle">Cada fonte publicada deve possuir um PDF válido e uma nota correspondente no cofre.</p>
+          </div>
+          <button class="pn-btn pn-btn-primary" id="addPdfBtn" type="button">Adicionar PDF</button>
+        </div>
         <div class="search-box">
           <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
           <input 
@@ -250,6 +257,68 @@
       <!-- Articles Grid Container -->
       <div class="articles-grid" id="articlesGrid">
         <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <div class="pn-modal" id="addPdfModal" role="dialog" aria-modal="true" aria-labelledby="addPdfTitle" hidden>
+      <div class="pn-modal-box add-pdf-modal-box">
+        <button class="pn-modal-close" id="addPdfCloseBtn" type="button" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+        <h2 id="addPdfTitle">Adicionar PDF ao Acervo</h2>
+        <p class="pn-muted">O PDF será salvo em <code>PDF/A_classificar</code>. A fonte só aparecerá no Acervo depois que o Guardião validar PDF, código, título e duplicatas.</p>
+        <div class="pn-note add-pdf-connection" id="addPdfConnection">Verificando o Painel de Estudo local…</div>
+        <form class="pn-form add-pdf-form" id="addPdfForm">
+          <fieldset id="addPdfFields" disabled>
+            <label>PDF do artigo ou TCC
+              <input type="file" name="pdf" accept="application/pdf,.pdf" required>
+            </label>
+            <div class="add-pdf-grid">
+              <label>Código
+                <input type="text" name="codigo" placeholder="Ex.: 68, N46 ou S12" maxlength="7" required>
+              </label>
+              <label>Tipo
+                <select name="tipo_documento" required>
+                  <option value="Artigo">Artigo</option>
+                  <option value="TCC">TCC</option>
+                </select>
+              </label>
+            </div>
+            <label>Título completo
+              <input type="text" name="titulo" required>
+            </label>
+            <div class="add-pdf-grid">
+              <label>Ano
+                <input type="text" name="ano" inputmode="numeric" maxlength="4" placeholder="Vazio = NÃO CONFIRMADO">
+              </label>
+              <label>Núcleo proposto
+                <select name="nucleo">
+                  <option value="A classificar">A classificar</option>
+                  <option value="Núcleo 1">Núcleo 1</option>
+                  <option value="Núcleo 2">Núcleo 2</option>
+                </select>
+              </label>
+              <label>Prioridade
+                <select name="fase">
+                  <option value="A classificar">A classificar</option>
+                  <option value="Ler primeiro">Ler primeiro</option>
+                  <option value="Ler depois">Ler depois</option>
+                </select>
+              </label>
+            </div>
+            <label>Tema
+              <input type="text" name="tema" placeholder="Opcional; pode ser classificado depois">
+            </label>
+            <label>Referência ABNT
+              <textarea name="referencia" rows="3" placeholder="Opcional. Será marcada como A CONFERIR até a leitura do PDF."></textarea>
+            </label>
+            <div class="pn-actions add-pdf-actions">
+              <button class="pn-btn" id="addPdfCancelBtn" type="button">Cancelar</button>
+              <button class="pn-btn pn-btn-primary" id="addPdfSubmitBtn" type="submit">Validar e adicionar</button>
+            </div>
+          </fieldset>
+        </form>
+        <p class="add-pdf-result" id="addPdfResult" role="status" aria-live="polite"></p>
       </div>
     </div>
 
@@ -1101,8 +1170,8 @@
       </div>
     </div>
   </div>
-  <script src="dados_pdfs.js?v=a7cde6a52b"></script>
-  <script src="dados_inventario.js?v=9bdaf59c30"></script>
+  <script src="dados_pdfs.js?v=1d649ddfdf"></script>
+  <script src="dados_inventario.js?v=70d67a77dc"></script>
   <!-- Modal editar etapa do Gantt -->
   <div class="pn-modal" id="modalGanttEditar" role="dialog" aria-modal="true" hidden>
     <div class="pn-modal-box">
@@ -1133,11 +1202,11 @@
   </div>
 
   <script src="dados_estadoarte.js?v=20260928c"></script>
-  <script src="dados_fichamentos.js?v=d55c42465d"></script>
+  <script src="dados_fichamentos.js?v=8c9ee00b5a"></script>
   <script src="dados_estatisticas.js?v=20260928a"></script>
   <script src="dados_revisao.js?v=20260928a"></script>
   <script src="dados_leituras.js?v=20260928a"></script>
-  <script src="app.js?v=20260928e"></script>
+  <script src="app.js?v=20260928f"></script>
   <script src="painel.js?v=20260928d"></script>
   <script src="estadoarte.js?v=20260928b"></script>
   <script src="fichamentos.js?v=20260928b" defer></script>
