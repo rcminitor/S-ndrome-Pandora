@@ -7,9 +7,13 @@
 
   const STORE_KEY = 'pandora.registros.v1';
   const METAS_KEY = 'pandora.metas.v4';
-  const INVENTARIO = Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : [];
-  const FICHAMENTOS = Array.isArray(window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos)
-    ? window.DADOS_FICHAMENTOS.fichamentos : [];
+  const INVENTARIO = window.PANDORA_ACERVO
+    ? window.PANDORA_ACERVO.inventario()
+    : (Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : []);
+  const FICHAMENTOS = window.PANDORA_ACERVO
+    ? window.PANDORA_ACERVO.fichamentos()
+    : (Array.isArray(window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos)
+      ? window.DADOS_FICHAMENTOS.fichamentos : []);
   const CODIGOS_FICHADOS = new Set(FICHAMENTOS.map((f) => String(f.codigo)));
   const normalizar = (valor) => String(valor || '')
     .normalize('NFD')
@@ -193,8 +197,9 @@
   }
   function derivarDosDados() {
     const fichMap = {}, leitMap = {};
-    const fichamentosBrutos = window.DADOS_FICHAMENTOS && window.DADOS_FICHAMENTOS.fichamentos;
-    const fichamentos = Array.isArray(fichamentosBrutos) ? fichamentosBrutos : [];
+    const fichamentos = window.PANDORA_ACERVO
+      ? window.PANDORA_ACERVO.fichamentos()
+      : FICHAMENTOS;
     const leituras = Array.isArray(window.DADOS_LEITURAS) ? window.DADOS_LEITURAS : [];
     fichamentos.forEach((f) => {
       if (!f.data) return;

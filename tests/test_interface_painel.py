@@ -89,6 +89,19 @@ class InterfacePainel(unittest.TestCase):
         self.assertIn("function compareArticleCodes", self.app)
         self.assertIn("}).sort(compareArticleCodes);", self.app)
 
+    def test_todas_as_abas_usam_somente_o_acervo_com_pdf(self):
+        fichamentos = (RAIZ / "fichamentos.js").read_text(encoding="utf-8")
+        estado = (RAIZ / "estadoarte.js").read_text(encoding="utf-8")
+        painel = (RAIZ / "painel.js").read_text(encoding="utf-8")
+        self.assertIn("window.PANDORA_ACERVO", self.app)
+        self.assertIn("window.PANDORA_ACERVO", fichamentos)
+        self.assertIn("window.PANDORA_ACERVO", estado)
+        self.assertIn("window.PANDORA_ACERVO", painel)
+        self.assertIn('id="nucleo1Count"', self.html)
+        self.assertIn('id="nucleo2Count"', self.html)
+        self.assertNotIn("Núcleo 1 Proposto (22 Fontes)", self.html)
+        self.assertNotIn("Núcleo 2 Proposto (42 Fontes)", self.html)
+
 
 if __name__ == "__main__":
     unittest.main()

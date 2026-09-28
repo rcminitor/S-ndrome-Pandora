@@ -10,7 +10,16 @@
   const box = document.getElementById('eaConteudo');
   const btn = document.querySelector('[data-tab="tab-estadoarte"]');
   if (!box) return;
-  let dados = window.ESTADO_ARTE || { criterios: [], fontes: [] };
+  const inventarioAtivo = () => window.PANDORA_ACERVO
+    ? window.PANDORA_ACERVO.inventario()
+    : (Array.isArray(window.DADOS_INVENTARIO) ? window.DADOS_INVENTARIO : []);
+  const codigosAtivos = () => new Set(inventarioAtivo().map((item) => String(item.codigo)));
+  const filtrarDados = (origem) => {
+    const base = origem || { criterios: [], fontes: [] };
+    const ativos = codigosAtivos();
+    return { ...base, fontes: (base.fontes || []).filter((fonte) => ativos.has(String(fonte.codigo))) };
+  };
+  let dados = filtrarDados(window.ESTADO_ARTE);
   let ligado = false;
 
   const esc = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -43,7 +52,7 @@
           <label>Código do inventário <input name="codigo" list="eaCodigos" required placeholder="ex.: 50 ou S4"></label>
           <label>Título curto <input name="titulo" required placeholder="Autor (ano) — título"></label>
         </div>
-        <datalist id="eaCodigos">${(window.DADOS_INVENTARIO || []).map((i) => `<option value="${esc(i.codigo)}">${esc(i.titulo || '')}</option>`).join('')}</datalist>
+        <datalist id="eaCodigos">${inventarioAtivo().map((i) => `<option value="${esc(i.codigo)}">${esc(i.titulo || '')}</option>`).join('')}</datalist>
         <table class="week-table ea-tabela" style="margin-top:12px"><tbody>
         ${dados.criterios.map((c) => `<tr><td><strong>${esc(c.id)}.</strong> ${esc(c.nome)}</td>
           <td><select name="m_${c.id}">${opts}</select></td>
@@ -57,7 +66,7 @@
 
   function preencher(form, cod) {
     const f = dados.fontes.find((x) => x.codigo === cod);
-    const inv = (window.DADOS_INVENTARIO || []).find((i) => i.codigo === cod);
+    const inv = inventarioAtivo().find((i) => String(i.codigo) === String(cod));
     if (!form.titulo.value && inv) form.titulo.value = inv.titulo || '';
     if (!f) return;
     form.titulo.value = f.titulo;
@@ -71,6 +80,11 @@
     ev.preventDefault();
     const form = ev.target, st = document.getElementById('eaStatus'), er = document.getElementById('eaErros');
     const corpo = { codigo: form.codigo.value.trim().replace(/^#/, ''), titulo: form.titulo.value.trim(), marcas: {} };
+    if (!codigosAtivos().has(corpo.codigo)) {
+      er.textContent = 'Código fora do acervo publicado. Sem PDF válido, a fonte não entra no Estado da Arte.';
+      er.hidden = false;
+      return;
+    }
     dados.criterios.forEach((c) => { corpo.marcas[c.id] = { m: form['m_' + c.id].value, txt: form['t_' + c.id].value.trim() }; });
     st.textContent = 'Salvando…'; er.hidden = true;
     try {
@@ -78,7 +92,7 @@
         body: JSON.stringify(corpo), targetAddressSpace: 'loopback' });
       const j = await r.json();
       if (!j.ok) { er.innerHTML = (j.erros || ['Não salvou.']).map(esc).join('<br>'); er.hidden = false; st.textContent = ''; return; }
-      dados = j.dados; render();
+      dados = filtrarDados(j.dados); render();
       document.getElementById('eaStatus').textContent = `Fonte ${rotulo(corpo.codigo)} salva no cofre. O site público atualiza em alguns minutos.`;
     } catch (e) { st.textContent = 'O painel não respondeu.'; }
   }
@@ -89,7 +103,7 @@
     try {
       const r = await fetch(URL_PAINEL + '/api/estadoarte', { signal: ctl.signal, targetAddressSpace: 'loopback' });
       if (!r.ok) return false;
-      dados = await r.json();
+      dados = filtrarDados(await r.json());
       return true;
     } catch (e) { return false; } finally { clearTimeout(t); }
   }

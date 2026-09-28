@@ -20,6 +20,15 @@ class FichamentosTeste(unittest.TestCase):
         (b / "cofre" / "Fichamentos" / "50 — Fichamento — Small adrenal.md").write_text(FICH, encoding="utf-8")
         (b / "cofre" / "Fichamentos" / "00 Como usar esta pasta.md").write_text("x", encoding="utf-8")
         (b / "site").mkdir()
+        (b / "site" / "PDF").mkdir()
+        (b / "site" / "PDF" / "fonte-50.pdf").write_bytes(b"%PDF-1.4\nfonte")
+        (b / "site" / "dados_inventario.js").write_text(
+            'window.DADOS_INVENTARIO = [{"codigo":"50","arquivo":"PDF/fonte-50.pdf"}];\n',
+            encoding="utf-8",
+        )
+        (b / "site" / "dados_pdfs.js").write_text(
+            'window.DADOS_PDFS = [{"arquivo":"PDF/fonte-50.pdf"}];\n', encoding="utf-8",
+        )
         self.b = b
 
     def test_le_metadados_e_ignora_00(self):
@@ -39,6 +48,16 @@ class FichamentosTeste(unittest.TestCase):
         fi = Fichamentos(self.b / "site", None)
         fi.escrever_site()
         self.assertFalse(fi.js.exists())
+
+    def test_nao_publica_fichamento_sem_fonte_com_pdf_ativo(self):
+        (self.b / "cofre" / "Fichamentos" / "51 — Fichamento — Órfão.md").write_text(
+            FICH.replace('codigo: "50"', 'codigo: "51"'), encoding="utf-8"
+        )
+        fi = Fichamentos(self.b / "site", self.b / "cofre")
+        fi.escrever_site()
+        texto = fi.js.read_text(encoding="utf-8")
+        self.assertIn('"codigo": "50"', texto)
+        self.assertNotIn('"codigo": "51"', texto)
 
 
 if __name__ == "__main__":
