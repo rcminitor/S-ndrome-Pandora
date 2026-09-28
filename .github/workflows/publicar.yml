@@ -22,11 +22,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Dependencias dos validadores
+        run: python -m pip install Flask PyMuPDF
       - name: Guardiao do acervo
         run: python painel_local/guardiao_acervo.py --raiz .
       - name: Testes de regressao
-        run: |
-          python -m unittest tests.test_integridade_publicacao tests.test_fichamentos tests.test_estadoarte tests.test_interface_painel tests.test_regressoes tests.test_guardiao_acervo tests.test_sincronizar_acervo
+        run: python -m unittest discover -s tests -p "test_*.py"
 
   publicar:
     needs: validar
