@@ -159,7 +159,7 @@ def _corrigir_links_notas(cofre: Path, painel: Path) -> list[Path]:
         caminho = Path(nota["arquivo_nota"])
         texto = nota["texto"]
         linha = f"- **PDF:** [[{canonico}]]"
-        novo, trocas = re.subn(r"(?im)^\s*[-*]\s+\*\*PDF:\*\*.*$", linha, texto, count=1)
+        novo, trocas = re.subn(r"(?im)^\s*(?:[-*]\s+)?\*\*PDF:\*\*.*$", linha, texto, count=1)
         if not trocas:
             novo, trocas = re.subn(r"(?im)^(##\s+Arquivo\s*)$", rf"\1\n{linha}", texto, count=1)
         if trocas and novo != texto:
