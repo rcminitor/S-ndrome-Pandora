@@ -77,7 +77,10 @@
     if (!box) return;
     const lista = getConsolidatedFichamentos();
     const badge = document.getElementById('fiCount');
-    if (badge) badge.textContent = lista.length;
+    if (badge) {
+      badge.textContent = lista.length;
+      badge.title = `${lista.length} fichamentos vinculados ao acervo`;
+    }
 
     if (!lista.length) {
       box.innerHTML = `

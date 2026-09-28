@@ -10,6 +10,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Iterable
@@ -59,6 +61,19 @@ def _status_fichado(valor: object) -> bool:
     return "fichamento concluido" in str(valor or "").casefold()
 
 
+def _titulo_normalizado(valor: object) -> str:
+    texto = unicodedata.normalize("NFKD", str(valor or "")).encode("ascii", "ignore").decode().casefold()
+    return re.sub(r"[^a-z0-9]+", " ", texto).strip()
+
+
+def _doi(valor: object) -> str:
+    achou = re.search(r"10\.\d{4,9}/\S+", str(valor or ""), re.I)
+    if not achou:
+        return ""
+    doi = achou.group(0).rstrip(".,;)").casefold()
+    return doi if len(doi.split("/", 1)[1]) >= 4 else ""
+
+
 def validar_dados(
     inventario: list[dict],
     pdfs: list[dict],
@@ -93,6 +108,17 @@ def validar_dados(
     for caminho in sorted(_duplicados(caminhos)):
         r.erros.append(f"PDF usado por mais de uma fonte: {caminho}")
 
+    titulos_validos = [
+        _titulo_normalizado(a.get("titulo"))
+        for a in inventario
+        if _titulo_normalizado(a.get("titulo")) not in {"", "nao confirmado"}
+    ]
+    for titulo in sorted(_duplicados(titulos_validos)):
+        r.erros.append(f"titulo duplicado no inventario: {titulo}")
+    dois = [_doi(a.get("referencia")) for a in inventario if _doi(a.get("referencia"))]
+    for doi in sorted(_duplicados(dois)):
+        r.erros.append(f"DOI duplicado no inventario: {doi}")
+
     codigos_set = set(codigos)
     fichas_set = set(codigos_fichas)
     for codigo in sorted(fichas_set - codigos_set):
@@ -114,6 +140,9 @@ def validar_dados(
 
     for caminho in sorted(p for p in manifesto if not p.startswith("PDF/")):
         r.avisos.append(f"item legado fora de PDF/ ignorado pelo Acervo: {caminho}")
+    caminhos_ativos = set(caminhos)
+    for caminho in sorted(p for p in manifesto if p.startswith("PDF/") and p not in caminhos_ativos):
+        r.erros.append(f"PDF sem fonte ativa no inventario: {caminho}")
 
     if hash_pdf:
         por_hash: dict[str, list[tuple[str, str]]] = {}

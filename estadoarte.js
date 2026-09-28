@@ -96,7 +96,10 @@
 
   function render() {
     const badge = document.getElementById('eaCount');
-    if (badge) badge.textContent = dados.fontes.length;
+    if (badge) {
+      badge.textContent = dados.fontes.length;
+      badge.title = `${dados.fontes.length} fontes avaliadas na matriz de estado da arte`;
+    }
     box.innerHTML = `<div class="card">
       <h3 class="card-title">Estado da arte por critérios</h3>
       <p>Os critérios representam os focos desta tese sobre monitoramento contínuo de gatos com Síndrome de Pandora. <strong>Os critérios e a divisão por núcleo são propostas do autor da tese, não dos autores citados.</strong> Cada marca positiva ou parcial deve trazer a página do PDF que a sustenta.</p>
