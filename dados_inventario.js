@@ -1073,23 +1073,6 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "Ler primeiro",
         "fichamento": "Modelo — Fichamento.md",
-        "cautelas": "abordagem de monitoramento de bem-estar.",
-        "codigo": "56",
-        "grupo": "Sensor e DL em gatos - IMU multimodal",
-        "tipoEstudo": "Referencia tecnica para fusao de sensores no projeto IoT",
-        "procedencia": "Apenas 10 gatos",
-        "porQueLer": "Segundo estudo de sensor em gatos da revisao #1",
-        "comoUsar": "usa LSTM com dados de IMU (acelerometro + giroscopio + magnetometro) em 10 gatos",
-        "arquivo": "verificar acesso a IEEE Sensors Journal.",
-        "referencia": "# A Deep Learning Approach for Detecting and Classifying Cat Activity\n\n> [!info] Identificação\n> **Código na triagem:** 56 · **Ano:** 2024 · **Núcleo:** Núcleo 2 · **Fase:** Ler primeiro\n> **Tema:** Sensor e DL em gatos — IMU multimodal · **Status:** ainda não obtido\n\n## Arquivo\n- **PDF:** ainda não obtido\n- **Fichamento:** a fazer → criar em `Fichamentos/` a partir de [[Modelo — Fichamento]]\n\n## Referência (ABNT)\n> HUSSAIN, A.; ALI, S.; JOO, M.-I.; KIM, H.-C. A Deep Learning Approach for Detecting and Classifying Cat Activity to Monitor and Improve Cat's Well-Being Using Accelerometer, Gyroscope, and Magnetometer. **IEEE Sensors Journal**, v. 24, p. 1996–2008, 2024. DOI: ⚠️ A CONFERIR no artigo.\n\n*Procedência:* confirmada na lista de referências do artigo #1 (ref. [118] de Sabolek & Jović 2026, p. 29) — ⚠️ **DOI A CONFERIR no artigo original**\n\n## Por que ler\nUsa LSTM com dados de IMU (acelerômetro + giroscópio + magnetômetro) em 10 gatos para monitoramento de bem-estar. Abordagem direta de monitoramento contínuo por sensor multimodal.\n\n## Como usar na tese\nReferência técnica para fusão de sensores no projeto IoT; argumento para arquitetura LSTM com dados de IMU em gatos.\n\n## Cautelas\nApenas 10 gatos; verificar acesso à IEEE Sensors Journal.\n\n## Ligações\n- Citado por: [[1 The Expanding Role of Artificial Intelligence in Companion Animal…]] (ref. [118])\n- Núcleo: [[MOC — Núcleo 2 (ambiente, comportamento e tecnologia)]]\n- Índice: [[00 Índice do cofre]]",
-        "status": "Estudo experimental (DL + sensor)",
-        "ano": "2024",
-        "titulo": "A Deep Learning Approach for Detecting and Classifying Cat Activity to Monitor and Improve Cat's Well-Being Using Accelerometer, Gyroscope, and Magnetometer",
-        "nucleo": "Núcleo 2"
-    },
-    {
-        "fase": "Ler primeiro",
-        "fichamento": "Modelo — Fichamento.md",
         "cautelas": "abordagem cross-species.",
         "codigo": "57",
         "grupo": "Sensor IMU e DL cross-species (gatos e caes)",
@@ -1173,23 +1156,6 @@ window.DADOS_INVENTARIO = [
         "nucleo": "Núcleo 1"
     },
     {
-        "fase": "A classificar",
-        "fichamento": "Fila de leitura.md",
-        "cautelas": "PENDENCIA CRITICA: obter versao legivel do PDF. Nao usar nenhum dado ate que o arquivo seja lido.",
-        "codigo": "62",
-        "grupo": "NAO CONFIRMADO",
-        "tipoEstudo": "NAO CONFIRMADO",
-        "procedencia": "sem procedencia (arquivo corrompido)",
-        "porQueLer": "NAO CONFIRMADO - arquivo corrompido (1816 bytes, sem estrutura PDF legivel). Pelo nome do arquivo, provavel foco em segmentacao TC com MLPMixer.",
-        "comoUsar": "NAO CONFIRMADO",
-        "arquivo": "Adrenal_FIC_aluno/06_Pan_2023_segmentacao_TC_MLPMixer.pdf",
-        "referencia": "# 62 — ARQUIVO CORROMPIDO — Pan 2023 segmentacao TC MLPMixer\n\n> [!danger] PENDÊNCIA — ARQUIVO CORROMPIDO\n> O arquivo `06_Pan_2023_segmentacao_TC_MLPMixer.pdf` tem apenas **1816 bytes** e retorna \"Invalid PDF structure\" em qualquer tentativa de leitura. Não é possível confirmar nenhum metadado do artigo. **Nenhum campo desta nota pode ser citado.**\n\n> [!info] Identificação\n> **Código na triagem:** 62 · **Ano:** NÃO CONFIRMADO · **Núcleo:** NÃO CONFIRMADO · **Fase:** A classificar\n> **Status:** arquivo corrompido\n\n## Arquivo\n- **PDF:** [[Adrenal_FIC_aluno/06_Pan_2023_segmentacao_TC_MLPMixer.pdf]] — **CORROMPIDO** (1816 bytes, sem estrutura PDF legível)\n- **Fichamento:** impossível até obtenção de PDF legível\n\n## Referência (ABNT)\n> ❌ **sem procedência** — arquivo corrompido; nenhum metadado confirmado.\n\n*Procedência:* ❌ **sem procedência** — não foi possível ler o documento.\n\n## Por que ler\nNÃO CONFIRMADO — pelo nome do arquivo, o artigo seria sobre segmentação por TC usando MLPMixer (arquitetura de IA baseada em MLP). Inferência do nome do arquivo; **não citar**.\n\n## Como usar na tese\nNÃO CONFIRMADO\n\n## Cautelas\n**PENDÊNCIA CRÍTICA:** obter versão legível do PDF (baixar novamente ou solicitar ao aluno que forneceu a pasta). Não usar nenhum dado deste registro até que o arquivo seja lido.\n\n## Tipo de estudo\nNÃO CONFIRMADO\n\n## Minhas notas de leitura\n<!-- Não escreva aqui até obter o PDF legível. -->\n\n## Ligações\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "arquivo corrompido",
-        "ano": "NAO CONFIRMADO",
-        "titulo": "NAO CONFIRMADO - arquivo PDF corrompido (Pan 2023 segmentacao TC MLPMixer)",
-        "nucleo": "NAO CONFIRMADO"
-    },
-    {
         "fase": "Ler depois",
         "fichamento": "Modelo — Fichamento.md",
         "cautelas": "Contexto humano, nao felino. Relacao com Sindrome de Pandora e indireta (via IA aplicada a adrenais). Paginas impressas NAO CONFIRMADAS (manuscrito pre-publicacao).",
@@ -1221,40 +1187,6 @@ window.DADOS_INVENTARIO = [
         "status": "arquivo obtido",
         "ano": "2023",
         "titulo": "Histological classification of canine and feline lymphoma using a modular approach based on deep learning and advanced image processing",
-        "nucleo": "Núcleo 2"
-    },
-    {
-        "fase": "Ler depois",
-        "fichamento": "Modelo — Fichamento.md",
-        "cautelas": "PENDENCIA: mesclar ou ignorar esta linha. Ver codigo 7.",
-        "codigo": "65",
-        "grupo": "DUPLICATA - mesmo artigo do codigo 7 (triagem original). Copia extra do PDF em PDF_Para conhecimento.",
-        "tipoEstudo": "Revisao de literatura (33 paginas)",
-        "procedencia": "confirmada na fonte - autor, titulo, periodico, volume 235, artigo 110395, DOI verificados no PDF desta sessao",
-        "porQueLer": "DUPLICATA DO CODIGO 7 - nao usar esta linha para contar no acervo. Artigo ja registrado na triagem original como codigo 7 com arquivo em PDF/Relevantes/. Esta entrada foi criada por engano ao catalogar a pasta PDF_Para conhecimento em 27/09/2026.",
-        "comoUsar": "Ver codigo 7 para uso na tese.",
-        "arquivo": "PDF/Síndrome CIF/1-s2.0-S0168169925005010-main.pdf",
-        "referencia": "# ⚠️ DUPLICATA DO CÓDIGO 7 — ver [[7 Artificial intelligence in veterinary and animal science….md]]\n\n> [!warning] Esta nota é uma duplicata do código #7\n> Este artigo já estava registrado na triagem original como **código #7** com arquivo em `PDF/Relevantes/Artificial intelligence in veterinary and animal science.pdf`.\n> Esta entrada (#65) foi criada por engano em 27/09/2026 ao catalogar um segundo exemplar do PDF na pasta `PDF_Para conhecimento`.\n> **Use a nota do código #7 para leitura e fichamento.** Esta nota existe apenas para registrar o histórico da descoberta da duplicata.\n\n> [!info] Identificação — DUPLICATA\n> **Código na triagem:** 65 · **Ano:** 2025 · **Núcleo:** Núcleo 2\n> **Status:** DUPLICATA — mesmo artigo do código #7 · **PDF extra em:** `PDF/PDF_Para conhecimento/1-s2.0-S0168169925005010-main.pdf`\n\n## Arquivo\n- **PDF:** [[PDF_Para conhecimento/1-s2.0-S0168169925005010-main.pdf]]\n- **Fichamento:** a fazer → criar em `Fichamentos/` a partir de [[Modelo — Fichamento]]\n\n## Referência (ABNT)\n> HOSSEIN-ZADEH, Navid Ghavi. Artificial intelligence in veterinary and animal science: applications, challenges, and future prospects. Computers and Electronics in Agriculture, v. 235, 2025. DOI: 10.1016/j.compag.2025.110395.\n\n*Procedência:* ✔️ **confirmada na fonte** — autor (Hossein-Zadeh, Navid Ghavi), título, periódico (Computers and Electronics in Agriculture), volume 235, artigo 110395, DOI verificados no PDF desta sessão. Recebido: 18 jan. 2025; Aceito: 7 abr. 2025; Online: 16 abr. 2025.\n\n## Por que ler\nRevisão abrangente e atualizada (2025) de IA em ciência animal e medicina veterinária: ML, DL, visão computacional, NLP, robótica e edge AI; cobre diagnóstico, monitoramento comportamental, PLF e genética.\n\n## Como usar na tese\nPanorama do estado da arte de IA veterinária; referência de revisão para situar a proposta da tese no cenário atual; pode ser usada na introdução e na seção de tecnologia do Núcleo 2.\n\n## Cautelas\nRevisão ampla sem foco em felinos ou saúde urinária; útil para introdução e justificativa tecnológica, mas não substitui artigos específicos sobre gatos ou Síndrome de Pandora.\n\n## Tipo de estudo\nRevisão de literatura (33 páginas, Computers and Electronics in Agriculture, 2025)\n\n## Minhas notas de leitura\n<!-- Escreva aqui. Regra do acervo: nada de número, página ou resultado sem conferir no PDF. -->\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 2 (ambiente, comportamento e tecnologia)]]\n- Relacionado: [[66 Sensors big data and machine learning in modern animal farming….md]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "duplicata - ver codigo 7",
-        "ano": "2025",
-        "titulo": "[DUPLICATA DO CODIGO 7] Artificial intelligence in veterinary and animal science: applications, challenges, and future prospects",
-        "nucleo": "Núcleo 2"
-    },
-    {
-        "fase": "Ler depois",
-        "fichamento": "Modelo — Fichamento.md",
-        "cautelas": "PENDENCIA: mesclar ou ignorar esta linha. Ver codigo 38.",
-        "codigo": "66",
-        "grupo": "DUPLICATA - mesmo artigo do codigo 38 (triagem original). PDF atribuido ao codigo 38 em 27/09/2026.",
-        "tipoEstudo": "Revisao de literatura (8 paginas)",
-        "procedencia": "confirmada na fonte - autor, titulo, periodico, volume 29, artigo 100367, DOI verificados no PDF desta sessao",
-        "porQueLer": "DUPLICATA DO CODIGO 38 - nao usar esta linha para contar no acervo. Artigo registrado na triagem original como codigo 38 (sem arquivo). Em 27/09/2026 o PDF foi localizado na pasta PDF_Para conhecimento e o arquivo foi atribuido ao codigo 38. Esta entrada foi criada por engano antes da identificacao da duplicata.",
-        "comoUsar": "Ver codigo 38 para uso na tese.",
-        "arquivo": "PDF/Síndrome CIF/1-s2.0-S2214180420301343-main.pdf",
-        "referencia": "# ⚠️ DUPLICATA DO CÓDIGO 38 — ver [[38 The role of sensors big data and machine learning….md]]\n\n> [!warning] Esta nota é uma duplicata do código #38\n> Este artigo já estava registrado na triagem original como **código #38** (sem arquivo).\n> Em 27/09/2026 o PDF foi localizado na pasta `PDF_Para conhecimento` e atribuído ao código #38.\n> Esta entrada (#66) foi criada por engano antes da identificação da duplicata.\n> **Use a nota do código #38 para leitura e fichamento.** Esta nota existe apenas para registrar o histórico da descoberta.\n\n> [!info] Identificação — DUPLICATA\n> **Código na triagem:** 66 · **Ano:** 2020 · **Núcleo:** Núcleo 2\n> **Status:** DUPLICATA — mesmo artigo do código #38 · **PDF em:** `PDF/PDF_Para conhecimento/1-s2.0-S2214180420301343-main.pdf`\n\n## Arquivo\n- **PDF:** [[PDF_Para conhecimento/1-s2.0-S2214180420301343-main.pdf]]\n- **Fichamento:** a fazer → criar em `Fichamentos/` a partir de [[Modelo — Fichamento]]\n\n## Referência (ABNT)\n> NEETHIRAJAN, Suresh. The role of sensors, big data and machine learning in modern animal farming. Sensing and Bio-Sensing Research, v. 29, 2020. DOI: 10.1016/j.sbsr.2020.100367.\n\n*Procedência:* ✔️ **confirmada na fonte** — autor (Neethirajan, Suresh), título, periódico, volume 29, artigo 100367, DOI verificados no PDF desta sessão. Recebido: 2 jun. 2020; Aceito: 3 jul. 2020.\n\n## Por que ler\nRevisão sobre sensores, big data e ML na criação animal: monitoramento comportamental individual, detecção de doenças, reconhecimento facial e otimização de alimentação; discute desafios de escalabilidade e dados.\n\n## Como usar na tese\nFundamenta a proposta de monitoramento contínuo por sensores; base para justificar IoT, ML e análise de dados comportamentais no projeto de apoio ao diagnóstico da Síndrome de Pandora.\n\n## Cautelas\nFoco em animais de fazenda (bovinos, suínos, aves), não em gatos; princípios de monitoramento por sensores são transferíveis, mas precisam de contextualização para felinos domésticos.\n\n## Tipo de estudo\nRevisão de literatura (8 páginas, Sensing and Bio-Sensing Research, 2020)\n\n## Minhas notas de leitura\n<!-- Escreva aqui. Regra do acervo: nada de número, página ou resultado sem conferir no PDF. -->\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 2 (ambiente, comportamento e tecnologia)]]\n- Relacionado: [[65 Artificial intelligence in veterinary and animal science review….md]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "duplicata - ver codigo 38",
-        "ano": "2020",
-        "titulo": "[DUPLICATA DO CODIGO 38] The role of sensors, big data and machine learning in modern animal farming",
         "nucleo": "Núcleo 2"
     },
     {
@@ -1544,7 +1476,7 @@ window.DADOS_INVENTARIO = [
         "cautelas": "Revisão curta; algumas afirmações didáticas exigem retorno às fontes primárias; cópia de Síndrome CIF não tem texto, leitura feita na cópia legível indicada.",
         "arquivo": "PDF/Primeiras Leituras/06_Síndrome de Pandora.pdf",
         "referencia": "TEIXEIRA, Kelly Cristina; VIEIRA, Mayara Zanini; TORRES, Maria Lúcia Marcucci. Síndrome de Pandora: aspectos psiconeuroendócrinos. Revista de Educação Continuada em Medicina Veterinária e Zootecnia do CRMV-SP, v. 17, n. 1, p. 16–19, 2019. DOI: NÃO CONFIRMADO."
-    },
+    },
     {
         "codigo": "55",
         "titulo": "The Use of Triaxial Accelerometers and Machine Learning Algorithms for Behavioural Identification in Domestic Cats (Felis Catus): A Validation Study",
