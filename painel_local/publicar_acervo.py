@@ -97,3 +97,26 @@ class PublicadorAcervo:
                 self.painel, dados_painel, f"acervo: publicar fonte {codigo} pelo painel",
             )
         return {"cofre": cofre, "painel": painel, "testes": "aprovados", "guardiao": "aprovado"}
+
+    def publicar_correcao(self, caminhos: list[str], mensagem: str = "acervo: aplicar correcoes automaticas") -> dict:
+        """Publica somente derivados já aprovados; nunca inclui notas ou PDFs não autorizados."""
+        caminhos = list(dict.fromkeys(str(c).replace("\\", "/") for c in caminhos))
+        with TRAVA_PUBLICACAO:
+            self._validar()
+            painel = self._commit_e_push(self.painel, caminhos, mensagem)
+        return {"painel": painel, "testes": "aprovados", "guardiao": "aprovado"}
+
+    def publicar_auditoria(self, notas: list[Path], caminhos_painel: list[str]) -> dict:
+        notas_rel = [Path(n).resolve().relative_to(self.cofre.resolve()).as_posix() for n in notas]
+        caminhos_painel = list(dict.fromkeys(str(c).replace("\\", "/") for c in caminhos_painel))
+        with TRAVA_PUBLICACAO:
+            self._validar()
+            cofre = None
+            if notas_rel:
+                cofre = self._commit_e_push(
+                    self.cofre, notas_rel, "acervo: corrigir links canônicos de PDFs",
+                )
+            painel = self._commit_e_push(
+                self.painel, caminhos_painel, "acervo: publicar correções da auditoria",
+            )
+        return {"cofre": cofre, "painel": painel, "testes": "aprovados", "guardiao": "aprovado"}
