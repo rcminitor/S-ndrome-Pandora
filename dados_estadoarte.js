@@ -213,46 +213,46 @@ window.ESTADO_ARTE = {
   },
   {
    "codigo": "38",
-   "titulo": "Neethirajan (2020) — Sensors, big data and ML (sem PDF)",
+   "titulo": "Neethirajan (2020) — Sensors, big data and machine learning",
    "marcas": {
     "C1": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "não aborda gatos, FIC ou Síndrome de Pandora (pp. 1–7)"
     },
     "C2": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "revisão narrativa, sem dados próprios (p. 1)"
     },
     "C3": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "discute monitoramento contínuo, mas não realiza seguimento próprio (pp. 2–3)"
     },
     "C4": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "não avalia estresse ou ambiente em gatos (pp. 2–5)"
     },
     "C5": {
-     "m": "NC",
-     "txt": ""
+     "m": "◐",
+     "txt": "sensores objetivos aparecem em estudos citados, sem dados próprios (pp. 2–5)"
     },
     "C6": {
-     "m": "NC",
-     "txt": ""
+     "m": "✅",
+     "txt": "sensores, big data e ML são o foco central da revisão (pp. 1–5)"
     },
     "C7": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "não apresenta validação estatística própria (pp. 1–7)"
     },
     "C8": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "não realiza validação clínica própria (pp. 1–7)"
     },
     "C9": {
-     "m": "NC",
-     "txt": ""
+     "m": "✗",
+     "txt": "foco em produção animal, não no domicílio do tutor (pp. 1–7)"
     }
    },
-   "atualizado": "2026-09-26T15:53"
+   "atualizado": "2026-09-28T09:20"
   },
   {
    "codigo": "43",
@@ -556,5 +556,5 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   }
  ],
- "atualizado": "2026-09-26T16:06"
+ "atualizado": "2026-09-28T09:20"
 };
