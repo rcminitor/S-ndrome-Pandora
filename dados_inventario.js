@@ -189,13 +189,13 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "Ler primeiro",
         "fichamento": "nao iniciado",
-        "cautelas": "Artigo de revisão com dados clínicos preliminares dos autores (76 gatos; estudo em andamento em 2004). Os autores são os maiores proponentes do enriquecimento ambiental — verificar se a evidência foi formalizada em artigo separado.",
+        "cautelas": "Revisão publicada em 2004; afirmações derivadas de estudos citados devem ser atribuídas às fontes primárias quando usadas como resultados específicos.",
         "codigo": "N45",
-        "grupo": "Fisiopatologia e manejo",
-        "tipoEstudo": "revisão com dados clínicos preliminares",
-        "procedencia": "confirmada na fonte",
-        "porQueLer": "Artigo seminal de Westropp & Buffington propondo base neuroendócrina da FIC (SNS + eixo HHA) e enriquecimento ambiental como terapia primária. Peça-chave da trajetória histórica da Síndrome de Pandora.",
-        "comoUsar": "Fundamento fisiopatológico (CRF hipotalâmico, SNS, adrenal insuficiente) e base clínica do enriquecimento ambiental. Fonte primária da Figura 1 (sistema neuroendócrino desequilibrado) reproduzida no #40.",
+        "grupo": "Fisiopatologia e manejo da cistite idiopática felina",
+        "tipoEstudo": "revisão clínica",
+        "procedencia": "✔️ confirmada na fonte — título, autoria, periódico, volume, páginas, ano e DOI conferidos na primeira página do PDF original.",
+        "porQueLer": "Artigo de revisão sobre a compreensão da fisiopatologia e do manejo da cistite idiopática felina, com discussão do sistema nervoso e endócrino e do enriquecimento ambiental.",
+        "comoUsar": "Usar como fonte histórica e clínica no Núcleo 1, agrupamento proposto pelo acervo, para a fisiopatologia da FIC e a evolução das estratégias de manejo ambiental.",
         "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
         "referencia": "WESTROPP, Jodi L.; BUFFINGTON, C. A. Tony. Feline idiopathic cystitis: current understanding of pathophysiology and management. Veterinary Clinics of North America: Small Animal Practice, v. 34, p. 1043–1055, 2004. DOI: 10.1016/j.cvsm.2004.03.002.",
         "status": "arquivo obtido",
@@ -1137,5 +1137,22 @@ window.DADOS_INVENTARIO = [
         "ano": "2026",
         "titulo": "Lipidomic Signatures in Feline Disease: A PRISMA-Guided Systematic Review",
         "nucleo": "Núcleo 1"
+    },
+    {
+        "fase": "Ler primeiro",
+        "fichamento": "",
+        "cautelas": "Artigo de revisão; resultados específicos discutidos no texto devem ser atribuídos aos estudos primários citados.",
+        "codigo": "21",
+        "grupo": "Patogênese e histopatologia da FIC",
+        "tipoEstudo": "artigo de revisão",
+        "procedencia": "✔️ confirmada na fonte — título, autoria, periódico, volume, páginas, ano e DOI conferidos na primeira página do PDF original.",
+        "porQueLer": "Base para a discussão da patogênese e da histopatologia da cistite idiopática felina e de seu potencial comparativo com a síndrome da dor vesical humana.",
+        "comoUsar": "Usar na fundamentação do problema clínico e na seleção de variáveis. O agrupamento no Núcleo 2 é proposto pelo acervo, não declarado pelos autores.",
+        "arquivo": "PDF/A_classificar/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
+        "referencia": "JONES, Emily; PALMIERI, Chiara; THOMPSON, Mary; JACKSON, Karen; ALLAVENA, Rachel. Feline Idiopathic Cystitis: Pathogenesis, Histopathology and Comparative Potential. Journal of Comparative Pathology, v. 185, p. 18–29, 2021. DOI: 10.1016/j.jcpa.2021.03.006.",
+        "status": "arquivo obtido",
+        "ano": "2021",
+        "titulo": "Feline Idiopathic Cystitis: Pathogenesis, Histopathology and Comparative Potential",
+        "nucleo": "Núcleo 2"
     }
 ];
