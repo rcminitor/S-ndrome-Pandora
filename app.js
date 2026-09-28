@@ -58,6 +58,25 @@ function normalizeForMatch(value) {
     .toLowerCase();
 }
 
+function compareArticleCodes(a, b) {
+  const parse = value => {
+    const code = String(value || '').trim().toUpperCase();
+    const match = code.match(/^([A-Z]*)(\d+)$/);
+    if (!match) return { group: 3, prefix: code, number: Number.MAX_SAFE_INTEGER, code };
+
+    const prefix = match[1];
+    const group = prefix === '' ? 0 : prefix === 'N' ? 1 : prefix === 'S' ? 2 : 3;
+    return { group, prefix, number: Number(match[2]), code };
+  };
+
+  const left = parse(a.codigo);
+  const right = parse(b.codigo);
+  return left.group - right.group ||
+    left.prefix.localeCompare(right.prefix, 'pt-BR') ||
+    left.number - right.number ||
+    left.code.localeCompare(right.code, 'pt-BR', { numeric: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initInventory();
@@ -264,7 +283,7 @@ function renderArticles() {
     if (currentFilter === 'lidos') return lidos[item.codigo] === true;
 
     return true;
-  });
+  }).sort(compareArticleCodes);
 
   if (countLabel) {
     const lidosCount = data.filter(d => lidos[d.codigo] === true).length;
