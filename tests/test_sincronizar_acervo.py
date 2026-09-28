@@ -142,6 +142,19 @@ class SincronizarAcervoTeste(unittest.TestCase):
         self.assertEqual("limite declarado pelos autores.", item["cautelas"])
         self.assertIn("Revista Teste", item["referencia"])
 
+    def test_substitui_codigo_derivado_obsoleto_pelo_codigo_da_nota_canonica(self):
+        pdf_a = "PDF/Síndrome CIF/a.pdf"
+        inventario = [{
+            "codigo": "67", "titulo": "Fonte A duplicada", "arquivo": pdf_a,
+            "status": "arquivo obtido", "fichamento": "nao iniciado"
+        }]
+        self._gravar("dados_inventario.js", _js("DADOS_INVENTARIO", inventario))
+
+        self.assertEqual(0, sincronizar(self.cofre, self.painel, escrever=True))
+        resultado = ler_json_js(self.painel / "dados_inventario.js", "DADOS_INVENTARIO")
+        self.assertEqual(["1"], [str(item["codigo"]) for item in resultado])
+        self.assertEqual("Fonte A", resultado[0]["titulo"])
+
 
 if __name__ == "__main__":
     unittest.main()
