@@ -4,7 +4,31 @@ Site do referencial teórico e do acompanhamento da tese de doutorado (UFC): pai
 
 Publicado em: https://rcminitor.github.io/S-ndrome-Pandora/
 
-Os PDFs de artigos de terceiros não estão neste repositório; ficam apenas no cofre privado.
+Os PDFs autorizados para leitura no site ficam em `PDF/`. O inventário publicado
+somente pode apontar para arquivos reais dessa pasta; mapas mentais, imagens e
+outros anexos não entram na contagem de fontes.
+
+## Publicação segura do acervo
+
+O cofre é a origem dos PDFs e fichamentos. O painel mantém os registros já
+revisados e só inclui uma fonte nova quando existe um PDF válido dentro de
+`PDF/`. A exportação não remove fontes automaticamente e não altera o cofre.
+
+```powershell
+# Conferir o que seria publicado, sem gravar
+.\gerar-dados.ps1 -Check
+
+# Sincronizar depois da conferência
+.\gerar-dados.ps1
+
+# Validar dados, vínculos, PDFs e testes de regressão
+.\validar-painel.ps1
+```
+
+O Guardião bloqueia a publicação quando encontra código duplicado, fichamento
+órfão, fonte sem PDF, caminho fora de `PDF/`, arquivo inválido ou status
+“fichamento concluído” sem a ficha correspondente. O GitHub Actions repete essa
+validação em cada envio para `main`.
 
 ## Ferramentas que rodam no PC
 

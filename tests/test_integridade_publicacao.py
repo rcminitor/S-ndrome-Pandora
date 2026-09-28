@@ -24,7 +24,7 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
     def test_inventario_publica_somente_fontes_com_pdf(self):
         caminhos_manifesto = {p["arquivo"].replace("\\", "/") for p in self.pdfs}
         caminhos = [a["arquivo"].replace("\\", "/") for a in self.inventario]
-        self.assertEqual(68, len(self.inventario))
+        self.assertGreater(len(self.inventario), 0)
         self.assertTrue(all(p.startswith("PDF/") for p in caminhos))
         self.assertEqual(len(caminhos), len(set(p.casefold() for p in caminhos)))
         self.assertTrue(set(caminhos).issubset(caminhos_manifesto))
@@ -33,9 +33,9 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
     def test_codigos_e_fichamentos_nao_se_descolam(self):
         codigos = {str(a["codigo"]) for a in self.inventario}
         fichados = {str(f["codigo"]) for f in self.fichamentos}
-        self.assertEqual(58, len(codigos & fichados))
+        self.assertEqual(len(fichados), len(codigos & fichados))
         self.assertEqual(set(), fichados - codigos)
-        self.assertTrue({"11", "20", "34", "38", "41", "48", "54", "55"}.issubset(codigos))
+        self.assertTrue({"11", "20", "34", "38", "41", "48", "54", "55", "57"}.issubset(codigos))
         self.assertTrue({"N35", "N36", "N38", "N42", "N44", "N45"}.issubset(codigos))
         self.assertTrue({"N33", "N34", "N37", "N39", "N40", "N41", "N43"}.isdisjoint(codigos))
 

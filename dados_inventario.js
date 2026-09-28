@@ -1154,5 +1154,22 @@ window.DADOS_INVENTARIO = [
         "ano": "2023",
         "titulo": "The Use of Triaxial Accelerometers and Machine Learning Algorithms for Behavioural Identification in Domestic Cats (Felis catus): A Validation Study",
         "nucleo": "Núcleo 2"
+    },
+    {
+        "fase": "Ler primeiro",
+        "fichamento": "",
+        "cautelas": "*Sensors and Materials* é revista de menor impacto; verificar indexação e fator de impacto; precisão cross-species pode mascarar limitações específicas para gatos.",
+        "codigo": "57",
+        "grupo": "Sensor IMU e DL cross-species (gatos e cães)",
+        "tipoEstudo": "Estudo experimental (DL + sensor)",
+        "procedencia": "referência, autores, volume, número, intervalo de páginas e DOI conferidos na primeira página do PDF original. O PDF usa o título do periódico Sensors and Materials; a indicação “Part 3” NÃO CONFIRMADO no documento original. URL do PDF: https://sensors.myu-group.co.jp/sm_pdf/SM3975.pdf",
+        "porQueLer": "CNN+LSTM com dados de IMU para reconhecimento de comportamento em gatos E cães; 89% de precisão em gatos confirmada na revisão #1. Abordagem cross-species relevante para comparação com foco felino.",
+        "comoUsar": "Referência técnica para arquitetura CNN+LSTM e IMU no projeto IoT; precisão de 89% em gatos é baseline de comparação para futuros modelos.",
+        "arquivo": "PDF/Síndrome CIF/Cat and Dog Behavior Recognition IMU.pdf",
+        "referencia": "CHEN, Guanyu et al. Cat and Dog Behavior Recognition Method Using Deep Learning Approach Based on Inertial Measurement Unit Sensor Data. Sensors and Materials, v. 37, n. 3, p. 1073–1098, 2025. DOI: 10.18494/SAM5359.",
+        "status": "arquivo obtido",
+        "ano": "2025",
+        "titulo": "Cat and Dog Behavior Recognition Method Using Deep Learning Approach Based on Inertial Measurement Unit Sensor Data",
+        "nucleo": "Núcleo 2"
     }
 ];

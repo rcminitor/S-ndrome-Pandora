@@ -1,41 +1,5 @@
-// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
+// Gerado pelo exportador transacional do acervo
 window.DADOS_PDFS = [
- {
-  "pasta": "Imagens",
-  "nome": "Síndrome de pandora",
-  "arquivo": "Imagens/Síndrome de pandora.pdf",
-  "kb": 3277
- },
- {
-  "pasta": "Imagens/Projeto-IoT",
-  "nome": "Projeto_IoT_Sindrome_de_Pandora",
-  "arquivo": "Imagens/Projeto-IoT/Projeto_IoT_Sindrome_de_Pandora.pdf",
-  "kb": 3277
- },
- {
-  "pasta": "Leitura/1_Para_ler",
-  "nome": "06_Síndrome de Pandora",
-  "arquivo": "Leitura/1_Para_ler/06_Síndrome de Pandora.pdf",
-  "kb": 106
- },
- {
-  "pasta": "Leitura/1_Para_ler",
-  "nome": "buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats",
-  "arquivo": "Leitura/1_Para_ler/buffington-et-al-2006-clinical-evaluation-of-multimodal-environmental-modification-(memo)-in-the-management-of-cats.pdf",
-  "kb": 127
- },
- {
-  "pasta": "Leitura/2_Lido",
-  "nome": "01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC",
-  "arquivo": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC.pdf",
-  "kb": 692
- },
- {
-  "pasta": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC - citados",
-  "nome": "2005_jablonka_jablonka-e-lamb-mj-evolution-in-four-dimensions-ge",
-  "arquivo": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC - citados/2005_jablonka_jablonka-e-lamb-mj-evolution-in-four-dimensions-ge.pdf",
-  "kb": 114
- },
  {
   "pasta": "PDF/29062026",
   "nome": "1-s2.0-S0011502903900022-main",
@@ -68,15 +32,15 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/29062026",
-  "nome": "Feline-idiopathic-cystitis",
-  "arquivo": "PDF/29062026/Feline-idiopathic-cystitis.pdf",
-  "kb": 242
- },
- {
-  "pasta": "PDF/29062026",
   "nome": "Feline-idiopathic-cystitis--current-understanding-",
   "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
   "kb": 207
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Feline-idiopathic-cystitis",
+  "arquivo": "PDF/29062026/Feline-idiopathic-cystitis.pdf",
+  "kb": 242
  },
  {
   "pasta": "PDF/29062026",
@@ -488,6 +452,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "Smit et al. 2023 Triaxial Accelerometers Cats",
+  "arquivo": "PDF/Síndrome CIF/Smit et al. 2023 Triaxial Accelerometers Cats.pdf",
+  "kb": 1340
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "SÍNDROME DE PANDORA PREVENÇÃO",
   "arquivo": "PDF/Síndrome CIF/SÍNDROME DE PANDORA PREVENÇÃO.pdf",
   "kb": 301
@@ -539,11 +509,5 @@ window.DADOS_PDFS = [
   "nome": "Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos",
   "arquivo": "PDF/Síndrome CIF/Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos.pdf",
   "kb": 1254
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Smit et al. 2023 Triaxial Accelerometers Cats",
-  "arquivo": "PDF/Síndrome CIF/Smit et al. 2023 Triaxial Accelerometers Cats.pdf",
-  "kb": 1340
  }
 ];
