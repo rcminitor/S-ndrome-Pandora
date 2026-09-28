@@ -1,4 +1,4 @@
-﻿// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
+// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
 window.DADOS_PDFS = [
  {
   "pasta": "Imagens",
@@ -7,28 +7,10 @@ window.DADOS_PDFS = [
   "kb": 3277
  },
  {
-  "pasta": "Imagens/Mapas-Mentais",
-  "nome": "Mapa_Mental_Semanal_com_Links",
-  "arquivo": "Imagens/Mapas-Mentais/Mapa_Mental_Semanal_com_Links.pdf",
-  "kb": 800
- },
- {
-  "pasta": "Imagens/Mapas-Mentais",
-  "nome": "Mapa_Mental_Sindrome_de_Pandora",
-  "arquivo": "Imagens/Mapas-Mentais/Mapa_Mental_Sindrome_de_Pandora.pdf",
-  "kb": 599
- },
- {
   "pasta": "Imagens/Projeto-IoT",
   "nome": "Projeto_IoT_Sindrome_de_Pandora",
   "arquivo": "Imagens/Projeto-IoT/Projeto_IoT_Sindrome_de_Pandora.pdf",
   "kb": 3277
- },
- {
-  "pasta": "Leitura/1_Para_ler",
-  "nome": "01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC",
-  "arquivo": "Leitura/1_Para_ler/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC.pdf",
-  "kb": 692
  },
  {
   "pasta": "Leitura/1_Para_ler",
@@ -43,10 +25,136 @@ window.DADOS_PDFS = [
   "kb": 127
  },
  {
+  "pasta": "Leitura/2_Lido",
+  "nome": "01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC",
+  "arquivo": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC.pdf",
+  "kb": 692
+ },
+ {
   "pasta": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC - citados",
   "nome": "2005_jablonka_jablonka-e-lamb-mj-evolution-in-four-dimensions-ge",
   "arquivo": "Leitura/2_Lido/01_Buffington_2014_FUS_to_Pandora_copia_EuropePMC - citados/2005_jablonka_jablonka-e-lamb-mj-evolution-in-four-dimensions-ge.pdf",
   "kb": 114
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "1-s2.0-S0011502903900022-main",
+  "arquivo": "PDF/29062026/1-s2.0-S0011502903900022-main.pdf",
+  "kb": 149
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "3027-9480-1-PB",
+  "arquivo": "PDF/29062026/3027-9480-1-PB.pdf",
+  "kb": 338
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "animals-15-03307-v2",
+  "arquivo": "PDF/29062026/animals-15-03307-v2.pdf",
+  "kb": 453
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis",
+  "arquivo": "PDF/29062026/defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis.pdf",
+  "kb": 1509
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "dissertacao-ines-goncalves",
+  "arquivo": "PDF/29062026/dissertacao-ines-goncalves.pdf",
+  "kb": 1142
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Feline-idiopathic-cystitis",
+  "arquivo": "PDF/29062026/Feline-idiopathic-cystitis.pdf",
+  "kb": 242
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Feline-idiopathic-cystitis--current-understanding-",
+  "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
+  "kb": 207
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "fnsys-12-00013",
+  "arquivo": "PDF/29062026/fnsys-12-00013.pdf",
+  "kb": 5986
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "fvets-09-900847",
+  "arquivo": "PDF/29062026/fvets-09-900847.pdf",
+  "kb": 1207
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "fvets-10-1258375",
+  "arquivo": "PDF/29062026/fvets-10-1258375.pdf",
+  "kb": 1212
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "kim-et-al-2017-epidemiological-study-of-feline-idiopathic-cystitis-in-seoul-south-korea",
+  "arquivo": "PDF/29062026/kim-et-al-2017-epidemiological-study-of-feline-idiopathic-cystitis-in-seoul-south-korea.pdf",
+  "kb": 107
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Lipidomic Signatures in Feline Disease_ A PRISMA-Guided Systematic Review",
+  "arquivo": "PDF/29062026/Lipidomic Signatures in Feline Disease_ A PRISMA-Guided Systematic Review.pdf",
+  "kb": 8616
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Lower-Urinary-Tract-Cancer_2015_vsp",
+  "arquivo": "PDF/29062026/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
+  "kb": 273
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible",
+  "arquivo": "PDF/29062026/lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible.pdf",
+  "kb": 86
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "metabolites-16-00330",
+  "arquivo": "PDF/29062026/metabolites-16-00330.pdf",
+  "kb": 8640
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Relatório de Estágio Vitória Vosgnach",
+  "arquivo": "PDF/29062026/Relatório de Estágio Vitória Vosgnach.pdf",
+  "kb": 4318
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Urinalysis_vsp",
+  "arquivo": "PDF/29062026/Urinalysis_vsp.pdf",
+  "kb": 1455
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Urinary-Tract-Infections_2015_vsp",
+  "arquivo": "PDF/29062026/Urinary-Tract-Infections_2015_vsp.pdf",
+  "kb": 1183
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in",
+  "arquivo": "PDF/29062026/Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in.pdf",
+  "kb": 447
+ },
+ {
+  "pasta": "PDF/29062026",
+  "nome": "vetsci-10-00132-v2",
+  "arquivo": "PDF/29062026/vetsci-10-00132-v2.pdf",
+  "kb": 4549
  },
  {
   "pasta": "PDF/Primeiras Leituras",
@@ -146,6 +254,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
+  "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
+  "kb": 408
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "aalaf029",
   "arquivo": "PDF/Síndrome CIF/aalaf029.pdf",
   "kb": 485
@@ -194,15 +308,15 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
-  "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
-  "kb": 408
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "biomolecules-16-00138-v2",
   "arquivo": "PDF/Síndrome CIF/biomolecules-16-00138-v2.pdf",
   "kb": 1821
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Cat and Dog Behavior Recognition IMU",
+  "arquivo": "PDF/Síndrome CIF/Cat and Dog Behavior Recognition IMU.pdf",
+  "kb": 2532
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -425,11 +539,5 @@ window.DADOS_PDFS = [
   "nome": "Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos",
   "arquivo": "PDF/Síndrome CIF/Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos.pdf",
   "kb": 1254
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Cat and Dog Behavior Recognition IMU",
-  "arquivo": "PDF/Síndrome CIF/Cat and Dog Behavior Recognition IMU.pdf",
-  "kb": 2532
  }
 ];
