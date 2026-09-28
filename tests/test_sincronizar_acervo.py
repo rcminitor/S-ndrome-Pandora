@@ -100,7 +100,7 @@ class SincronizarAcervoTeste(unittest.TestCase):
         self.assertEqual(["1", "2"], [str(a["codigo"]) for a in inventario])
         self.assertEqual({"PDF/Síndrome CIF/a.pdf", "PDF/Síndrome CIF/b.pdf"},
                          {p["arquivo"] for p in pdfs})
-        self.assertEqual("Fonte A corrigida no painel", inventario[0]["titulo"])
+        self.assertEqual("Fonte A", inventario[0]["titulo"])
         self.assertTrue((self.painel / pdf_b).is_file())
         self.assertTrue(validar_publicacao(self.painel).ok)
 
@@ -117,6 +117,30 @@ class SincronizarAcervoTeste(unittest.TestCase):
 
         self.assertEqual(1, sincronizar(self.cofre, self.painel, escrever=True))
         self.assertEqual(inventario_antes, (self.painel / "dados_inventario.js").read_bytes())
+
+    def test_nota_canonica_corrige_campos_antigos_e_le_sintese_de_uso(self):
+        nota = _nota("1", "Fonte A", "PDF/Síndrome CIF/a.pdf") + """
+## Síntese de uso
+- **Por que ler:** razão confirmada na leitura.
+- **Como usar:** aplicação confirmada na tese.
+- **Cautela:** limite declarado pelos autores.
+"""
+        (self.cofre / "Fontes/1 Fonte A.md").write_text(nota, encoding="utf-8")
+        inventario = [{
+            "codigo": "1", "titulo": "Título antigo", "arquivo": "PDF/Síndrome CIF/a.pdf",
+            "status": "arquivo obtido", "fichamento": "", "referencia": "NÃO CONFIRMADO",
+            "porQueLer": "NÃO CONFIRMADO", "comoUsar": "NÃO CONFIRMADO",
+            "cautelas": "NÃO CONFIRMADO",
+        }]
+        self._gravar("dados_inventario.js", _js("DADOS_INVENTARIO", inventario))
+
+        self.assertEqual(0, sincronizar(self.cofre, self.painel, escrever=True))
+        item = ler_json_js(self.painel / "dados_inventario.js", "DADOS_INVENTARIO")[0]
+        self.assertEqual("Fonte A", item["titulo"])
+        self.assertEqual("razão confirmada na leitura.", item["porQueLer"])
+        self.assertEqual("aplicação confirmada na tese.", item["comoUsar"])
+        self.assertEqual("limite declarado pelos autores.", item["cautelas"])
+        self.assertIn("Revista Teste", item["referencia"])
 
 
 if __name__ == "__main__":

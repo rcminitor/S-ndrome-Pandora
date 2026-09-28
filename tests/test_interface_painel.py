@@ -28,6 +28,7 @@ class InterfacePainel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (RAIZ / "index.html").read_text(encoding="utf-8")
+        cls.app = (RAIZ / "app.js").read_text(encoding="utf-8")
         cls.js = (RAIZ / "painel.js").read_text(encoding="utf-8")
         cls.tema = (RAIZ / "tema.css").read_text(encoding="utf-8")
         cls.doc = InventarioHtml()
@@ -73,6 +74,13 @@ class InterfacePainel(unittest.TestCase):
     def test_painel_nao_repete_a_galeria_de_recursos(self):
         self.assertNotIn("Galeria de recursos", self.html)
         self.assertIn('id="tab-galeria"', self.html)
+
+    def test_acervo_oferece_inclusao_validada_de_pdf(self):
+        self.assertIn('id="addPdfBtn"', self.html)
+        self.assertIn('accept="application/pdf,.pdf"', self.html)
+        self.assertIn("/api/acervo/adicionar", self.app)
+        self.assertIn("new FormData(form)", self.app)
+        self.assertIn("modal.classList.add('open')", self.app)
 
 
 if __name__ == "__main__":

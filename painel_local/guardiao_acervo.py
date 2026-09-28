@@ -74,6 +74,12 @@ def _doi(valor: object) -> str:
     return doi if len(doi.split("/", 1)[1]) >= 4 else ""
 
 
+def _tem_nao_confirmado(valor: object) -> bool:
+    texto = unicodedata.normalize("NFKD", str(valor or ""))
+    texto = texto.encode("ascii", "ignore").decode().casefold()
+    return "nao confirmado" in texto
+
+
 def validar_dados(
     inventario: list[dict],
     pdfs: list[dict],
@@ -91,11 +97,22 @@ def validar_dados(
         for p in pdfs if str(p.get("arquivo", "")).strip()
     }
 
+    pendencias = {
+        str(a.get("codigo", "")): sorted(
+            campo for campo, valor in a.items() if _tem_nao_confirmado(valor)
+        )
+        for a in inventario
+    }
+    pendencias = {codigo: campos for codigo, campos in pendencias.items() if campos}
     r.numeros = {
         "fontes": len(inventario),
         "pdfs_autorizados": sum(1 for p in manifesto if p.startswith("PDF/")),
         "fichamentos": len(fichamentos),
+        "fontes_com_pendencia": len(pendencias),
     }
+    if pendencias:
+        resumo = "; ".join(f"{codigo} ({', '.join(campos)})" for codigo, campos in sorted(pendencias.items()))
+        r.avisos.append(f"campos NÃO CONFIRMADO preservados: {resumo}")
 
     if not inventario:
         r.erros.append("inventario vazio")
