@@ -70,6 +70,10 @@ class InterfacePainel(unittest.TestCase):
             self.tema,
         )
 
+    def test_painel_nao_repete_a_galeria_de_recursos(self):
+        self.assertNotIn("Galeria de recursos", self.html)
+        self.assertIn('id="tab-galeria"', self.html)
+
 
 if __name__ == "__main__":
     unittest.main()
