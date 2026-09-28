@@ -1137,5 +1137,22 @@ window.DADOS_INVENTARIO = [
         "arquivo": "PDF/Síndrome CIF/Relatório de Estágio - Nicoli Poliana.pdf,a.pdf",
         "fichamento": "",
         "referencia": "BATISTA, Nicoli Poliana. Relatório de Estágio Curricular Supervisionado na área de Clínica Médica e Cirúrgica de Felinos Domésticos. 2026. Trabalho de Conclusão de Curso (Graduação em Medicina Veterinária) — Centro de Ciências Rurais, Universidade Federal de Santa Catarina, Curitibanos, 2026."
+    },
+    {
+        "fase": "Ler primeiro",
+        "fichamento": "55 — Fichamento — Triaxial Accelerometers ML Behavioural Identification Cats.md",
+        "cautelas": "Gatos saudáveis de colônia; amostra pequena (n = 12); sem foco em doença, bem-estar ou Síndrome de Pandora.",
+        "codigo": "55",
+        "grupo": "Sensor e ML em gatos domésticos",
+        "tipoEstudo": "Estudo de validação (sensor + aprendizado de máquina)",
+        "procedencia": "confirmada no PDF oficial em 28/09/2026",
+        "porQueLer": "Valida acelerômetro triaxial com aprendizado de máquina para classificação comportamental em gatos.",
+        "comoUsar": "Referência técnica para justificar acelerômetro como sensor primário e classificação automatizada de comportamento felino.",
+        "arquivo": "PDF/Síndrome CIF/Smit et al. 2023 Triaxial Accelerometers Cats.pdf",
+        "referencia": "SMIT, Michelle; IKURIOR, Seer J.; CORNER-THOMAS, Rene A.; ANDREWS, Christopher J.; DRAGANOVA, Ina; THOMAS, David G. The Use of Triaxial Accelerometers and Machine Learning Algorithms for Behavioural Identification in Domestic Cats (Felis catus): A Validation Study. **Sensors**, v. 23, n. 16, artigo 7165, 14 ago. 2023. DOI: 10.3390/s23167165.",
+        "status": "fichamento concluido",
+        "ano": "2023",
+        "titulo": "The Use of Triaxial Accelerometers and Machine Learning Algorithms for Behavioural Identification in Domestic Cats (Felis catus): A Validation Study",
+        "nucleo": "Núcleo 2"
     }
 ];
