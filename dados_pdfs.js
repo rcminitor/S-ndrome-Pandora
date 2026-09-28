@@ -539,5 +539,11 @@ window.DADOS_PDFS = [
   "nome": "Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos",
   "arquivo": "PDF/Síndrome CIF/Vista do Síndrome de Pandora_ aspectos psiconeuroendócrinos.pdf",
   "kb": 1254
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Smit et al. 2023 Triaxial Accelerometers Cats",
+  "arquivo": "PDF/Síndrome CIF/Smit et al. 2023 Triaxial Accelerometers Cats.pdf",
+  "kb": 1340
  }
 ];
