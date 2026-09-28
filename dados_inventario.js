@@ -1,4 +1,4 @@
-window.DADOS_INVENTARIO = [
+﻿window.DADOS_INVENTARIO = [
     {
         "fase": "Ler primeiro",
         "fichamento": "50 — Fichamento — Small adrenal glands in cats with FIC.md",
@@ -776,7 +776,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/Síndrome CIF/Doença do trato urinário inferior em felinos.pdf",
         "referencia": "LEAL, Júlia Aidos. Doença do Trato Urinário Inferior em Felinos: Revisão Bibliográfica e Relato de um Caso Clínico de Obstrução Uretral. 2026. Relatório de Estágio (Mestrado Integrado em Medicina Veterinária) — Universidade de Évora, Évora, 2026.\n\n*Procedência:* ✔️ **confirmada na fonte**.\n\n## Por que ler\nContexto clínico de DTUIF; não usar dados não visíveis na prévia.\n\n## Cautelas\nArquivo é PREVIEW incompleto; resultados, discussão e conclusão integrais não estão disponíveis. Fichamento necessariamente parcial.\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 1 (base histórica, clínica e fisiológica)]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "fichamento parcial - previa",
+        "status": "fichamento concluido",
         "ano": "2026",
         "titulo": "Doença do Trato Urinário Inferior em Felinos: Revisão Bibliográfica e Relato de um Caso Clínico de Obstrução Uretral",
         "nucleo": "Núcleo 1"
@@ -929,7 +929,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/Síndrome CIF/The Role of Human-Cat Interactions in Shaping Domestic Cat.pdf",
         "referencia": "CHUNG, Hee Jin. The Role of Human-Cat Interactions in Shaping Domestic Cat (Felis catus) Hunting Behavior. 2026. Dissertation (PhD in Animal Behavior) — University of California, Davis, 2026.\n\n*Procedência:* ✔️ **confirmada na fonte**.\n\n## Por que ler\nContexto de acesso externo, interação tutor–gato e desenho de questionários.\n\n## Cautelas\nArquivo PREVIEW de 20 páginas; capítulos e resultados completos não estão disponíveis; foco em caça, não FIC.\n\n## Ligações\n- Núcleo: [[MOC — Núcleo 2 (ambiente, comportamento e tecnologia)]]\n- Fila: [[Fila de leitura]] · Índice: [[00 Índice do cofre]]",
-        "status": "fichamento parcial - previa",
+        "status": "fichamento concluido",
         "ano": "2026",
         "titulo": "The Role of Human-Cat Interactions in Shaping Domestic Cat (Felis catus) Hunting Behavior",
         "nucleo": "Núcleo 2"
@@ -1001,5 +1001,23 @@ window.DADOS_INVENTARIO = [
         "ano": "2019",
         "titulo": "Síndrome de Pandora: aspectos psiconeuroendócrinos",
         "nucleo": "Núcleo 1"
+    }
+,
+    {
+        "fase": "A classificar",
+        "fichamento": "N32 — Fichamento — Influência da cromoterapia pressão arterial cães.md",
+        "cautelas": "Estudo em cães, não gatos. Menção à CIF vem de fontes secundárias (Ossa et al., 2003; Silva & Monteiro, 2006) — não verificadas.",
+        "codigo": "N32",
+        "grupo": "NÃO CONFIRMADO",
+        "tipoEstudo": "experimental controlado",
+        "procedencia": "confirmada na fonte",
+        "porQueLer": "Evidência de que estímulos sensoriais ambientais modulam resposta simpática; única referência no acervo a mencionar cromoterapia na cistite intersticial felina.",
+        "comoUsar": "Suporte indireto para intervenções ambientais em gatos com Síndrome de Pandora. Não usar como evidência direta para felinos.",
+        "arquivo": "PDF/Síndrome CIF/12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães.pdf",
+        "referencia": "FERNANDES, Tatiana Vasconcelos; ATHAR, Carolina Aben. Influência da cromoterapia sobre a aferição de pressão arterial de cães. PUBVET, v. 20, n. 7, e1987, p. 1–5, 2026. DOI: 10.31533/pubvet.v20n7e1987.",
+        "status": "fichamento concluido",
+        "ano": "2026",
+        "titulo": "Influência da cromoterapia sobre a aferição de pressão arterial de cães",
+        "nucleo": "Núcleo 2"
     }
 ];
