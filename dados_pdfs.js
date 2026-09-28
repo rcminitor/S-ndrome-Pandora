@@ -134,12 +134,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI",
-  "arquivo": "PDF/Síndrome CIF/A_FACETA_PSICOLOGICA_DA_CISTITE_INTERSTI.pdf",
-  "kb": 408
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "aalaf029",
   "arquivo": "PDF/Síndrome CIF/aalaf029.pdf",
   "kb": 485
