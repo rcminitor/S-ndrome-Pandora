@@ -329,9 +329,14 @@ function renderDrawerView(article) {
   document.getElementById('drawerStudyType').textContent = article.tipoEstudo || 'Não especificado';
 
   const refBox = document.getElementById('drawerRef');
-  const refText = article.referencia && article.referencia !== 'NAO CONFIRMADO'
-    ? article.referencia
-    : 'Referência ABNT ainda NÃO CONFIRMADA no artigo original.';
+  let refText = article.referencia || '';
+  if (refText.includes('## Referência (ABNT)')) {
+    const match = refText.match(/## Referência \(ABNT\)\s*\n([\s\S]*?)(?:\n##|\n\*Procedência|$)/);
+    if (match) refText = match[1].replace(/^[> ]+/gm, '').replace(/\*\*/g, '').trim();
+  }
+  if (!refText || refText === 'NAO CONFIRMADO') {
+    refText = 'Referência ABNT ainda NÃO CONFIRMADA no artigo original.';
+  }
   refBox.textContent = refText;
 
   const copyBtn = document.getElementById('drawerCopyRefBtn');
