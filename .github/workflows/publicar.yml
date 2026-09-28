@@ -37,6 +37,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -44,3 +47,9 @@ jobs:
       - name: Publicar somente depois da validacao
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Conferir o site publicado pela rede
+        run: >-
+          python painel_local/verificar_site_publicado.py
+          --url "${{ steps.deployment.outputs.page_url }}"
+          --tentativas 12
+          --intervalo 5
