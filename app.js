@@ -162,7 +162,9 @@ function renderArticles() {
     if (currentFilter === 'n2') return (item.nucleo || '').includes('Nucleo 2');
     if (currentFilter === 'ler-primeiro') return (item.fase || '').toLowerCase().includes('ler primeiro');
     if (currentFilter === 'fichados') return (item.status || '').toLowerCase().includes('fichamento concluido');
-    if (currentFilter === 'com-pdf') return item.arquivo && item.arquivo.trim() !== '' && !item.arquivo.includes('NAO CONFIRMADO');
+    if (currentFilter === 'nao-fichados') return !(item.status || '').toLowerCase().includes('fichamento concluido');
+    if (currentFilter === 'com-pdf') return item.arquivo && item.arquivo.trim() !== '' && !item.arquivo.includes('NAO CONFIRMADO') && !item.arquivo.includes('verificar');
+    if (currentFilter === 'sem-pdf') return !item.arquivo || item.arquivo.trim() === '' || item.arquivo.includes('NAO CONFIRMADO') || item.arquivo.includes('verificar');
     if (currentFilter === 'lidos') return lidos[item.codigo] === true;
 
     return true;
