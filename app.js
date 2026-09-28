@@ -38,6 +38,13 @@ function getMergedData() {
   });
 }
 
+function normalizeForMatch(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initTabs();
@@ -131,8 +138,8 @@ function initInventory() {
 }
 
 function updateKpis(data) {
-  const n1Count = data.filter(d => (d.nucleo || '').includes('Nucleo 1')).length;
-  const n2Count = data.filter(d => (d.nucleo || '').includes('Nucleo 2')).length;
+  const n1Count = data.filter(d => normalizeForMatch(d.nucleo).includes('nucleo 1')).length;
+  const n2Count = data.filter(d => normalizeForMatch(d.nucleo).includes('nucleo 2')).length;
   const priorityCount = data.filter(d => (d.fase || '').toLowerCase().includes('ler primeiro')).length;
   const fichadosCount = data.filter(d => (d.status || '').toLowerCase().includes('fichamento concluido')).length;
 
@@ -169,8 +176,8 @@ function renderArticles() {
     if (!searchMatch) return false;
 
     if (currentFilter === 'all') return true;
-    if (currentFilter === 'n1') return (item.nucleo || '').includes('Nucleo 1');
-    if (currentFilter === 'n2') return (item.nucleo || '').includes('Nucleo 2');
+    if (currentFilter === 'n1') return normalizeForMatch(item.nucleo).includes('nucleo 1');
+    if (currentFilter === 'n2') return normalizeForMatch(item.nucleo).includes('nucleo 2');
     if (currentFilter === 'ler-primeiro') return (item.fase || '').toLowerCase().includes('ler primeiro');
     if (currentFilter === 'fichados') return (item.status || '').toLowerCase().includes('fichamento concluido');
     if (currentFilter === 'nao-fichados') return !(item.status || '').toLowerCase().includes('fichamento concluido');
