@@ -103,7 +103,50 @@ document.addEventListener('DOMContentLoaded', () => {
   initInventory();
   initDrawer();
   initAddPdf();
+  initAcervoHealth();
 });
+
+function initAcervoHealth() {
+  const button = document.getElementById('acervoHealthBtn');
+  const modal = document.getElementById('acervoHealthModal');
+  const close = document.getElementById('acervoHealthCloseBtn');
+  const refresh = document.getElementById('acervoHealthRefreshBtn');
+  const content = document.getElementById('acervoHealthContent');
+  if (!button || !modal || !content) return;
+
+  const localSnapshot = () => {
+    const fontes = getActiveInventoryData();
+    const fichamentos = getActiveFichamentos();
+    const ativos = new Set(fontes.map(item => String(item.codigo)));
+    const estado = ((window.ESTADO_ARTE || {}).fontes || [])
+      .filter(item => ativos.has(String(item.codigo)));
+    return { fontes: fontes.length, pdfs_autorizados: getAuthorizedPdfPaths().size,
+      fichamentos: fichamentos.length, estado: estado.length };
+  };
+  const renderLocal = (message = '') => {
+    const n = localSnapshot();
+    content.innerHTML = `<strong>${n.fontes} fontes · ${n.pdfs_autorizados} PDFs · ${n.fichamentos} fichamentos · ${n.estado} no Estado da Arte</strong><br>${escapeHtml(message || 'Dados públicos coerentes. Abra o Painel de Estudo local para executar a auditoria completa do cofre.')}`;
+  };
+  const load = async () => {
+    renderLocal('Consultando o Guardião local…');
+    try {
+      const response = await fetch(`${LOCAL_PANEL_API}/api/acervo/saude`, { cache: 'no-store' });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.erro || 'Auditoria indisponível.');
+      const report = data.relatorio;
+      const n = report.numeros;
+      const findings = (report.achados || []).map(item => `<li>${escapeHtml(item.mensagem)}</li>`).join('');
+      content.innerHTML = `<strong>${report.ok && !n.achados ? '✓ Acervo íntegro' : '⚠ Acervo requer atenção'}</strong><br>${n.fontes} fontes · ${n.pdfs_autorizados} PDFs · ${n.fichamentos} fichamentos · ${n.notas_rastreabilidade || 0} nota(s) preservada(s) somente para rastreabilidade · ${n.achados} achado(s)${findings ? `<ul>${findings}</ul>` : ''}`;
+    } catch (error) {
+      renderLocal(error.message);
+    }
+  };
+  const hide = () => { modal.hidden = true; modal.classList.remove('open'); };
+  button.addEventListener('click', () => { modal.hidden = false; modal.classList.add('open'); load(); });
+  close?.addEventListener('click', hide);
+  refresh?.addEventListener('click', load);
+  modal.addEventListener('click', event => { if (event.target === modal) hide(); });
+}
 
 // --------------------------------------------------------------------------
 // Inclusão segura de artigo/TCC pelo Painel de Estudo local
@@ -505,10 +548,48 @@ function initDrawer() {
   const editBtn = document.getElementById('drawerEditBtn');
   const saveBtn = document.getElementById('drawerSaveBtn');
   const cancelBtn = document.getElementById('drawerCancelBtn');
+  const retirarBtn = document.getElementById('drawerRetirarBtn');
 
   if (editBtn) editBtn.addEventListener('click', enterEditMode);
   if (saveBtn) saveBtn.addEventListener('click', saveEdit);
   if (cancelBtn) cancelBtn.addEventListener('click', exitEditMode);
+  if (retirarBtn) retirarBtn.addEventListener('click', retirarFonteAtual);
+}
+
+async function retirarFonteAtual() {
+  if (!drawerArticle) return;
+  const codigo = String(drawerArticle.codigo);
+  const confirmacao = prompt(`Esta ação retira #${codigo} do site e move o PDF para a área de rastreabilidade.\n\nDigite ${codigo} para confirmar:`);
+  if (confirmacao === null) return;
+  if (confirmacao.trim().replace(/^#/, '').toUpperCase() !== codigo.toUpperCase()) {
+    alert('Código de confirmação incorreto. Nada foi alterado.');
+    return;
+  }
+  const button = document.getElementById('drawerRetirarBtn');
+  if (button) { button.disabled = true; button.textContent = 'Retirando…'; }
+  try {
+    const response = await fetch(`${LOCAL_PANEL_API}/api/acervo/retirar`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo, confirmacao }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) throw new Error(data.erro || 'Não foi possível retirar a fonte.');
+    window.DADOS_INVENTARIO = (window.DADOS_INVENTARIO || []).filter(item => String(item.codigo) !== codigo);
+    window.DADOS_PDFS = (window.DADOS_PDFS || []).filter(item => item.arquivo !== drawerArticle.arquivo);
+    if (window.DADOS_FICHAMENTOS) {
+      window.DADOS_FICHAMENTOS.fichamentos = (window.DADOS_FICHAMENTOS.fichamentos || [])
+        .filter(item => String(item.codigo) !== codigo);
+    }
+    delete edits[codigo]; delete lidos[codigo]; saveEdits(); saveLidos();
+    closeDrawer(); renderArticles(); updateKpis(getMergedData());
+    alert(data.publicado
+      ? `#${codigo} retirado do Acervo e arquivado com segurança.`
+      : `#${codigo} retirado localmente. Publicação pendente: ${data.erro_publicacao || data.aviso}`);
+  } catch (error) {
+    alert(error.message || 'Falha ao retirar a fonte.');
+  } finally {
+    if (button) { button.disabled = false; button.textContent = 'Retirar do Acervo'; }
+  }
 }
 
 function openDrawer(article) {

@@ -56,6 +56,8 @@ from fichamentos import Fichamentos  # noqa: E402
 from adicionar_pdf import AdicionadorPDF, ErroAdicao  # noqa: E402
 from caixa_entrada_pdf import caminho_seguro, listar_entrada  # noqa: E402
 from acervo_ativo import codigos_ativos  # noqa: E402
+from retirar_fonte import ErroRetirada, RetiradorFonte  # noqa: E402
+from acervo import auditar  # noqa: E402
 from publicar_acervo import ErroPublicacao, PublicadorAcervo  # noqa: E402
 import ia  # noqa: E402
 import contexto_cofre  # noqa: E402
@@ -144,6 +146,7 @@ ANALISES_ATIVAS: dict[Path, dict] = {}
 TRAVA_ANALISES = threading.Lock()
 PORTA = 8765
 ADICIONADOR_PDF = AdicionadorPDF(BASE, RAIZ)
+RETIRADOR_FONTE = RetiradorFonte(BASE, RAIZ)
 PUBLICADOR_ACERVO = PublicadorAcervo(BASE, RAIZ)
 # O site publicado pode conversar com este painel (só ele e o próprio PC).
 ORIGENS = {"https://rcminitor.github.io", f"http://localhost:{PORTA}", f"http://127.0.0.1:{PORTA}"}
@@ -471,6 +474,45 @@ def caixa_entrada_acervo():
         return jsonify({"ok": True, **listar_entrada(BASE)})
     except Exception as e:
         return jsonify({"ok": False, "erro": f"Falha ao ler a Caixa de entrada: {e}"}), 500
+
+
+@app.get("/api/acervo/saude")
+def saude_acervo():
+    """Diagnóstico somente leitura usado pela janela administrativa do site."""
+    try:
+        return jsonify({"ok": True, "relatorio": auditar(BASE, RAIZ)})
+    except Exception as e:
+        return jsonify({"ok": False, "erro": f"Falha na auditoria: {type(e).__name__}: {e}"}), 500
+
+
+@app.post("/api/acervo/retirar")
+def retirar_fonte_acervo():
+    """Retira uma fonte de modo recuperável e publica a nova visão do Acervo."""
+    dados = request.get_json(force=True) or {}
+    try:
+        resultado = RETIRADOR_FONTE.retirar(dados.get("codigo", ""), dados.get("confirmacao", ""))
+    except ErroRetirada as e:
+        return jsonify({"ok": False, "erro": str(e)}), e.status
+    except Exception as e:
+        return jsonify({"ok": False, "erro": f"Falha ao retirar fonte: {type(e).__name__}: {e}"}), 500
+    COFRE_OBJ._cache = None
+    atualizar_fila()
+    try:
+        publicacao = PUBLICADOR_ACERVO.publicar_retirada(
+            resultado["codigo"], resultado["nota"], resultado["pdf_anterior"],
+            BASE / resultado["pdf_arquivado"],
+        )
+    except ErroPublicacao as e:
+        return jsonify({
+            "ok": True, "publicado": False,
+            "codigo": resultado["codigo"], "pdf_arquivado": resultado["pdf_arquivado"],
+            "aviso": "Fonte retirada localmente, mas o envio ao GitHub falhou.",
+            "erro_publicacao": str(e),
+        }), 202
+    return jsonify({
+        "ok": True, "publicado": True, "codigo": resultado["codigo"],
+        "pdf_arquivado": resultado["pdf_arquivado"], "publicacao": publicacao,
+    })
 
 
 # ------------------------------------------------------------------ estado da arte
