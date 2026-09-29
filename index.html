@@ -225,7 +225,10 @@
             <h2 class="inventory-heading">Acervo de artigos e TCC</h2>
             <p class="inventory-subtitle">Cada fonte publicada deve possuir um PDF válido e uma nota correspondente no cofre.</p>
           </div>
-          <button class="pn-btn pn-btn-primary" id="addPdfBtn" type="button">Adicionar PDF</button>
+          <div class="pn-actions">
+            <button class="pn-btn" id="acervoHealthBtn" type="button">Saúde do acervo</button>
+            <button class="pn-btn pn-btn-primary" id="addPdfBtn" type="button">Adicionar PDF</button>
+          </div>
         </div>
         <div class="search-box">
           <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
@@ -257,6 +260,18 @@
       <!-- Articles Grid Container -->
       <div class="articles-grid" id="articlesGrid">
         <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <div class="pn-modal" id="acervoHealthModal" role="dialog" aria-modal="true" aria-labelledby="acervoHealthTitle" hidden>
+      <div class="pn-modal-box add-pdf-modal-box">
+        <button class="pn-modal-close" id="acervoHealthCloseBtn" type="button" aria-label="Fechar">×</button>
+        <h2 id="acervoHealthTitle">Saúde do acervo</h2>
+        <p class="pn-muted">Diagnóstico consolidado. A regra obrigatória é: sem PDF válido na pasta oficial, sem publicação.</p>
+        <div id="acervoHealthContent" class="pn-note" role="status" aria-live="polite">Calculando…</div>
+        <div class="pn-actions" style="justify-content:flex-end;margin-top:16px">
+          <button class="pn-btn" id="acervoHealthRefreshBtn" type="button">Atualizar diagnóstico</button>
+        </div>
       </div>
     </div>
 
@@ -1029,6 +1044,7 @@
         <div class="drawer-section drawer-actions-row">
           <button class="btn-drawer-lido" id="drawerLidoBtn" type="button">Marcar como lido</button>
           <button class="btn-drawer-edit" id="drawerEditBtn" type="button">Editar</button>
+          <button class="pn-btn" id="drawerRetirarBtn" type="button" style="color:#b91c1c;border-color:#fecaca">Retirar do Acervo</button>
           <button class="btn-drawer-save" id="drawerSaveBtn" type="button" style="display:none">Salvar</button>
           <button class="btn-drawer-cancel" id="drawerCancelBtn" type="button" style="display:none">Cancelar</button>
         </div>
@@ -1217,7 +1233,7 @@
   <script src="dados_estatisticas.js?v=20260928a"></script>
   <script src="dados_revisao.js?v=20260928a"></script>
   <script src="dados_leituras.js?v=20260928a"></script>
-  <script src="app.js?v=20260928i"></script>
+  <script src="app.js?v=20260928j"></script>
   <script src="painel.js?v=20260928e"></script>
   <script src="estadoarte.js?v=20260928c"></script>
   <script src="fichamentos.js?v=20260928c" defer></script>

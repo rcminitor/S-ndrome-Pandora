@@ -9,6 +9,7 @@ import hashlib
 import json
 import re
 import threading
+import unicodedata
 import uuid
 from pathlib import Path
 
@@ -22,6 +23,7 @@ TRAVA_ADICAO = threading.Lock()
 LIMITE_BYTES = 100 * 1024 * 1024
 CODIGO = re.compile(r"^[A-Z]{0,3}\d{1,4}$")
 INVALIDOS_WINDOWS = re.compile(r'[\\/:*?"<>|#^\[\]]')
+DOI = re.compile(r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+", re.I)
 
 
 class ErroAdicao(ValueError):
@@ -51,6 +53,17 @@ def _hash(caminho: Path) -> str:
         for bloco in iter(lambda: entrada.read(1024 * 1024), b""):
             h.update(bloco)
     return h.hexdigest()
+
+
+def _normalizar(valor: str) -> str:
+    return re.sub(
+        r"[^a-z0-9]+", " ",
+        unicodedata.normalize("NFD", str(valor or "")).encode("ascii", "ignore").decode().casefold(),
+    ).strip()
+
+
+def _dois(texto: str) -> set[str]:
+    return {achado.group(0).rstrip(".,;)").casefold() for achado in DOI.finditer(texto or "")}
 
 
 def _nota(codigo: str, titulo: str, ano: str, nucleo: str, fase: str,
@@ -164,11 +177,30 @@ class AdicionadorPDF:
         except Exception as exc:
             raise ErroAdicao(f"O PDF está corrompido ou não pôde ser aberto: {exc}") from exc
 
-    def _checar_duplicatas(self, codigo: str, temporario: Path) -> None:
+    def _checar_duplicatas(self, codigo: str, temporario: Path, titulo: str, referencia: str) -> None:
+        titulo_normalizado = _normalizar(titulo)
+        texto_pdf = ""
+        try:
+            with pymupdf.open(temporario) as documento:
+                texto_pdf = "\n".join(
+                    documento.load_page(i).get_text("text")
+                    for i in range(min(3, documento.page_count))
+                )
+        except Exception:
+            pass
+        dois_novos = _dois(texto_pdf + "\n" + referencia)
         for nota in (self.cofre / "Fontes").glob("*.md"):
             texto = nota.read_text(encoding="utf-8", errors="replace")
             if re.search(rf'^codigo:\s*["\']?{re.escape(codigo)}["\']?\s*$', texto, re.M | re.I):
                 raise ErroAdicao(f"O código {codigo} já existe no acervo.", 409)
+            titulo_existente = re.search(r'(?im)^titulo:\s*["\']?(.*?)["\']?\s*$', texto)
+            if titulo_normalizado and titulo_existente and _normalizar(titulo_existente.group(1)) == titulo_normalizado:
+                raise ErroAdicao(f"Uma fonte com o mesmo título já existe: {nota.name}", 409)
+            dois_repetidos = dois_novos & _dois(texto)
+            if dois_repetidos:
+                raise ErroAdicao(
+                    f"O DOI {sorted(dois_repetidos)[0]} já pertence à fonte {nota.name}", 409
+                )
         novo_hash = _hash(temporario)
         for existente in (self.cofre / "PDF").rglob("*.pdf"):
             if existente.is_file() and existente.stat().st_size == temporario.stat().st_size:
@@ -199,7 +231,9 @@ class AdicionadorPDF:
             criou_pdf = criou_nota = False
             try:
                 self._validar_pdf(temporario)
-                self._checar_duplicatas(valores["codigo"], temporario)
+                self._checar_duplicatas(
+                    valores["codigo"], temporario, valores["titulo"], valores["referencia"]
+                )
                 rel_pdf = destino_pdf.relative_to(self.cofre).as_posix()
                 conteudo_nota = _nota(caminho_pdf=rel_pdf, **{k: valores[k] for k in (
                     "codigo", "titulo", "ano", "nucleo", "fase", "tema", "tipo_documento", "referencia")})

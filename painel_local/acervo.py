@@ -122,6 +122,7 @@ def auditar(cofre: Path, painel: Path) -> dict:
             "fontes": len(inventario_esperado),
             "pdfs_autorizados": len(pdfs_esperados),
             "fichamentos": len(fichas_esperadas.get("fichamentos", [])),
+            "notas_rastreabilidade": sum(codigo not in ativos for codigo in notas),
             "achados": len(achados),
             "corrigiveis": sum(a.corrigivel for a in achados),
             "pendencias_humanas": sum(not a.corrigivel for a in achados),

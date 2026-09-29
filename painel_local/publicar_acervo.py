@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -105,6 +106,36 @@ class PublicadorAcervo:
             self._validar()
             painel = self._commit_e_push(self.painel, caminhos, mensagem)
         return {"painel": painel, "testes": "aprovados", "guardiao": "aprovado"}
+
+    def publicar_retirada(self, codigo: str, nota: Path, pdf_anterior: str,
+                          pdf_arquivado: Path) -> dict:
+        nota_rel = Path(nota).resolve().relative_to(self.cofre.resolve()).as_posix()
+        pdf_rel = str(pdf_anterior).replace("\\", "/")
+        painel_pdf = (self.painel / pdf_rel).resolve()
+        if not painel_pdf.is_relative_to(self.painel.resolve()):
+            raise ErroPublicacao("Caminho do PDF retirado ficou fora do painel.")
+        derivados = [
+            "dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js", "index.html", pdf_rel,
+        ]
+        removeu_painel = False
+        with TRAVA_PUBLICACAO:
+            self._validar()
+            if painel_pdf.exists():
+                painel_pdf.unlink()
+                removeu_painel = True
+            try:
+                cofre = self._commit_e_push(
+                    self.cofre, [nota_rel, pdf_rel], f"acervo: retirar fonte {codigo}",
+                )
+                painel = self._commit_e_push(
+                    self.painel, derivados, f"acervo: retirar fonte {codigo}",
+                )
+            except Exception:
+                if removeu_painel and not painel_pdf.exists() and Path(pdf_arquivado).is_file():
+                    painel_pdf.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(pdf_arquivado, painel_pdf)
+                raise
+        return {"cofre": cofre, "painel": painel, "testes": "aprovados", "guardiao": "aprovado"}
 
     def publicar_auditoria(self, notas: list[Path], caminhos_painel: list[str]) -> dict:
         notas_rel = [Path(n).resolve().relative_to(self.cofre.resolve()).as_posix() for n in notas]

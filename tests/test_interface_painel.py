@@ -102,6 +102,14 @@ class InterfacePainel(unittest.TestCase):
         self.assertNotIn("Núcleo 1 Proposto (22 Fontes)", self.html)
         self.assertNotIn("Núcleo 2 Proposto (42 Fontes)", self.html)
 
+    def test_acervo_tem_diagnostico_e_retirada_segura(self):
+        self.assertIn('id="acervoHealthBtn"', self.html)
+        self.assertIn('id="acervoHealthModal"', self.html)
+        self.assertIn('id="drawerRetirarBtn"', self.html)
+        self.assertIn("/api/acervo/saude", self.app)
+        self.assertIn("/api/acervo/retirar", self.app)
+        self.assertIn("Digite ${codigo} para confirmar", self.app)
+
 
 if __name__ == "__main__":
     unittest.main()

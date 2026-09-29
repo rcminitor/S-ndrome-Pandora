@@ -23,7 +23,10 @@ from guardiao_acervo import ler_json_js, validar_dados
 
 
 IGNORAR_PDF = {"_Versoes_a_comparar", "_Duplicatas_confirmadas", "_Entrada", "IA"}
-STATUS_NAO_PUBLICAVEL = ("duplicata", "arquivo nao localizado", "arquivo corrompido", "ainda nao obtido")
+STATUS_NAO_PUBLICAVEL = (
+    "duplicata", "arquivo nao localizado", "arquivo corrompido", "ainda nao obtido",
+    "retirado do acervo",
+)
 
 
 def _frontmatter(texto: str) -> dict[str, str]:

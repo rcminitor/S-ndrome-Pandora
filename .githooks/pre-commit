@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+echo "[acervo] Executando Guardião antes do commit..."
+python painel_local/guardiao_acervo.py --raiz .
+
+echo "[acervo] Executando testes de regressão..."
+python -m unittest discover -s tests -p "test_*.py"

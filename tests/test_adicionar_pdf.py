@@ -15,9 +15,9 @@ sys.path.insert(0, str(RAIZ / "painel_local"))
 from adicionar_pdf import AdicionadorPDF, ErroAdicao  # noqa: E402
 
 
-def _arquivo_pdf(nome="fonte.pdf"):
+def _arquivo_pdf(nome="fonte.pdf", texto="PDF de teste"):
     doc = pymupdf.open()
-    doc.new_page().insert_text((72, 72), "PDF de teste")
+    doc.new_page().insert_text((72, 72), texto)
     conteudo = doc.tobytes()
     doc.close()
     return FileStorage(stream=io.BytesIO(conteudo), filename=nome, content_type="application/pdf")
@@ -82,6 +82,25 @@ class AdicionarPdfTeste(unittest.TestCase):
         adicionador = AdicionadorPDF(self.cofre, self.painel, self._sincronizador_aprovado)
         with self.assertRaisesRegex(ErroAdicao, "já existe"):
             adicionador.adicionar(_arquivo_pdf(), self.dados)
+
+    def test_recusa_titulo_duplicado_mesmo_com_outro_codigo(self):
+        (self.cofre / "Fontes/1 Existente.md").write_text(
+            '---\ncodigo: "1"\ntitulo: "Fonte acadêmica de teste"\n---\n', encoding="utf-8"
+        )
+        dados = {**self.dados, "codigo": "69"}
+        adicionador = AdicionadorPDF(self.cofre, self.painel, self._sincronizador_aprovado)
+        with self.assertRaisesRegex(ErroAdicao, "mesmo título"):
+            adicionador.adicionar(_arquivo_pdf(), dados)
+
+    def test_recusa_doi_duplicado_encontrado_no_pdf(self):
+        (self.cofre / "Fontes/1 Existente.md").write_text(
+            '---\ncodigo: "1"\ntitulo: "Outra fonte"\n---\nDOI: 10.1234/teste.2025.1\n',
+            encoding="utf-8",
+        )
+        dados = {**self.dados, "codigo": "69", "titulo": "Título diferente", "referencia": ""}
+        adicionador = AdicionadorPDF(self.cofre, self.painel, self._sincronizador_aprovado)
+        with self.assertRaisesRegex(ErroAdicao, "DOI"):
+            adicionador.adicionar(_arquivo_pdf(texto="DOI 10.1234/teste.2025.1"), dados)
 
     def test_move_pdf_da_caixa_de_entrada_apos_aprovacao(self):
         origem = self.cofre / "PDF/_Entrada/fonte.pdf"
