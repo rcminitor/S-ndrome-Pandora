@@ -26,12 +26,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/29062026",
-  "nome": "kim-et-al-2017-epidemiological-study-of-feline-idiopathic-cystitis-in-seoul-south-korea",
-  "arquivo": "PDF/29062026/kim-et-al-2017-epidemiological-study-of-feline-idiopathic-cystitis-in-seoul-south-korea.pdf",
-  "kb": 107
- },
- {
-  "pasta": "PDF/29062026",
   "nome": "Lower-Urinary-Tract-Cancer_2015_vsp",
   "arquivo": "PDF/29062026/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
   "kb": 273
@@ -164,12 +158,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães",
-  "arquivo": "PDF/Síndrome CIF/12+1987+4829+-+Influência+da+cromoterapia+sobre+a+aferição+de+pressão+arterial+de+cães.pdf",
-  "kb": 349
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "13_46",
   "arquivo": "PDF/Síndrome CIF/13_46.pdf",
   "kb": 1218
@@ -263,12 +251,6 @@ window.DADOS_PDFS = [
   "nome": "Diagnosticando_a_cistite_idiopatica_feli",
   "arquivo": "PDF/Síndrome CIF/Diagnosticando_a_cistite_idiopatica_feli.pdf",
   "kb": 548
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Doença do trato urinário inferior em felinos",
-  "arquivo": "PDF/Síndrome CIF/Doença do trato urinário inferior em felinos.pdf",
-  "kb": 977
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -419,12 +401,6 @@ window.DADOS_PDFS = [
   "nome": "The potential application of",
   "arquivo": "PDF/Síndrome CIF/The potential application of.pdf",
   "kb": 556
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "The Role of Human-Cat Interactions in Shaping Domestic Cat",
-  "arquivo": "PDF/Síndrome CIF/The Role of Human-Cat Interactions in Shaping Domestic Cat.pdf",
-  "kb": 454
  },
  {
   "pasta": "PDF/Síndrome CIF",
