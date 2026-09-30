@@ -1038,8 +1038,8 @@ window.DADOS_INVENTARIO = [
     },
     {
         "fase": "Ler depois",
-        "fichamento": "",
-        "cautelas": "Leitura seletiva, ainda não integral. A maior parte do artigo trata de cães; dados específicos de frequência, metástase e tratamento em gatos são secundários e devem ser atribuídos às fontes primárias.",
+        "fichamento": "69 — Fichamento — Lower urinary tract cancer.md",
+        "cautelas": "Leitura integral concluída em 30/09/2026. A maior parte do artigo trata de cães; dados específicos de frequência, metástase e tratamento em gatos são secundários e devem ser atribuídos às fontes primárias. O histórico de cistite idiopática em alguns gatos com neoplasia não demonstra associação causal; as próprias autoras dizem que a associação não foi demonstrada.",
         "codigo": "69",
         "grupo": "neoplasias do trato urinário inferior",
         "tipoEstudo": "artigo de revisão",
@@ -1048,7 +1048,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar apenas na delimitação do diagnóstico diferencial e, se forem necessários números de frequência ou prognóstico, consultar os estudos primários citados pela revisão.",
         "arquivo": "PDF/29062026/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
         "referencia": "CANNON, Claire M.; ALLSTADT, Sara D. Lower Urinary Tract Cancer. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 807–824, 2015. DOI: 10.1016/j.cvsm.2015.02.008.",
-        "status": "leitura em andamento",
+        "status": "fichamento concluido",
         "ano": "2015",
         "titulo": "Lower Urinary Tract Cancer",
         "nucleo": "Núcleo 1"
