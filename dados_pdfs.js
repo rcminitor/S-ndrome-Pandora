@@ -1,4 +1,4 @@
-// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
+// Gerado pelo exportador transacional do acervo
 window.DADOS_PDFS = [
  {
   "pasta": "PDF/29062026",
@@ -71,6 +71,12 @@ window.DADOS_PDFS = [
   "nome": "vetsci-10-00132-v2",
   "arquivo": "PDF/29062026/vetsci-10-00132-v2.pdf",
   "kb": 4549
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "24_Balboni_2024_No_viable_bacterial_communities",
+  "arquivo": "PDF/A_classificar/24_Balboni_2024_No_viable_bacterial_communities.pdf",
+  "kb": 502
  },
  {
   "pasta": "PDF/A_classificar",

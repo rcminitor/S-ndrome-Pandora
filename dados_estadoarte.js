@@ -169,6 +169,49 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T23:55"
   },
   {
+   "codigo": "24",
+   "titulo": "Balboni et al. (2024) — Bactérias viáveis na FIC",
+   "marcas": {
+    "C1": {
+     "m": "✅",
+     "txt": "19 gatos diagnosticados com FIC; 18 na análise final NGS (pp. 2, 4)."
+    },
+    "C2": {
+     "m": "✅",
+     "txt": "Estudo prospectivo com coleta e resultados próprios (pp. 2–4)."
+    },
+    "C3": {
+     "m": "✗",
+     "txt": "Coleta única por gato; sem acompanhamento longitudinal próprio (pp. 2–4)."
+    },
+    "C4": {
+     "m": "✗",
+     "txt": "Acesso interno/externo descrito, sem teste de estresse/ambiente (p. 4)."
+    },
+    "C5": {
+     "m": "✅",
+     "txt": "SUC, EQUC, qPCR de pele e NGS com controles negativos (pp. 2–5)."
+    },
+    "C6": {
+     "m": "✗",
+     "txt": "NGS e bioinformática não constituem estudo de sensor/IoT/IA (pp. 3–4)."
+    },
+    "C7": {
+     "m": "◐",
+     "txt": "Análise estatística de contaminação por decontam, P < 0,1; sem modelo preditivo validado (p. 4)."
+    },
+    "C8": {
+     "m": "✗",
+     "txt": "Sem validação de teste clínico diagnóstico ou intervenção; diagnóstico FIC é critério de inclusão (pp. 2–4)."
+    },
+    "C9": {
+     "m": "✗",
+     "txt": "Gatos de tutores recrutados em hospital; sem implementação/monitoramento em casa (p. 2)."
+    }
+   },
+   "atualizado": "2026-09-30T14:24"
+  },
+  {
    "codigo": "25",
    "titulo": "Jhilta et al. (2026) — Smart boluses & precision vet",
    "marcas": {
@@ -427,6 +470,49 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   },
   {
+   "codigo": "71",
+   "titulo": "Olin e Bartges (2015) — Urinary Tract Infections",
+   "marcas": {
+    "C1": {
+     "m": "✗",
+     "txt": "Revisão de ITU em cães e gatos, sem população própria FIC/Pandora (pp. 721–742)."
+    },
+    "C2": {
+     "m": "✗",
+     "txt": "Revisão narrativa; sem dados próprios (pp. 721–746)."
+    },
+    "C3": {
+     "m": "✗",
+     "txt": "Sem acompanhamento próprio; monitoramento discutido é clínico (p. 735)."
+    },
+    "C4": {
+     "m": "✗",
+     "txt": "Estresse/ambiente não é variável investigada (pp. 721–742)."
+    },
+    "C5": {
+     "m": "✗",
+     "txt": "Cultura e urinálise discutidas, sem medição própria (pp. 725–728)."
+    },
+    "C6": {
+     "m": "✗",
+     "txt": "Sem estudo de sensor/IoT/IA (pp. 721–742)."
+    },
+    "C7": {
+     "m": "✗",
+     "txt": "Sem análise estatística própria; ensaios citados são secundários (p. 732)."
+    },
+    "C8": {
+     "m": "✗",
+     "txt": "Sem validação clínica própria (pp. 721–742)."
+    },
+    "C9": {
+     "m": "✗",
+     "txt": "Sem implementação domiciliar própria (pp. 721–742)."
+    }
+   },
+   "atualizado": "2026-09-30T14:01"
+  },
+  {
    "codigo": "S2",
    "titulo": "Buffington et al. (2006) — MEMO",
    "marcas": {
@@ -556,5 +642,5 @@ window.ESTADO_ARTE = {
    "atualizado": "2026-09-26T15:53"
   }
  ],
- "atualizado": "2026-09-28T09:20"
+ "atualizado": "2026-09-30T14:24"
 };
