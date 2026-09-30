@@ -171,7 +171,7 @@ window.DADOS_INVENTARIO = [
     },
     {
         "fase": "Ler primeiro",
-        "fichamento": "nao iniciado",
+        "fichamento": "N45 — Fichamento — FIC fisiopatologia e manejo.md",
         "cautelas": "Revisão publicada em 2004; afirmações derivadas de estudos citados devem ser atribuídas às fontes primárias quando usadas como resultados específicos.",
         "codigo": "N45",
         "grupo": "Fisiopatologia e manejo da cistite idiopática felina",
@@ -181,7 +181,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como fonte histórica e clínica no Núcleo 1, agrupamento proposto pelo acervo, para a fisiopatologia da FIC e a evolução das estratégias de manejo ambiental.",
         "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
         "referencia": "WESTROPP, Jodi L.; BUFFINGTON, C. A. Tony. Feline idiopathic cystitis: current understanding of pathophysiology and management. Veterinary Clinics of North America: Small Animal Practice, v. 34, p. 1043–1055, 2004. DOI: 10.1016/j.cvsm.2004.03.002.",
-        "status": "leitura em andamento",
+        "status": "fichamento concluido",
         "ano": "2004",
         "titulo": "Feline idiopathic cystitis: current understanding of pathophysiology and management",
         "nucleo": "Núcleo 1"
