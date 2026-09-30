@@ -80,9 +80,51 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/A_classificar",
+  "nome": "58_Original_recuperado",
+  "arquivo": "PDF/A_classificar/58_Original_recuperado.pdf",
+  "kb": 761
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "59_Original_recuperado",
+  "arquivo": "PDF/A_classificar/59_Original_recuperado.pdf",
+  "kb": 559
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "60_Original_recuperado",
+  "arquivo": "PDF/A_classificar/60_Original_recuperado.pdf",
+  "kb": 1984
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "61_Original_recuperado",
+  "arquivo": "PDF/A_classificar/61_Original_recuperado.pdf",
+  "kb": 471
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "63_Original_recuperado",
+  "arquivo": "PDF/A_classificar/63_Original_recuperado.pdf",
+  "kb": 764
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "64_Original_recuperado",
+  "arquivo": "PDF/A_classificar/64_Original_recuperado.pdf",
+  "kb": 3431
+ },
+ {
+  "pasta": "PDF/A_classificar",
   "nome": "Feline Idiopathic Cystitis Pathogenesis Histopathology 2021",
   "arquivo": "PDF/A_classificar/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
   "kb": 1393
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "S11_Original_recuperado",
+  "arquivo": "PDF/A_classificar/S11_Original_recuperado.pdf",
+  "kb": 4349
  },
  {
   "pasta": "PDF/Primeiras Leituras",
