@@ -1055,8 +1055,8 @@ window.DADOS_INVENTARIO = [
     },
     {
         "fase": "Ler depois",
-        "fichamento": "",
-        "cautelas": "Leitura seletiva, ainda não integral. O artigo não investiga FIC nem Síndrome de Pandora, e parâmetros técnicos não devem ser aplicados sem conferência completa e atualização por diretrizes recentes.",
+        "fichamento": "70 — Fichamento — Urinalysis.md",
+        "cautelas": "Leitura integral concluída em 30/09/2026. O artigo não investiga FIC nem Síndrome de Pandora, reúne cães e gatos e foi publicado em 2015. Limites quantitativos e procedimentos devem ser confrontados com diretrizes atuais antes de compor protocolo clínico ou experimental.",
         "codigo": "70",
         "grupo": "urinálise em pequenos animais",
         "tipoEstudo": "artigo de revisão",
@@ -1065,7 +1065,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar como apoio metodológico para justificar variáveis urinárias e cuidados pré-analíticos; comparar recomendações de 2015 com diretrizes atuais antes de definir protocolo clínico.",
         "arquivo": "PDF/29062026/Urinalysis_vsp.pdf",
         "referencia": "CALLENS, Amanda J.; BARTGES, Joseph W. Urinalysis. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 621–637, 2015. DOI: 10.1016/j.cvsm.2015.02.001.",
-        "status": "leitura em andamento",
+        "status": "fichamento concluido",
         "ano": "2015",
         "titulo": "Urinalysis",
         "nucleo": "Núcleo 1"
