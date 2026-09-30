@@ -36,14 +36,14 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
         fichados = {str(f["codigo"]) for f in self.fichamentos}
         self.assertEqual(len(fichados), len(codigos & fichados))
         self.assertEqual(set(), fichados - codigos)
-        self.assertTrue({"11", "20", "34", "38", "41", "48", "54", "55", "57"}.issubset(codigos))
+        self.assertTrue({"11", "20", "34", "38", "41", "54", "55", "57"}.issubset(codigos))
         self.assertTrue({"N33", "N36", "N40", "N42", "N45", "S7"}.issubset(codigos))
         self.assertTrue({"N16", "N26", "N32", "N35", "N38"}.isdisjoint(codigos))
         self.assertTrue({"N03", "N34", "N37", "N39", "N41", "N43", "N44"}.isdisjoint(codigos))
+        self.assertTrue({"48", "68", "N11"}.isdisjoint(codigos))
 
-    def test_codigo_48_continua_ligado_ao_fichamento_correto(self):
+    def test_codigo_n45_continua_ligado_ao_fichamento_correto(self):
         por_codigo = {str(a["codigo"]): a for a in self.inventario}
-        self.assertIn("Etiopathogenesis", por_codigo["48"]["titulo"])
         self.assertIn("current understanding", por_codigo["N45"]["titulo"].lower())
 
     def test_estado_da_arte_nao_publica_fonte_fora_do_acervo(self):
