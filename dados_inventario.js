@@ -1004,20 +1004,20 @@ window.DADOS_INVENTARIO = [
     },
     {
         "fase": "Ler primeiro",
-        "fichamento": "",
-        "cautelas": "Artigo de revisão; resultados específicos discutidos no texto devem ser atribuídos aos estudos primários citados.",
+        "fichamento": "21 — Fichamento — Patogênese e histopatologia da FIC.md",
+        "cautelas": "Revisão narrativa. Resultados específicos devem ser atribuídos aos estudos primários; estudos humanos mais antigos frequentemente não separaram os subtipos Hunner e não-Hunner, e o papel dos mastócitos permanece controverso.",
         "codigo": "21",
         "grupo": "Patogênese e histopatologia da FIC",
         "tipoEstudo": "artigo de revisão",
         "procedencia": "✔️ confirmada na fonte — título, autoria, periódico, volume, páginas, ano e DOI conferidos na primeira página do PDF original.",
         "porQueLer": "Base para a discussão da patogênese e da histopatologia da cistite idiopática felina e de seu potencial comparativo com a síndrome da dor vesical humana.",
-        "comoUsar": "Usar na fundamentação do problema clínico e na seleção de variáveis. O agrupamento no Núcleo 2 é proposto pelo acervo, não declarado pelos autores.",
+        "comoUsar": "Usar no Núcleo 1 para fisiopatologia, barreira urotelial, resposta neuroendócrina ao estresse, histopatologia e comparação com BPS humana não-Hunner.",
         "arquivo": "PDF/A_classificar/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
         "referencia": "JONES, Emily; PALMIERI, Chiara; THOMPSON, Mary; JACKSON, Karen; ALLAVENA, Rachel. Feline Idiopathic Cystitis: Pathogenesis, Histopathology and Comparative Potential. Journal of Comparative Pathology, v. 185, p. 18–29, 2021. DOI: 10.1016/j.jcpa.2021.03.006.",
-        "status": "leitura em andamento",
+        "status": "fichamento concluido",
         "ano": "2021",
         "titulo": "Feline Idiopathic Cystitis: Pathogenesis, Histopathology and Comparative Potential",
-        "nucleo": "Núcleo 2"
+        "nucleo": "Núcleo 1"
     },
     {
         "fase": "Ler primeiro",
