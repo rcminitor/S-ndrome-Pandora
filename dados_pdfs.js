@@ -1,4 +1,4 @@
-// Gerado pelo exportador transacional do acervo
+// Gerado automaticamente — PDFs do cofre Síndrome de Pandora
 window.DADOS_PDFS = [
  {
   "pasta": "PDF/29062026",
@@ -194,12 +194,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "Artigo01",
-  "arquivo": "PDF/Síndrome CIF/Artigo01.pdf",
-  "kb": 1410
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "Association between behavioral factors and recurrence rate in cats with",
   "arquivo": "PDF/Síndrome CIF/Association between behavioral factors and recurrence rate in cats with.pdf",
   "kb": 426
@@ -257,12 +251,6 @@ window.DADOS_PDFS = [
   "nome": "Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+.",
   "arquivo": "PDF/Síndrome CIF/Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
   "kb": 279
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "ETIOPATHOGENESIS OF FELINE",
-  "arquivo": "PDF/Síndrome CIF/ETIOPATHOGENESIS OF FELINE.pdf",
-  "kb": 31
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -341,12 +329,6 @@ window.DADOS_PDFS = [
   "nome": "ReginaldoPereira_Tese",
   "arquivo": "PDF/Síndrome CIF/ReginaldoPereira_Tese.pdf",
   "kb": 2773
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "Relatório de Estágio - Nicoli Poliana.pdf,a",
-  "arquivo": "PDF/Síndrome CIF/Relatório de Estágio - Nicoli Poliana.pdf,a.pdf",
-  "kb": 29524
  },
  {
   "pasta": "PDF/Síndrome CIF",
