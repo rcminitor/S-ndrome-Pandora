@@ -1141,7 +1141,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "Ler primeiro",
         "fichamento": "24 — Fichamento — Comunidades bacterianas viáveis na FIC.md",
-        "cautelas": "Sem crescimento em EQUC nos 19 gatos; 18 entram na análise final NGS. Nenhum sinal classificado com confiança como não contaminante (p. 4). Autores reconhecem limitações de volume, sensibilidade e extração (p. 6). Suplemento ainda não obtido.",
+        "cautelas": "Sem crescimento em EQUC nos 19 gatos; 18 entram na análise final NGS. Nenhum sinal classificado com confiança como não contaminante (p. 4). Autores reconhecem limitações de volume, sensibilidade e extração (p. 6). Appendix A obtido e conferido em 30/09/2026; tabela agregada e gráficos com controles negativos. Inconsistência na nota de glicose urinária registrada no fichamento.",
         "codigo": "24",
         "grupo": "Microbioma urinário em FIC",
         "tipoEstudo": "estudo prospectivo observacional",
