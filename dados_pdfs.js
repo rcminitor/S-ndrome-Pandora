@@ -1,78 +1,6 @@
 // Gerado pelo exportador transacional do acervo
 window.DADOS_PDFS = [
  {
-  "pasta": "PDF/29062026",
-  "nome": "3027-9480-1-PB",
-  "arquivo": "PDF/29062026/3027-9480-1-PB.pdf",
-  "kb": 338
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "animals-15-03307-v2",
-  "arquivo": "PDF/29062026/animals-15-03307-v2.pdf",
-  "kb": 453
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Feline-idiopathic-cystitis--current-understanding-",
-  "arquivo": "PDF/29062026/Feline-idiopathic-cystitis--current-understanding-.pdf",
-  "kb": 207
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "fvets-10-1258375",
-  "arquivo": "PDF/29062026/fvets-10-1258375.pdf",
-  "kb": 1212
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Lower-Urinary-Tract-Cancer_2015_vsp",
-  "arquivo": "PDF/29062026/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
-  "kb": 273
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible",
-  "arquivo": "PDF/29062026/lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible.pdf",
-  "kb": 86
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "metabolites-16-00330",
-  "arquivo": "PDF/29062026/metabolites-16-00330.pdf",
-  "kb": 8640
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Relatório de Estágio Vitória Vosgnach",
-  "arquivo": "PDF/29062026/Relatório de Estágio Vitória Vosgnach.pdf",
-  "kb": 4318
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Urinalysis_vsp",
-  "arquivo": "PDF/29062026/Urinalysis_vsp.pdf",
-  "kb": 1455
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Urinary-Tract-Infections_2015_vsp",
-  "arquivo": "PDF/29062026/Urinary-Tract-Infections_2015_vsp.pdf",
-  "kb": 1183
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in",
-  "arquivo": "PDF/29062026/Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in.pdf",
-  "kb": 447
- },
- {
-  "pasta": "PDF/29062026",
-  "nome": "vetsci-10-00132-v2",
-  "arquivo": "PDF/29062026/vetsci-10-00132-v2.pdf",
-  "kb": 4549
- },
- {
   "pasta": "PDF/A_classificar",
   "nome": "24_Balboni_2024_No_viable_bacterial_communities",
   "arquivo": "PDF/A_classificar/24_Balboni_2024_No_viable_bacterial_communities.pdf",
@@ -212,6 +140,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "3027-9480-1-PB",
+  "arquivo": "PDF/Síndrome CIF/3027-9480-1-PB.pdf",
+  "kb": 338
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "aalaf029",
   "arquivo": "PDF/Síndrome CIF/aalaf029.pdf",
   "kb": 485
@@ -221,6 +155,12 @@ window.DADOS_PDFS = [
   "nome": "ajvr-ajvr.67.4.731",
   "arquivo": "PDF/Síndrome CIF/ajvr-ajvr.67.4.731.pdf",
   "kb": 409
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "animals-15-03307-v2",
+  "arquivo": "PDF/Síndrome CIF/animals-15-03307-v2.pdf",
+  "kb": 453
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -314,9 +254,21 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "Feline-idiopathic-cystitis--current-understanding-",
+  "arquivo": "PDF/Síndrome CIF/Feline-idiopathic-cystitis--current-understanding-.pdf",
+  "kb": 207
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "Feline_idiopathic_cystitis_VCNA_2015",
   "arquivo": "PDF/Síndrome CIF/Feline_idiopathic_cystitis_VCNA_2015.pdf",
   "kb": 736
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "fvets-10-1258375",
+  "arquivo": "PDF/Síndrome CIF/fvets-10-1258375.pdf",
+  "kb": 1212
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -350,9 +302,27 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "Lower-Urinary-Tract-Cancer_2015_vsp",
+  "arquivo": "PDF/Síndrome CIF/Lower-Urinary-Tract-Cancer_2015_vsp.pdf",
+  "kb": 273
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible",
+  "arquivo": "PDF/Síndrome CIF/lund-eggertsdóttir-2018-recurrent-episodes-of-feline-lower-urinary-tract-disease-with-different-causes-possible.pdf",
+  "kb": 86
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "Meow-Omni 1",
   "arquivo": "PDF/Síndrome CIF/Meow-Omni 1.pdf",
   "kb": 2073
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "metabolites-16-00330",
+  "arquivo": "PDF/Síndrome CIF/metabolites-16-00330.pdf",
+  "kb": 8640
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -377,6 +347,12 @@ window.DADOS_PDFS = [
   "nome": "ReginaldoPereira_Tese",
   "arquivo": "PDF/Síndrome CIF/ReginaldoPereira_Tese.pdf",
   "kb": 2773
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Relatório de Estágio Vitória Vosgnach",
+  "arquivo": "PDF/Síndrome CIF/Relatório de Estágio Vitória Vosgnach.pdf",
+  "kb": 4318
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -437,6 +413,30 @@ window.DADOS_PDFS = [
   "nome": "Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath",
   "arquivo": "PDF/Síndrome CIF/Understanding_the_current_evidence_base_for_the_commonly_recommended_management_strategies_for_recurrent_feline_idiopath.pdf",
   "kb": 903
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Urinalysis_vsp",
+  "arquivo": "PDF/Síndrome CIF/Urinalysis_vsp.pdf",
+  "kb": 1455
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Urinary-Tract-Infections_2015_vsp",
+  "arquivo": "PDF/Síndrome CIF/Urinary-Tract-Infections_2015_vsp.pdf",
+  "kb": 1183
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in",
+  "arquivo": "PDF/Síndrome CIF/Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in.pdf",
+  "kb": 447
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "vetsci-10-00132-v2",
+  "arquivo": "PDF/Síndrome CIF/vetsci-10-00132-v2.pdf",
+  "kb": 4549
  },
  {
   "pasta": "PDF/Síndrome CIF",
