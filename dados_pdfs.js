@@ -1,72 +1,6 @@
 // Gerado pelo exportador transacional do acervo
 window.DADOS_PDFS = [
  {
-  "pasta": "PDF/A_classificar",
-  "nome": "60_Original_recuperado",
-  "arquivo": "PDF/A_classificar/60_Original_recuperado.pdf",
-  "kb": 1984
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "64_Original_recuperado",
-  "arquivo": "PDF/A_classificar/64_Original_recuperado.pdf",
-  "kb": 3431
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Complementary-and-Integrative-Therapies-for-Lower-",
-  "arquivo": "PDF/A_classificar/Complementary-and-Integrative-Therapies-for-Lower-.pdf",
-  "kb": 293
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp",
-  "arquivo": "PDF/A_classificar/Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp.pdf",
-  "kb": 1560
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Cystoscopy-in-Dogs-and-Cats_vsp",
-  "arquivo": "PDF/A_classificar/Cystoscopy-in-Dogs-and-Cats_vsp.pdf",
-  "kb": 4557
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_",
-  "arquivo": "PDF/A_classificar/Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_.pdf",
-  "kb": 1907
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Feline Idiopathic Cystitis Pathogenesis Histopathology 2021",
-  "arquivo": "PDF/A_classificar/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
-  "kb": 1393
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Interventional-Urology_vsp",
-  "arquivo": "PDF/A_classificar/Interventional-Urology_vsp.pdf",
-  "kb": 4275
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Micturition-Disorders_2015_vsp",
-  "arquivo": "PDF/A_classificar/Micturition-Disorders_2015_vsp.pdf",
-  "kb": 514
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "S11_Original_recuperado",
-  "arquivo": "PDF/A_classificar/S11_Original_recuperado.pdf",
-  "kb": 4349
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "Urolithiasis_vsp",
-  "arquivo": "PDF/A_classificar/Urolithiasis_vsp.pdf",
-  "kb": 1179
- },
- {
   "pasta": "PDF/Primeiras Leituras",
   "nome": "01_Stress in owned cats_behavioural",
   "arquivo": "PDF/Primeiras Leituras/01_Stress in owned cats_behavioural.pdf",
@@ -182,9 +116,33 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "60_Original_recuperado",
+  "arquivo": "PDF/Síndrome CIF/60_Original_recuperado.pdf",
+  "kb": 1984
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "64_Original_recuperado",
+  "arquivo": "PDF/Síndrome CIF/64_Original_recuperado.pdf",
+  "kb": 3431
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "aalaf029",
   "arquivo": "PDF/Síndrome CIF/aalaf029.pdf",
   "kb": 485
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "aalaf092",
+  "arquivo": "PDF/Síndrome CIF/aalaf092.pdf",
+  "kb": 467
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "ajvr-ajvr.22.03.0038",
+  "arquivo": "PDF/Síndrome CIF/ajvr-ajvr.22.03.0038.pdf",
+  "kb": 1334
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -254,6 +212,24 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "Complementary-and-Integrative-Therapies-for-Lower-",
+  "arquivo": "PDF/Síndrome CIF/Complementary-and-Integrative-Therapies-for-Lower-.pdf",
+  "kb": 293
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp",
+  "arquivo": "PDF/Síndrome CIF/Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp.pdf",
+  "kb": 1560
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Cystoscopy-in-Dogs-and-Cats_vsp",
+  "arquivo": "PDF/Síndrome CIF/Cystoscopy-in-Dogs-and-Cats_vsp.pdf",
+  "kb": 4557
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis",
   "arquivo": "PDF/Síndrome CIF/defauw-et-al-2011-risk-factors-and-clinical-presentation-of-cats-with-feline-idiopathic-cystitis.pdf",
   "kb": 1509
@@ -263,6 +239,12 @@ window.DADOS_PDFS = [
   "nome": "Diagnosis_and_Management_of",
   "arquivo": "PDF/Síndrome CIF/Diagnosis_and_Management_of.pdf",
   "kb": 1453
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_",
+  "arquivo": "PDF/Síndrome CIF/Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_.pdf",
+  "kb": 1907
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -287,6 +269,12 @@ window.DADOS_PDFS = [
   "nome": "Facial expressions of pain in cats",
   "arquivo": "PDF/Síndrome CIF/Facial expressions of pain in cats.pdf",
   "kb": 1538
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Feline Idiopathic Cystitis Pathogenesis Histopathology 2021",
+  "arquivo": "PDF/Síndrome CIF/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
+  "kb": 1393
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -323,6 +311,12 @@ window.DADOS_PDFS = [
   "nome": "IFPB - Repositório Digital_ Manejo cat friendly_ implementação e avaliação em hospital veterinário sobre a percepção de médicos veterinários, graduandos e tutores",
   "arquivo": "PDF/Síndrome CIF/IFPB - Repositório Digital_ Manejo cat friendly_ implementação e avaliação em hospital veterinário sobre a percepção de médicos veterinários, graduandos e tutores.pdf",
   "kb": 1488
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Interventional-Urology_vsp",
+  "arquivo": "PDF/Síndrome CIF/Interventional-Urology_vsp.pdf",
+  "kb": 4275
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -365,6 +359,12 @@ window.DADOS_PDFS = [
   "nome": "metabolites-16-00330",
   "arquivo": "PDF/Síndrome CIF/metabolites-16-00330.pdf",
   "kb": 8640
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Micturition-Disorders_2015_vsp",
+  "arquivo": "PDF/Síndrome CIF/Micturition-Disorders_2015_vsp.pdf",
+  "kb": 514
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -416,6 +416,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "S11_Original_recuperado",
+  "arquivo": "PDF/Síndrome CIF/S11_Original_recuperado.pdf",
+  "kb": 4349
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive and Non‐Obstructive Feline Urolithiasis and Interstitial Cystitis",
   "arquivo": "PDF/Síndrome CIF/Serum and Urine Nerve Growth Factor and Glycosaminoglycan Levels in Obstructive and Non‐Obstructive Feline Urolithiasis and Interstitial Cystitis.pdf",
   "kb": 872
@@ -443,6 +449,12 @@ window.DADOS_PDFS = [
   "nome": "SÍNDROME DE PANDORA PREVENÇÃO",
   "arquivo": "PDF/Síndrome CIF/SÍNDROME DE PANDORA PREVENÇÃO.pdf",
   "kb": 301
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "taylor-et-al-2025-2025-icatcare-consensus-guidelines-on-the-diagnosis-and-management-of-lower-urinary-tract-diseases-in",
+  "arquivo": "PDF/Síndrome CIF/taylor-et-al-2025-2025-icatcare-consensus-guidelines-on-the-diagnosis-and-management-of-lower-urinary-tract-diseases-in.pdf",
+  "kb": 13518
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -476,6 +488,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "Urolithiasis_vsp",
+  "arquivo": "PDF/Síndrome CIF/Urolithiasis_vsp.pdf",
+  "kb": 1179
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in",
   "arquivo": "PDF/Síndrome CIF/Veterinary Internal Medicine - 2019 - Nivy - A prospective randomized study of efficacy of 2 treatment protocols in.pdf",
   "kb": 447
@@ -497,5 +515,11 @@ window.DADOS_PDFS = [
   "nome": "vfaf057",
   "arquivo": "PDF/Síndrome CIF/vfaf057.pdf",
   "kb": 2022
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "VMS3-11-e70315",
+  "arquivo": "PDF/Síndrome CIF/VMS3-11-e70315.pdf",
+  "kb": 915
  }
 ];
