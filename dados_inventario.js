@@ -953,8 +953,8 @@ window.DADOS_INVENTARIO = [
     },
     {
         "fase": "Ler depois",
-        "fichamento": "",
-        "cautelas": "Leitura seletiva, ainda não integral. Os quatro atendimentos não devem ser usados como prevalência sem denominador apropriado, critérios diagnósticos e acesso aos prontuários.",
+        "fichamento": "73 — Fichamento — Estágio clínica pequenos animais.md",
+        "cautelas": "Não é pesquisa primária desenhada para investigar CIF/Pandora. Não informa critérios diagnósticos dos quatro registros de CIF. Não permite calcular prevalência de CIF na população felina atendida sem esclarecer independência dos casos, processo diagnóstico e base de seleção. Há pequena divergência entre percentuais narrados no corpo (26,3%, 24,2% e 13,7%) e os percentuais da Tabela 2/resumo (25,8%, 23,7% e 13,4%) (PDF pp. 5 e 23). Os dois relatos clínicos desenvolvidos não tratam de CIF (sumário, PDF p. 12; corpo, PDF pp. 30–45).",
         "codigo": "73",
         "grupo": "clínica médica de pequenos animais",
         "tipoEstudo": "TCC — relatório de estágio curricular obrigatório",
@@ -963,7 +963,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "Usar, se necessário, apenas como literatura cinzenta contextual. O relatório não apresenta um estudo específico de FIC e os relatos clínicos desenvolvidos em detalhe tratam de outras doenças.",
         "arquivo": "PDF/Síndrome CIF/Relatório de Estágio Vitória Vosgnach.pdf",
         "referencia": "VOSGNACH, Vitória. Relatório de Estágio Curricular Obrigatório: Clínica Médica de Pequenos Animais. 2026. Trabalho de Conclusão de Curso (Bacharelado em Medicina Veterinária) — Universidade de Caxias do Sul, Caxias do Sul, 2026.",
-        "status": "leitura em andamento",
+        "status": "fichamento concluido",
         "ano": "2026",
         "titulo": "Relatório de Estágio Curricular Obrigatório: Clínica Médica de Pequenos Animais",
         "nucleo": "A classificar"
