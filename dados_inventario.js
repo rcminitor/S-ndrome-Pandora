@@ -563,7 +563,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "Ler com cautela",
         "fichamento": "N04 — Fichamento — AI in animal anatomy.md",
-        "cautelas": "O artigo reconhece heterogeneidade e falta de dados veterinários padronizados (pp. 1, 3 e 5). Não apresenta método de revisão nem avaliação da qualidade. [!note] Interpretação minha — não está no artigo É fonte secundária e periférica para a tese: demonstra amplitude da IA veterinária, mas não trata de gatos, FIC, estresse ou monitoramento contínuo. Converge apenas no contexto tecnológico geral com 6 — Fichamento — Review of deep learning in veterinary diagnostics.",
+        "cautelas": "O artigo reconhece heterogeneidade e falta de dados veterinários padronizados (pp. 1, 3 e 5). Não apresenta método de revisão nem avaliação da qualidade. [!note] Interpretação minha — não está no artigo É fonte secundária e periférica para a tese: demonstra amplitude da IA veterinária, mas não trata de gatos, FIC, estresse ou monitoramento contínuo. Converge apenas no contexto tecnológico geral com 6 — Fichamento — Deep learning in veterinary diagnostics.",
         "codigo": "N04",
         "grupo": "IA aplicada à anatomia animal",
         "tipoEstudo": "revisão narrativa",
