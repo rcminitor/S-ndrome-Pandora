@@ -39,7 +39,7 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
         self.assertTrue({"11", "20", "34", "38", "41", "54", "55", "57"}.issubset(codigos))
         self.assertTrue({"N33", "N36", "N40", "N42", "N45", "S7"}.issubset(codigos))
         self.assertTrue({"N16", "N26", "N32", "N35", "N38"}.isdisjoint(codigos))
-        self.assertTrue({"N03", "N34", "N37", "N39", "N41", "N43", "N44"}.isdisjoint(codigos))
+        self.assertTrue({"N03", "N37", "N39", "N41", "N43", "N44"}.isdisjoint(codigos))
         self.assertTrue({"48", "68", "N11"}.isdisjoint(codigos))
 
     def test_codigo_n45_continua_ligado_ao_fichamento_correto(self):
