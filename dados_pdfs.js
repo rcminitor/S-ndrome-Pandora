@@ -332,6 +332,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "kim-et-al-2017-epidemiological-study-of-feline-idiopathic-cystitis-in-seoul-south-korea",
+  "arquivo": "PDF/Síndrome CIF/kim-et-al-2017-epidemiological-study-of-feline-idiopathic-cystitis-in-seoul-south-korea.pdf",
+  "kb": 107
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "krause-et-al-2024-survey-of-veterinarians-in-the-usa-to-evaluate-trends-in-the-treatment-approach-for-non-obstructive",
   "arquivo": "PDF/Síndrome CIF/krause-et-al-2024-survey-of-veterinarians-in-the-usa-to-evaluate-trends-in-the-treatment-approach-for-non-obstructive.pdf",
   "kb": 1924
