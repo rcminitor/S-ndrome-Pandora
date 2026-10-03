@@ -74,6 +74,24 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S1090023323000795-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S1090023323000795-main.pdf",
+  "kb": 499
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S1090023323000801-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S1090023323000801-main.pdf",
+  "kb": 515
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S1558787820300939-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S1558787820300939-main.pdf",
+  "kb": 289
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "1-s2.0-S1773224725009669-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S1773224725009669-main.pdf",
   "kb": 6296
@@ -101,6 +119,12 @@ window.DADOS_PDFS = [
   "nome": "10.1177_1098612X20974962",
   "arquivo": "PDF/Síndrome CIF/10.1177_1098612X20974962.pdf",
   "kb": 559
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "10_Bakowski_EN_PJAW_1_2026_Early_view",
+  "arquivo": "PDF/Síndrome CIF/10_Bakowski_EN_PJAW_1_2026_Early_view.pdf",
+  "kb": 281
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -254,6 +278,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "dissertacao-ines-goncalves",
+  "arquivo": "PDF/Síndrome CIF/dissertacao-ines-goncalves.pdf",
+  "kb": 1142
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+.",
   "arquivo": "PDF/Síndrome CIF/Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
   "kb": 279
@@ -290,6 +320,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "Flt3L, a Cytokine and Growth Factor, Is Reduced in the Urine of",
+  "arquivo": "PDF/Síndrome CIF/Flt3L, a Cytokine and Growth Factor, Is Reduced in the Urine of.pdf",
+  "kb": 79
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "fvets-10-1258375",
   "arquivo": "PDF/Síndrome CIF/fvets-10-1258375.pdf",
   "kb": 1212
@@ -305,6 +341,12 @@ window.DADOS_PDFS = [
   "nome": "fvets-13-1780868",
   "arquivo": "PDF/Síndrome CIF/fvets-13-1780868.pdf",
   "kb": 163
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Human Perceptions of Cat-Cat Facial Signals",
+  "arquivo": "PDF/Síndrome CIF/Human Perceptions of Cat-Cat Facial Signals.pdf",
+  "kb": 725
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -383,6 +425,12 @@ window.DADOS_PDFS = [
   "nome": "Paper-Cistiteintersticial-Proclim-2016",
   "arquivo": "PDF/Síndrome CIF/Paper-Cistiteintersticial-Proclim-2016.pdf",
   "kb": 681
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "piccolo-et-al-2019-detection-of-multidrug-resistance-and-extended-spectrum-plasmid-mediated-ampc-beta-lactamase-genes",
+  "arquivo": "PDF/Síndrome CIF/piccolo-et-al-2019-detection-of-multidrug-resistance-and-extended-spectrum-plasmid-mediated-ampc-beta-lactamase-genes.pdf",
+  "kb": 158
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -491,6 +539,12 @@ window.DADOS_PDFS = [
   "nome": "Urolithiasis_vsp",
   "arquivo": "PDF/Síndrome CIF/Urolithiasis_vsp.pdf",
   "kb": 1179
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "Urology--It’s-Gold-for-a-Reason!_vsp",
+  "arquivo": "PDF/Síndrome CIF/Urology--It’s-Gold-for-a-Reason!_vsp.pdf",
+  "kb": 132
  },
  {
   "pasta": "PDF/Síndrome CIF",
