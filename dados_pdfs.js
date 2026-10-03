@@ -2,39 +2,9 @@
 window.DADOS_PDFS = [
  {
   "pasta": "PDF/A_classificar",
-  "nome": "24_Balboni_2024_No_viable_bacterial_communities",
-  "arquivo": "PDF/A_classificar/24_Balboni_2024_No_viable_bacterial_communities.pdf",
-  "kb": 502
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "58_Original_recuperado",
-  "arquivo": "PDF/A_classificar/58_Original_recuperado.pdf",
-  "kb": 761
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "59_Original_recuperado",
-  "arquivo": "PDF/A_classificar/59_Original_recuperado.pdf",
-  "kb": 559
- },
- {
-  "pasta": "PDF/A_classificar",
   "nome": "60_Original_recuperado",
   "arquivo": "PDF/A_classificar/60_Original_recuperado.pdf",
   "kb": 1984
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "61_Original_recuperado",
-  "arquivo": "PDF/A_classificar/61_Original_recuperado.pdf",
-  "kb": 471
- },
- {
-  "pasta": "PDF/A_classificar",
-  "nome": "63_Original_recuperado",
-  "arquivo": "PDF/A_classificar/63_Original_recuperado.pdf",
-  "kb": 764
  },
  {
   "pasta": "PDF/A_classificar",
@@ -44,15 +14,57 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/A_classificar",
+  "nome": "Complementary-and-Integrative-Therapies-for-Lower-",
+  "arquivo": "PDF/A_classificar/Complementary-and-Integrative-Therapies-for-Lower-.pdf",
+  "kb": 293
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp",
+  "arquivo": "PDF/A_classificar/Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp.pdf",
+  "kb": 1560
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "Cystoscopy-in-Dogs-and-Cats_vsp",
+  "arquivo": "PDF/A_classificar/Cystoscopy-in-Dogs-and-Cats_vsp.pdf",
+  "kb": 4557
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_",
+  "arquivo": "PDF/A_classificar/Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_.pdf",
+  "kb": 1907
+ },
+ {
+  "pasta": "PDF/A_classificar",
   "nome": "Feline Idiopathic Cystitis Pathogenesis Histopathology 2021",
   "arquivo": "PDF/A_classificar/Feline Idiopathic Cystitis Pathogenesis Histopathology 2021.pdf",
   "kb": 1393
  },
  {
   "pasta": "PDF/A_classificar",
+  "nome": "Interventional-Urology_vsp",
+  "arquivo": "PDF/A_classificar/Interventional-Urology_vsp.pdf",
+  "kb": 4275
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "Micturition-Disorders_2015_vsp",
+  "arquivo": "PDF/A_classificar/Micturition-Disorders_2015_vsp.pdf",
+  "kb": 514
+ },
+ {
+  "pasta": "PDF/A_classificar",
   "nome": "S11_Original_recuperado",
   "arquivo": "PDF/A_classificar/S11_Original_recuperado.pdf",
   "kb": 4349
+ },
+ {
+  "pasta": "PDF/A_classificar",
+  "nome": "Urolithiasis_vsp",
+  "arquivo": "PDF/A_classificar/Urolithiasis_vsp.pdf",
+  "kb": 1179
  },
  {
   "pasta": "PDF/Primeiras Leituras",
@@ -104,6 +116,12 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
+  "nome": "1-s2.0-S0034528824000031-main",
+  "arquivo": "PDF/Síndrome CIF/1-s2.0-S0034528824000031-main.pdf",
+  "kb": 502
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
   "nome": "1-s2.0-S016815912600211X-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S016815912600211X-main.pdf",
   "kb": 1344
@@ -131,6 +149,24 @@ window.DADOS_PDFS = [
   "nome": "1-s2.0-S2214180420301343-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S2214180420301343-main.pdf",
   "kb": 1293
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "10.1177_1098612X11435893",
+  "arquivo": "PDF/Síndrome CIF/10.1177_1098612X11435893.pdf",
+  "kb": 471
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "10.1177_1098612X12469523",
+  "arquivo": "PDF/Síndrome CIF/10.1177_1098612X12469523.pdf",
+  "kb": 761
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "10.1177_1098612X20974962",
+  "arquivo": "PDF/Síndrome CIF/10.1177_1098612X20974962.pdf",
+  "kb": 559
  },
  {
   "pasta": "PDF/Síndrome CIF",
@@ -329,6 +365,12 @@ window.DADOS_PDFS = [
   "nome": "Neurourology and Urodynamics - 2025 - Werneburg - Interstitial Cystitis Bladder Pain Syndrome  IC BPS  Diagnosis  Current",
   "arquivo": "PDF/Síndrome CIF/Neurourology and Urodynamics - 2025 - Werneburg - Interstitial Cystitis Bladder Pain Syndrome  IC BPS  Diagnosis  Current.pdf",
   "kb": 312
+ },
+ {
+  "pasta": "PDF/Síndrome CIF",
+  "nome": "nihms-2013406",
+  "arquivo": "PDF/Síndrome CIF/nihms-2013406.pdf",
+  "kb": 764
  },
  {
   "pasta": "PDF/Síndrome CIF",
