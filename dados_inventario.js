@@ -1294,7 +1294,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "A classificar",
         "fichamento": "",
-        "cautelas": "PDF com camada de texto, ainda não lido. Não citar conteúdo até o fichamento.",
+        "cautelas": "Leitura parcial (pontos-chave, introdução e fecho). Não citar resultados sem leitura integral.",
         "codigo": "75",
         "grupo": "urologia veterinária (Vet Clin North Am Small Anim Pract, 2015)",
         "tipoEstudo": "NÃO CONFIRMADO",
@@ -1303,7 +1303,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/A_classificar/Complementary-and-Integrative-Therapies-for-Lower-.pdf",
         "referencia": "RADITIC, Donna M.. Complementary and Integrative Therapies for Lower Urinary Tract Diseases. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 857–878, 2015. DOI: 10.1016/j.cvsm.2015.02.009.",
-        "status": "PDF obtido — fichamento pendente",
+        "status": "pré-fichamento (leitura parcial)",
         "ano": "2015",
         "titulo": "Complementary and Integrative Therapies for Lower Urinary Tract Diseases",
         "nucleo": "A classificar"
@@ -1311,7 +1311,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "A classificar",
         "fichamento": "",
-        "cautelas": "PDF com camada de texto, ainda não lido. Não citar conteúdo até o fichamento.",
+        "cautelas": "Leitura parcial (pontos-chave, introdução e fecho). Não citar resultados sem leitura integral.",
         "codigo": "76",
         "grupo": "urologia veterinária (Vet Clin North Am Small Anim Pract, 2015)",
         "tipoEstudo": "NÃO CONFIRMADO",
@@ -1320,7 +1320,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/A_classificar/Cystoscopy-in-Dogs-and-Cats_vsp.pdf",
         "referencia": "MORGAN, Megan; FORMAN, Marnin. Cystoscopy in Dogs and Cats. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 665–701, 2015. DOI: 10.1016/j.cvsm.2015.02.010.",
-        "status": "PDF obtido — fichamento pendente",
+        "status": "pré-fichamento (leitura parcial)",
         "ano": "2015",
         "titulo": "Cystoscopy in Dogs and Cats",
         "nucleo": "A classificar"
@@ -1328,7 +1328,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "A classificar",
         "fichamento": "",
-        "cautelas": "PDF com camada de texto, ainda não lido. Não citar conteúdo até o fichamento.",
+        "cautelas": "Leitura parcial (pontos-chave, introdução e fecho). Não citar resultados sem leitura integral.",
         "codigo": "77",
         "grupo": "urologia veterinária (Vet Clin North Am Small Anim Pract, 2015)",
         "tipoEstudo": "NÃO CONFIRMADO",
@@ -1337,7 +1337,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/A_classificar/Interventional-Urology_vsp.pdf",
         "referencia": "BERENT, Allyson C.. Interventional Urology. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 825–855, 2015. DOI: 10.1016/j.cvsm.2015.02.003.",
-        "status": "PDF obtido — fichamento pendente",
+        "status": "pré-fichamento (leitura parcial)",
         "ano": "2015",
         "titulo": "Interventional Urology",
         "nucleo": "A classificar"
@@ -1345,7 +1345,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "A classificar",
         "fichamento": "",
-        "cautelas": "PDF com camada de texto, ainda não lido. Não citar conteúdo até o fichamento.",
+        "cautelas": "Leitura parcial (pontos-chave, introdução e fecho). Não citar resultados sem leitura integral.",
         "codigo": "78",
         "grupo": "urologia veterinária (Vet Clin North Am Small Anim Pract, 2015)",
         "tipoEstudo": "NÃO CONFIRMADO",
@@ -1354,7 +1354,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/A_classificar/Congenital-Diseases-of-the-Lower-Urinary-Tract_vsp.pdf",
         "referencia": "BARTGES, Joseph W.; CALLENS, Amanda J.. Congenital Diseases of the Lower Urinary Tract. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 703–719, 2015. DOI: 10.1016/j.cvsm.2015.02.004.",
-        "status": "PDF obtido — fichamento pendente",
+        "status": "pré-fichamento (leitura parcial)",
         "ano": "2015",
         "titulo": "Congenital Diseases of the Lower Urinary Tract",
         "nucleo": "A classificar"
@@ -1362,7 +1362,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "A classificar",
         "fichamento": "",
-        "cautelas": "PDF com camada de texto, ainda não lido. Não citar conteúdo até o fichamento.",
+        "cautelas": "Leitura parcial (pontos-chave, introdução e fecho). Não citar resultados sem leitura integral.",
         "codigo": "79",
         "grupo": "urologia veterinária (Vet Clin North Am Small Anim Pract, 2015)",
         "tipoEstudo": "NÃO CONFIRMADO",
@@ -1371,7 +1371,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/A_classificar/Diagnostic-Imaging-of-Lower-Urinary-Tract-Disease_.pdf",
         "referencia": "HECHT, Silke. Diagnostic Imaging of Lower Urinary Tract Disease. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 639–663, 2015. DOI: 10.1016/j.cvsm.2015.02.002.",
-        "status": "PDF obtido — fichamento pendente",
+        "status": "pré-fichamento (leitura parcial)",
         "ano": "2015",
         "titulo": "Diagnostic Imaging of Lower Urinary Tract Disease",
         "nucleo": "A classificar"
@@ -1379,7 +1379,7 @@ window.DADOS_INVENTARIO = [
     {
         "fase": "A classificar",
         "fichamento": "",
-        "cautelas": "PDF com camada de texto, ainda não lido. Não citar conteúdo até o fichamento.",
+        "cautelas": "Leitura parcial (pontos-chave, introdução e fecho). Não citar resultados sem leitura integral.",
         "codigo": "80",
         "grupo": "urologia veterinária (Vet Clin North Am Small Anim Pract, 2015)",
         "tipoEstudo": "NÃO CONFIRMADO",
@@ -1388,7 +1388,7 @@ window.DADOS_INVENTARIO = [
         "comoUsar": "NÃO CONFIRMADO",
         "arquivo": "PDF/A_classificar/Urolithiasis_vsp.pdf",
         "referencia": "BARTGES, Joseph W.; CALLENS, Amanda J.. Urolithiasis. Veterinary Clinics of North America: Small Animal Practice, v. 45, p. 747–768, 2015. DOI: 10.1016/j.cvsm.2015.03.001.",
-        "status": "PDF obtido — fichamento pendente",
+        "status": "pré-fichamento (leitura parcial)",
         "ano": "2015",
         "titulo": "Urolithiasis",
         "nucleo": "A classificar"
