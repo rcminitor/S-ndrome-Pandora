@@ -217,6 +217,24 @@
 
     <!-- TAB 2: INVENTÁRIO & ARTIGOS -->
     <div class="tab-pane" id="tab-inventory" role="tabpanel">
+      <section class="inventory-graph" aria-labelledby="inventoryGraphTitle">
+        <div class="inventory-graph-header">
+          <div>
+            <span class="inventory-graph-kicker">Mapa de conhecimento</span>
+            <h2 id="inventoryGraphTitle">Relações entre fontes e conceitos do acervo</h2>
+            <p>Explore as comunidades temáticas, as conexões e os conceitos centrais identificados no acervo.</p>
+          </div>
+          <a class="pn-btn" href="graphify-out/graph.html" target="_blank" rel="noopener">Abrir grafo em tela cheia ↗</a>
+        </div>
+        <iframe
+          class="inventory-graph-frame"
+          src="graphify-out/graph.html"
+          title="Grafo interativo do acervo da Síndrome de Pandora"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+        <p class="inventory-graph-note">O agrupamento em comunidades é uma análise proposta pelo Graphify; não foi declarado pelos autores das fontes.</p>
+      </section>
       
       <!-- Filter Bar -->
       <div class="filter-bar">
