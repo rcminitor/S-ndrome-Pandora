@@ -5,7 +5,9 @@ Roda em dois lugares possíveis (coloque a chave em UM só, senão as mensagens 
   - local: Agendador de Tarefas do Windows, a cada 5 minutos.
 
 Configuração — variáveis de ambiente (nuvem) ou %USERPROFILE%\\.agente-rotina\\config.json (local):
-    CALLMEBOT_APIKEY / "apikey"    WHATSAPP_PHONE / "telefone"
+    CALLMEBOT_APIKEY / "apikey"    WHATSAPP_PHONE / "telefone"            (WhatsApp)
+    TELEGRAM_TOKEN / "telegram_token"   TELEGRAM_CHAT_ID / "telegram_chat"  (Telegram)
+    Com os dois canais configurados, a mensagem vai para ambos.
     AGENTE_COFRE (opcional)        caminho do cofre; padrão = "cofre" em rotina.json
     AGENTE_ESTADO (opcional)       arquivo de estado; padrão = ~/.agente-rotina/enviados.json
     AGENTE_TOLERANCIA (opcional)   minutos de atraso aceitos para um aviso; padrão 15
@@ -19,6 +21,7 @@ Uso:
     python avisar.py --previa      mostra o texto de todas as mensagens (não envia)
     python avisar.py --pausar 7    suspende os avisos por 7 dias (grava pausa.json)
     python avisar.py --retomar     encerra a pausa
+    python avisar.py --telegram-chat-id   mostra o chat_id (com TELEGRAM_TOKEN definido)
 """
 import json
 import os
@@ -60,10 +63,46 @@ def carregar_cfg():
     cfg = json.loads(CFG.read_text(encoding="utf-8")) if CFG.exists() else {}
     cfg["apikey"] = os.environ.get("CALLMEBOT_APIKEY") or cfg.get("apikey", "")
     cfg["telefone"] = os.environ.get("WHATSAPP_PHONE") or cfg.get("telefone", "")
+    cfg["telegram_token"] = os.environ.get("TELEGRAM_TOKEN") or cfg.get("telegram_token", "")
+    cfg["telegram_chat"] = os.environ.get("TELEGRAM_CHAT_ID") or cfg.get("telegram_chat", "")
     return cfg
 
 
+def canais(cfg):
+    """Canais configurados: WhatsApp (CallMeBot) e/ou Telegram."""
+    c = []
+    if cfg["apikey"] and cfg["telefone"]:
+        c.append("whatsapp")
+    if cfg["telegram_token"] and cfg["telegram_chat"]:
+        c.append("telegram")
+    return c
+
+
 def enviar(cfg, texto):
+    """Envia por todos os canais configurados; falha se algum falhar."""
+    for canal in canais(cfg):
+        (enviar_telegram if canal == "telegram" else enviar_whatsapp)(cfg, texto)
+
+
+def enviar_telegram(cfg, texto):
+    dados = urllib.parse.urlencode({"chat_id": cfg["telegram_chat"], "text": texto}).encode()
+    url = f"https://api.telegram.org/bot{cfg['telegram_token']}/sendMessage"
+    with urllib.request.urlopen(url, data=dados, timeout=30) as r:
+        resposta = json.loads(r.read().decode("utf-8"))
+    if not resposta.get("ok"):
+        raise RuntimeError(f"Telegram respondeu: {str(resposta)[:200]}")
+
+
+def descobrir_chat_telegram(cfg):
+    """Mostra o chat_id de quem mandou mensagem ao bot (rode depois de mandar /start a ele)."""
+    url = f"https://api.telegram.org/bot{cfg['telegram_token']}/getUpdates"
+    with urllib.request.urlopen(url, timeout=30) as r:
+        upd = json.loads(r.read().decode("utf-8")).get("result", [])
+    chats = {u["message"]["chat"]["id"]: u["message"]["chat"].get("first_name", "") for u in upd if "message" in u}
+    print("\n".join(f"chat_id: {i}  ({n})" for i, n in chats.items()) or "nenhuma mensagem: mande /start ao bot e rode de novo")
+
+
+def enviar_whatsapp(cfg, texto):
     url = "https://api.callmebot.com/whatsapp.php?" + urllib.parse.urlencode(
         {"phone": cfg["telefone"], "text": texto, "apikey": cfg["apikey"]})
     with urllib.request.urlopen(url, timeout=30) as r:
@@ -213,8 +252,10 @@ def main():
         return
 
     cfg = carregar_cfg()
-    if not cfg["apikey"] or not cfg["telefone"]:
-        log("sem telefone ou apikey configurados; nada enviado", True)
+    if "--telegram-chat-id" in sys.argv:
+        return descobrir_chat_telegram(cfg)
+    if not canais(cfg):
+        log("nenhum canal configurado (WhatsApp ou Telegram); nada enviado", True)
         return
     if "--teste" in sys.argv:
         enviar(cfg, "✅ Agente de rotina conectado. Você vai receber aqui os avisos de estudo, escrita, leitura e descanso.")

@@ -48,6 +48,8 @@ jobs:
           ROTINA_JSON: ${{ secrets.ROTINA_JSON }}
           CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
           WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           AGENTE_PAUSA_ATE: ${{ vars.AGENTE_PAUSA_ATE }}
           AGENTE_COFRE: ${{ github.workspace }}/cofre
           AGENTE_ESTADO: ${{ github.workspace }}/estado/enviados.json
