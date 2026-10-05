@@ -239,9 +239,27 @@ def avisos(rotina, dia_semana):
         yield b, f"{t // 60:02d}:{t % 60:02d}"
 
 
+def carregar_rotina():
+    """Rotina do secret ROTINA_JSON (nuvem) ou de rotina.json (local); None se não houver."""
+    bruto = os.environ.get("ROTINA_JSON", "").strip()
+    if not bruto and (AQUI / "rotina.json").exists():
+        bruto = (AQUI / "rotina.json").read_text(encoding="utf-8")
+    if not bruto:
+        return None
+    try:
+        return json.loads(bruto)
+    except json.JSONDecodeError as e:
+        log(f"ROTINA_JSON não é um JSON válido (linha {e.lineno}): cole o arquivo inteiro, sem cortes")
+        sys.exit(1)
+
+
 def main():
-    rotina = json.loads(os.environ.get("ROTINA_JSON") or (AQUI / "rotina.json").read_text(encoding="utf-8"))
-    agora = datetime.now(ZoneInfo(rotina["fuso"]))
+    rotina = carregar_rotina()
+    so_canal = any(a in sys.argv for a in ("--teste", "--telegram-chat-id"))
+    if rotina is None and not so_canal:
+        log("rotina não encontrada: cadastre o secret ROTINA_JSON (conteúdo de rotina.json) no GitHub")
+        sys.exit(1)
+    agora = datetime.now(ZoneInfo((rotina or {}).get("fuso", "America/Fortaleza")))
     hoje = agora.date()
 
     if "--pausar" in sys.argv:
