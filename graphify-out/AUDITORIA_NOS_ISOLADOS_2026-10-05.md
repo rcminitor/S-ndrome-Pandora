@@ -47,3 +47,4 @@ As arestas acima corrigem rastreabilidade e navegação. Elas não transformam r
 - **Feliway:** conectado ao estresse felino como intervenção discutida pela revisão, conforme p. 6.
 - **DTUIF:** conectado à tese de Reginaldo Pereira como tema discutido, conforme pp. 8-9, 21 e 44-49.
 - **Thesis Study Mind Map:** conectado à Síndrome de Pandora como representação visual derivada, sem valor de evidência primária.
+- **Cat-Stress-Score (CSS):** reclassificado de `code` para `concept` e conectado à revisão sistemática que o discute como medida de estresse felino, conforme pp. 1, 3 e 5.
