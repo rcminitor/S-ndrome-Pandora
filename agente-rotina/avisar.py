@@ -27,6 +27,7 @@ import json
 import os
 import subprocess
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date, datetime, timedelta
@@ -63,7 +64,7 @@ def carregar_cfg():
     cfg = json.loads(CFG.read_text(encoding="utf-8")) if CFG.exists() else {}
     cfg["apikey"] = os.environ.get("CALLMEBOT_APIKEY") or cfg.get("apikey", "")
     cfg["telefone"] = os.environ.get("WHATSAPP_PHONE") or cfg.get("telefone", "")
-    cfg["telegram_token"] = os.environ.get("TELEGRAM_TOKEN") or cfg.get("telegram_token", "")
+    cfg["telegram_token"] = (os.environ.get("TELEGRAM_TOKEN") or cfg.get("telegram_token", "")).strip()
     cfg["telegram_chat"] = os.environ.get("TELEGRAM_CHAT_ID") or cfg.get("telegram_chat", "")
     return cfg
 
@@ -95,9 +96,17 @@ def enviar_telegram(cfg, texto):
 
 def descobrir_chat_telegram(cfg):
     """Mostra o chat_id de quem mandou mensagem ao bot (rode depois de mandar /start a ele)."""
-    url = f"https://api.telegram.org/bot{cfg['telegram_token']}/getUpdates"
-    with urllib.request.urlopen(url, timeout=30) as r:
-        upd = json.loads(r.read().decode("utf-8")).get("result", [])
+    token = cfg["telegram_token"].strip().strip('"').strip("'")
+    if not token or ":" not in token:
+        return print("Token ausente ou incompleto. Ele tem o formato 123456789:AAH... (número, dois-pontos, letras).")
+    url = f"https://api.telegram.org/bot{token}/getUpdates"
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            upd = json.loads(r.read().decode("utf-8")).get("result", [])
+    except urllib.error.HTTPError as e:
+        motivo = {401: "token inválido", 404: "token não reconhecido"}.get(e.code, f"erro {e.code}")
+        return print(f"O Telegram recusou: {motivo}. Copie de novo o token que o @BotFather mandou, "
+                     "inteiro, sem espaços, e cole entre as aspas.")
     chats = {u["message"]["chat"]["id"]: u["message"]["chat"].get("first_name", "") for u in upd if "message" in u}
     print("\n".join(f"chat_id: {i}  ({n})" for i, n in chats.items()) or "nenhuma mensagem: mande /start ao bot e rode de novo")
 
