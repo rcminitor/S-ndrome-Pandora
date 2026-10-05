@@ -1,0 +1,61 @@
+name: Avisos da rotina (WhatsApp)
+
+# Roda a cada 10 min; o próprio agente decide se há aviso agora (a rotina vem do secret ROTINA_JSON).
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      teste:
+        description: "Enviar mensagem de teste"
+        type: boolean
+        default: false
+
+concurrency: avisos-rotina
+
+permissions:
+  contents: read
+
+jobs:
+  avisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: agente-rotina
+      - uses: actions/checkout@v4
+        with:
+          repository: rcminitor/sindrome-de-pandora
+          token: ${{ secrets.COFRE_TOKEN }}
+          path: cofre
+          fetch-depth: 0
+          sparse-checkout: |
+            Notas/Tese
+            Fichamentos
+          sparse-checkout-cone-mode: true
+      - name: Restaurar estado
+        uses: actions/cache/restore@v4
+        with:
+          path: estado
+          key: avisos-estado-${{ github.run_id }}
+          restore-keys: avisos-estado-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Enviar avisos
+        env:
+          ROTINA_JSON: ${{ secrets.ROTINA_JSON }}
+          CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
+          WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
+          AGENTE_PAUSA_ATE: ${{ vars.AGENTE_PAUSA_ATE }}
+          AGENTE_COFRE: ${{ github.workspace }}/cofre
+          AGENTE_ESTADO: ${{ github.workspace }}/estado/enviados.json
+          AGENTE_TOLERANCIA: "45"
+        run: python agente-rotina/avisar.py ${{ inputs.teste && '--teste' || '' }}
+      - name: Guardar estado
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: estado
+          key: avisos-estado-${{ github.run_id }}
