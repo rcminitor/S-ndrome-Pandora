@@ -20,11 +20,14 @@ jobs:
   avisar:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      TEM_COFRE: ${{ secrets.COFRE_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
           sparse-checkout: agente-rotina
       - uses: actions/checkout@v4
+        if: env.TEM_COFRE == 'true'  # sem o token, os avisos saem sem as dicas do cofre
         with:
           repository: rcminitor/sindrome-de-pandora
           token: ${{ secrets.COFRE_TOKEN }}
