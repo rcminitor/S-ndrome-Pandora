@@ -1,8 +1,9 @@
 """Valida o acervo publicado sem alterar nenhum arquivo.
 
 O Guardião trabalha com relações, não com contagens fixas: cada ficha precisa
-ter uma fonte, cada fonte precisa apontar para um PDF publicado e os códigos e
-caminhos precisam ser únicos. Erros retornam código de saída 1 e bloqueiam a
+ter uma fonte, cada fonte precisa apontar para um PDF que existe no cofre e os
+códigos e caminhos precisam ser únicos. Os PDFs ficam só no cofre (privado); o
+site publica apenas os metadados, nunca os arquivos. Erros retornam código de saída 1 e bloqueiam a
 publicação; avisos registram situações legadas que não tornam o site inválido.
 """
 from __future__ import annotations
@@ -173,7 +174,14 @@ def validar_dados(
     return r
 
 
-def validar_publicacao(raiz: Path) -> Relatorio:
+def validar_publicacao(raiz: Path, cofre: Path | None = None) -> Relatorio:
+    """Valida os dados publicados em ``raiz`` (o site).
+
+    Os PDFs não são publicados: ficam só no cofre. Quando ``cofre`` é informado
+    e existe, cada PDF referenciado é conferido lá (existência, cabeçalho e
+    duplicidade de conteúdo). Sem cofre acessível, só as relações entre os dados
+    são validadas.
+    """
     raiz = Path(raiz)
     try:
         inventario = ler_json_js(raiz / "dados_inventario.js", "DADOS_INVENTARIO")
@@ -183,16 +191,21 @@ def validar_publicacao(raiz: Path) -> Relatorio:
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return Relatorio(erros=[f"nao foi possivel ler os dados publicados: {exc}"])
 
+    if cofre is None or not Path(cofre).is_dir():
+        return validar_dados(inventario, pdfs, fichamentos, lambda _caminho: True)
+
+    base = Path(cofre)
+
     def existe(caminho: str) -> bool:
-        return (raiz / Path(caminho)).is_file()
+        return (base / Path(caminho)).is_file()
 
     def cabecalho(caminho: str) -> bytes:
-        with (raiz / Path(caminho)).open("rb") as entrada:
+        with (base / Path(caminho)).open("rb") as entrada:
             return entrada.read(5)
 
     def digest(caminho: str) -> str:
         h = hashlib.sha256()
-        with (raiz / Path(caminho)).open("rb") as entrada:
+        with (base / Path(caminho)).open("rb") as entrada:
             for bloco in iter(lambda: entrada.read(1024 * 1024), b""):
                 h.update(bloco)
         return h.hexdigest()
@@ -203,9 +216,11 @@ def validar_publicacao(raiz: Path) -> Relatorio:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Valida o acervo antes da publicacao")
     parser.add_argument("--raiz", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--cofre", type=Path, default=None,
+                        help="raiz do cofre, para conferir os PDFs (opcional)")
     parser.add_argument("--json", action="store_true", dest="como_json")
     args = parser.parse_args(argv)
-    rel = validar_publicacao(args.raiz)
+    rel = validar_publicacao(args.raiz, args.cofre)
     if args.como_json:
         print(json.dumps({"ok": rel.ok, "numeros": rel.numeros, "erros": rel.erros,
                           "avisos": rel.avisos}, ensure_ascii=False, indent=2))

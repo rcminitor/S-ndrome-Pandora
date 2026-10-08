@@ -8,3 +8,6 @@ agentes_crewai/saidas/leitura_*
 estudo_local/
 
 .claude/
+
+# PDFs dos artigos: ficam só no cofre privado (direitos autorais). Nunca publicar.
+PDF/

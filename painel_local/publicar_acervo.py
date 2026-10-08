@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import os
-import shutil
 import subprocess
 import sys
 import threading
@@ -72,7 +71,7 @@ class PublicadorAcervo:
         return {"commit": commit, "remoto": remoto, "ramo": ramo}
 
     def _validar(self) -> None:
-        relatorio = validar_publicacao(self.painel)
+        relatorio = validar_publicacao(self.painel, self.cofre)
         if not relatorio.ok:
             raise ErroPublicacao(relatorio.texto())
         testes = [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"]
@@ -84,10 +83,9 @@ class PublicadorAcervo:
             nota_rel = nota.relative_to(self.cofre.resolve()).as_posix()
         except ValueError as exc:
             raise ErroPublicacao("A nota criada ficou fora do cofre.") from exc
-        pdf_rel = str(caminho_pdf).replace("\\", "/")
+        # O PDF fica só no cofre; o site recebe apenas os metadados.
         dados_painel = [
-            "dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js",
-            "index.html", pdf_rel,
+            "dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js", "index.html",
         ]
         with TRAVA_PUBLICACAO:
             self._validar()
@@ -111,30 +109,16 @@ class PublicadorAcervo:
                           pdf_arquivado: Path) -> dict:
         nota_rel = Path(nota).resolve().relative_to(self.cofre.resolve()).as_posix()
         pdf_rel = str(pdf_anterior).replace("\\", "/")
-        painel_pdf = (self.painel / pdf_rel).resolve()
-        if not painel_pdf.is_relative_to(self.painel.resolve()):
-            raise ErroPublicacao("Caminho do PDF retirado ficou fora do painel.")
-        derivados = [
-            "dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js", "index.html", pdf_rel,
-        ]
-        removeu_painel = False
+        # O site não guarda PDFs: só os metadados mudam do lado do painel.
+        derivados = ["dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js", "index.html"]
         with TRAVA_PUBLICACAO:
             self._validar()
-            if painel_pdf.exists():
-                painel_pdf.unlink()
-                removeu_painel = True
-            try:
-                cofre = self._commit_e_push(
-                    self.cofre, [nota_rel, pdf_rel], f"acervo: retirar fonte {codigo}",
-                )
-                painel = self._commit_e_push(
-                    self.painel, derivados, f"acervo: retirar fonte {codigo}",
-                )
-            except Exception:
-                if removeu_painel and not painel_pdf.exists() and Path(pdf_arquivado).is_file():
-                    painel_pdf.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(pdf_arquivado, painel_pdf)
-                raise
+            cofre = self._commit_e_push(
+                self.cofre, [nota_rel, pdf_rel], f"acervo: retirar fonte {codigo}",
+            )
+            painel = self._commit_e_push(
+                self.painel, derivados, f"acervo: retirar fonte {codigo}",
+            )
         return {"cofre": cofre, "painel": painel, "testes": "aprovados", "guardiao": "aprovado"}
 
     def publicar_auditoria(self, notas: list[Path], caminhos_painel: list[str]) -> dict:

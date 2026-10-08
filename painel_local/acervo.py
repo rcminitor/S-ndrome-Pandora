@@ -1,7 +1,7 @@
 """Auditoria e correção conservadora do acervo da tese.
 
 ``diagnosticar`` nunca escreve. ``corrigir`` regenera somente arquivos derivados
-do painel e copia PDFs já autorizados por uma nota de fonte. Nenhum PDF, nota ou
+do painel. Os PDFs ficam só no cofre e nunca são copiados para o site. Nenhum PDF, nota ou
 fichamento do cofre é apagado ou criado por esta rotina.
 """
 from __future__ import annotations
@@ -94,12 +94,16 @@ def auditar(cofre: Path, painel: Path) -> dict:
                 False, "pendencia",
             ))
 
-    for pdf in pdfs_esperados:
-        caminho = str(pdf["arquivo"])
-        if not (painel / caminho).is_file():
-            achados.append(Achado("pdf_nao_publicado", f"PDF autorizado ausente do painel: {caminho}", True))
+    # Os PDFs ficam só no cofre. Se algum aparecer dentro do site, é um vazamento.
+    if (painel / "PDF").is_dir():
+        expostos = sorted(p.relative_to(painel).as_posix() for p in (painel / "PDF").rglob("*") if p.is_file())
+        if expostos:
+            achados.append(Achado(
+                "pdf_no_site", f"{len(expostos)} arquivo(s) dentro de PDF/ do site; PDFs devem ficar só no cofre",
+                False, "erro",
+            ))
 
-    guardiao = validar_publicacao(painel)
+    guardiao = validar_publicacao(painel, cofre)
     for erro in guardiao.erros:
         achados.append(Achado("guardiao", erro, True, "erro"))
     extras = sorted(
@@ -180,10 +184,7 @@ def corrigir(cofre: Path, painel: Path, publicar: bool = True) -> dict:
         raise RuntimeError("A correção não passou na auditoria final.")
     publicacao = None
     if publicar:
-        caminhos = ARQUIVOS_DERIVADOS + [
-            str(pdf["arquivo"]).replace("\\", "/")
-            for pdf in ler_json_js(Path(painel) / "dados_pdfs.js", "DADOS_PDFS")
-        ]
+        caminhos = list(ARQUIVOS_DERIVADOS)
         publicacao = PublicadorAcervo(cofre, painel).publicar_auditoria(notas_alteradas, caminhos)
     return {
         "antes": antes, "depois": depois, "publicacao": publicacao,

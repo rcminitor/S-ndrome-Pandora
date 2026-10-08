@@ -40,14 +40,18 @@ Os campos `arquivo` em `dados_pdfs.js` e `dados_inventario.js` contêm caminhos 
 PDF/Primeiras Leituras/01_Stress in owned cats.pdf
 ```
 
-Os PDFs existem **somente no computador local** do Romulo, dentro do cofre. Para abri-los:
+Os PDFs existem **somente no cofre**, no computador local do Romulo. **Nunca** os copie
+para este repositório: ele é público e os PDFs têm direitos autorais. A pasta `PDF/`
+está no `.gitignore`; o Guardião (`acervo.py`), o teste `test_site_nao_publica_pdfs` e
+a conferência pós-deploy (`verificar_site_publicado.py`) falham se algum PDF aparecer
+no site. O histórico foi limpo em 07/10/2026 para retirar os PDFs publicados antes.
 
-- A função `cofreUrl(caminho)` em `painel.js` prefixia com:
-  `file:///C:/Users/rcmin/OneDrive/Documents/Pos-Graduacao/Doutorado%20UFC/S%C3%ADndrome%20de%20Pandora/`
-- Isso funciona quando o site é aberto **localmente** (`file://` ou servidor local).
-- No GitHub Pages (`https://`), o navegador bloqueia `file://` — os links não abrem, mas o caminho fica visível.
+Para abrir um PDF:
 
-**Nunca mude `cofreUrl` para usar caminhos relativos** — o painel não está dentro do cofre.
+- `cofreUrl(caminho)` em `painel.js` aponta para o Painel de Estudo local:
+  `http://127.0.0.1:8765/pdf?id=acervo:<caminho sem o prefixo PDF/>`, que lê do cofre.
+- Antes de abrir, o site testa `/api/ping`. Com o painel desligado, avisa e abre o DOI
+  da referência (ou a busca do título no Google Acadêmico).
 
 ---
 

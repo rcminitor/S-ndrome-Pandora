@@ -4,16 +4,18 @@ Site do referencial teórico e do acompanhamento da tese de doutorado (UFC): pai
 
 Publicado em: https://rcminitor.github.io/S-ndrome-Pandora/
 
-Os PDFs autorizados para leitura no site ficam em `PDF/`. O manifesto publicado
-contém somente os arquivos ligados às fontes ativas — artigos e TCC. Mapas
-mentais, imagens, cópias adicionais e materiais de apoio permanecem fora do
-painel e não entram em nenhuma contagem.
+Os PDFs dos artigos **não são publicados**: ficam só no cofre, no PC do Romulo
+(direitos autorais dos periódicos). O site publica apenas os metadados — o
+manifesto `dados_pdfs.js` lista os caminhos relativos ao cofre das fontes ativas.
+Para ler um PDF, o site pede ao Painel de Estudo local (`http://127.0.0.1:8765`);
+com o painel desligado, abre o DOI ou a busca do artigo. A pasta `PDF/` está no
+`.gitignore`, e o Guardião e os testes falham se algum PDF aparecer no site.
 
 ## Publicação segura do acervo
 
 O cofre é a origem dos PDFs e fichamentos. O painel mantém os registros já
 revisados e só inclui uma fonte nova quando existe um PDF válido dentro de
-`PDF/`. A exportação não remove fontes automaticamente e não altera o cofre.
+`PDF/` do cofre (o PDF não é copiado para o site). A exportação não remove fontes automaticamente e não altera o cofre.
 
 ```powershell
 # Conferir o que seria publicado, sem gravar

@@ -101,8 +101,9 @@ class SincronizarAcervoTeste(unittest.TestCase):
         self.assertEqual({"PDF/Síndrome CIF/a.pdf", "PDF/Síndrome CIF/b.pdf"},
                          {p["arquivo"] for p in pdfs})
         self.assertEqual("Fonte A", inventario[0]["titulo"])
-        self.assertTrue((self.painel / pdf_b).is_file())
+        self.assertFalse((self.painel / pdf_b).exists(), "PDF não pode ser copiado para o site")
         self.assertTrue(validar_publicacao(self.painel).ok)
+        self.assertTrue(validar_publicacao(self.painel, self.cofre).ok)
 
     def test_erro_de_integridade_nao_substitui_arquivos(self):
         inventario_invalido = [{

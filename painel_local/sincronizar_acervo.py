@@ -3,7 +3,7 @@
 Compatibilidade e deliberada: os registros publicados continuam sendo a linha de
 base durante a migracao. Notas antigas com caminhos obsoletos nunca apagam um
 registro valido. Uma fonte nova so entra quando sua nota aponta para um PDF real
-dentro de PDF/. A escrita ocorre apenas depois da validacao integral.
+dentro de PDF/ do cofre. Os PDFs nunca sao copiados para o site. A escrita ocorre apenas depois da validacao integral.
 """
 from __future__ import annotations
 
@@ -12,7 +12,6 @@ import hashlib
 import json
 import os
 import re
-import shutil
 import tempfile
 import unicodedata
 from datetime import datetime
@@ -400,9 +399,8 @@ def sincronizar(cofre: Path, painel: Path, escrever: bool = False) -> int:
     conteudos["index.html"] = _index_com_versoes(index_atual, conteudos)
     alterados = [nome for nome, valor in conteudos.items()
                  if not (painel / nome).exists() or (painel / nome).read_text(encoding="utf-8-sig") != valor]
-    faltam_pdf = [p["arquivo"] for p in pdfs if not (painel / p["arquivo"]).is_file() or
-                  (painel / p["arquivo"]).stat().st_size != (cofre / p["arquivo"]).stat().st_size]
-    print(f"Plano: {len(alterados)} arquivos de dados | {len(faltam_pdf)} PDFs para sincronizar")
+    # Os PDFs ficam só no cofre (privado). O site publica apenas os metadados.
+    print(f"Plano: {len(alterados)} arquivos de dados (PDFs não são copiados para o site)")
     if not escrever:
         print("Modo de conferencia: nenhuma alteracao realizada. Use --write para aplicar.")
         return 0
@@ -416,17 +414,9 @@ def sincronizar(cofre: Path, painel: Path, escrever: bool = False) -> int:
         tmp = Path(tmp_nome)
         for nome, valor in conteudos.items():
             (tmp / nome).write_text(valor, encoding="utf-8")
-        for caminho in faltam_pdf:
-            destino_tmp = tmp / caminho
-            destino_tmp.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(cofre / caminho, destino_tmp)
         if _mesmas_marcas(marcas):
             print("BLOQUEADO: o cofre mudou antes da promocao final; nada foi substituido.")
             return 1
-        for caminho in faltam_pdf:
-            destino = painel / caminho
-            destino.parent.mkdir(parents=True, exist_ok=True)
-            os.replace(tmp / caminho, destino)
         for nome in alterados:
             os.replace(tmp / nome, painel / nome)
     print("Exportacao concluida de forma transacional.")

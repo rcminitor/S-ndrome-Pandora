@@ -29,7 +29,14 @@ class IntegridadePublicacaoTeste(unittest.TestCase):
         self.assertTrue(all(p.startswith("PDF/") for p in caminhos))
         self.assertEqual(len(caminhos), len(set(p.casefold() for p in caminhos)))
         self.assertTrue(set(caminhos).issubset(caminhos_manifesto))
-        self.assertTrue(all((RAIZ / p).is_file() for p in caminhos))
+
+    def test_site_nao_publica_pdfs(self):
+        # Os PDFs ficam só no cofre privado; o site publica apenas os metadados.
+        pasta = RAIZ / "PDF"
+        expostos = [p for p in pasta.rglob("*") if p.is_file()] if pasta.is_dir() else []
+        self.assertEqual([], expostos)
+        ignore = (RAIZ / ".gitignore").read_text(encoding="utf-8").splitlines()
+        self.assertIn("PDF/", [linha.strip() for linha in ignore])
 
     def test_codigos_e_fichamentos_nao_se_descolam(self):
         codigos = {str(a["codigo"]) for a in self.inventario}

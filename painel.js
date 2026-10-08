@@ -955,11 +955,29 @@
   }
 
   // ------------------------------------------------------------- PDFs
-  // PDFs hospedados no GitHub Pages — mesma raiz do site.
-  const COFRE_FILE_BASE = 'https://rcminitor.github.io/S-ndrome-Pandora/';
+  // Os PDFs NÃO são publicados no site: ficam só no cofre, no PC do Romulo.
+  // Abrem pelo Painel de Estudo local (servidor.py, rota /pdf), que lê do cofre.
+  // Sem o painel ligado, o leitor oferece o DOI ou a busca do artigo.
+  const PAINEL_LOCAL = 'http://127.0.0.1:8765';
   function cofreUrl(caminho) {
     if (!caminho) return '';
-    return COFRE_FILE_BASE + caminho.replace(/\\/g, '/').split('/').map(encodeURIComponent).join('/');
+    const rel = caminho.replace(/\\/g, '/').replace(/^PDF\//, '');
+    return `${PAINEL_LOCAL}/pdf?id=${encodeURIComponent('acervo:' + rel)}`;
+  }
+  async function painelLocalLigado() {
+    try {
+      const r = await fetch(`${PAINEL_LOCAL}/api/ping`, { signal: AbortSignal.timeout(1500) });
+      return r.ok;
+    } catch (e) { return false; }
+  }
+  function linkPublico(caminho, nome) {
+    const alvo = String(caminho || '').replace(/\\/g, '/');
+    const item = (window.DADOS_INVENTARIO || []).find((a) => String(a.arquivo || '').replace(/\\/g, '/') === alvo);
+    const ref = item ? String(item.referencia || '') : '';
+    const doi = ref.match(/10\.\d{4,9}\/[^\s"<>]+/i);
+    if (doi) return { url: 'https://doi.org/' + doi[0].replace(/[.,;)\]]+$/, ''), rotulo: 'Abrir pelo DOI ↗' };
+    const titulo = (item && item.titulo) || nome || '';
+    return { url: 'https://scholar.google.com/scholar?q=' + encodeURIComponent(titulo), rotulo: 'Buscar o artigo ↗' };
   }
 
   const PDFS = window.DADOS_PDFS || [];
@@ -974,7 +992,7 @@
     $('#pdfLista').innerHTML = Object.entries(grupos).map(([g, itens]) => `
       <div class="content-card"><h3 class="card-title">${esc(g)} <small class="pn-muted">(${itens.length})</small></h3>
       <div class="pn-pdfs">${itens.map((d) => `<div class="pn-pdf"><span class="pn-pdf-ico">PDF</span><div><strong>${esc(d.nome)}</strong><small>${fmt(d.kb / 1024)} MB</small></div>
-        ${d.publico === false ? '<span class="pn-muted" style="font-size:.75rem">Disponível só no cofre</span>' : `<div class="pn-actions"><button class="pn-btn pn-btn-sm" data-pdf="${esc(d.arquivo)}" data-nome="${esc(d.nome)}" type="button">Ler aqui</button><a class="pn-btn pn-btn-sm" href="${cofreUrl(d.arquivo)}" target="_blank" rel="noopener">Nova aba ↗</a></div>`}</div>`).join('')}</div></div>`).join('') || '<p class="pn-muted">Nenhum PDF encontrado.</p>';
+        <div class="pn-actions"><button class="pn-btn pn-btn-sm" data-pdf="${esc(d.arquivo)}" data-nome="${esc(d.nome)}" type="button">Ler (painel local)</button></div></div>`).join('')}</div></div>`).join('') || '<p class="pn-muted">Nenhum PDF encontrado.</p>';
     $('#pdfContagem').textContent = `${lista.length} de ${PDFS.length} PDFs`;
     if ($('#pdfBadge')) $('#pdfBadge').textContent = PDFS.length;
   }
@@ -982,10 +1000,17 @@
     if (!$('#pdfLista')) return;
     $('#pdfFiltros').addEventListener('click', (e) => { const b = e.target.closest('[data-pasta]'); if (b) { pdfPasta = b.dataset.pasta; renderPdfs(); } });
     $('#pdfBusca').addEventListener('input', (e) => { pdfTexto = e.target.value; renderPdfs(); });
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', async (e) => {
       const b = e.target.closest('[data-pdf]'); if (!b) return;
-      const url = cofreUrl(b.dataset.pdf);
-      $('#pdfTitulo').textContent = b.dataset.nome;
+      const { pdf, nome } = b.dataset;
+      if (!(await painelLocalLigado())) {
+        const pub = linkPublico(pdf, nome);
+        toast('O PDF fica só no seu cofre. Ligue o Painel de Estudo no PC para ler aqui.');
+        window.open(pub.url, '_blank', 'noopener');
+        return;
+      }
+      const url = cofreUrl(pdf);
+      $('#pdfTitulo').textContent = nome;
       $('#pdfNovaAba').href = url;
       $('#pdfFrame').removeAttribute('srcdoc');
       $('#pdfFrame').src = url;

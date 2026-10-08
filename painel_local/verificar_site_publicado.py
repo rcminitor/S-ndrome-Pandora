@@ -71,19 +71,17 @@ def _ler_texto(url: str, timeout: int = 20) -> str:
         return resposta.read().decode("utf-8-sig")
 
 
-def _pdf_disponivel(base: str, caminho: str) -> tuple[str, str | None]:
+def _pdf_exposto(base: str, caminho: str) -> tuple[str, bool]:
+    """True se o PDF responde 200 no site público, o que não pode acontecer."""
     url = urljoin(base, quote(caminho, safe="/"))
     req = Request(url, method="HEAD", headers={"User-Agent": "guardiao-acervo/1.0"})
     try:
         with urlopen(req, timeout=20) as resposta:
-            if resposta.status != 200:
-                return caminho, f"HTTP {resposta.status}"
-            tipo = resposta.headers.get_content_type()
-            if tipo not in {"application/pdf", "application/octet-stream"}:
-                return caminho, f"tipo inesperado: {tipo}"
-    except (HTTPError, URLError, TimeoutError) as exc:
-        return caminho, str(exc)
-    return caminho, None
+            return caminho, resposta.status == 200
+    except HTTPError:
+        return caminho, False          # 404 é o esperado: o PDF não está no site
+    except (URLError, TimeoutError):
+        return caminho, False
 
 
 def verificar(base: str) -> dict:
@@ -98,11 +96,12 @@ def verificar(base: str) -> dict:
         dados["inventario"], dados["pdfs"], dados["fichamentos"], dados["estado"]
     )
     caminhos = [str(item["arquivo"]).replace("\\", "/") for item in dados["pdfs"]]
+    # Os PDFs ficam só no cofre privado: nenhum pode responder no site público.
     with ThreadPoolExecutor(max_workers=12) as executor:
-        resultados = executor.map(lambda caminho: _pdf_disponivel(base, caminho), caminhos)
-    indisponiveis = [f"{caminho} ({erro})" for caminho, erro in resultados if erro]
-    if indisponiveis:
-        erros.append("PDFs indisponíveis na rede: " + "; ".join(indisponiveis))
+        resultados = executor.map(lambda caminho: _pdf_exposto(base, caminho), caminhos)
+    expostos = [caminho for caminho, exposto in resultados if exposto]
+    if expostos:
+        erros.append("PDFs expostos no site público: " + "; ".join(expostos))
     return {
         "fontes": len(dados["inventario"]),
         "pdfs": len(dados["pdfs"]),

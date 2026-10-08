@@ -24,7 +24,7 @@ class PublicadorFalso(PublicadorAcervo):
 
 
 class PublicarAcervoTeste(unittest.TestCase):
-    def test_publica_somente_nota_dados_e_pdf_da_inclusao(self):
+    def test_publica_nota_e_dados_mas_nunca_o_pdf(self):
         with tempfile.TemporaryDirectory() as tmp:
             raiz = Path(tmp)
             cofre, painel = raiz / "cofre", raiz / "painel"
@@ -37,8 +37,7 @@ class PublicarAcervoTeste(unittest.TestCase):
             self.assertEqual(("validar",), publicador.chamadas[0])
             self.assertEqual(["Fontes/68 Fonte.md"], publicador.chamadas[1][1])
             self.assertEqual(
-                ["dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js", "index.html",
-                 "PDF/A_classificar/fonte.pdf"],
+                ["dados_inventario.js", "dados_pdfs.js", "dados_fichamentos.js", "index.html"],
                 publicador.chamadas[2][1],
             )
             self.assertEqual("abc1234", resultado["painel"]["commit"])
@@ -67,28 +66,24 @@ class PublicarAcervoTeste(unittest.TestCase):
             self.assertTrue((repo / "alheio.txt").is_file())
             self.assertEqual("main", resultado["ramo"])
 
-    def test_retirada_publica_nota_derivados_e_exclusao_do_pdf(self):
+    def test_retirada_publica_nota_e_derivados_sem_pdf_no_site(self):
         with tempfile.TemporaryDirectory() as tmp:
             raiz = Path(tmp)
             cofre, painel = raiz / "cofre", raiz / "painel"
             nota = cofre / "Fontes/1 Fonte.md"
             arquivado = cofre / "PDF_Para conhecimento/_Retirados_do_acervo/1 - a.pdf"
-            painel_pdf = painel / "PDF/a.pdf"
             nota.parent.mkdir(parents=True)
             arquivado.parent.mkdir(parents=True)
-            painel_pdf.parent.mkdir(parents=True)
+            painel.mkdir()
             nota.write_text("retirada", encoding="utf-8")
             arquivado.write_bytes(b"%PDF-1.4\nfonte")
-            painel_pdf.write_bytes(arquivado.read_bytes())
             publicador = PublicadorFalso(cofre, painel)
 
             resultado = publicador.publicar_retirada("1", nota, "PDF/a.pdf", arquivado)
 
-            self.assertFalse(painel_pdf.exists())
             self.assertEqual(["Fontes/1 Fonte.md", "PDF/a.pdf"], publicador.chamadas[1][1])
-            self.assertIn("PDF/a.pdf", publicador.chamadas[2][1])
+            self.assertNotIn("PDF/a.pdf", publicador.chamadas[2][1])
             self.assertEqual("abc1234", resultado["painel"]["commit"])
-
 
 if __name__ == "__main__":
     unittest.main()
