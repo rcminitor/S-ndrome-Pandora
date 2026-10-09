@@ -142,8 +142,8 @@ def main() -> None:
         novos.update({"LLM_BASE_URL": GEMINI_URL, "MODELO_TUTOR": "openai/gemini-3.8-flash",
                       "MODELO_TRADUTOR": "openai/gemini-3.8-flash", "MODELO_BARATO": "openai/gemini-3.5-flash-lite"})
     elif provedor == "openai":                         # troque os nomes no .env se preferir outros modelos
-        novos.update({"LLM_BASE_URL": "", "MODELO_TUTOR": "openai/gpt-5-mini",
-                      "MODELO_TRADUTOR": "openai/gpt-5-mini", "MODELO_BARATO": "openai/gpt-5-nano"})
+        novos.update({"LLM_BASE_URL": "", "MODELO_TUTOR": "openai/gpt-4.1-mini",
+                      "MODELO_TRADUTOR": "openai/gpt-4.1-mini", "MODELO_BARATO": "openai/gpt-4.1-nano"})
     else:                                              # chave paga da Anthropic: volta aos modelos Claude
         novos.update({"LLM_BASE_URL": "", "MODELO_TUTOR": "anthropic/claude-sonnet-5",
                       "MODELO_BARATO": "anthropic/claude-haiku-4-5-20251001",

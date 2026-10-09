@@ -71,6 +71,7 @@ MODOS = {
     "questionar": "Leia o texto e faça de 2 a 3 perguntas: uma sobre conceito, uma sobre evidência e uma sobre a ligação com o objetivo da tese.",
     "debater": "Responda ao argumento do Romulo. Concorde só no que se sustenta, contraponha o resto e termine com UMA pergunta.",
     "revisar": "Liste: (1) afirmações sem fonte, (2) saltos lógicos, (3) termos sem definição, (4) lacunas que as leituras disponíveis ajudariam a cobrir. Seja específico, citando o trecho.",
+    "avaliar": "Você é um Examinador rigoroso da Banca de Doutorado em Ciências Veterinárias da UFC. Emita um Parecer de Banca estruturado: (1) Diagnóstico e Mérito Acadêmico da seção; (2) Pontos Fortes e Consistência Conceitual; (3) Arguição da Banca: 3 perguntas duras e contra-argumentos que você fará na defesa sobre hipótese, dados e método; (4) Auditoria de Fontes e Métodos: fragilidades, dados sem página ou generalizações indevidas; (5) Parecer Provisório (Aprovado / Aprovado com correções / Reformulação) com recomendações prioritárias.",
 }
 
 
@@ -128,7 +129,8 @@ def responder(texto_secao: str, historico: list[dict], modo: str = "debater",
     janela = historico[-2 * int(CFG["HISTORICO_TROCAS"]):]
     if not janela or janela[-1]["role"] != "user":
         janela = janela + [{"role": "user", "content": {"questionar": "Me questione sobre esse texto.",
-                                                        "revisar": "Revise esse texto."}.get(modo, "Vamos debater.")}]
+                                                        "revisar": "Revise esse texto.",
+                                                        "avaliar": "Aja como Examinador da Banca de Doutorado (UFC) e emita seu parecer crítico sobre esta seção da tese."}.get(modo, "Vamos debater.")}]
     def chamar():
         llm = _llm()
         return llm, str(llm.call([{"role": "system", "content": contexto}, *janela]))

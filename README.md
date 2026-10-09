@@ -42,9 +42,6 @@ validação em cada envio para `main`.
 | Ler um PDF solto | arrastar o PDF para `Ler com o agente.bat` |
 | Estatísticas do acervo (aba do site) | `python analise\estatisticas.py` |
 | Configurar a IA (OmniRoute gratuito ou chave) | `python agentes_crewai\configurar.py` |
-| **Busca Cirúrgica de Trechos** (Economia 95%+ em tokens) | Consultar_Trecho_Cirurgico.bat |
-| **Analisador de Economia de Tokens** (Multi-formato) | Analisar_Economia_Tokens.bat |
-| **Processar Novos Documentos** (Triagem: PDF, Word, Texto, Imagem) | Processar_Novos_Documentos.bat |
 
 Primeira vez: `pip install -r agentes_crewai\requirements.txt` e depois `python agentes_crewai\configurar.py`.
 Detalhes em [`agentes_crewai/README.md`](agentes_crewai/README.md).

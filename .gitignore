@@ -11,3 +11,7 @@ estudo_local/
 
 # PDFs dos artigos: ficam só no cofre privado (direitos autorais). Nunca publicar.
 PDF/
+
+# backups de .env (contêm chaves) e saída local do graphify
+agentes_crewai/.env.bak*
+graphify-out/

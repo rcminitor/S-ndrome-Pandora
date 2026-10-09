@@ -48,8 +48,8 @@ def usando_reserva() -> bool:
 
 
 PADRAO_RESERVA_OPENAI = {
-    "RESERVA_MODELO_FORTE": "openai/gpt-5-mini",
-    "RESERVA_MODELO_BARATO": "openai/gpt-5-nano",
+    "RESERVA_MODELO_FORTE": "openai/gpt-4.1-mini",
+    "RESERVA_MODELO_BARATO": "openai/gpt-4.1-nano",
 }
 
 

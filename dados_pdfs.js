@@ -86,12 +86,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "1-s2.0-S1558787820300939-main",
-  "arquivo": "PDF/Síndrome CIF/1-s2.0-S1558787820300939-main.pdf",
-  "kb": 289
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "1-s2.0-S1773224725009669-main",
   "arquivo": "PDF/Síndrome CIF/1-s2.0-S1773224725009669-main.pdf",
   "kb": 6296
@@ -278,12 +272,6 @@ window.DADOS_PDFS = [
  },
  {
   "pasta": "PDF/Síndrome CIF",
-  "nome": "dissertacao-ines-goncalves",
-  "arquivo": "PDF/Síndrome CIF/dissertacao-ines-goncalves.pdf",
-  "kb": 1142
- },
- {
-  "pasta": "PDF/Síndrome CIF",
   "nome": "Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+.",
   "arquivo": "PDF/Síndrome CIF/Estresse+em+gatos+domésticos_+impacto+do+ambiente+urbano.EDITADO+..pdf",
   "kb": 279
@@ -425,12 +413,6 @@ window.DADOS_PDFS = [
   "nome": "Paper-Cistiteintersticial-Proclim-2016",
   "arquivo": "PDF/Síndrome CIF/Paper-Cistiteintersticial-Proclim-2016.pdf",
   "kb": 681
- },
- {
-  "pasta": "PDF/Síndrome CIF",
-  "nome": "piccolo-et-al-2019-detection-of-multidrug-resistance-and-extended-spectrum-plasmid-mediated-ampc-beta-lactamase-genes",
-  "arquivo": "PDF/Síndrome CIF/piccolo-et-al-2019-detection-of-multidrug-resistance-and-extended-spectrum-plasmid-mediated-ampc-beta-lactamase-genes.pdf",
-  "kb": 158
  },
  {
   "pasta": "PDF/Síndrome CIF",

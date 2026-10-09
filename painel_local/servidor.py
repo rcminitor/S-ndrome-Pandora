@@ -712,7 +712,7 @@ def conversar():
     texto = secao_path(d["secao"]).read_text(encoding="utf-8") if secao_path(d["secao"]).exists() else d.get("texto", "")
     try:
         alertas = ""
-        if d.get("modo") in ("revisar", "questionar"):
+        if d.get("modo") in ("revisar", "questionar", "avaliar"):
             try:
                 alertas = RAST.alertas_em_texto(RAST.conferir_secao(secao_path(d["secao"]).stem))
             except Exception:
