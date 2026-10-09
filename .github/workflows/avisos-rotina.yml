@@ -23,10 +23,10 @@ jobs:
     env:
       TEM_COFRE: ${{ secrets.COFRE_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: agente-rotina
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.TEM_COFRE == 'true'  # sem o token, os avisos saem sem as dicas do cofre
         with:
           repository: rcminitor/sindrome-de-pandora
@@ -38,12 +38,12 @@ jobs:
             Fichamentos
           sparse-checkout-cone-mode: true
       - name: Restaurar estado
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: estado
           key: avisos-estado-${{ github.run_id }}
           restore-keys: avisos-estado-
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Enviar avisos
@@ -60,7 +60,7 @@ jobs:
         run: python agente-rotina/avisar.py ${{ inputs.teste && '--teste' || '' }}
       - name: Guardar estado
         if: always()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: estado
           key: avisos-estado-${{ github.run_id }}

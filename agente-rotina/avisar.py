@@ -219,6 +219,9 @@ def resumo_do_dia(rotina, agora, semana):
 
 
 def montar(b, rotina, agora, semana):
+    if b.get("pausa"):
+        seguinte = f" Próximo: {b['proximo']}." if b.get("proximo") else ""
+        return f"⏸️ Fim de {b['titulo']}. Pausa: levante, alongue e beba água.{seguinte}"
     if b["id"] == "resumo":
         return resumo_do_dia(rotina, agora, semana)
     texto = f"⏰ {b['inicio']}–{b['fim']} · {b['titulo']}\n{b['msg']}"
@@ -231,12 +234,17 @@ def avisos(rotina, dia_semana):
     """(bloco, horário local do aviso 'HH:MM') do dia; inclui o resumo da manhã."""
     if rotina.get("resumo_manha"):
         yield {"id": "resumo", "titulo": "Resumo do dia", "inicio": rotina["resumo_manha"], "fim": ""}, rotina["resumo_manha"]
-    for b in blocos_do_dia(rotina, dia_semana):
+    blocos = blocos_do_dia(rotina, dia_semana)
+    for i, b in enumerate(blocos):
         if b.get("so_no_resumo"):
             continue
         h, m = map(int, b["inicio"].split(":"))
         t = h * 60 + m - b.get("antecedencia_min", rotina["antecedencia_min"])
         yield b, f"{t // 60:02d}:{t % 60:02d}"
+        if b["id"].startswith("tese"):  # aviso de pausa ao fim de cada bloco de tese
+            prox = next((p["titulo"] for p in blocos[i + 1:] if not p.get("so_no_resumo")), "")
+            yield {"id": f"{b['id']}_pausa", "titulo": b["titulo"], "pausa": True, "proximo": prox,
+                   "inicio": b["fim"], "fim": ""}, b["fim"]
 
 
 def carregar_rotina():
